@@ -1,16 +1,37 @@
 # Interview Practice Notebooks
 
-Runnable Jupyter notebooks for drilling the Python, SQL and PySpark concepts used in data-engineering interviews.
-Every notebook executes top to bottom, contains self-checking `assert`s, and ends with a bank of interview
-questions and model answers.
+Two kinds of notebooks live here:
 
-| Notebook | What it drills | Dependencies | Run in Colab |
-|---|---|---|---|
-| [01_python_basics.ipynb](01_python_basics.ipynb) | Classes and methods, dunder methods, properties, dataclasses, exceptions, context managers, generators, decorators, typing, datetime, concurrency | Python standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/01_python_basics.ipynb) |
-| [02_python_coding_problems.ipynb](02_python_coding_problems.ipynb) | Interview coding problems with tests: dedupe, top-K, sliding windows, intervals, hash joins, sessionization, LRU cache, retry | Python standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/02_python_coding_problems.ipynb) |
-| [03_sql_interview_questions.ipynb](03_sql_interview_questions.ipynb) | SQL against an in-memory SQLite database: window functions, top-N per group, running totals, gaps and islands, cohorts, dedupe | Python standard library (`sqlite3`) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/03_sql_interview_questions.ipynb) |
-| [04_pyspark_concepts.ipynb](04_pyspark_concepts.ipynb) | PySpark concepts: lazy evaluation, joins and shuffles, window functions, UDFs, partitioning, caching, AQE, streaming | PySpark + Java 17+ (skips gracefully without them) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/04_pyspark_concepts.ipynb) |
-| [05_interview_questions.ipynb](05_interview_questions.ipynb) | Mixed question bank across Python, SQL, Spark, modelling, lakehouse, orchestration, streaming, cloud and behavioural | Python standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/05_interview_questions.ipynb) |
+| Path | What it is |
+|---|---|
+| [`topics/`](topics/) | One notebook per topic document, generated from `content/*.md` |
+| [`05_interview_questions.ipynb`](05_interview_questions.ipynb) | A standalone question bank for mock interviews |
+
+## Topic notebooks
+
+Every topic doc is converted by [`scripts/md_to_notebooks.py`](../scripts/md_to_notebooks.py):
+
+- every `##` section becomes a markdown cell,
+- every ```python block becomes a code cell,
+- fences in SQL, shell, YAML, Scala and other languages stay as formatted markdown blocks (they need their own
+  engine),
+- the house-style header, hand-written TOC and per-section `[Table of Contents]` footers are removed.
+
+The Python, SQL and Spark topic notebooks also contain the hands-on practice exercises, merged in at the end. The
+standalone practice notebooks below stay in this directory as the merge sources and remain independently runnable:
+
+| Merged topic notebook | Contains |
+|---|---|
+| [`topics/python.ipynb`](topics/python.ipynb) | `content/python.md` + `01_python_basics.ipynb` + `02_python_coding_problems.ipynb` |
+| [`topics/sql.ipynb`](topics/sql.ipynb) | `content/sql.md` + `03_sql_interview_questions.ipynb` |
+| [`topics/spark.ipynb`](topics/spark.ipynb) | `content/spark.md` + `04_pyspark_concepts.ipynb` |
+
+Regenerate them after editing any `content/*.md`:
+
+```bash
+make topic-notebooks        # rewrite notebooks/topics/*.ipynb
+make topic-notebooks-check  # CI-safe: fails when the notebooks are out of date
+```
 
 ## Setup
 
@@ -32,13 +53,13 @@ Without `uv`, install directly:
 
 ```bash
 pip install jupyterlab nbformat nbclient ipykernel
-pip install pyspark pandas        # optional, for notebook 04
+pip install pyspark pandas        # optional, for the Spark notebook
 ```
 
 ## Running
 
 ```bash
-make notebooks          # execute every notebook and save its outputs
+make notebooks          # execute the practice notebooks and save their outputs
 make notebooks-check    # execute without writing outputs (useful in CI)
 jupyter lab notebooks/  # open them interactively
 ```
@@ -46,25 +67,26 @@ jupyter lab notebooks/  # open them interactively
 Or run a single notebook:
 
 ```bash
-.venv/bin/python scripts/run_notebooks.py notebooks/03_sql_interview_questions.ipynb
+.venv/bin/python scripts/run_notebooks.py notebooks/05_interview_questions.ipynb
 ```
+
+The `topics/` notebooks are reading material: their Python cells are runnable, but many snippets use PySpark,
+pandas or another engine, so they are not part of `make notebooks`.
 
 ## Running in Google Colab
 
-Click the **Open in Colab** badge in the table above; Colab loads the notebook straight from
-`github.com/sai-guntupalli/data-engineering-interview-questions`. Nothing needs to be installed locally.
+Click the **Open in Colab** badges on the documentation site's Notebooks page, or browse
+`github.com/sai-guntupalli/data-engineering-interview-questions/tree/master/notebooks/topics` and open any notebook
+with Colab's *GitHub* tab. Nothing needs to be installed locally.
 
-- Notebooks 01, 02, 03 and 05 use only the Python standard library and run as-is.
-- Notebook 04 needs PySpark: add a cell with `!pip install pyspark`, run it, then choose
+- The Python and SQL notebooks use only the standard library and run as-is.
+- The Spark notebook needs PySpark: add a cell with `!pip install pyspark`, run it, then choose
   **Runtime -> Restart session** and run all cells. Colab already provides Java.
-- Colab may use a different Python minor version than the repository virtualenv. Notebook 02 includes a fallback
-  for `itertools.batched`, which requires Python 3.12+.
+- Topic notebooks contain snippets in several languages; only the Python blocks are executable cells.
 
 ## Notes
 
-- Notebooks 01, 02, 03 and 05 need only the Python standard library, so they run anywhere.
-- Notebook 04 detects PySpark and Java at the top and prints setup instructions when either is missing; Spark cells
-  are skipped instead of failing, and the expected results are documented in markdown above each cell.
+- `05_interview_questions.ipynb` is self-contained: 63 questions with model answers plus runnable checks.
 - Outputs are committed so the notebooks are readable on GitHub without running them. Re-run `make notebooks` after
-  editing to refresh them.
-- The notebooks are also listed on the documentation site under **Practice Notebooks**.
+  editing the practice notebooks.
+- The notebooks are also listed on the documentation site under **Notebooks**.

@@ -17,7 +17,7 @@ DOCS_PREP ?= $(shell if [ -x .venv/bin/python ]; then echo ".venv/bin/python scr
 
 PORT ?= 8000
 
-.PHONY: help setup setup-notebooks setup-spark check check-strict full full-check docs site serve notebooks notebooks-check validate ci stats clean
+.PHONY: help setup setup-notebooks setup-spark check check-strict full full-check docs site serve notebooks notebooks-check topic-notebooks topic-notebooks-check validate ci stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -59,6 +59,12 @@ notebooks: ## Execute every notebook in notebooks/ and save their outputs
 
 notebooks-check: ## Execute notebooks without writing outputs (CI-safe)
 	$(PY) scripts/run_notebooks.py --check
+
+topic-notebooks: ## Regenerate notebooks/topics/*.ipynb from content/*.md
+	$(PY) scripts/md_to_notebooks.py
+
+topic-notebooks-check: ## Verify notebooks/topics/*.ipynb are up to date (CI-safe)
+	$(PY) scripts/md_to_notebooks.py --check
 
 validate: check-strict full-check site ## Full pipeline: strict checks + index sync + strict build
 	@echo "validate: all checks passed"

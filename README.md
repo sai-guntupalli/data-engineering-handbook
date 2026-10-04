@@ -19,29 +19,31 @@ Suggested study paths:
 + **Cloud path:** [AWS](./content/aws.md) / [GCP](./content/gcp.md) / [Azure](./content/azure.md) -> [Cost Optimization](./content/cost-optimization.md) -> [Data Governance](./content/data-governance.md)
 + **Analytics path:** [Data Warehousing](./content/dwha.md) -> [dbt](./content/dbt.md) -> [BigQuery](./content/bigquery.md) / [Redshift](./content/redshift.md) -> [Tableau](./content/tableau.md) / [Looker](./content/looker.md) / [Superset](./content/superset.md)
 
-## Practice notebooks
+## Notebooks
 
-Prefer learning by running code? The [`notebooks/`](./notebooks/README.md) directory contains runnable Jupyter notebooks that test the same concepts with self-checking assertions and an interview question bank at the end of each one.
+Every topic in this guide also exists as a Jupyter notebook. All 54 topic docs are converted under [`notebooks/topics/`](./notebooks/topics), and the Python, SQL and Spark notebooks also contain their hands-on exercises, merged in.
 
-| Notebook | What it drills | Dependencies | Run in Colab |
+| Notebook | What it covers | Dependencies | Run in Colab |
 |---|---|---|---|
-| [Python basics](./notebooks/01_python_basics.ipynb) | Classes and methods, dunder methods, properties, dataclasses, exceptions, context managers, generators, decorators, typing, concurrency | Standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/01_python_basics.ipynb) |
-| [Python coding problems](./notebooks/02_python_coding_problems.ipynb) | Interview coding problems with tests: dedupe, top-K, sliding windows, hash joins, sessionization, LRU cache, retry | Standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/02_python_coding_problems.ipynb) |
-| [SQL interview questions](./notebooks/03_sql_interview_questions.ipynb) | Window functions, top-N per group, running totals, gaps and islands, cohorts, dedupe against an in-memory SQLite database | Standard library (`sqlite3`) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/03_sql_interview_questions.ipynb) |
-| [PySpark concepts](./notebooks/04_pyspark_concepts.ipynb) | Lazy evaluation, joins and shuffles, window functions, UDFs, partitioning, caching, AQE, streaming | PySpark + Java 17+ (skips gracefully) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/04_pyspark_concepts.ipynb) |
-| [Interview question bank](./notebooks/05_interview_questions.ipynb) | Mixed questions across Python, SQL, Spark, modelling, lakehouse, orchestration, streaming, cloud and behavioural | Standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/05_interview_questions.ipynb) |
+| [Python](./notebooks/topics/python.ipynb) | The Python topic plus the Python basics and coding-problem exercises | Standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/topics/python.ipynb) |
+| [SQL](./notebooks/topics/sql.ipynb) | The SQL topic plus the question set against an in-memory SQLite database | Standard library (`sqlite3`) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/topics/sql.ipynb) |
+| [Spark and PySpark](./notebooks/topics/spark.ipynb) | The Spark topic plus the PySpark concepts and guarded drills | PySpark + Java 17+ (drills skip gracefully) | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/topics/spark.ipynb) |
+| [Interview question bank](./notebooks/05_interview_questions.ipynb) | 63 mixed questions with model answers and runnable checks | Standard library | [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/05_interview_questions.ipynb) |
 
 ```bash
-make setup-notebooks   # uv sync --extra notebooks
-make notebooks         # run every notebook and save outputs
-jupyter lab notebooks/ # or open them interactively
+make setup-notebooks     # uv sync --extra notebooks
+make topic-notebooks     # regenerate notebooks/topics/*.ipynb from content/*.md
+make notebooks           # execute the practice notebooks and save outputs
+jupyter lab notebooks/   # open them interactively
 ```
 
-Prefer zero setup? Click an **Open in Colab** badge to run a notebook in the browser straight from this repository.
-The Python and SQL notebooks need nothing installed. The PySpark notebook needs one extra step in Colab: run
-`!pip install pyspark` in a new cell, then pick **Runtime -> Restart session** and run all cells.
+The standalone practice notebooks (`notebooks/01_python_basics.ipynb` through `notebooks/04_pyspark_concepts.ipynb`) remain available and are the sources merged into the Python, SQL and Spark topic notebooks.
 
-PySpark locally needs `uv sync --extra notebooks --extra notebooks-spark` plus a Java 17+ runtime; without them, notebook 04 prints setup instructions and skips the Spark cells instead of failing.
+In a topic notebook every `##` section is a markdown cell, every Python block is a runnable cell, and snippets in SQL, shell, YAML or Scala stay as formatted blocks because they need their own engine.
+
+Prefer zero setup? Click an **Open in Colab** badge to run a notebook in the browser straight from this repository. The Python and SQL notebooks need nothing installed; the Spark notebook needs one extra step in Colab: run `!pip install pyspark` in a new cell, then pick **Runtime -> Restart session** and run all cells.
+
+PySpark locally needs `uv sync --extra notebooks --extra notebooks-spark` plus a Java 17+ runtime; without them, the Spark notebook prints setup instructions and skips the Spark cells instead of failing.
 
 ## Documentation website
 

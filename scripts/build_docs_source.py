@@ -29,7 +29,9 @@ DEFAULT_REPO_SLUG = "sai-guntupalli/data-engineering-interview-questions"
 DEFAULT_REPO_BRANCH = "master"
 COLAB_BADGE = "https://colab.research.google.com/assets/colab-badge.svg"
 
-# (filename, title, what it drills, dependencies) for notebooks/README.md entries.
+# (filename, title, what it drills, dependencies) for the standalone practice
+# notebooks. The Python, SQL and Spark ones are also merged into the matching
+# topic notebook by scripts/md_to_notebooks.py.
 NOTEBOOKS: list[tuple[str, str, str, str]] = [
     (
         "01_python_basics.ipynb",
@@ -401,17 +403,34 @@ def _notebook_code_cells(path: Path) -> int:
     return sum(1 for cell in data.get("cells", []) if cell.get("cell_type") == "code")
 
 
+def _notebook_title(path: Path) -> str:
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return path.stem.replace("-", " ").title()
+    for cell in data.get("cells", []):
+        if cell.get("cell_type") != "markdown":
+            continue
+        source = cell.get("source", "")
+        if isinstance(source, list):
+            source = "".join(source)
+        match = re.match(r"^#\s+(.+?)\s*$", source.strip())
+        if match:
+            return match.group(1).strip()
+    return path.stem.replace("-", " ").title()
+
+
 def _copy_notebooks() -> list[str]:
     copied: list[str] = []
     if not NOTEBOOKS_DIR.exists():
         return copied
     target_dir = DOCS_SRC / "notebooks"
-    target_dir.mkdir(parents=True, exist_ok=True)
-    for filename, *_ in NOTEBOOKS:
-        source = NOTEBOOKS_DIR / filename
-        if source.exists():
-            shutil.copy2(source, target_dir / filename)
-            copied.append(filename)
+    for source in sorted(NOTEBOOKS_DIR.rglob("*.ipynb")):
+        relative = source.relative_to(NOTEBOOKS_DIR)
+        target = target_dir / relative
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+        copied.append(str(relative))
     return copied
 
 
@@ -434,13 +453,22 @@ def _notebooks_markdown() -> str:
 
     table = "\n".join(rows) if rows else "| _No notebooks found yet._ | | | | | |"
 
-    return f"""# Practice Notebooks
+    topic_rows: list[str] = []
+    for path in sorted((NOTEBOOKS_DIR / "topics").glob("*.ipynb")):
+        relative = path.relative_to(NOTEBOOKS_DIR)
+        topic_rows.append(
+            f"| [{_notebook_title(path)}](notebooks/{relative}) | {_notebook_code_cells(path)} | "
+            f"[![Open in Colab]({COLAB_BADGE})]({colab_base}/{relative}) | [GitHub]({github_base}/{relative}) |"
+        )
+    topics_table = "\n".join(topic_rows) if topic_rows else "| _No topic notebooks found._ | | | |"
 
-Runnable Jupyter notebooks for drilling the concepts in this guide. Each one executes top to bottom against a
-small self-contained dataset, checks itself with assertions, and ends with a bank of interview questions and
-model answers. Outputs are committed, so you can also read them without running anything.
+    return f"""# Notebooks
 
-| Notebook | What it drills | Code cells | Dependencies | Run in Colab | View |
+Every topic in the guide is available as a Jupyter notebook under `notebooks/topics/`. The standalone practice
+notebooks below are independently runnable, and the Python, SQL and Spark exercises are also merged into the
+matching topic notebooks so each topic notebook is self-contained.
+
+| Practice notebook | What it drills | Code cells | Dependencies | Run in Colab | View |
 |---|---|---|---|---|---|
 {table}
 
@@ -448,44 +476,41 @@ model answers. Outputs are committed, so you can also read them without running 
 
 ```bash
 make setup-notebooks      # uv sync --extra notebooks
-make notebooks            # execute every notebook and refresh its outputs
+make notebooks            # execute the practice notebooks and refresh their outputs
 make notebooks-check      # execute without writing outputs
+make topic-notebooks      # regenerate notebooks/topics/*.ipynb from content/*.md
 jupyter lab notebooks/    # or open them interactively
 ```
 
-Notebook 04 (PySpark) needs Spark support:
+The Spark notebook needs Spark support:
 
 ```bash
 make setup-spark          # uv sync --extra notebooks --extra notebooks-spark
 ```
 
-PySpark also requires a Java runtime (Java 17 or newer). Without it, notebook 04 prints setup instructions and
-skips the Spark cells instead of failing.
+PySpark also requires a Java runtime (Java 17 or newer). Without it, the PySpark notebook prints setup
+instructions and skips the Spark cells instead of failing.
 
 ## Run them in Google Colab
 
 Colab opens a notebook straight from GitHub, so there is nothing to install locally: use the **Open in Colab**
-badge in the table above, or go to [colab.research.google.com](https://colab.research.google.com/) and choose
-*GitHub*.
+badges below, or go to [colab.research.google.com](https://colab.research.google.com/) and choose *GitHub*.
 
-+ The Python notebooks (01, 02, 03, 05) use only the standard library and run in Colab as-is.
-+ The PySpark notebook (04) needs PySpark: run `!pip install pyspark` in a new Colab cell, then pick
++ The Python and SQL notebooks use only the standard library and run in Colab as-is.
++ The Spark notebook needs PySpark: run `!pip install pyspark` in a new Colab cell, then pick
   **Runtime -> Restart session** and run all cells. Colab already provides Java.
-+ Colab may use a different Python minor version than the repository virtualenv; notebooks that depend on a very
-  recent standard-library API say so in the relevant section.
++ The topic notebooks contain illustrative snippets in several languages; the Python blocks are runnable cells and
+  the rest are formatted blocks that need their own engine.
 
-## What each notebook contains
+## Topic notebooks
 
-+ **[Python basics](notebooks/01_python_basics.ipynb)** - classes and the three kinds of methods, dunder methods,
-  properties, dataclasses, exceptions, context managers, generators, decorators, typing, datetime, and concurrency.
-+ **[Python coding problems](notebooks/02_python_coding_problems.ipynb)** - interview problems with self-checking
-  tests: dedupe, top-K, sliding windows, intervals, hash joins, sessionization, LRU cache, and retries.
-+ **[SQL interview questions](notebooks/03_sql_interview_questions.ipynb)** - an in-memory SQLite sandbox with
-  window functions, top-N per group, running totals, gaps and islands, cohorts, and dedupe.
-+ **[PySpark concepts](notebooks/04_pyspark_concepts.ipynb)** - lazy evaluation, joins and shuffles, window
-  functions, UDFs, partitioning, caching, AQE, and streaming, plus 15 interview questions.
-+ **[Interview question bank](notebooks/05_interview_questions.ipynb)** - mixed questions across Python, SQL,
-  Spark, modelling, lakehouse, orchestration, streaming, cloud, and behavioural topics.
+One notebook per topic document, generated from `content/*.md` by `scripts/md_to_notebooks.py`. Every `##` section
+becomes a markdown cell, every Python block becomes a code cell, and fences in other languages stay as formatted
+blocks. The Python, SQL and Spark notebooks also contain their practice exercises.
+
+| Topic notebook | Code cells | Run in Colab | View |
+|---|---|---|---|
+{topics_table}
 """
 
 
