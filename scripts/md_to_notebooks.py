@@ -136,7 +136,9 @@ def parse_document(text: str, slug: str) -> tuple[str, list[dict]]:
             index += 1
             continue
 
-        if line.startswith("## "):
+        if line.startswith("## ") or line.startswith("### "):
+            # One markdown cell per section and subsection, so a long topic
+            # document becomes a scannable outline instead of huge text cells.
             flush()
             buffer.append(line)
             index += 1
