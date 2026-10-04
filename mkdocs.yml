@@ -8,6 +8,74 @@ docs_dir: .docs_src
 site_dir: site
 use_directory_urls: true
 
+nav:
+  - Home: index.md
+  - Notebooks: notebooks.md
+  - Topics:
+      - Topic index: topics/index.md
+      - All questions: topics/full.md
+      - Core pipeline skills:
+          - Python: topics/python.md
+          - Python basics: topics/python-basics.md
+          - Python coding problems: topics/python-coding.md
+          - SQL: topics/sql.md
+          - Scala: topics/scala.md
+          - Spark: topics/spark.md
+          - Spark tuning: topics/spark-tuning.md
+          - Airflow: topics/airflow.md
+          - dbt: topics/dbt.md
+          - Data quality: topics/data-quality.md
+          - Observability: topics/observability.md
+      - Lakehouse and formats:
+          - Parquet: topics/parquet.md
+          - Delta Lake: topics/delta.md
+          - Apache Iceberg: topics/iceberg.md
+          - Apache Hudi: topics/hudi.md
+          - Avro: topics/avro.md
+          - Change data capture: topics/cdc.md
+          - Data modeling: topics/data-modeling.md
+      - Cloud and platforms:
+          - AWS: topics/aws.md
+          - Azure: topics/azure.md
+          - GCP: topics/gcp.md
+          - BigQuery: topics/bigquery.md
+          - Redshift: topics/redshift.md
+          - Snowflake: topics/snowflake.md
+          - Databricks: topics/databricks.md
+          - Trino and Presto: topics/trino.md
+          - ClickHouse: topics/clickhouse.md
+          - DynamoDB: topics/dynamodb.md
+          - Bigtable: topics/bigtable.md
+      - Streaming and distributed systems:
+          - Kafka: topics/kafka.md
+          - Flink: topics/flink.md
+          - Redis: topics/redis.md
+          - Hadoop: topics/hadoop.md
+          - Hive: topics/hive.md
+          - HBase: topics/hbase.md
+          - Cassandra: topics/cassandra.md
+          - Kubernetes: topics/kubernetes.md
+      - Warehousing, BI and governance:
+          - Data warehousing: topics/dwha.md
+          - System design: topics/system-design.md
+          - Statistics: topics/statistics.md
+          - Data governance: topics/data-governance.md
+          - Cost optimization: topics/cost-optimization.md
+          - Tableau: topics/tableau.md
+          - Looker: topics/looker.md
+          - Superset: topics/superset.md
+      - AI and LLM foundations:
+          - LLM and AI terminology: topics/llm.md
+      - Additional tools:
+          - MongoDB: topics/mongo.md
+          - Apache NiFi: topics/nifi.md
+          - Flume: topics/flume.md
+          - Greenplum: topics/greenplum.md
+          - Impala: topics/impala.md
+          - Elasticsearch and OpenSearch: topics/elasticsearch.md
+          - Docker: topics/docker.md
+          - Data structures: topics/data-structure.md
+
 theme:
   name: material
   language: en
@@ -33,10 +101,14 @@ theme:
     code: JetBrains Mono
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - navigation.indexes
     - navigation.top
     - navigation.tracking
+    - navigation.path
+    - navigation.footer
+    - navigation.prune
     - toc.follow
     - search.suggest
     - search.highlight
