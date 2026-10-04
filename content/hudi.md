@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Apache Hudi
+
+**Notebook:** [`notebooks/topics/hudi.ipynb`](../notebooks/topics/hudi.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Hudi (Hadoop Upserts Deletes and Incrementals) is an open table format and lakehouse framework that brings database-like primitives to object storage: record-level upserts, deletes, incremental pulls, and pluggable table services. It was created at Uber in 2016 to keep petabyte-scale trip tables fresh without rebuilding partitions.
 + [What is Apache Hudi?](#What-is-Apache-Hudi)
 + [What problems does Hudi solve in a data lake?](#What-problems-does-Hudi-solve-in-a-data-lake)

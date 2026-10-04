@@ -3,6 +3,8 @@
 
 # Docker for Data Engineers
 
+**Notebook:** [`notebooks/topics/docker.ipynb`](../notebooks/topics/docker.ipynb) - runnable version of this topic with self-checking exercises.
+
 Docker is the packaging layer of a modern data platform. It turns "it works on my laptop" into an immutable image with a pinned Python, Java, Spark, and driver stack, and that same image is what a scheduler, a CI runner, or Kubernetes executes. The practical skills are writing small reproducible images, wiring local stacks with Compose, and knowing how containers fail when they run out of memory or lose their entrypoint.
 
 + [What is Docker and why does it matter for data engineers?](#What-is-Docker-and-why-does-it-matter-for-data-engineers)

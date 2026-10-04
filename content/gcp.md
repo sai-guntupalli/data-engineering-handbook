@@ -3,6 +3,8 @@
 
 # Google Cloud Platform
 
+**Notebook:** [`notebooks/topics/gcp.ipynb`](../notebooks/topics/gcp.ipynb) - runnable version of this topic with self-checking exercises.
+
 Google Cloud Platform is the infrastructure and data platform of Google: Cloud Storage for objects, BigQuery for serverless analytics, Dataflow/Dataproc for processing, Pub/Sub for messaging, and IAM/Cloud KMS/VPC for governance.
 
 + [What is Google Cloud Platform (GCP)?](#What-is-Google-Cloud-Platform-GCP)

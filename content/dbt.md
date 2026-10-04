@@ -3,6 +3,8 @@
 
 # dbt
 
+**Notebook:** [`notebooks/topics/dbt.ipynb`](../notebooks/topics/dbt.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is dbt?](#What-is-dbt)
 + [How is dbt different from Airflow?](#How-is-dbt-different-from-Airflow)
 + [What is a dbt model?](#What-is-a-dbt-model)

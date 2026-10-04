@@ -3,6 +3,8 @@
 
 # Data Warehousing Architecture
 
+**Notebook:** [`notebooks/topics/dwha.ipynb`](../notebooks/topics/dwha.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What are the main layers in a data warehouse architecture?](#what-are-the-main-layers-in-a-data-warehouse-architecture)
 + [How do OLTP and OLAP systems differ?](#how-do-oltp-and-olap-systems-differ)
 + [What is the Main Difference between View and Materialized View?](#what-is-the-main-difference-between-view-and-materialized-view)

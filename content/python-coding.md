@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Python Coding Problems for Data Engineers
+
+**Notebook:** [`notebooks/topics/python-coding.ipynb`](../notebooks/topics/python-coding.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [Problem 1 deduplicate records while preserving order](#Problem-1-deduplicate-records-while-preserving-order)
 + [Problem 2 count frequencies and group by without pandas](#Problem-2-count-frequencies-and-group-by-without-pandas)
 + [Problem 3 sort records with multi field key functions](#Problem-3-sort-records-with-multi-field-key-functions)

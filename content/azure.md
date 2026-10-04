@@ -3,6 +3,8 @@
 
 # Azure
 
+**Notebook:** [`notebooks/topics/azure.ipynb`](../notebooks/topics/azure.ipynb) - runnable version of this topic with self-checking exercises.
+
 Azure's data platform centers on Azure Data Lake Storage Gen2 for storage, Azure Data Factory and Synapse Pipelines for orchestration, Azure Databricks and Synapse Spark for processing, Synapse SQL for serving, Microsoft Purview for governance, and Microsoft Entra ID for identity. Many of the classic "Windows Azure" questions below are legacy Cloud Services concepts; they are kept, with notes on what replaced them.
 
 + [What are the three Main Components of Windows Azure Platform?](#What-are-the-three-Main-Components-of-Windows-Azure-Platform)

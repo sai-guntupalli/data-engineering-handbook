@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Redshift
+
+**Notebook:** [`notebooks/topics/redshift.ipynb`](../notebooks/topics/redshift.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Amazon Redshift?](#What-is-Amazon-Redshift)
 + [How do distribution styles and sort keys affect Redshift performance?](#How-do-distribution-styles-and-sort-keys-affect-Redshift-performance)
 + [How do you load data efficiently into Redshift?](#How-do-you-load-data-efficiently-into-Redshift)

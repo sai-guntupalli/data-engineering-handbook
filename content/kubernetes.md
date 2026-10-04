@@ -3,6 +3,8 @@
 
 # Kubernetes
 
+**Notebook:** [`notebooks/topics/kubernetes.ipynb`](../notebooks/topics/kubernetes.ipynb) - runnable version of this topic with self-checking exercises.
+
 Kubernetes is the default runtime for data platforms that need reproducible packaging, per-job isolation, and elastic compute. A data engineer rarely administers the whole cluster, but you are expected to read and write the manifests that run Spark drivers and executors, Airflow workers and triggerers, dbt jobs, Kafka/Flink operators, and the APIs around data products.
 
 + [Why is Kubernetes useful for data engineering workloads?](#Why-is-Kubernetes-useful-for-data-engineering-workloads)

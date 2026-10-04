@@ -3,6 +3,8 @@
 
 # Parquet
 
+**Notebook:** [`notebooks/topics/parquet.ipynb`](../notebooks/topics/parquet.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Parquet is a columnar, typed file format for analytics, and the default storage format for Spark, Trino, Athena, and lakehouse tables.
 
 + [What is Apache Parquet?](#What-is-Apache-Parquet)

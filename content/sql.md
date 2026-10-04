@@ -3,6 +3,8 @@
 
 # SQL
 
+**Notebook:** [`notebooks/topics/sql.ipynb`](../notebooks/topics/sql.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [Write sql query to get the second highest salary among all employees?](#Write-sql-query-to-get-the-second-highest-salary-among-all-employees)
 + [There are multiple ways to get the second highest salary among all employees.](#There-are-multiple-ways-to-get-the-second-highest-salary-among-all-employees)
 + [How can we retrieve alternate records from a table in oracle?](#How-can-we-retrieve-alternate-records-from-a-table-in-oracle)

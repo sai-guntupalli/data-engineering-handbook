@@ -3,6 +3,8 @@
 
 # Apache Cassandra
 
+**Notebook:** [`notebooks/topics/cassandra.ipynb`](../notebooks/topics/cassandra.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Cassandra is a distributed, masterless, wide-column store built for high write throughput and linear horizontal scale. Data is partitioned across a peer-to-peer ring, replicated for durability, and queried with CQL using a table design that starts from the query rather than from normalization.
 
 + [Explain what is Cassandra?](#Explain-what-is-Cassandra)

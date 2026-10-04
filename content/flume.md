@@ -3,6 +3,8 @@
 
 # Apache Flume
 
+**Notebook:** [`notebooks/topics/flume.ipynb`](../notebooks/topics/flume.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Flume is a distributed, reliable, and available service for efficiently collecting, aggregating, and moving large amounts of log and event data into HDFS, HBase, Kafka, Solr, or another agent. An agent is a JVM process that wires a source to one or more channels and a sink, and the channel is what makes every handoff transactional.
 
 ```text

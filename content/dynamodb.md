@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # DynamoDB
+
+**Notebook:** [`notebooks/topics/dynamodb.ipynb`](../notebooks/topics/dynamodb.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [How do you model data in DynamoDB?](#How-do-you-model-data-in-DynamoDB)
 + [What are partition keys, sort keys, GSIs, and LSIs?](#What-are-partition-keys-sort-keys-GSIs-and-LSIs)
 + [How do you avoid hot partitions in DynamoDB?](#How-do-you-avoid-hot-partitions-in-DynamoDB)

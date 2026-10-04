@@ -3,6 +3,8 @@
 
 # Snowflake
 
+**Notebook:** [`notebooks/topics/snowflake.ipynb`](../notebooks/topics/snowflake.ipynb) - runnable version of this topic with self-checking exercises.
+
 Snowflake is a fully managed, multi-cluster, shared-data cloud data platform: storage, compute, and services scale independently.
 
 + [What is Snowflake?](#What-is-Snowflake)

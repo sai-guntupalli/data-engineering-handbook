@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Trino and Presto
+
+**Notebook:** [`notebooks/topics/trino.ipynb`](../notebooks/topics/trino.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Trino and how is it architected?](#What-is-Trino-and-how-is-it-architected)
 + [How do catalogs and connectors work in Trino?](#How-do-catalogs-and-connectors-work-in-Trino)
 + [How do you configure the lakehouse connectors?](#How-do-you-configure-the-lakehouse-connectors)

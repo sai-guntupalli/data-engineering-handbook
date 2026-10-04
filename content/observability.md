@@ -3,6 +3,8 @@
 
 # Data Observability
 
+**Notebook:** [`notebooks/topics/observability.ipynb`](../notebooks/topics/observability.ipynb) - runnable version of this topic with self-checking exercises.
+
 Data observability is the practice of monitoring, alerting, and diagnosing the health of data and data pipelines. It focuses on whether datasets arrive on time, with the expected volume and values, and whether downstream consumers can trust them. Application monitoring tells you the job succeeded; data observability tells you the data is right.
 
 The discipline is organized around five pillars: **freshness**, **volume**, **schema**, **quality**, and **lineage**. A useful framing for interviews is that observability is *metrics + logs + lineage + tests, joined by a common dataset and run identifier*.

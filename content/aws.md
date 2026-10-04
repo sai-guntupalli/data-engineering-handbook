@@ -3,6 +3,8 @@
 
 # AWS
 
+**Notebook:** [`notebooks/topics/aws.ipynb`](../notebooks/topics/aws.ipynb) - runnable version of this topic with self-checking exercises.
+
 AWS is the default cloud for a large share of data engineering work: S3 for durable storage, Glue and EMR for Spark, Athena and Redshift for SQL, Kinesis and MSK for streaming, and IAM, KMS, CloudTrail, and Lake Formation for security and governance. The questions below move from core services to concrete pipeline code and trade-offs.
 
 + [What is EC2?](#What-is-EC2)

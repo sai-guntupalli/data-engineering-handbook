@@ -3,6 +3,8 @@
 
 # Apache HBase
 
+**Notebook:** [`notebooks/topics/hbase.ipynb`](../notebooks/topics/hbase.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache HBase is a distributed, scalable, wide-column NoSQL store modeled on Google Bigtable and built on top of HDFS. It gives random, real-time reads and writes by row key over tables with billions of rows and millions of columns, while HDFS provides the durable storage underneath.
 
 ```text

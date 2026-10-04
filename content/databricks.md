@@ -3,6 +3,8 @@
 
 # Databricks
 
+**Notebook:** [`notebooks/topics/databricks.ipynb`](../notebooks/topics/databricks.ipynb) - runnable version of this topic with self-checking exercises.
+
 Databricks is a managed lakehouse platform built on Apache Spark, Delta Lake, and Unity Catalog; it is where most Spark-and-Delta interview questions become concrete.
 
 + [What is Databricks?](#What-is-Databricks)

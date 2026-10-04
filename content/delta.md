@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Delta Lake
+
+**Notebook:** [`notebooks/topics/delta.ipynb`](../notebooks/topics/delta.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Delta Lake?](#What-is-Delta-Lake)
 + [How do you create a Delta table in Databricks Unity Catalog with PySpark?](#How-do-you-create-a-Delta-table-in-Databricks-Unity-Catalog-with-PySpark)
 + [How do you write to a Delta table with PySpark?](#How-do-you-write-to-a-Delta-table-with-PySpark)

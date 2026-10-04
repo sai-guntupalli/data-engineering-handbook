@@ -3,6 +3,8 @@
 
 # Apache Impala
 
+**Notebook:** [`notebooks/topics/impala.ipynb`](../notebooks/topics/impala.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Impala is a massively parallel (MPP) SQL query engine for data stored in HDFS, object storage, and Apache Kudu. It runs as long-lived daemons (`impalad`) on every DataNode, avoids MapReduce entirely, and returns interactive results over Hive-compatible tables.
 
 The questions below mix classic Impala interview questions with modern operational detail: DDL, partitioning, statistics, join planning, Parquet vs Kudu, resource pools, EXPLAIN plans, and real production scenarios.

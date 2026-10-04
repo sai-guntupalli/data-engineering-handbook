@@ -3,6 +3,8 @@
 
 # Python for Data Engineering
 
+**Notebook:** [`notebooks/topics/python.ipynb`](../notebooks/topics/python.ipynb) - runnable version of this topic with self-checking exercises.
+
 Python is the default glue language of data engineering: orchestrators are written in it, engines expose a first-class API, and most pipeline code is Python even when the compute runs in Spark or a warehouse. The interview bar is not algorithmic trivia; it is whether you can write pipeline code that is memory-safe, idempotent, observable, testable, and reproducibly packaged.
 
 Three themes run through this page: **scale** (processing more than memory allows), **correctness** (idempotent writes, retries, dead-letter handling), and **operability** (structured logs, pinned environments, CI tests).

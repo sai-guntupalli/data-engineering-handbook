@@ -87,6 +87,7 @@ def _is_house_style_noise(line: str) -> bool:
         or line.startswith("### [Interview questions]")
         or line.startswith("+ [")
         or line.startswith("[Table of Contents]")
+        or line.startswith("**Notebook:**")  # the notebook does not need to link itself
     )
 
 

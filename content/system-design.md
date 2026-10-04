@@ -3,6 +3,8 @@
 
 # Data System Design
 
+**Notebook:** [`notebooks/topics/system-design.ipynb`](../notebooks/topics/system-design.ipynb) - runnable version of this topic with self-checking exercises.
+
 Data system design interviews ask you to reason from requirements (freshness, volume, correctness, budget) to an architecture, then defend the trade-offs.
 
 + [How would you design an end-to-end batch analytics pipeline?](#How-would-you-design-an-end-to-end-batch-analytics-pipeline)

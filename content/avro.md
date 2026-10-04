@@ -3,6 +3,8 @@
 
 # Apache Avro
 
+**Notebook:** [`notebooks/topics/avro.ipynb`](../notebooks/topics/avro.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Apache Avro?](#What-is-Apache-Avro)
 + [What Avro Offers?](#What-Avro-Offers)
 + [State some Key Points about Apache Avro?](#State-some-Key-Points-about-Apache-Avro)

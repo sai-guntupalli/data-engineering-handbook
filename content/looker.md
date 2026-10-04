@@ -3,6 +3,8 @@
 
 # Looker
 
+**Notebook:** [`notebooks/topics/looker.ipynb`](../notebooks/topics/looker.ipynb) - runnable version of this topic with self-checking exercises.
+
 Looker (Google Cloud Looker) is a BI and embedded-analytics platform whose semantic layer, LookML, is version-controlled code: it defines views, explores, dimensions, measures, and access rules, and Looker generates SQL against the warehouse at query time.
 
 + [What is Looker?](#What-is-Looker)

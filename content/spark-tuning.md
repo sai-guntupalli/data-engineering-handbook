@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Spark Tuning
+
+**Notebook:** [`notebooks/topics/spark-tuning.ipynb`](../notebooks/topics/spark-tuning.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [How should you approach Spark tuning in PySpark?](#How-should-you-approach-Spark-tuning-in-PySpark)
 + [How do you read a Spark physical plan?](#How-do-you-read-a-Spark-physical-plan)
 + [What is a shuffle and why is it expensive?](#What-is-a-shuffle-and-why-is-it-expensive)

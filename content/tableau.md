@@ -3,6 +3,8 @@
 
 # Tableau
 
+**Notebook:** [`notebooks/topics/tableau.ipynb`](../notebooks/topics/tableau.ipynb) - runnable version of this topic with self-checking exercises.
+
 Tableau is a visual analytics platform: you model a data source, build worksheets by dragging fields onto shelves, and publish governed dashboards with extracts, schedules, and permissions.
 
 + [How should data be modeled for Tableau dashboards?](#How-should-data-be-modeled-for-Tableau-dashboards)

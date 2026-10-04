@@ -3,6 +3,8 @@
 
 # Cost Optimization
 
+**Notebook:** [`notebooks/topics/cost-optimization.ipynb`](../notebooks/topics/cost-optimization.ipynb) - runnable version of this topic with self-checking exercises.
+
 Cost optimization in data engineering is delivering the same SLAs and business value with fewer resources. It is not a one-off project: storage grows, pipelines multiply, and query patterns drift, so cost work is a recurring discipline alongside performance and reliability.
 
 Platform spend falls into four buckets: **storage**, **compute** (warehouse credits, cluster hours, serverless bytes scanned), **data movement** (egress, cross-region replication), and **operational overhead** (backfills, retries, duplicate pipelines). Interviewers want to see you find the biggest bucket with data, not guess.

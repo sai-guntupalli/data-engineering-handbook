@@ -17,7 +17,7 @@ DOCS_PREP ?= $(shell if [ -x .venv/bin/python ]; then echo ".venv/bin/python scr
 
 PORT ?= 8000
 
-.PHONY: help setup setup-notebooks setup-spark check check-strict full full-check docs nav-check site serve notebooks notebooks-check topic-notebooks topic-notebooks-check validate ci stats clean
+.PHONY: help setup setup-notebooks setup-spark check check-strict full full-check docs nav-check site serve notebooks notebooks-check topic-notebooks topic-notebooks-check notebook-links notebook-links-check validate ci stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -69,7 +69,13 @@ topic-notebooks: ## Regenerate notebooks/topics/*.ipynb from content/*.md
 topic-notebooks-check: ## Verify notebooks/topics/*.ipynb are up to date (CI-safe)
 	$(PY) scripts/md_to_notebooks.py --check
 
-validate: check-strict full-check nav-check site ## Full pipeline: strict checks + index sync + nav coverage + strict build
+notebook-links: ## Add or refresh the notebook link at the top of every topic document
+	$(PY) scripts/link_notebooks.py
+
+notebook-links-check: ## Fail when a topic document is missing its notebook link (CI-safe)
+	$(PY) scripts/link_notebooks.py --check
+
+validate: check-strict full-check nav-check notebook-links-check site ## Full pipeline: strict checks + index sync + nav/link coverage + strict build
 	@echo "validate: all checks passed"
 
 ci: validate ## Alias for validate

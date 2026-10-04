@@ -3,6 +3,8 @@
 
 # Data Modeling
 
+**Notebook:** [`notebooks/topics/data-modeling.ipynb`](../notebooks/topics/data-modeling.ipynb) - runnable version of this topic with self-checking exercises.
+
 Data modeling is where most analytics problems are actually decided. A warehouse can be fast and still give the wrong revenue number if the grain, keys, or history handling are wrong. The questions below cover the Kimball vocabulary that interviewers expect (facts, dimensions, grain, SCD, bridges, conformed dimensions), the SQL and PySpark that implements it, and the trade-offs that decide between a star schema, a snowflake, and a Data Vault.
 
 + [What is data modeling in analytics and why does it matter?](#What-is-data-modeling-in-analytics-and-why-does-it-matter)

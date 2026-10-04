@@ -3,6 +3,8 @@
 
 # Change Data Capture (CDC)
 
+**Notebook:** [`notebooks/topics/cdc.ipynb`](../notebooks/topics/cdc.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is CDC (Change Data Capture)?](#What-is-CDC-Change-Data-Capture)
 + [When would you choose CDC over batch ingestion?](#When-would-you-choose-CDC-over-batch-ingestion)
 + [What are common CDC sources (WAL/binlog/triggers) and trade-offs?](#What-are-common-CDC-sources-WALbinlogtriggers-and-trade-offs)

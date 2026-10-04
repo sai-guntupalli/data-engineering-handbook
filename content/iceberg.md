@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Apache Iceberg
+
+**Notebook:** [`notebooks/topics/iceberg.ipynb`](../notebooks/topics/iceberg.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Apache Iceberg?](#What-is-Apache-Iceberg)
 + [How do you enable Iceberg in PySpark?](#How-do-you-enable-Iceberg-in-PySpark)
 + [How do you create and write to an Iceberg table in PySpark?](#How-do-you-create-and-write-to-an-Iceberg-table-in-PySpark)

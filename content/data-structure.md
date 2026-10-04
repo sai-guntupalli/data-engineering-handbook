@@ -3,6 +3,8 @@
 
 # Data Structures
 
+**Notebook:** [`notebooks/topics/data-structure.ipynb`](../notebooks/topics/data-structure.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is data structure?](#what-is-data-structure)
 + [What are the goals of data structure?](#what-are-the-goals-of-data-structure)
 + [What does abstract data type mean?](#what-does-abstract-data-type-mean)

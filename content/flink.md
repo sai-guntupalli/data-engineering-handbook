@@ -3,6 +3,8 @@
 
 # Apache Flink
 
+**Notebook:** [`notebooks/topics/flink.ipynb`](../notebooks/topics/flink.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Flink is a distributed, stateful stream processor with true event-time semantics, watermarks, keyed state, checkpointing, and exactly-once connectors. It runs the same operators over unbounded streams and bounded (batch) inputs. These questions cover the DataStream and Table APIs, event time, windowing, checkpointing and savepoints, state backends, exactly-once Kafka pipelines, and production trade-offs.
 
 + [When would you choose Flink over Spark Structured Streaming?](#When-would-you-choose-Flink-over-Spark-Structured-Streaming)

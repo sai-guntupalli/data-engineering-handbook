@@ -84,6 +84,9 @@ def main() -> int:
 
     for filename, topic, questions in topics:
         out.append(f"## {topic}")
+        stem = Path(filename).stem
+        if (ROOT / "notebooks" / "topics" / f"{stem}.ipynb").exists():
+            out.append(f"+ [Runnable notebook](../notebooks/topics/{stem}.ipynb)")
         base_counts: dict[str, int] = {}
         for q in questions:
             base = github_slugify(q)

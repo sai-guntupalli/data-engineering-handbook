@@ -3,6 +3,8 @@
 
 # Data Governance
 
+**Notebook:** [`notebooks/topics/data-governance.ipynb`](../notebooks/topics/data-governance.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is data governance and why does it matter?](#What-is-data-governance-and-why-does-it-matter)
 + [What is a data contract?](#What-is-a-data-contract)
 + [How do lineage and cataloging help governance?](#How-do-lineage-and-cataloging-help-governance)

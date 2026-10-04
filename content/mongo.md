@@ -3,6 +3,8 @@
 
 # MongoDB
 
+**Notebook:** [`notebooks/topics/mongo.ipynb`](../notebooks/topics/mongo.ipynb) - runnable version of this topic with self-checking exercises.
+
 MongoDB is a document database. Records are BSON documents stored in collections, the schema is flexible by default and enforceable with `$jsonSchema`, indexes make the common queries fast, replica sets provide automatic failover, and sharding provides horizontal scale.
 
 + [What is MongoDB?](#What-is-MongoDB)

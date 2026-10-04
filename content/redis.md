@@ -3,6 +3,8 @@
 
 # Redis for Data Engineers
 
+**Notebook:** [`notebooks/topics/redis.ipynb`](../notebooks/topics/redis.ipynb) - runnable version of this topic with self-checking exercises.
+
 Redis (REmote DIctionary Server) is a single-process, in-memory key/value server that stores values as typed data structures and speaks RESP. Commands execute one at a time on the main thread, so each command is atomic and a Lua script is atomic as a whole.
 
 The keyspace holds strings, hashes, lists, sets, sorted sets, streams, bitmaps, and HyperLogLogs; every key can carry a TTL; durability comes from RDB snapshots and the append-only file; replication and Redis Cluster provide availability and horizontal scale. A data engineer meets it as a cache in front of a warehouse, a dedupe and rate-limit layer at the API edge, a session store, a leaderboard, and a small event queue.

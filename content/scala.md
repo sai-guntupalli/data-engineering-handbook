@@ -3,6 +3,8 @@
 
 # Scala Basics for Data Engineers
 
+**Notebook:** [`notebooks/topics/scala.ipynb`](../notebooks/topics/scala.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Scala and why do data engineers learn it?](#What-is-Scala-and-why-do-data-engineers-learn-it)
 + [How do vals and vars differ, and why does immutability matter?](#How-do-vals-and-vars-differ-and-why-does-immutability-matter)
 + [What are Scala basic types and how does type inference work?](#What-are-Scala-basic-types-and-how-does-type-inference-work)

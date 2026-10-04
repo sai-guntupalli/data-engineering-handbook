@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # NiFi
+
+**Notebook:** [`notebooks/topics/nifi.ipynb`](../notebooks/topics/nifi.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache NiFi is a flow-based data distribution and processing system: you build a dataflow from processors that route, transform, enrich, and deliver FlowFiles, and NiFi handles the reliability, backpressure, provenance, and clustering around that flow.
 + [What is Apache NiFi?](#What-is-Apache-NiFi)
 + [What is NiFi FlowFile?](#What-is-NiFi-FlowFile)

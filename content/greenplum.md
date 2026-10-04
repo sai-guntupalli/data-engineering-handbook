@@ -3,6 +3,8 @@
 
 # Greenplum
 
+**Notebook:** [`notebooks/topics/greenplum.ipynb`](../notebooks/topics/greenplum.ipynb) - runnable version of this topic with self-checking exercises.
+
 Greenplum Database is an open-source, massively parallel (MPP) analytical database built on PostgreSQL. A coordinator plans queries, segments store and process data in parallel, and an interconnect moves rows between them. These interview questions cover architecture, distribution and skew, EXPLAIN ANALYZE, gpfdist and external tables, partitioning, AO/CO storage, VACUUM, and resource groups.
 
 + [What is Greenplum database?](#What-is-Greenplum-database)

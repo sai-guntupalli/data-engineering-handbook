@@ -3,6 +3,8 @@
 
 # Elasticsearch and OpenSearch
 
+**Notebook:** [`notebooks/topics/elasticsearch.ipynb`](../notebooks/topics/elasticsearch.ipynb) - runnable version of this topic with self-checking exercises.
+
 Elasticsearch is a distributed search and analytics engine built on Apache Lucene. Documents are JSON, they live in indices split into shards and replicas, and nearly every query is answered from an inverted index rather than a table scan. OpenSearch is the Apache-2.0 fork of Elasticsearch 7.10.2, so the mental model and most of the API carry over; the differences are licensing, plugins, and feature velocity.
 
 For a data engineer the framing is: Elasticsearch is a serving layer for text search, log analytics, faceted aggregation, and low-latency filtered lookups. It is not a system of record and not a warehouse, and treating it as either is the fastest route to an expensive, fragile cluster.

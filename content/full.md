@@ -56,6 +56,7 @@
 + [Trino and Presto](#trino-and-presto)
 
 ## Apache Airflow
++ [Runnable notebook](../notebooks/topics/airflow.ipynb)
 + [What is Airflow?](airflow.md#what-is-airflow)
 + [What problems does Airflow solve compared to cron?](airflow.md#what-problems-does-airflow-solve-compared-to-cron)
 + [When should you not use Airflow?](airflow.md#when-should-you-not-use-airflow)
@@ -87,6 +88,7 @@
 + [How does Airflow compare with cron, dbt, and Spark?](airflow.md#how-does-airflow-compare-with-cron-dbt-and-spark)
 
 ## Apache Avro
++ [Runnable notebook](../notebooks/topics/avro.ipynb)
 + [What is Apache Avro?](avro.md#what-is-apache-avro)
 + [What Avro Offers?](avro.md#what-avro-offers)
 + [State some Key Points about Apache Avro?](avro.md#state-some-key-points-about-apache-avro)
@@ -119,6 +121,7 @@
 + [Real world use cases for Apache Avro](avro.md#real-world-use-cases-for-apache-avro)
 
 ## AWS
++ [Runnable notebook](../notebooks/topics/aws.ipynb)
 + [What is EC2?](aws.md#what-is-ec2)
 + [What is SnowBall?](aws.md#what-is-snowball)
 + [What is CloudWatch?](aws.md#what-is-cloudwatch)
@@ -197,6 +200,7 @@
 + [Real world use cases for AWS](aws.md#real-world-use-cases-for-aws)
 
 ## Azure
++ [Runnable notebook](../notebooks/topics/azure.ipynb)
 + [What are the three Main Components of Windows Azure Platform?](azure.md#what-are-the-three-main-components-of-windows-azure-platform)
 + [How would you design a data lake on Azure?](azure.md#how-would-you-design-a-data-lake-on-azure)
 + [When would you use Azure Data Factory, Synapse, Databricks, or Functions?](azure.md#when-would-you-use-azure-data-factory-synapse-databricks-or-functions)
@@ -258,6 +262,7 @@
 + [Real world use cases for Azure](azure.md#real-world-use-cases-for-azure)
 
 ## BigQuery
++ [Runnable notebook](../notebooks/topics/bigquery.ipynb)
 + [What is BigQuery, and how does it fit into the data engineering ecosystem?](bigquery.md#what-is-bigquery-and-how-does-it-fit-into-the-data-engineering-ecosystem)
 + [How do partitioning and clustering improve BigQuery performance?](bigquery.md#how-do-partitioning-and-clustering-improve-bigquery-performance)
 + [How do you control cost in BigQuery?](bigquery.md#how-do-you-control-cost-in-bigquery)
@@ -343,6 +348,7 @@
 + [Real world use cases for BigQuery](bigquery.md#real-world-use-cases-for-bigquery)
 
 ## Bigtable
++ [Runnable notebook](../notebooks/topics/bigtable.ipynb)
 + [What is Bigtable?](bigtable.md#what-is-bigtable)
 + [How do you design a good Bigtable row key?](bigtable.md#how-do-you-design-a-good-bigtable-row-key)
 + [When should you use Bigtable instead of BigQuery?](bigtable.md#when-should-you-use-bigtable-instead-of-bigquery)
@@ -448,6 +454,7 @@
 + [Real world use cases for Bigtable](bigtable.md#real-world-use-cases-for-bigtable)
 
 ## Apache Cassandra
++ [Runnable notebook](../notebooks/topics/cassandra.ipynb)
 + [Explain what is Cassandra?](cassandra.md#explain-what-is-cassandra)
 + [How do you model data in Cassandra?](cassandra.md#how-do-you-model-data-in-cassandra)
 + [What is Cassandra Data Model?](cassandra.md#what-is-cassandra-data-model)
@@ -501,6 +508,7 @@
 + [Real world use cases for Cassandra](cassandra.md#real-world-use-cases-for-cassandra)
 
 ## Change Data Capture (CDC)
++ [Runnable notebook](../notebooks/topics/cdc.ipynb)
 + [What is CDC (Change Data Capture)?](cdc.md#what-is-cdc-change-data-capture)
 + [When would you choose CDC over batch ingestion?](cdc.md#when-would-you-choose-cdc-over-batch-ingestion)
 + [What are common CDC sources (WAL/binlog/triggers) and trade-offs?](cdc.md#what-are-common-cdc-sources-walbinlogtriggers-and-trade-offs)
@@ -529,6 +537,7 @@
 + [Real world use cases for Change Data Capture](cdc.md#real-world-use-cases-for-change-data-capture)
 
 ## ClickHouse
++ [Runnable notebook](../notebooks/topics/clickhouse.ipynb)
 + [What is ClickHouse and how is it architected?](clickhouse.md#what-is-clickhouse-and-how-is-it-architected)
 + [How does MergeTree store parts partitions and ORDER BY?](clickhouse.md#how-does-mergetree-store-parts-partitions-and-order-by)
 + [How do the sparse primary index and skipping indexes work?](clickhouse.md#how-do-the-sparse-primary-index-and-skipping-indexes-work)
@@ -551,6 +560,7 @@
 + [Real world use cases for ClickHouse](clickhouse.md#real-world-use-cases-for-clickhouse)
 
 ## Cost Optimization
++ [Runnable notebook](../notebooks/topics/cost-optimization.ipynb)
 + [Why is cost optimization a core data engineering skill?](cost-optimization.md#why-is-cost-optimization-a-core-data-engineering-skill)
 + [How do you reduce warehouse and lake query costs?](cost-optimization.md#how-do-you-reduce-warehouse-and-lake-query-costs)
 + [How do you explain cost trade-offs in a data architecture interview?](cost-optimization.md#how-do-you-explain-cost-trade-offs-in-a-data-architecture-interview)
@@ -568,6 +578,7 @@
 + [Real world use cases for Cost Optimization](cost-optimization.md#real-world-use-cases-for-cost-optimization)
 
 ## Data Governance
++ [Runnable notebook](../notebooks/topics/data-governance.ipynb)
 + [What is data governance and why does it matter?](data-governance.md#what-is-data-governance-and-why-does-it-matter)
 + [What is a data contract?](data-governance.md#what-is-a-data-contract)
 + [How do lineage and cataloging help governance?](data-governance.md#how-do-lineage-and-cataloging-help-governance)
@@ -591,6 +602,7 @@
 + [Real world use cases for Data Governance](data-governance.md#real-world-use-cases-for-data-governance)
 
 ## Data Modeling
++ [Runnable notebook](../notebooks/topics/data-modeling.ipynb)
 + [What is data modeling in analytics and why does it matter?](data-modeling.md#what-is-data-modeling-in-analytics-and-why-does-it-matter)
 + [What is grain and why is it the first question to answer?](data-modeling.md#what-is-grain-and-why-is-it-the-first-question-to-answer)
 + [What is the difference between fact and dimension tables?](data-modeling.md#what-is-the-difference-between-fact-and-dimension-tables)
@@ -618,6 +630,7 @@
 + [Real world use cases for data modeling](data-modeling.md#real-world-use-cases-for-data-modeling)
 
 ## Data Quality
++ [Runnable notebook](../notebooks/topics/data-quality.ipynb)
 + [What does data quality mean in data engineering?](data-quality.md#what-does-data-quality-mean-in-data-engineering)
 + [What are common data quality dimensions?](data-quality.md#what-are-common-data-quality-dimensions)
 + [How do you implement data quality checks in pipelines?](data-quality.md#how-do-you-implement-data-quality-checks-in-pipelines)
@@ -638,6 +651,7 @@
 + [Real world use cases for Data Quality](data-quality.md#real-world-use-cases-for-data-quality)
 
 ## Data Structures
++ [Runnable notebook](../notebooks/topics/data-structure.ipynb)
 + [What is data structure?](data-structure.md#what-is-data-structure)
 + [What are the goals of data structure?](data-structure.md#what-are-the-goals-of-data-structure)
 + [What does abstract data type mean?](data-structure.md#what-does-abstract-data-type-mean)
@@ -868,6 +882,7 @@
 + [Real world use cases for data structures in data engineering](data-structure.md#real-world-use-cases-for-data-structures-in-data-engineering)
 
 ## Databricks
++ [Runnable notebook](../notebooks/topics/databricks.ipynb)
 + [What is Databricks?](databricks.md#what-is-databricks)
 + [How does the Databricks architecture work?](databricks.md#how-does-the-databricks-architecture-work)
 + [What cluster types exist and when do you use each?](databricks.md#what-cluster-types-exist-and-when-do-you-use-each)
@@ -894,6 +909,7 @@
 + [Real world use cases for Databricks](databricks.md#real-world-use-cases-for-databricks)
 
 ## dbt_project.yml - materialization defaults per folder
++ [Runnable notebook](../notebooks/topics/dbt.ipynb)
 + [What is dbt?](dbt.md#what-is-dbt)
 + [How is dbt different from Airflow?](dbt.md#how-is-dbt-different-from-airflow)
 + [What is a dbt model?](dbt.md#what-is-a-dbt-model)
@@ -919,6 +935,7 @@
 + [Real world use cases for dbt](dbt.md#real-world-use-cases-for-dbt)
 
 ## Delta Lake
++ [Runnable notebook](../notebooks/topics/delta.ipynb)
 + [What is Delta Lake?](delta.md#what-is-delta-lake)
 + [How do you create a Delta table in Databricks Unity Catalog with PySpark?](delta.md#how-do-you-create-a-delta-table-in-databricks-unity-catalog-with-pyspark)
 + [How do you write to a Delta table with PySpark?](delta.md#how-do-you-write-to-a-delta-table-with-pyspark)
@@ -932,6 +949,7 @@
 + [Real world use cases for Delta Lake](delta.md#real-world-use-cases-for-delta-lake)
 
 ## Docker for Data Engineers
++ [Runnable notebook](../notebooks/topics/docker.ipynb)
 + [What is Docker and why does it matter for data engineers?](docker.md#what-is-docker-and-why-does-it-matter-for-data-engineers)
 + [What are images containers and layers?](docker.md#what-are-images-containers-and-layers)
 + [How does the Docker build cache work?](docker.md#how-does-the-docker-build-cache-work)
@@ -961,6 +979,7 @@
 + [Real world use cases for Docker in data engineering](docker.md#real-world-use-cases-for-docker-in-data-engineering)
 
 ## Data Warehousing Architecture
++ [Runnable notebook](../notebooks/topics/dwha.ipynb)
 + [What are the main layers in a data warehouse architecture?](dwha.md#what-are-the-main-layers-in-a-data-warehouse-architecture)
 + [How do OLTP and OLAP systems differ?](dwha.md#how-do-oltp-and-olap-systems-differ)
 + [What is the Main Difference between View and Materialized View?](dwha.md#what-is-the-main-difference-between-view-and-materialized-view)
@@ -1256,6 +1275,7 @@
 + [Real world use cases for data warehousing architecture](dwha.md#real-world-use-cases-for-data-warehousing-architecture)
 
 ## DynamoDB
++ [Runnable notebook](../notebooks/topics/dynamodb.ipynb)
 + [How do you model data in DynamoDB?](dynamodb.md#how-do-you-model-data-in-dynamodb)
 + [What are partition keys, sort keys, GSIs, and LSIs?](dynamodb.md#what-are-partition-keys-sort-keys-gsis-and-lsis)
 + [How do you avoid hot partitions in DynamoDB?](dynamodb.md#how-do-you-avoid-hot-partitions-in-dynamodb)
@@ -1272,6 +1292,7 @@
 + [Real world use cases for DynamoDB](dynamodb.md#real-world-use-cases-for-dynamodb)
 
 ## Elasticsearch and OpenSearch
++ [Runnable notebook](../notebooks/topics/elasticsearch.ipynb)
 + [What is Elasticsearch?](elasticsearch.md#what-is-elasticsearch)
 + [How are indices shards and replicas organized?](elasticsearch.md#how-are-indices-shards-and-replicas-organized)
 + [How do mappings work and what is the difference between keyword and text?](elasticsearch.md#how-do-mappings-work-and-what-is-the-difference-between-keyword-and-text)
@@ -1299,6 +1320,7 @@
 + [Real world use cases for Elasticsearch](elasticsearch.md#real-world-use-cases-for-elasticsearch)
 
 ## Apache Flink
++ [Runnable notebook](../notebooks/topics/flink.ipynb)
 + [When would you choose Flink over Spark Structured Streaming?](flink.md#when-would-you-choose-flink-over-spark-structured-streaming)
 + [What are event time, processing time, and watermarks in Flink?](flink.md#what-are-event-time-processing-time-and-watermarks-in-flink)
 + [See you using Flink, briefly introduce Flink?](flink.md#see-you-using-flink-briefly-introduce-flink)
@@ -1386,6 +1408,7 @@
 + [Real world use cases for Apache Flink](flink.md#real-world-use-cases-for-apache-flink)
 
 ## Apache Flume
++ [Runnable notebook](../notebooks/topics/flume.ipynb)
 + [What is Flume?](flume.md#what-is-flume)
 + [Where does Apache Flume fit in modern data platforms?](flume.md#where-does-apache-flume-fit-in-modern-data-platforms)
 + [How do Flume memory channels and file channels differ?](flume.md#how-do-flume-memory-channels-and-file-channels-differ)
@@ -1424,6 +1447,7 @@
 + [Real world use cases for Flume](flume.md#real-world-use-cases-for-flume)
 
 ## Google Cloud Platform
++ [Runnable notebook](../notebooks/topics/gcp.ipynb)
 + [What is Google Cloud Platform (GCP)?](gcp.md#what-is-google-cloud-platform-gcp)
 + [How would you design a GCP data platform?](gcp.md#how-would-you-design-a-gcp-data-platform)
 + [When should you use Dataflow, Dataproc, BigQuery, or Cloud Composer?](gcp.md#when-should-you-use-dataflow-dataproc-bigquery-or-cloud-composer)
@@ -1484,6 +1508,7 @@
 + [Real world use cases for GCP](gcp.md#real-world-use-cases-for-gcp)
 
 ## Greenplum
++ [Runnable notebook](../notebooks/topics/greenplum.ipynb)
 + [What is Greenplum database?](greenplum.md#what-is-greenplum-database)
 + [How does Greenplum distribute data across segments?](greenplum.md#how-does-greenplum-distribute-data-across-segments)
 + [How do you optimize Greenplum analytical queries?](greenplum.md#how-do-you-optimize-greenplum-analytical-queries)
@@ -1590,6 +1615,7 @@
 + [Real world use cases for Greenplum](greenplum.md#real-world-use-cases-for-greenplum)
 
 ## HADOOP
++ [Runnable notebook](../notebooks/topics/hadoop.ipynb)
 + [What are the main components of a Hadoop Application?](hadoop.md#what-are-the-main-components-of-a-hadoop-application)
 + [What is the role of HDFS in a big data platform?](hadoop.md#what-is-the-role-of-hdfs-in-a-big-data-platform)
 + [Why are small files a problem in Hadoop?](hadoop.md#why-are-small-files-a-problem-in-hadoop)
@@ -1801,6 +1827,7 @@
 + [Real world use cases for Hadoop](hadoop.md#real-world-use-cases-for-hadoop)
 
 ## Apache HBase
++ [Runnable notebook](../notebooks/topics/hbase.ipynb)
 + [How do you design an HBase row key?](hbase.md#how-do-you-design-an-hbase-row-key)
 + [When should you use HBase?](hbase.md#when-should-you-use-hbase)
 + [How do you create and query tables in the HBase shell?](hbase.md#how-do-you-create-and-query-tables-in-the-hbase-shell)
@@ -1907,6 +1934,7 @@
 + [Real world use cases for HBase](hbase.md#real-world-use-cases-for-hbase)
 
 ## Apache Hive
++ [Runnable notebook](../notebooks/topics/hive.ipynb)
 + [How do Hive partitioning and bucketing differ?](hive.md#how-do-hive-partitioning-and-bucketing-differ)
 + [Why is Hive often used with ORC or Parquet?](hive.md#why-is-hive-often-used-with-orc-or-parquet)
 + [How will you improve the performance of a program in Hive?](hive.md#how-will-you-improve-the-performance-of-a-program-in-hive)
@@ -2007,6 +2035,7 @@
 + [Real world use cases for Hive](hive.md#real-world-use-cases-for-hive)
 
 ## Apache Hudi
++ [Runnable notebook](../notebooks/topics/hudi.ipynb)
 + [What is Apache Hudi?](hudi.md#what-is-apache-hudi)
 + [What problems does Hudi solve in a data lake?](hudi.md#what-problems-does-hudi-solve-in-a-data-lake)
 + [What are Hudi's table types and physical file layout?](hudi.md#what-are-hudis-table-types-and-physical-file-layout)
@@ -2029,6 +2058,7 @@
 + [Real world use cases for Apache Hudi](hudi.md#real-world-use-cases-for-apache-hudi)
 
 ## Apache Iceberg
++ [Runnable notebook](../notebooks/topics/iceberg.ipynb)
 + [What is Apache Iceberg?](iceberg.md#what-is-apache-iceberg)
 + [How do you enable Iceberg in PySpark?](iceberg.md#how-do-you-enable-iceberg-in-pyspark)
 + [How do you create and write to an Iceberg table in PySpark?](iceberg.md#how-do-you-create-and-write-to-an-iceberg-table-in-pyspark)
@@ -2053,6 +2083,7 @@
 + [Real world use cases for Apache Iceberg](iceberg.md#real-world-use-cases-for-apache-iceberg)
 
 ## Apache Impala
++ [Runnable notebook](../notebooks/topics/impala.ipynb)
 + [How do I try Impala out?](impala.md#how-do-i-try-impala-out)
 + [Does Cloudera offer a Vm for demonstrating Impala?](impala.md#does-cloudera-offer-a-vm-for-demonstrating-impala)
 + [How much Memory is required?](impala.md#how-much-memory-is-required)
@@ -2111,6 +2142,7 @@
 + [Real world use cases for Apache Impala](impala.md#real-world-use-cases-for-apache-impala)
 
 ## Apache Kafka
++ [Runnable notebook](../notebooks/topics/kafka.ipynb)
 + [What is Apache Kafka?](kafka.md#what-is-apache-kafka)
 + [What is the traditional method of transferring messages?](kafka.md#what-is-the-traditional-method-of-transferring-messages)
 + [What are the benefits of Apache Kafka over the traditional technique?](kafka.md#what-are-the-benefits-of-apache-kafka-over-the-traditional-technique)
@@ -2144,6 +2176,7 @@
 + [Real world use cases for Kafka](kafka.md#real-world-use-cases-for-kafka)
 
 ## Kubernetes
++ [Runnable notebook](../notebooks/topics/kubernetes.ipynb)
 + [Why is Kubernetes useful for data engineering workloads?](kubernetes.md#why-is-kubernetes-useful-for-data-engineering-workloads)
 + [What is the difference between a Kubernetes Job, CronJob, Deployment, and StatefulSet?](kubernetes.md#what-is-the-difference-between-a-kubernetes-job-cronjob-deployment-and-statefulset)
 + [How to do maintenance activity on the K8 node?](kubernetes.md#how-to-do-maintenance-activity-on-the-k8-node)
@@ -2181,6 +2214,7 @@
 + [Real world use cases for Kubernetes](kubernetes.md#real-world-use-cases-for-kubernetes)
 
 ## LLM and AI Terminology
++ [Runnable notebook](../notebooks/topics/llm.ipynb)
 + [What is a large language model?](llm.md#what-is-a-large-language-model)
 + [What is the difference between AI, ML, deep learning, and generative AI?](llm.md#what-is-the-difference-between-ai-ml-deep-learning-and-generative-ai)
 + [What are the key components of a transformer?](llm.md#what-are-the-key-components-of-a-transformer)
@@ -2213,6 +2247,7 @@
 + [Real world use cases for LLMs in data engineering](llm.md#real-world-use-cases-for-llms-in-data-engineering)
 
 ## Looker
++ [Runnable notebook](../notebooks/topics/looker.ipynb)
 + [What is Looker?](looker.md#what-is-looker)
 + [What is LookML and why does it matter?](looker.md#what-is-lookml-and-why-does-it-matter)
 + [How do you avoid fanout problems in Looker?](looker.md#how-do-you-avoid-fanout-problems-in-looker)
@@ -2300,6 +2335,7 @@
 + [Real world use cases for Looker](looker.md#real-world-use-cases-for-looker)
 
 ## MongoDB
++ [Runnable notebook](../notebooks/topics/mongo.ipynb)
 + [What is MongoDB?](mongo.md#what-is-mongodb)
 + [How do you model documents in MongoDB?](mongo.md#how-do-you-model-documents-in-mongodb)
 + [How do indexes affect MongoDB query performance?](mongo.md#how-do-indexes-affect-mongodb-query-performance)
@@ -2336,6 +2372,7 @@
 + [Real world use cases for MongoDB](mongo.md#real-world-use-cases-for-mongodb)
 
 ## NiFi
++ [Runnable notebook](../notebooks/topics/nifi.ipynb)
 + [What is Apache NiFi?](nifi.md#what-is-apache-nifi)
 + [What is NiFi FlowFile?](nifi.md#what-is-nifi-flowfile)
 + [What is Relationship in NiFi DataFlow?](nifi.md#what-is-relationship-in-nifi-dataflow)
@@ -2361,6 +2398,7 @@
 + [Real world use cases for NiFi](nifi.md#real-world-use-cases-for-nifi)
 
 ## Data Observability
++ [Runnable notebook](../notebooks/topics/observability.ipynb)
 + [What is data observability?](observability.md#what-is-data-observability)
 + [What signals should you monitor for a data pipeline?](observability.md#what-signals-should-you-monitor-for-a-data-pipeline)
 + [How do you reduce noisy data alerts?](observability.md#how-do-you-reduce-noisy-data-alerts)
@@ -2378,6 +2416,7 @@
 + [Real world use cases for Data Observability](observability.md#real-world-use-cases-for-data-observability)
 
 ## Parquet
++ [Runnable notebook](../notebooks/topics/parquet.ipynb)
 + [What is Apache Parquet?](parquet.md#what-is-apache-parquet)
 + [Why is Parquet better than CSV or JSON for analytics?](parquet.md#why-is-parquet-better-than-csv-or-json-for-analytics)
 + [How do you write and read Parquet with PySpark?](parquet.md#how-do-you-write-and-read-parquet-with-pyspark)
@@ -2393,6 +2432,7 @@
 + [Real world use cases for Parquet](parquet.md#real-world-use-cases-for-parquet)
 
 ## Python Basics for Data Engineers
++ [Runnable notebook](../notebooks/topics/python-basics.ipynb)
 + [How do values, variables, and dynamic typing work in Python?](python-basics.md#how-do-values-variables-and-dynamic-typing-work-in-python)
 + [How do numbers and strings work in Python?](python-basics.md#how-do-numbers-and-strings-work-in-python)
 + [What are the core collections: lists, tuples, sets, and dicts?](python-basics.md#what-are-the-core-collections-lists-tuples-sets-and-dicts)
@@ -2419,6 +2459,7 @@
 + [Real world use cases for Python basics in data engineering](python-basics.md#real-world-use-cases-for-python-basics-in-data-engineering)
 
 ## Python Coding Problems for Data Engineers
++ [Runnable notebook](../notebooks/topics/python-coding.ipynb)
 + [Problem 1 deduplicate records while preserving order](python-coding.md#problem-1-deduplicate-records-while-preserving-order)
 + [Problem 2 count frequencies and group by without pandas](python-coding.md#problem-2-count-frequencies-and-group-by-without-pandas)
 + [Problem 3 sort records with multi field key functions](python-coding.md#problem-3-sort-records-with-multi-field-key-functions)
@@ -2443,6 +2484,7 @@
 + [Real world use cases for Python coding in data engineering](python-coding.md#real-world-use-cases-for-python-coding-in-data-engineering)
 
 ## Python for Data Engineering
++ [Runnable notebook](../notebooks/topics/python.ipynb)
 + [Why is Python widely used in data engineering?](python.md#why-is-python-widely-used-in-data-engineering)
 + [How do iterators and generators help with large data processing?](python.md#how-do-iterators-and-generators-help-with-large-data-processing)
 + [What is the difference between threads, multiprocessing, and async IO in Python?](python.md#what-is-the-difference-between-threads-multiprocessing-and-async-io-in-python)
@@ -2462,6 +2504,7 @@
 + [Real world use cases for Python for Data Engineering](python.md#real-world-use-cases-for-python-for-data-engineering)
 
 ## Redis for Data Engineers
++ [Runnable notebook](../notebooks/topics/redis.ipynb)
 + [What is Redis?](redis.md#what-is-redis)
 + [What core data structures does Redis provide?](redis.md#what-core-data-structures-does-redis-provide)
 + [How do you use bitmaps and HyperLogLog in Redis?](redis.md#how-do-you-use-bitmaps-and-hyperloglog-in-redis)
@@ -2489,6 +2532,7 @@
 + [Real world use cases for Redis](redis.md#real-world-use-cases-for-redis)
 
 ## Redshift
++ [Runnable notebook](../notebooks/topics/redshift.ipynb)
 + [What is Amazon Redshift?](redshift.md#what-is-amazon-redshift)
 + [How do distribution styles and sort keys affect Redshift performance?](redshift.md#how-do-distribution-styles-and-sort-keys-affect-redshift-performance)
 + [How do you load data efficiently into Redshift?](redshift.md#how-do-you-load-data-efficiently-into-redshift)
@@ -2594,6 +2638,7 @@
 + [Real world use cases for Redshift](redshift.md#real-world-use-cases-for-redshift)
 
 ## Scala Basics for Data Engineers
++ [Runnable notebook](../notebooks/topics/scala.ipynb)
 + [What is Scala and why do data engineers learn it?](scala.md#what-is-scala-and-why-do-data-engineers-learn-it)
 + [How do vals and vars differ, and why does immutability matter?](scala.md#how-do-vals-and-vars-differ-and-why-does-immutability-matter)
 + [What are Scala basic types and how does type inference work?](scala.md#what-are-scala-basic-types-and-how-does-type-inference-work)
@@ -2620,6 +2665,7 @@
 + [Real world use cases for Scala in data engineering](scala.md#real-world-use-cases-for-scala-in-data-engineering)
 
 ## Snowflake
++ [Runnable notebook](../notebooks/topics/snowflake.ipynb)
 + [What is Snowflake?](snowflake.md#what-is-snowflake)
 + [How does Snowflake separate storage and compute?](snowflake.md#how-does-snowflake-separate-storage-and-compute)
 + [What are virtual warehouses and how do they work?](snowflake.md#what-are-virtual-warehouses-and-how-do-they-work)
@@ -2657,6 +2703,7 @@
 + [Real world use cases for Snowflake](snowflake.md#real-world-use-cases-for-snowflake)
 
 ## Spark Tuning
++ [Runnable notebook](../notebooks/topics/spark-tuning.ipynb)
 + [How should you approach Spark tuning in PySpark?](spark-tuning.md#how-should-you-approach-spark-tuning-in-pyspark)
 + [How do you read a Spark physical plan?](spark-tuning.md#how-do-you-read-a-spark-physical-plan)
 + [What is a shuffle and why is it expensive?](spark-tuning.md#what-is-a-shuffle-and-why-is-it-expensive)
@@ -2678,6 +2725,7 @@
 + [Real world use cases for Spark tuning](spark-tuning.md#real-world-use-cases-for-spark-tuning)
 
 ## PySpark
++ [Runnable notebook](../notebooks/topics/spark.ipynb)
 + [What is PySpark and where does it fit in a data platform?](spark.md#what-is-pyspark-and-where-does-it-fit-in-a-data-platform)
 + [How do you create a SparkSession in PySpark?](spark.md#how-do-you-create-a-sparksession-in-pyspark)
 + [How do you read data with explicit schemas in PySpark?](spark.md#how-do-you-read-data-with-explicit-schemas-in-pyspark)
@@ -2702,6 +2750,7 @@
 + [Real world use cases for PySpark](spark.md#real-world-use-cases-for-pyspark)
 
 ## SQL
++ [Runnable notebook](../notebooks/topics/sql.ipynb)
 + [Write sql query to get the second highest salary among all employees?](sql.md#write-sql-query-to-get-the-second-highest-salary-among-all-employees)
 + [There are multiple ways to get the second highest salary among all employees.](sql.md#there-are-multiple-ways-to-get-the-second-highest-salary-among-all-employees)
 + [How can we retrieve alternate records from a table in oracle?](sql.md#how-can-we-retrieve-alternate-records-from-a-table-in-oracle)
@@ -3177,6 +3226,7 @@
 + [Real world use cases for SQL](sql.md#real-world-use-cases-for-sql)
 
 ## Statistics and Experimentation for Data Engineers
++ [Runnable notebook](../notebooks/topics/statistics.ipynb)
 + [Why do averages lie and how do percentiles fix that](statistics.md#why-do-averages-lie-and-how-do-percentiles-fix-that)
 + [How do you summarize a distribution with descriptive statistics](statistics.md#how-do-you-summarize-a-distribution-with-descriptive-statistics)
 + [How do distributions and skew affect engineering decisions](statistics.md#how-do-distributions-and-skew-affect-engineering-decisions)
@@ -3203,6 +3253,7 @@
 + [Real world use cases for statistics in data engineering](statistics.md#real-world-use-cases-for-statistics-in-data-engineering)
 
 ## Superset
++ [Runnable notebook](../notebooks/topics/superset.ipynb)
 + [What is Apache Superset?](superset.md#what-is-apache-superset)
 + [How do you model datasets for Superset dashboards?](superset.md#how-do-you-model-datasets-for-superset-dashboards)
 + [How do you improve Superset dashboard performance?](superset.md#how-do-you-improve-superset-dashboard-performance)
@@ -3284,6 +3335,7 @@
 + [Real world use cases for Superset](superset.md#real-world-use-cases-for-superset)
 
 ## Data System Design
++ [Runnable notebook](../notebooks/topics/system-design.ipynb)
 + [How would you design an end-to-end batch analytics pipeline?](system-design.md#how-would-you-design-an-end-to-end-batch-analytics-pipeline)
 + [How do you design a batch ingestion system?](system-design.md#how-do-you-design-a-batch-ingestion-system)
 + [How do you design a streaming ingestion system?](system-design.md#how-do-you-design-a-streaming-ingestion-system)
@@ -3301,6 +3353,7 @@
 + [Real world use cases for Data System Design](system-design.md#real-world-use-cases-for-data-system-design)
 
 ## Tableau
++ [Runnable notebook](../notebooks/topics/tableau.ipynb)
 + [How should data be modeled for Tableau dashboards?](tableau.md#how-should-data-be-modeled-for-tableau-dashboards)
 + [What is the difference between live connections and extracts in Tableau?](tableau.md#what-is-the-difference-between-live-connections-and-extracts-in-tableau)
 + [What is data visualization in Tableau?](tableau.md#what-is-data-visualization-in-tableau)
@@ -3343,6 +3396,7 @@
 + [Real world use cases for Tableau](tableau.md#real-world-use-cases-for-tableau)
 
 ## Trino and Presto
++ [Runnable notebook](../notebooks/topics/trino.ipynb)
 + [What is Trino and how is it architected?](trino.md#what-is-trino-and-how-is-it-architected)
 + [How do catalogs and connectors work in Trino?](trino.md#how-do-catalogs-and-connectors-work-in-trino)
 + [How do you configure the lakehouse connectors?](trino.md#how-do-you-configure-the-lakehouse-connectors)

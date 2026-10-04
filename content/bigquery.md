@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # BigQuery
+
+**Notebook:** [`notebooks/topics/bigquery.ipynb`](../notebooks/topics/bigquery.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is BigQuery, and how does it fit into the data engineering ecosystem?](#What-is-BigQuery-and-how-does-it-fit-into-the-data-engineering-ecosystem)
 + [How do partitioning and clustering improve BigQuery performance?](#How-do-partitioning-and-clustering-improve-BigQuery-performance)
 + [How do you control cost in BigQuery?](#How-do-you-control-cost-in-BigQuery)

@@ -3,6 +3,8 @@
 
 # Apache Airflow
 
+**Notebook:** [`notebooks/topics/airflow.ipynb`](../notebooks/topics/airflow.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Airflow is a batch workflow orchestrator: you describe pipelines as Python DAGs and Airflow schedules, retries, backfills, and monitors them.
 
 Examples below are shown for both versions: **Airflow 3** first, then the **Airflow 2** equivalent wherever the code differs. Airflow 2's final line (2.11.x) reached end of life on April 22, 2026, so Airflow 3 is the target for new work, but Airflow 2 code is still common in production and interviews.

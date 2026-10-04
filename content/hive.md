@@ -3,6 +3,8 @@
 
 # Apache Hive
 
+**Notebook:** [`notebooks/topics/hive.ipynb`](../notebooks/topics/hive.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [How do Hive partitioning and bucketing differ?](#How-do-Hive-partitioning-and-bucketing-differ)
 + [Why is Hive often used with ORC or Parquet?](#Why-is-Hive-often-used-with-ORC-or-Parquet)
 + [How will you improve the performance of a program in Hive?](#How-will-you-improve-the-performance-of-a-program-in-Hive)

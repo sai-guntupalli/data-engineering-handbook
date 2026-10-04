@@ -3,6 +3,8 @@
 
 # HADOOP
 
+**Notebook:** [`notebooks/topics/hadoop.ipynb`](../notebooks/topics/hadoop.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What are the main components of a Hadoop Application?](#What-are-the-main-components-of-a-Hadoop-Application)
 + [What is the role of HDFS in a big data platform?](#What-is-the-role-of-HDFS-in-a-big-data-platform)
 + [Why are small files a problem in Hadoop?](#Why-are-small-files-a-problem-in-Hadoop)

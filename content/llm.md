@@ -3,6 +3,8 @@
 
 # LLM and AI Terminology
 
+**Notebook:** [`notebooks/topics/llm.ipynb`](../notebooks/topics/llm.ipynb) - runnable version of this topic with self-checking exercises.
+
 Large language models are now part of the data platform, and data engineers are expected to speak the vocabulary: tokens, embeddings, RAG, fine-tuning, evals, and inference cost.
 
 + [What is a large language model?](#What-is-a-large-language-model)

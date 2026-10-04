@@ -3,6 +3,8 @@
 
 # Python Basics for Data Engineers
 
+**Notebook:** [`notebooks/topics/python-basics.ipynb`](../notebooks/topics/python-basics.ipynb) - runnable version of this topic with self-checking exercises.
+
 The language fundamentals data engineering interviews assume: typing, collections, functions and scope, classes and methods, protocols, exceptions, generators, decorators, typing, time, file I/O, concurrency, and packaging. This is the Python language itself, not pipeline architecture or coding puzzles.
 
 + [How do values, variables, and dynamic typing work in Python?](#How-do-values-variables-and-dynamic-typing-work-in-Python)

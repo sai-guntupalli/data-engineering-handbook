@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # ClickHouse
+
+**Notebook:** [`notebooks/topics/clickhouse.ipynb`](../notebooks/topics/clickhouse.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is ClickHouse and how is it architected?](#What-is-ClickHouse-and-how-is-it-architected)
 + [How does MergeTree store parts partitions and ORDER BY?](#How-does-MergeTree-store-parts-partitions-and-ORDER-BY)
 + [How do the sparse primary index and skipping indexes work?](#How-do-the-sparse-primary-index-and-skipping-indexes-work)

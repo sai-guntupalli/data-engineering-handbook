@@ -3,6 +3,8 @@
 
 # Data Quality
 
+**Notebook:** [`notebooks/topics/data-quality.ipynb`](../notebooks/topics/data-quality.ipynb) - runnable version of this topic with self-checking exercises.
+
 Data quality means data is fit for its intended use. Good pipelines assert what "correct" means, fail or quarantine when it is violated, and leave evidence that lets an engineer explain why a number changed.
 
 The toolkit is layered: **contracts** define what producers promise, **tests** assert those promises on every build, **reconciliation** proves the target matches an independent source of truth, **monitoring** catches drift that static rules cannot express, and **quarantine** isolates bad records instead of corrupting the curated layer.

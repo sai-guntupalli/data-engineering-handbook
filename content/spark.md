@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # PySpark
+
+**Notebook:** [`notebooks/topics/spark.ipynb`](../notebooks/topics/spark.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is PySpark and where does it fit in a data platform?](#What-is-PySpark-and-where-does-it-fit-in-a-data-platform)
 + [How do you create a SparkSession in PySpark?](#How-do-you-create-a-SparkSession-in-PySpark)
 + [How do you read data with explicit schemas in PySpark?](#How-do-you-read-data-with-explicit-schemas-in-PySpark)

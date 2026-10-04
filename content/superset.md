@@ -3,6 +3,8 @@
 
 # Superset
 
+**Notebook:** [`notebooks/topics/superset.ipynb`](../notebooks/topics/superset.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Superset is a SQL-first BI layer. It does not store data and it does not have its own calculation engine: every chart becomes a SQL query against a database you connect to, and the metadata database only stores users, datasets, chart definitions, and schedules. That single architectural fact explains most of the answers below - performance, caching, security, and cross-database limits all follow from it.
 
 + [What is Apache Superset?](#What-is-Apache-Superset)

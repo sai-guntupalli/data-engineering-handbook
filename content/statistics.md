@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Statistics and Experimentation for Data Engineers
+
+**Notebook:** [`notebooks/topics/statistics.ipynb`](../notebooks/topics/statistics.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [Why do averages lie and how do percentiles fix that](#Why-do-averages-lie-and-how-do-percentiles-fix-that)
 + [How do you summarize a distribution with descriptive statistics](#How-do-you-summarize-a-distribution-with-descriptive-statistics)
 + [How do distributions and skew affect engineering decisions](#How-do-distributions-and-skew-affect-engineering-decisions)

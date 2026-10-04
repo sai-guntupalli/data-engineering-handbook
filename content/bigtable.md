@@ -2,6 +2,9 @@
 ### [Interview questions](full.md)
 
 # Bigtable
+
+**Notebook:** [`notebooks/topics/bigtable.ipynb`](../notebooks/topics/bigtable.ipynb) - runnable version of this topic with self-checking exercises.
+
 + [What is Bigtable?](#What-is-Bigtable)
 + [How do you design a good Bigtable row key?](#How-do-you-design-a-good-Bigtable-row-key)
 + [When should you use Bigtable instead of BigQuery?](#When-should-you-use-Bigtable-instead-of-BigQuery)

@@ -3,6 +3,8 @@
 
 # Apache Kafka
 
+**Notebook:** [`notebooks/topics/kafka.ipynb`](../notebooks/topics/kafka.ipynb) - runnable version of this topic with self-checking exercises.
+
 Apache Kafka is a distributed, partitioned, replicated commit log: producers append events to topics, consumers read them at their own pace, and retention is decoupled from consumption.
 
 + [What is Apache Kafka?](#What-is-Apache-Kafka)
