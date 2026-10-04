@@ -21,6 +21,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+
       - name: Run repo checks
         run: python3 scripts/repo_checks.py
 
+      - name: Build docs website
+        run: |
+          uv run docs-prepare
+          uv run mkdocs build --strict

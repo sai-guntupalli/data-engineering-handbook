@@ -1,0 +1,34 @@
+[project]
+name = "data-engineering-interview-docs"
+version = "0.1.0"
+description = "Static documentation site for data engineering interview questions."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "mkdocs>=1.6.1",
+    "mkdocs-material>=9.5.49",
+]
+
+[project.optional-dependencies]
+# Notebook tooling: run `uv sync --extra notebooks`, then `make notebooks`.
+notebooks = [
+    "jupyterlab>=4.2",
+    "nbformat>=5.10",
+    "nbclient>=0.10",
+    "ipykernel>=6.29",
+]
+# Spark notebooks additionally need PySpark and a Java runtime (Java 17+ recommended).
+notebooks-spark = [
+    "pyspark>=3.5",
+    "pandas>=2.2",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project.scripts]
+docs-prepare = "scripts.build_docs_source:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["scripts"]

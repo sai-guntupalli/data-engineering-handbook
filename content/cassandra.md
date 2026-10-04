@@ -2,567 +2,1367 @@
 ### [Interview questions](full.md)
 
 # Apache Cassandra
+
+Apache Cassandra is a distributed, masterless, wide-column store built for high write throughput and linear horizontal scale. Data is partitioned across a peer-to-peer ring, replicated for durability, and queried with CQL using a table design that starts from the query rather than from normalization.
+
 + [Explain what is Cassandra?](#Explain-what-is-Cassandra)
-+ [List the benefits of using Cassandra?](#List-the-benefits-of-using-Cassandra)
-+ [What is the use of Cassandra and why to use Cassandra?](#What-is-the-use-of-Cassandra-and-why-to-use-Cassandra)
-+ [Explain the concept of tunable consistency in Cassandra?](#Explain-the-concept-of-tunable-consistency-in-Cassandra)
-+ [Explain what is composite type in Cassandra?](#Explain-what-is-composite-type-in-Cassandra)
-+ [How does Cassandra write?](#How-does-Cassandra-write)
-+ [How Cassandra stores data?](#How-Cassandra-stores-data)
-+ [Define the management tools in Cassandra?](#Define-the-management-tools-in-Cassandra)
-+ [Mention what are the main components of Cassandra data model?](#Mention-what-are-the-main-components-of-Cassandra-data-model)
-+ [Define Memtable?](#Define-Memtable?)
-+ [Explain what is a Column Family in Cassandra?](#Explain-what-is-a-Column-Family-in-Cassandra)
-+ [What is SStable and how is it different from other relational tables?](#What-is-SStable-and-how-is-it-different-from-other-relational-tables)
-+ [Explain what is a Cluster in Cassandra?](#Explain-what-is-a-Cluster-in-Cassandra)
-+ [Explain the concept of Bloom Filter?](#Explain-the-concept-of-Bloom-Filter)
-+ [List out the other components of Cassandra?](#List-out-the-other-components-of-Cassandra)
-+ [Explain Cap Theorem?](#Explain-Cap-Theorem)
-+ [Explain what is a Keyspace in Cassandra?](#Explain-what-is-a-Keyspace-in-Cassandra)
-+ [State the differences between  Node and Cluster And DataCenter in Cassandra?](#State-the-differences-between-Node-and-Cluster-And-DataCenter-in-Cassandra)
-+ [Mention what are the values stored in the Cassandra Column?](#Mention-what-are-the-values-stored-in-the-Cassandra-Column)
-+ [How to write a Query in Cassandra?](#How-to-write-a-Query-in-Cassandra)
-+ [Mention when you can use Alter Keyspace?](#Mention-when-you-can-use-Alter-Keyspace)
-+ [What os Cassandra supports?](#What-os-Cassandra-supports)
-+ [Explain what is Cassandra cqlsh?](#Explain-what-is-Cassandra-cqlsh)
++ [How do you model data in Cassandra?](#How-do-you-model-data-in-Cassandra)
 + [What is Cassandra Data Model?](#What-is-Cassandra-Data-Model)
-+ [Mention what does the Shell Commands capture And consistency determines?](#Mention-what-does-the-Shell-Commands-capture-And-consistency-determines)
-+ [What is Cql?](#What-is-Cql)
++ [Explain what is a Keyspace in Cassandra?](#Explain-what-is-a-Keyspace-in-Cassandra)
++ [What are the different composite keys in Cassandra?](#What-are-the-different-composite-keys-in-Cassandra)
++ [Mention what are the values stored in the Cassandra Column?](#Mention-what-are-the-values-stored-in-the-Cassandra-Column)
 + [What is mandatory while creating a table in Cassandra?](#What-is-mandatory-while-creating-a-table-in-Cassandra)
++ [How to write a Query in Cassandra?](#How-to-write-a-Query-in-Cassandra)
++ [What is Cql?](#What-is-Cql)
++ [How does Cassandra write?](#How-does-Cassandra-write)
++ [What do you mean by commit log in Cassandra?](#What-do-you-mean-by-commit-log-in-Cassandra)
++ [Define Memtable?](#Define-Memtable)
++ [What is SStable and how is it different from other relational tables?](#What-is-SStable-and-how-is-it-different-from-other-relational-tables)
++ [How Cassandra stores data?](#How-Cassandra-stores-data)
++ [Where Cassandra stores its data?](#Where-Cassandra-stores-its-data)
 + [Explain the concept of compaction in Cassandra?](#Explain-the-concept-of-compaction-in-Cassandra)
-+ [Mention what needs to be taken care while adding a Column?](#Mention-what-needs-to-be-taken-care-while-adding-a-Column)
++ [Explain the concept of Bloom Filter?](#Explain-the-concept-of-Bloom-Filter)
++ [Explain what is a Column Family in Cassandra?](#Explain-what-is-a-Column-Family-in-Cassandra)
++ [What is the use of Cassandra CQL collection?](#What-is-the-use-of-Cassandra-CQL-collection)
++ [Explain what is a Cluster in Cassandra?](#Explain-what-is-a-Cluster-in-Cassandra)
++ [State the differences between Node and Cluster And DataCenter in Cassandra?](#State-the-differences-between-Node-and-Cluster-And-DataCenter-in-Cassandra)
++ [What is data replication in Cassandra?](#What-is-data-replication-in-Cassandra)
++ [Can we change Replication Factor on a Live Cluster?](#Can-we-change-Replication-Factor-on-a-Live-Cluster)
++ [Explain Cap Theorem?](#Explain-Cap-Theorem)
++ [What are consistency levels in Cassandra?](#What-are-consistency-levels-in-Cassandra)
++ [Explain the concept of tunable consistency in Cassandra?](#Explain-the-concept-of-tunable-consistency-in-Cassandra)
 + [Does Cassandra support ACID transactions?](#Does-Cassandra-support-ACID-transactions)
-+ [Explain how Cassandra writes data?](#Explain-how-Cassandra-writes-data)
-+ [What is SuperColumn in Cassandra?](#What-is-SuperColumn-in-Cassandra)
-+ [Explain what is Memtable in Cassandra?](#Explain-what-is-Memtable-in-Cassandra)
-+ [Define the Consistency Levels for Read Operations in Cassandra?](#Define-the-Consistency-Levels-for-Read-Operations-in-Cassandra)
-+ [Explain how Cassandra writes changed data into Commitlog?](#Explain-how-Cassandra-writes-changed-data-into-Commitlog)
-+ [What is difference between Column and Super Column?](#What-is-difference-between-Column-and-Super-Column)
-+ [What is ColumnFamily?](#What-is-ColumnFamily)
 + [Explain how Cassandra delete data?](#Explain-how-Cassandra-delete-data)
-+ [Define the use of Source Command in Cassandra?](#Define-the-use-of-Source-Command-in-Cassandra)
-+ [What is Thrift?](#What-is-Thrift)
 + [Explain Tombstone in Cassandra?](#Explain-Tombstone-in-Cassandra)
-+ [What Platforms Cassandra runs on?](#What-Platforms-Cassandra-runs-on)
++ [What is difference between Column and Super Column?](#What-is-difference-between-Column-and-Super-Column)
++ [Explain what is Cassandra cqlsh?](#Explain-what-is-Cassandra-cqlsh)
++ [Mention what does the Shell Commands capture And consistency determines?](#Mention-what-does-the-Shell-Commands-capture-And-consistency-determines)
++ [Define the use of Source Command in Cassandra?](#Define-the-use-of-Source-Command-in-Cassandra)
++ [What is the usage of void close method?](#What-is-the-usage-of-void-close-method)
++ [Mention when you can use Alter Keyspace?](#Mention-when-you-can-use-Alter-Keyspace)
++ [What platforms does Cassandra run on?](#What-platforms-does-Cassandra-run-on)
 + [Name the ports Cassandra uses?](#Name-the-ports-Cassandra-uses)
 + [Can you Add Or Remove column families in a working cluster?](#Can-you-Add-Or-Remove-column-families-in-a-working-cluster)
-+ [What is Replication Factor in Cassandra?](#What-is-Replication-Factor-in-Cassandra)
-+ [Can we change Replication Factor on a Live Cluster?](#Can-we-change-Replication-Factor-on-a-Live-Cluster)
 + [How to Iterate all rows in ColumnFamily?](#How-to-Iterate-all-rows-in-ColumnFamily)
-+ [Explain Cassandra.](#Explain-Cassandra)
++ [List the benefits of using Cassandra?](#List-the-benefits-of-using-Cassandra)
++ [What is the use of Cassandra and why to use Cassandra?](#What-is-the-use-of-Cassandra-and-why-to-use-Cassandra)
 + [In which language Cassandra is written?](#In-which-language-Cassandra-is-written)
-+ [Which query language is used in Cassandra database?](#Which-query-language-is-used-in-Cassandra-database)
-+ [What are the benefits and advantages of Cassandra?](#What-are-the-benefits-and-advantages-of-Cassandra)
-+ [Where Cassandra stores its data?](#Where-Cassandra-stores-its-data)
-+ [What was the design goal of Cassandra?](#What-was-the-design-goal-of-Cassandra)
++ [Define the management tools in Cassandra?](#Define-the-management-tools-in-Cassandra)
 + [How many types of NoSQL databases and give some examples.](#How-many-types-of-NoSQL-databases-and-give-some-examples)
-+ [What is keyspace in Cassandra?](#What-is-keyspace-in-Cassandra)
-+ [What are the different composite keys in Cassandra?](#What-are-the-different-composite-keys-in-Cassandra)
-+ [What is data replication in Cassandra?](#What-is-data-replication-in-Cassandra)
-+ [What is node in Cassandra?](#What-is-node-in-Cassandra)
-+ [What do you mean by data center in Cassandra?](#What-do-you-mean-by-data-center-in-Cassandra)
-+ [What do you mean by commit log in Cassandra?](#What-do-you-mean-by-commit-log-in-Cassandra)
-+ [What do you mean by column family in Cassandra?](#What-do-you-mean-by-column-family-in-Cassandra)
-+ [What do you mean by consistency in Cassandra?](#What-do-you-mean-by-consistency-in-Cassandra)
-+ [How does Cassandra perform write function?](#How-does-Cassandra-perform-write-function)
-+ [What is SSTable?](#What-is-SSTable)
-+ [How the SSTable is different from other relational tables?](#How-the-SSTable-is-different-from-other-relational-tables)
-+ [What is the role of ALTER KEYSPACE?](#What-is-the-role-of-ALTER-KEYSPACE)
-+ [What are the differences between node and cluster and datacenter in Cassandra?](#What-are-the-differences-between-node-and-cluster-and-datacenter-in-Cassandra)
-+ [What is the use of Cassandra CQL collection?](#What-is-the-use-of-Cassandra-CQL-collection)
-+ [What is the use of Bloom Filter in Cassandra?](#What-is-the-use-of-Bloom-Filter-in-Cassandra)
-+ [How does Cassandra delete data?](#How-does-Cassandra-delete-data)
-+ [What is SuperColumn in Cassandra?](#What-is-SuperColumn-in-Cassandra)
 + [What are the Hadoop and HBase and Hive and Cassandra?](#What-are-the-Hadoop-and-HBase-and-Hive-and-Cassandra)
-+ [What is the usage of void close() method?](#What-is-the-usage-of-void-close-method)
-+ [Which command is used to start the cqlsh prompt?](#Which-command-is-used-to-start-the-cqlsh-prompt)
-+ [What is the usage of cqlsh-version command?](#What-is-the-usage-of-cqlsh-version-command)
-+ [Does Cassandra work on Windows?](#Does-Cassandra-work-on-Windows)
++ [What is Thrift?](#What-is-Thrift)
 + [What is Kundera in Cassandra?](#What-is-Kundera-in-Cassandra)
-+ [What do you mean by Thrift in Cassandra?](#What-do-you-mean-by-Thrift-in-Cassandra)
 + [What is Hector in Cassandra?](#What-is-Hector-in-Cassandra)
++ [Mention what needs to be taken care while adding a Column?](#Mention-what-needs-to-be-taken-care-while-adding-a-Column)
++ [What are the trade-offs and when should you not use Cassandra?](#What-are-the-trade-offs-and-when-should-you-not-use-Cassandra)
++ [Real world use cases for Cassandra](#Real-world-use-cases-for-Cassandra)
 
 ## Explain what is Cassandra?
-Cassandra is an open source data storage system developed at Facebook for inbox search and designed for storing and managing large amounts of data across commodity servers. It can server as both Real time data store system for online applications Also as a read intensive database for business intelligence system
+Cassandra is an open source data storage system developed at Facebook for inbox search and designed for storing and managing large amounts of data across commodity servers. It can serve as both a real-time data store for online applications and as a read-intensive database for business intelligence systems.
+
+Architecturally it combines two papers: Amazon Dynamo's peer-to-peer ring, consistent hashing, and tunable consistency, and Google Bigtable's storage model (commit log, memtable, SSTable) with a column-family data model. There is no master: every node is a peer, any node can serve any request, and data is placed by the partitioner and the replication strategy.
+
+```text
+client -> coordinator node -> replicas (RF copies)
+              |
+              +-- commit log -> memtable -> flush to SSTable -> compaction
+```
+
+Key properties: linear scalability by adding nodes, no single point of failure, tunable consistency per query, multi-datacenter replication, and a schema-optional column model with a SQL-like language (CQL). It is an AP system: availability and partition tolerance are prioritized, and consistency is chosen per operation.
+
+*Also asked as: Explain Cassandra.*
 
 [Table of Contents](#Apache-Cassandra)
 
-## List the benefits of using Cassandra?
-Unlike traditional or any other database, Apache Cassandra delivers near real-time performance simplifying the work of Developers, Administrators, Data Analysts and Software Engineers.
-Instead of master-slave architecture, Cassandra is established on peer-to-peer architecture ensuring no failure.
-It also assures phenomenal flexibility as it allows insertion of multiple nodes to any Cassandra cluster in any datacenter. Further, any client can forward its request to any server.
-Cassandra facilitates extensible scalability and can be easily scaled up and scaled down as per the requirements. With a high throughput for read and write operations, this NoSQL application need not be restarted while scaling.
-Cassandra is also revered for its strong data replication capability as it allows data storage at multiple locations enabling users to retrieve data from another location if one node fails. Users have the option to set up the number of replicas they want to create.
-Shows brilliant performance when used for massive datasets and thus, the most preferable NoSQL DB by most organizations.
-Operates on column-oriented structure and thus, quickens and simplifies the process of slicing. Even data access and retrieval becomes more efficient with column-based data model.
-Further, Apache Cassandra supports schema-free/schema-optional data model, which un-necessitate the purpose of showing all the columns required by your application.
+## How do you model data in Cassandra?
+Cassandra modeling starts with queries, not normalization. You design tables around access patterns because joins are not the normal path. A table should have a partition key that spreads data evenly and clustering columns that support the required sort/order within a partition.
+
+Example:
+
+```sql
+create table orders_by_customer (
+  customer_id text,
+  order_ts timestamp,
+  order_id text,
+  amount decimal,
+  primary key ((customer_id), order_ts, order_id)
+) with clustering order by (order_ts desc);
+```
+
+This table is good for "show recent orders for one customer." It is not good for arbitrary analytics across all customers; that belongs in Spark, a warehouse, or another table designed for that query.
+
+The method: write down each query, annotate its equality filters and its sort, make the equality column the partition key and the sort column the leading clustering column, then build one table per query. Duplicate data deliberately and accept that updates to duplicated copies are the application's job.
+
+```sql
+-- Query: orders for one customer, newest first (partition bounded by customer)
+create table orders_by_customer (
+  customer_id text,
+  order_ts timestamp,
+  order_id text,
+  amount decimal,
+  primary key ((customer_id), order_ts, order_id)
+) with clustering order by (order_ts desc);
+
+-- Query: today's orders for one tenant, newest first (partition bounded by tenant+day)
+create table orders_by_tenant_day (
+  tenant_id text,
+  day date,
+  order_ts timestamp,
+  order_id text,
+  amount decimal,
+  primary key ((tenant_id, day), order_ts, order_id)
+) with clustering order by (order_ts desc);
+```
+
+Two failure modes to name explicitly: an unbounded partition (for example `primary key ((customer_id), order_ts)` when a customer can have millions of orders) and a table that only works with `ALLOW FILTERING`, which tells you the table does not match the query. Secondary indexes in Cassandra are local and low-cardinality only; they are not a substitute for a purpose-built table.
 
 [Table of Contents](#Apache-Cassandra)
 
-## What is the use of Cassandra and why to use Cassandra?
-Cassandra was designed to handle big data workloads across multiple nodes without any single point of failure. The various factors responsible for using Cassandra are
-+ It is fault tolerant and consistent
-+ Gigabytes to petabytes scalabilities
-+ It is a column-oriented database
-+ No single point of failure
-+ No need for separate caching layer
-+ Flexible schema design
-+ It has flexible data storage, easy data distribution, and fast writes
-+ It supports ACID (Atomicity, Consistency, Isolation, and Durability)properties
-+ Multi-data center and cloud capable
-+ Data compression
+## What is Cassandra Data Model?
+The Cassandra Data Model consists of four main components:
+
++ Cluster: Made up of multiple nodes and keyspaces
++ Keyspace: a namespace to group multiple tables, with a replication strategy and replication factor
++ Column: consists of a column name, value and timestamp
++ Table (formerly ColumnFamily): multiple columns with row key reference.
+
+The logical hierarchy is cluster > keyspace > table > partition > row > column, and the physical hierarchy is node > data directory > SSTable files. The row key is a partition key plus any clustering columns, so "column family" is really a sorted map of partitions, each holding a sorted set of rows.
+
+```sql
+-- Logical hierarchy expressed in CQL
+create keyspace if not exists shop
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3, 'dc2': 3}
+  and durable_writes = true;
+
+use shop;
+
+create table cart_items (
+  user_id uuid,
+  cart_id timeuuid,
+  added_at timestamp,
+  sku text,
+  qty int,
+  primary key ((user_id), cart_id)
+);
+```
+
+The older Thrift vocabulary (column families, super columns, comparators, validators) is historical; modern Cassandra uses CQL tables and the storage engine still implements them as sorted maps of cells with per-cell timestamps.
+
+*Also asked as: Mention what are the main components of Cassandra data model? List out the other components of Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
-## Explain the concept of tunable consistency in Cassandra?
-Tunable Consistency is a phenomenal characteristic that makes Cassandra a favored database choice of Developers, Analysts and Big data Architects. Consistency refers to the up-to-date and synchronized data rows on all their replicas. Cassandra’s Tunable Consistency allows users to select the consistency level best suited for their use cases. It supports two consistencies -Eventual and Consistency and Strong Consistency.
-The former guarantees consistency when no new updates are made on a given data item, all accesses return the last updated value eventually. Systems with eventual consistency are known to have achieved replica convergence.
-For Strong consistency, Cassandra supports the following condition:
-R + W > N, where
-N – Number of replicas
-W – Number of nodes that need to agree for a successful write
-R – Number of nodes that need to agree for a successful read
+## Explain what is a Keyspace in Cassandra?
+In Cassandra, a keyspace is a namespace that determines data replication on nodes. A keyspace is not per node; a cluster typically has several keyspaces, each with its own replication strategy and replication factor, and every table belongs to exactly one keyspace.
+
+```sql
+create keyspace iot
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3}
+  and durable_writes = true;
+
+alter keyspace iot
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3, 'dc2': 3};
+
+describe keyspaces;
+describe keyspace iot;
+```
+
+`SimpleStrategy` (a single RF, ignore data centers) is for development only; production multi-DC deployments use `NetworkTopologyStrategy`. `durable_writes = false` disables the commit log for that keyspace and is almost never what you want.
+
+*Also asked as: What is keyspace in Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
-## Explain what is composite type in Cassandra?
-In Cassandra, composite type allows to defined key or a column name with a concatenation of data of different type. You can use two types of Composite Type
-Row Key
-Column Name
+## What are the different composite keys in Cassandra?
+In Cassandra, composite keys are used to define a key or a column name with a concatenation of data of different type. There are two types of composite key in Cassandra:
+
++ Row Key (partition key)
++ Column Name (clustering columns)
+
+A composite partition key is written `primary key ((a, b), c)`: `a` and `b` together decide the partition, and `c` decides the sort order and uniqueness inside it.
+
+```sql
+-- Composite partition key: (tenant_id, day) locates the partition
+-- Clustering columns: order_ts then order_id order rows inside it
+create table orders (
+  tenant_id text,
+  day date,
+  order_ts timestamp,
+  order_id text,
+  amount decimal,
+  primary key ((tenant_id, day), order_ts, order_id)
+);
+
+-- Composite clustering: events of one user sorted by time, then id
+create table user_events (
+  user_id text,
+  event_ts timestamp,
+  event_id timeuuid,
+  payload text,
+  primary key ((user_id), event_ts, event_id)
+);
+```
+
+The partition key determines which node stores the data (via the partitioner and the token ring); the clustering columns determine on-disk sort order within a partition and are what make range queries cheap. The tuple serialization of the composite key is what allows several columns to behave as one key.
+
+*Also asked as: Explain what is composite type in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Mention what are the values stored in the Cassandra Column?
+In Cassandra Column, basically there are three values:
+
++ Column Name
++ Value
++ Time Stamp
+
+Every cell carries a write timestamp used for last-write-wins conflict resolution, and the full storage identity is the partition key, the clustering columns, the column name, and that timestamp. Because timestamps decide the winner, clock skew between nodes can silently drop writes.
+
+```sql
+-- Force a timestamp when replaying data or resolving a bad write
+insert into orders_by_customer (customer_id, order_ts, order_id, amount)
+values ('C1', '2026-10-04T10:00:00Z', 'o-1', 42.00)
+using timestamp 1733306400000000;
+
+-- Read the timestamp and TTL of a cell
+select customer_id, order_id, amount, writetime(amount), ttl(amount)
+from orders_by_customer where customer_id = 'C1';
+```
+
+A delete is not the absence of a value: it is a tombstone, which is itself a value with a timestamp.
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is mandatory while creating a table in Cassandra?
+While creating a table primary key is mandatory, it is made up of one or more columns of a table. The primary key is the partition key, optionally followed by clustering columns, and it is the only way to address rows directly. Cassandra has no supporting indexes by default beyond the primary key, so the key is the schema.
+
+```sql
+create table readings (
+  sensor_id text,
+  ts timestamp,
+  value double,
+  primary key (sensor_id, ts)
+);
+-- primary key (sensor_id, ts) == partition key sensor_id, clustering ts
+
+create table readings_by_day (
+  sensor_id text,
+  day date,
+  ts timestamp,
+  value double,
+  primary key ((sensor_id, day), ts)
+) with default_time_to_live = 7776000;   -- 90 days, in seconds
+```
+
+A primary key is required; everything else - clustering order, TTL, compaction strategy, caching, compression - is a table option. Choosing a bad primary key cannot be fixed later without creating a new table and migrating, which is why key design is the first interview question for any Cassandra modeling task.
+
+[Table of Contents](#Apache-Cassandra)
+
+## How to write a Query in Cassandra?
+Using CQL (Cassandra Query Language). cqlsh is used for interacting with the database.
+
+```bash
+# Start cqlsh against a node
+cqlsh 10.0.0.11 9042 -u app -p secret -k iot
+
+# Execute a file of statements, and capture output to a file
+cqlsh -f schema.cql
+cqlsh -e "select release_version from system.local"
+```
+
+```sql
+-- Insert, upsert, select, update, delete: all CQL DML
+insert into readings (sensor_id, ts, value) values ('s-1', '2026-10-04T10:00:00Z', 21.7);
+
+select sensor_id, ts, value
+from readings
+where sensor_id = 's-1'
+  and ts >= '2026-10-04T00:00:00Z'
+  and ts <  '2026-10-05T00:00:00Z'
+order by ts desc
+limit 100;
+
+update readings set value = 22.1 where sensor_id = 's-1' and ts = '2026-10-04T10:00:00Z';
+
+delete from readings where sensor_id = 's-1' and ts = '2026-10-04T10:00:00Z';
+```
+
+Rules that keep queries efficient: the partition key must be restricted with equality, clustering columns may then be restricted with equality or ranges in order, and any other predicate raises "Cannot execute this query ... use ALLOW FILTERING". `ALLOW FILTERING` scans every partition on every node and should be treated as a bug in a design review, not a fix.
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is Cql?
+CQL is Cassandra Query Language to access and query the Apache distributed database. It consists of a CQL parser that hides all the implementation details to the server. The syntax of CQL is similar to SQL but it does not alter the Cassandra data model: there are no joins, no subqueries in the general case, and no foreign keys, and CQL is not SQL.
+
+```sql
+-- CQL looks like SQL but the semantics are different
+select * from orders_by_customer where customer_id = 'C1' limit 10;   -- OK
+select * from orders_by_customer where amount > 100;                  -- needs ALLOW FILTERING
+
+-- Collections and UDTs have no SQL equivalent
+create type address (street text, city text, zip text);
+create table users (
+  user_id uuid primary key,
+  emails set<text>,
+  home frozen<address>,
+  prefs map<text, text>
+);
+```
+
+Things CQL deliberately does not have: joins, aggregates across partitions that scale (standard `count(*)` on a big table scans all nodes), transactions in the ACID sense, and stored procedures. The one escape hatch is lightweight transactions (`IF NOT EXISTS`, `IF EXISTS` conditions), which add Paxos rounds and latency.
+
+*Also asked as: Which query language is used in Cassandra database?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## How does Cassandra write?
-Cassandra performs the write function by applying two commits-first it writes to a commit log on disk and then commits to an in-memory structured known as memtable. Once the two commits are successful, the write is achieved. Writes are written in the table structure as SSTable (sorted string table). Cassandra offers speedier write performance.
+Cassandra performs the write function by applying two commits: first it writes to a commit log on disk and then commits to an in-memory structure known as memtable. Once the two commits are successful, the write is achieved. Writes are later written in the table structure as SSTable (sorted string table). Cassandra offers speedier write performance.
+
+The full path for a write sent to any node (the coordinator):
+
+```text
+1. coordinator computes the token(s) for the partition key
+2. coordinator forwards to the RF replicas for that token
+3. each replica appends the mutation to its commit log (durability)
+4. each replica writes it to its memtable (in-memory, sorted by key)
+5. coordinator waits for the requested consistency level, then acknowledges
+6. later: memtable is flushed to an immutable SSTable on disk
+7. later: compaction merges SSTables and drops overwritten/tombstoned data
+```
+
+```bash
+# Watch the write path in action
+nodetool flush iot readings          # force memtable -> SSTable
+nodetool drain                       # flush and stop accepting writes
+nodetool tablestats iot.readings     # SSTable count, memtable size, write latency
+```
+
+Writes are append-only: there is no read-modify-write, no in-place update, and therefore no lock contention. That is why a Cassandra write is a sequential commit log append plus a memory write, and why write throughput scales with node count rather than with disk seek time.
+
+*Also asked as: Explain how Cassandra writes data? How does Cassandra perform write function?*
 
 [Table of Contents](#Apache-Cassandra)
 
-## How Cassandra stores data?
-All data stored as bytes
-When you specify validator, Cassandra ensures those bytes are encoded as per requirement
-Then a comparator orders the column based on the ordering specific to the encoding
-While composite are just byte arrays with a specific encoding, for each component it stores a two byte length followed by the byte encoded component followed by a termination bit.
+## What do you mean by commit log in Cassandra?
+In Cassandra, commit log is a crash-recovery mechanism. Every write operation is written to the commit log before it is acknowledged, and the changed data is appended, not updated in place, so the log is a sequential write.
 
-[Table of Contents](#Apache-Cassandra)
+```bash
+nodetool flush <keyspace> <table>   # forces memtables to disk; commitlog segments become reclaimable
+nodetool drain                      # flush all memtables, stop the commitlog, prepare for shutdown
+```
 
-## Define the management tools in Cassandra?
-DataStaxOpsCenter: internet-based management and monitoring solution for Cassandra cluster and DataStax. It is free to download and includes an additional Edition of OpsCenter
-SPM primarily administers Cassandra metrics and various OS and JVM metrics. Besides Cassandra, SPM also monitors Hadoop, Spark, Solr, Storm, zookeeper and other Big Data platforms. The main features of SPM include correlation of events and metrics, distributed transaction tracing, creating real-time graphs with zooming, anomaly detection and heartbeat alerting.
+Recovery works by replaying commit log segments that had no matching flush. Segments are recycled once every mutation in them has been flushed to an SSTable. Key settings are `commitlog_sync` (`periodic` by default, `batch` for fsync-per-write), `commitlog_sync_period`, and `commitlog_total_space_in_mb`, which controls how aggressively dirty memtables are flushed when the log fills.
 
-[Table of Contents](#Apache-Cassandra)
-
-## Mention what are the main components of Cassandra data model?
-The main components of Cassandra Data Model are
-+ Cluster
-+ Keyspace
-+ Column
-+ Column & Family
+*Also asked as: Explain how Cassandra writes changed data into Commitlog?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## Define Memtable?
-Similar to table, memtable is in-memory/write-back cache space consisting of content in key and column format. The data in memtable is sorted by key, and each ColumnFamily consist of a distinct memtable that retrieves column data via key. It stores the writes until it is full, and then flushed out.
+Similar to a table, memtable is an in-memory/write-back cache space consisting of content in key and column format. The data in memtable is sorted by key, and each table (column family) has a distinct memtable that retrieves column data via key. It stores the writes until it is full, and then flushed out.
 
-[Table of Contents](#Apache-Cassandra)
+```bash
+nodetool flush iot readings              # memtable -> SSTable now
+nodetool tablestats iot.readings | grep -i memtable
+```
 
-## Explain what is a Column Family in Cassandra?
-Column family in Cassandra is referred for a collection of Rows.
+A memtable is flushed when it exceeds `memtable_cleanup_threshold` (derived from total memory), when the commit log is full, or when `nodetool flush` is issued. Reads must merge the memtable with all SSTables on disk, which is why many live SSTables degrade read latency and why compaction matters.
+
+*Also asked as: Explain what is Memtable in Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## What is SStable and how is it different from other relational tables?
-SSTable expands to ‘Sorted String Table,’ which refers to an important data file in Cassandra and accepts regular written memtables. They are stored on disk and exist for each Cassandra table. Exhibiting immutability, SStables do not allow any further addition and removal of data items once written. For each SSTable, Cassandra creates three separate files like partition index, partition summary and a bloom filter.
+SSTable expands to 'Sorted String Table', which refers to an important data file in Cassandra and accepts regular written memtables. They are stored on disk and exist for each Cassandra table. Exhibiting immutability, SStables do not allow any further addition and removal of data items once written. For each SSTable, Cassandra creates three separate files like partition index, partition summary and a bloom filter.
+
+That immutability is the key difference from a relational table: updates and deletes are new records (writes or tombstones), never in-place edits, and compaction later reconciles them. Unlike a relational table, an SSTable is sorted by token, then by clustering columns, and has no notion of rows across partitions being contiguous.
+
+```bash
+# Inspect the files that make up an SSTable set
+ls -1 /var/lib/cassandra/data/iot/readings-*/ | head
+# *-Data.db  *-Index.db  *-Filter.db  *-Summary.db  *-Statistics.db  *-CompressionInfo.db
+
+# Dump an SSTable to readable JSON (offline tool)
+sstabledump /var/lib/cassandra/data/iot/readings-*/mc-1-big-Data.db | head -40
+
+# Per-table SSTable and read/write statistics
+nodetool tablestats iot.readings
+```
+
+`*-Index.db` holds the partition index, `*-Summary.db` a sampled summary of that index, `*-Filter.db` the Bloom filter, and `*-Statistics.db` the metadata and min/max timestamps used for compaction.
+
+*Also asked as: What is SSTable? How the SSTable is different from other relational tables?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## How Cassandra stores data?
+All data stored as bytes. When you specify a validator, Cassandra ensures those bytes are encoded as per requirement. Then a comparator orders the column based on the ordering specific to the encoding. While composite values are just byte arrays with a specific encoding: for each component it stores a two-byte length followed by the byte-encoded component followed by a termination bit.
+
+In modern Cassandra the encoding is explicit in the schema: the partitioner maps the partition key to a token (`murmur3` by default), rows inside a partition are ordered by the clustering columns, and cell values are typed by the CQL type. Data lives in SSTables under the data directory, with the commit log in a separate directory.
+
+```bash
+# Where the bytes actually are
+grep -E '^data_file_directories|^commitlog_directory|^saved_caches_directory' /etc/cassandra/cassandra.yaml
+ls /var/lib/cassandra/data/iot/readings-*/
+
+# The token a partition key maps to (this is the physical placement)
+nodetool getendpoints iot readings 's-1'
+```
+
+Compression (LZ4 by default, Deflate, Zstd, or Snappy) is applied per chunk of an SSTable, so the on-disk size is much smaller than the logical size for repetitive data.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Where Cassandra stores its data?
+Cassandra stores its data in the configured data directories, one directory per keyspace and table, containing the SSTable files described above. The commit log, data files, and saved caches are three separate directories, and all three should be on fast local disks; network storage is not recommended.
+
+```bash
+# Default single-disk layout
+/var/lib/cassandra/data/<keyspace>/<table>-<uuid>/mc-1-big-Data.db
+/var/lib/cassandra/commitlog/CommitLog-*.log
+/var/lib/cassandra/saved_caches/
+
+# Sizing and ownership
+du -sh /var/lib/cassandra/data/*
+nodetool tablestats iot.readings | grep -E 'Space used|Compacted partition'
+```
+
+Using a JBOD layout of several data directories spreads I/O across devices; if one disk fails, Cassandra can be told to remove it, but the safest production layout is one directory per device with `disk_failure_policy` set deliberately.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain the concept of compaction in Cassandra?
+Compaction refers to a maintenance process in Cassandra in which the SSTables are reorganized for data optimization of the data structures on the disk. The compaction process is useful when interacting with the memtable. There are two types of compaction in Cassandra:
+
++ Minor compaction: started automatically when a new SSTable is created. Here, Cassandra condenses all the equally sized SSTables into one.
++ Major compaction: is triggered manually using nodetool. Compacts all SSTables of a table into one (avoid on large tables: it needs free space equal to the table size and cannot be interrupted).
+
+Modern compaction strategies are chosen per table:
+
++ SizeTieredCompactionStrategy (STCS): write-optimized default; groups similarly sized SSTables. Good for write-heavy workloads without time locality.
++ LeveledCompactionStrategy (LCS): read-optimized, keeps SSTables in levels with non-overlapping ranges; higher write amplification, predictable read latency.
++ TimeWindowCompactionStrategy (TWCS): groups SSTables by time window; ideal for time series where data expires by TTL and old windows are dropped whole.
++ UnifiedCompactionStrategy (UCS, newer releases): a single strategy that adapts across the size/level/time spectrum.
+
+```sql
+-- Time series: one SSTable set per day, TTL expiry drops whole windows
+alter table readings_by_day
+  with compaction = {
+    'class': 'TimeWindowCompactionStrategy',
+    'compaction_window_unit': 'DAYS',
+    'compaction_window_size': 1
+  }
+  and gc_grace_seconds = 864000;
+```
+
+```bash
+nodetool compact iot readings                    # major compaction (use with care)
+nodetool compactionstats                         # progress of running compactions
+nodetool setcompactionthroughput 128             # MB/s cap
+nodetool garbagecollect iot readings             # remove overwritten/tombstoned data aggressively
+```
+
+Write amplification is the cost: STCS writes each byte a few times, LCS more, so compaction tuning is the main lever on both write throughput and read latency.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain the concept of Bloom Filter?
+Associated with an SSTable, Bloom filter is an off-heap (off the Java heap to native memory) data structure to check whether there is any data available in the SSTable before performing any I/O disk operation. A Bloom filter can say "definitely not here" or "maybe here", never "definitely here", so a false positive costs one wasted disk read but a false negative never happens.
+
+```bash
+# Bloom filter effectiveness: recent bloom filter false positives/negatives
+nodetool tablestats iot.readings | grep -iA3 bloom
+```
+
+Tune with `bloom_filter_fp_chance` per table. The default (0.1 with SizeTiered, 0.01 with Leveled) trades memory for fewer wasted reads: a lower value means a larger filter in off-heap memory. For a table with millions of partitions and point lookups, the Bloom filter is what prevents every read from touching every SSTable.
+
+*Also asked as: What is the use of Bloom Filter in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain what is a Column Family in Cassandra?
+Column family in Cassandra refers to a collection of rows, and it is the legacy name for what CQL calls a table. A column family is a partitioned, sorted map: partitions are located by key, and inside each partition columns (cells) are sorted by clustering key with a value and timestamp each.
+
+```sql
+create table events_by_user (
+  user_id text,
+  event_ts timestamp,
+  event_type text,
+  primary key ((user_id), event_ts)
+);
+-- "column family" events_by_user: partitions keyed by user_id, rows sorted by event_ts
+```
+
+The difference from a relational table is that rows in a column family need not share the same set of columns: different partitions can carry different (and later-added) columns, and the set of columns within a row is sparse. Two tables can hold the same data in different orders - the classic Cassandra denormalization - because there is no join to fall back on.
+
+*Also asked as: What is ColumnFamily? What do you mean by column family in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is the use of Cassandra CQL collection?
+Cassandra CQL collection is used to collect the data and store it in a column where each collection represents the same type of data. CQL consists of three types of collections:
+
++ SET: an unordered list of unique elements.
++ LIST: elements arranged in an order, and it can contain duplicate values.
++ MAP: a collection of unique elements in the form of key-value pairs.
+
+```sql
+create table users (
+  user_id uuid primary key,
+  emails set<text>,
+  phone_numbers list<text>,
+  prefs map<text, text>
+);
+
+update users set emails = emails + {'a@example.com'} where user_id = 7b1e...;
+update users set prefs['theme'] = 'dark' where user_id = 7b1e...;
+
+-- Collections must be frozen to be a primary key or to be nested
+create table user_tags (
+  user_id uuid,
+  tag_set frozen<set<text>>,
+  primary key (user_id, tag_set)
+);
+```
+
+Rules that save pain: collections are read and written whole, so a huge set is expensive on every access; a collection is stored as a single cell and is therefore capped at roughly 2 GB (a map is also limited to 65,535 keys); and an unfrozen collection cannot be indexed or used in a primary key. Use a separate table with a clustering column when the collection can grow unboundedly.
 
 [Table of Contents](#Apache-Cassandra)
 
 ## Explain what is a Cluster in Cassandra?
 A cluster is a container for keyspaces. Cassandra database is segmented over several machines that operate together. The cluster is the outermost container which arranges the nodes in a ring format and assigns data to them. These nodes have a replica which takes charge in case of data handling failure.
 
-[Table of Contents](#Apache-Cassandra)
+```bash
+nodetool status            # UN/UJ/DN/LE states per node, with load and tokens
+nodetool describecluster   # cluster name, snitch, schema version, partitioner
+nodetool ring              # token ownership across the ring
+```
 
-## Explain the concept of Bloom Filter?
-Associated with SSTable, Bloom filter is an off-heap (off the Java heap to native memory) data structure to check whether there is any data available in the SSTable before performing any I/O disk operation.
-
-[Table of Contents](#Apache-Cassandra)
-
-## List out the other components of Cassandra?
-The other components of Cassandra are
-+ Node
-+ Data Center
-+ Cluster
-+ Commit log
-+ Mem-table
-+ SSTable
-+ Bloom Filter
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain Cap Theorem?
-With a strong requirement to scale systems when additional resources are needed, CAP Theorem plays a major role in maintaining the scaling strategy. It is an efficient way to handle scaling in distributed systems. Consistency Availability and Partition tolerance (CAP) theorem states that in distributed systems like Cassandra, users can enjoy only two out of these three characteristics.
-One of them needs to be sacrificed. Consistency guarantees the return of most recent write for the client, Availability returns a rational response within minimum time and in Partition Tolerance, the system will continue its operations when network partitions occur. The two options available are AP and CP.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain what is a Keyspace in Cassandra?
-In Cassandra, a keyspace is a namespace that determines data replication on nodes. A cluster consist of one keyspace per node.
+There is no master node: every node gossips cluster state, and a coordinator is chosen per request (usually the client's contact node). Data distribution is by token range, and adding a node moves a fraction of the ranges to it, which is why throughput scales close to linearly until the client or the network is the bottleneck.
 
 [Table of Contents](#Apache-Cassandra)
 
 ## State the differences between Node and Cluster And DataCenter in Cassandra?
-While a node is a single machine running Cassandra, cluster is a collection of nodes that have similar type of data grouped together. DataCentersare useful components when serving customers in different geographical areas. You can group different nodes of a cluster into different data centers.
+While a node is a single machine running Cassandra, cluster is a collection of nodes that have similar type of data grouped together. Data centers are useful components when serving customers in different geographical areas. You can group different nodes of a cluster into different data centers.
+
+```text
+Cluster: acme-prod
+  DC: dc1 (Dallas)      -> racks rack1..rack3, RF 3
+  DC: dc2 (Frankfurt)   -> racks rack1..rack3, RF 3
+```
+
+```bash
+nodetool status            # shows DC and rack per node
+nodetool gossipinfo        # what nodes know about each other
+```
+
+Data centers are the unit of replication topology: `NetworkTopologyStrategy` places RF replicas per DC, and `LOCAL_QUORUM` keeps a write inside one DC so transatlantic latency never enters the request path. Racks inside a DC are the unit of failure-domain awareness: replicas are spread across racks so one rack failure does not take out a quorum.
+
+*Also asked as: What is node in Cassandra? What do you mean by data center in Cassandra? What are the differences between node and cluster and datacenter in Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
-## Mention what are the values stored in the Cassandra Column?
-In Cassandra Column, basically there are three values
-+ Column Name
-+ Value
-+ Time Stamp
+## What is data replication in Cassandra?
+Data replication is the electronic copying of data from a database in one computer or server to a database in another so that all users can share the same level of information. Cassandra stores replicas on multiple nodes to ensure reliability and fault tolerance. The replication strategy decides the nodes where replicas are placed.
 
-[Table of Contents](#Apache-Cassandra)
+Replication Factor (RF) is the measure of the number of data copies that exist. RF=3 means three nodes hold each partition; those nodes are chosen by the snitch so that, with `NetworkTopologyStrategy`, copies land in different racks or data centers.
 
-## How to write a Query in Cassandra?
-Using CQL (Cassandra Query Language).Cqlsh is used for interacting with database.
+```sql
+-- Three copies in dc1, three in dc2
+alter keyspace iot
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3, 'dc2': 3};
+```
 
-[Table of Contents](#Apache-Cassandra)
+```bash
+nodetool getendpoints iot readings 's-1'   # which nodes hold this partition
+nodetool repair -pr iot                    # repair the ranges this node owns
+```
 
-## Mention when you can use Alter Keyspace?
-ALTER KEYSPACE can be used to change properties such as the number of replicas and the durable_write of a keyspace.
+Practical rules: RF=3 tolerates one replica down for `QUORUM` operations and two for `ONE`; RF should be at least 3 in production; raising RF on a live cluster requires `nodetool repair` (or `rebuild` on a new DC) before the extra copies are usable.
 
-[Table of Contents](#Apache-Cassandra)
-
-## What os Cassandra supports?
-Windows and Linux.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain what is Cassandra cqlsh?
-Cassandra-Cqlsh is a query language that enables users to communicate with its database. By using Cassandra cqlsh, you can do following things
-+ Define a schema
-+ Insert a data and
-+ Execute a query
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is Cassandra Data Model?
-Cassandra Data Model consists of four main components:
-+ Cluster: Made up of multiple nodes and keyspaces
-+ Keyspace: a namespace to group multiple column families, especially one per partition
-+ Column: consists of a column name, value and timestamp
-+ ColumnFamily: multiple columns with row key reference.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Mention what does the Shell Commands capture And consistency determines?
-There are various Cqlsh shell commands in Cassandra. Command “Capture”, captures the output of a command and adds it to a file while, command “Consistency” display the current consistency level or set a new consistency level.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is Cql?
-CQL is Cassandra Query language to access and query the Apache distributed database. It consists of a CQL parser that incites all the implementation details to the server. The syntax of CQL is similar to SQL but it does not alter the Cassandra data model.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is mandatory while creating a table in Cassandra?
-While creating a table primary key is mandatory, it is made up of one or more columns of a table.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain the concept of compaction in Cassandra?
-Compaction refers to a maintenance process in Cassandra , in which, the SSTables are reorganized for data optimization of data structure son the disk. The compaction process is useful during interactive with memtable. There are two type sof compaction in Cassandra:
-+ Minor compaction: started automatically when a new sstable is created. Here, Cassandra condenses all the equally sized sstables into one.
-+ Major compaction : is triggered manually using nodetool. Compacts all sstables of a ColumnFamily into one.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Mention what needs to be taken care while adding a Column?
-+ While adding a column you need to take care that the Column name is not conflicting with the existing column names 
-+ Table is not defined with compact storage option
-
-[Table of Contents](#Apache-Cassandra)
-
-## Does Cassandra support ACID transactions?
-Unlike relational databases, Cassandra does not support ACID transactions.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain how Cassandra writes data?
-Cassandra writes data in three components
-+ Commitlog write
-+ Memtable write
-+ SStable write
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain what is Memtable in Cassandra?
-Cassandra writes the data to a in memory structure known as Memtable.
-It is an in-memory cache with content stored as key/column.
-By key Memtable data are sorted.
-There is a separate Memtable for each ColumnFamily, and it retrieves column data from the key.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Define the Consistency Levels for Read Operations in Cassandra?
-+ ALL: Highly consistent. A write must be written to commitlog and memtable on all replica nodes in the cluster
-+ EACH_QUORUM: A write must be written to commitlog and memtable on quorum of replica nodes in all data centers.
-+ LOCAL_QUORUM:A write must be written to commitlog and memtable on quorum of replica nodes in the same center.
-+ ONE: A write must be written to commitlog and memtableof at least one replica node.
-+ TWO, Three: Same as One but at least two and three replica nodes, respectively
-+ LOCAL_ONE: A write must be written for at least one replica node in the local data center ANY
-+ SERIAL: Linearizable Consistency to prevent unconditional updates
-+ LOCAL_SERIAL: Same as Serial but restricted to local data center
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain how Cassandra writes changed data into Commitlog?
-Cassandra concatenate changed data to commitlog
-Commitlog acts as a crash recovery log for data
-Until the changed data is concatenated to commitlog write operation will be never considered successful
-Data will not be lost once commitlog is flushed out to file.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is difference between Column and Super Column?
-Both elements work on the principle of tuple having name and value. However, the former‘s value is a string while the value in latter is a Map of Columns with different data types.
-Unlike Columns, Super Columns do not contain the third component of timestamp.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is ColumnFamily?
-As the name suggests, ColumnFamily refers to a structure having infinite number of rows. That are referred by a key-value pair, where key is the name of the column and value represents the column data. It is much similar to a hashmap in java or dictionary in Python. Rememeber, the rows are not limited to a predefined list of Columns here. Also, the ColumnFamily is absolutely flexible with one row having 100 Columns while the other only 2 columns.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain how Cassandra delete data?
-SSTables are immutable and cannot remove a row from SSTables. When a row needs to be deleted, Cassandra assigns the column value with a special value called Tombstone. When the data is read, the Tombstone value is considered as deleted.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Define the use of Source Command in Cassandra?
-Source command is used to execute a file consisting of CQL statements.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is Thrift?
-Thrift is a legacy RPC protocol or API unified with a code generation tool for CQL. The purpose of using Thrift in Cassandra is to facilitate access to the DB across the programming language.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Explain Tombstone in Cassandra?
-Tombstone is row marker indicating a column deletion. These marked columns are deleted during compaction. Tombstones are of great significance as Cassnadra supports eventual consistency, where the data must respond before any successful operation.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What Platforms Cassandra runs on?
-Since Cassandra is a Java application, it can successfully run on any Java-driven platform or Java Runtime Environment (JRE) or Java Virtual Machine (JVM). Cassandra also runs on RedHat, CentOS, Debian and Ubuntu Linux platforms.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Name the ports Cassandra uses?
-The default settings state that Cassandra uses 7000 ports for Cluster Management, 9160 for Thrift Clients, 8080 for JMX. These are all TCP ports and can be edited in the configuration file: bin/Cassandra.in.sh
-
-[Table of Contents](#Apache-Cassandra)
-
-## Can you Add Or Remove column families in a working cluster?
-Yes, but keeping in mind the following processes.
-Do not forget to clear the commitlog with ‘nodetool drain’
-Turn off Cassandra to check that there is no data left in commitlog
-Delete the sstable files for the removed CFs
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is Replication Factor in Cassandra?
-Replication Factor is the measure of number of data copies existing. It is important to increase the replication factor to log into the cluster.
+*Also asked as: What is Replication Factor in Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## Can we change Replication Factor on a Live Cluster?
-Yes, but it will require running repair to alter the replica count of existing data.
+Yes, but it will require running repair to alter the replica count of existing data. Changing the replication strategy in the keyspace metadata only changes where future writes are sent; existing data is streamed to the new replicas by `nodetool repair` (or `nodetool rebuild` when adding an entire data center).
+
+```bash
+# 1. Change the topology metadata
+cqlsh -e "alter keyspace iot with replication = {'class':'NetworkTopologyStrategy','dc1':3,'dc2':3};"
+
+# 2. Stream the missing replicas to the new nodes
+nodetool repair -full iot
+
+# 3. In a new DC, build from an existing DC instead of repairing
+nodetool rebuild -- dc1
+```
+
+Do this during low traffic: repair and rebuild stream a lot of data and compete for disk and network. Over-replication (RF larger than the number of nodes in a DC) leads to duplicate copies on the same node and wasted space.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain Cap Theorem?
+With a strong requirement to scale systems when additional resources are needed, CAP Theorem plays a major role in maintaining the scaling strategy. It is an efficient way to handle scaling in distributed systems. Consistency, Availability and Partition tolerance (CAP) theorem states that in distributed systems like Cassandra, users can enjoy only two out of these three characteristics.
+
+One of them needs to be sacrificed. Consistency guarantees the return of the most recent write for the client, Availability returns a rational response within minimum time, and in Partition Tolerance the system will continue its operations when network partitions occur. The two options available are AP and CP.
+
+Cassandra is classically AP: the ring keeps serving reads and writes when nodes cannot reach each other, and the client chooses consistency per operation. A `QUORUM` write with `QUORUM` read gives strong consistency while a majority is reachable; when a partition removes a majority, those operations fail (unavailable) rather than returning stale-but-successful results. That single sentence - AP by default, CP per query when you ask for a quorum - is the answer interviewers are listening for.
+
+[Table of Contents](#Apache-Cassandra)
+
+## What are consistency levels in Cassandra?
+Cassandra lets clients choose consistency per read and write. `ONE` is faster and more available but can return stale data. `QUORUM` balances consistency and availability by requiring a majority of replicas. `ALL` is strongest but least available.
+
+The levels you must know:
+
++ `ONE` / `TWO` / `THREE`: that many replicas must respond, fastest and least consistent.
++ `QUORUM`: a majority of all replicas (`floor(RF/2) + 1`), for example 2 of RF=3.
++ `LOCAL_QUORUM`: a majority of replicas in the coordinator's data center only.
++ `EACH_QUORUM`: a quorum in every data center (writes only).
++ `LOCAL_ONE`: one replica in the local data center.
++ `ALL`: every replica must respond; any node down fails the operation.
++ `ANY`: at least one node (including a hinted handoff) accepts the write; weakest write level.
++ `SERIAL` / `LOCAL_SERIAL`: Paxos consistency for lightweight transactions.
+
+Example with replication factor 3:
+
+```text
+write consistency QUORUM = 2 replicas acknowledge
+read consistency QUORUM = 2 replicas respond
+```
+
+When read quorum plus write quorum is greater than the replication factor (`R + W > N`), the read set and write set must overlap, so a read is guaranteed to see the latest acknowledged write. That is strong consistency, and the trade-off is higher latency and lower tolerance for replica outages.
+
+```sql
+-- Per-query consistency override
+consistency local_quorum;
+select * from orders_by_customer where customer_id = 'C1';
+```
+
+```python
+from cassandra import ConsistencyLevel
+from cassandra.cluster import Cluster
+from cassandra.query import SimpleStatement
+
+cluster = Cluster(["10.0.0.11", "10.0.0.12", "10.0.0.13"])
+session = cluster.connect("shop")
+
+statement = SimpleStatement(
+    "select * from orders_by_customer where customer_id = %s",
+    consistency_level=ConsistencyLevel.LOCAL_QUORUM,
+)
+rows = session.execute(statement, ("C1",))
+```
+
+Reads that hit multiple replicas also run a read-repair (or a digest request when `read_repair_chance`/`dc_local_read_repair_chance` is enabled): the coordinator asks for the full data from one replica, asks another for a digest, and repairs the winner if they differ.
+
+*Also asked as: What do you mean by consistency in Cassandra? Define the Consistency Levels for Read Operations in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain the concept of tunable consistency in Cassandra?
+Tunable Consistency is a characteristic that makes Cassandra a favored database choice of Developers, Analysts and Big Data Architects. Consistency refers to the up-to-date and synchronized data rows on all their replicas. Cassandra's Tunable Consistency allows users to select the consistency level best suited to their use cases. It supports two consistencies - Eventual Consistency and Strong Consistency.
+
+The former guarantees consistency when no new updates are made on a given data item: all accesses return the last updated value eventually. Systems with eventual consistency are known to have achieved replica convergence.
+
+For strong consistency, Cassandra supports the following condition:
+
+R + W > N, where
+
+N - Number of replicas
+W - Number of nodes that need to agree for a successful write
+R - Number of nodes that need to agree for a successful read
+
+```text
+RF=3, W=ONE,   R=ONE   -> 1+1=2 <= 3, eventual consistency, fastest
+RF=3, W=QUORUM,R=QUORUM-> 2+2=4 >  3, strong consistency, balanced
+RF=3, W=ALL,   R=ONE   -> 3+1=4 >  3, strong but a single node failure blocks writes
+RF=5, W=LOCAL_QUORUM, R=LOCAL_QUORUM in one DC -> 3+3>5 within the DC
+```
+
+Common pairings: `ONE`/`ONE` for high-volume metrics where a slightly stale reading is acceptable, `LOCAL_QUORUM`/`LOCAL_QUORUM` for user-facing data in a multi-DC deployment, and `QUORUM`/`ALL` or LWT for anything with a uniqueness or money invariant. Consistency is chosen per request, not per cluster, so a single keyspace can serve both.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Does Cassandra support ACID transactions?
+Unlike relational databases, Cassandra does not support full ACID transactions across partitions. It offers something narrower, and the precise answer matters:
+
+- Atomicity and isolation are guaranteed at the single-partition level: a mutation to one partition is applied atomically, and each partition is updated in isolation.
+- Durability is provided by the commit log plus replication.
+- Consistency is configurable via consistency levels and, for compare-and-set semantics, lightweight transactions (LWT).
+- Across partitions, there is no rollback. A `BATCH` is atomic in the sense that it will eventually apply, but a logged batch is not isolated and can partially apply if the coordinator dies mid-flight.
+
+```sql
+-- Lightweight transaction: Paxos, strong but 4x slower; use sparingly
+insert into users_by_email (email, user_id) values ('a@example.com', 7b1e...)
+  if not exists;
+
+-- Condition on an existing row
+update claims set status = 'assigned', owner = 'agent-7'
+  where claim_id = 'c-1'
+  if status = 'new';
+
+-- Logged batch: multiple tables, same partition key where possible, atomic eventually
+begin batch
+  insert into users_by_id (user_id, email) values (7b1e..., 'a@example.com');
+  insert into users_by_email (email, user_id) values ('a@example.com', 7b1e...);
+apply batch;
+```
+
+```python
+result = session.execute(
+    "insert into users_by_email (email, user_id) values (%s, %s) if not exists",
+    ("a@example.com", user_id),
+)
+if not result.was_applied:
+    existing = result.one()
+```
+
+Best practice: keep the invariant inside one partition so a single atomic mutation suffices. Use LWT when you must have uniqueness, and remember that a failed LWT is not an error - check `was_applied`.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain how Cassandra delete data?
+SSTables are immutable and cannot remove a row from SSTables. When a row needs to be deleted, Cassandra writes a special value called a Tombstone. When the data is read, the Tombstone value is considered as deleted. The tombstone is written with a timestamp and lives for `gc_grace_seconds` (default 10 days), after which compaction may discard it - but only if every replica has seen it.
+
+```sql
+-- Row delete: tombstone for the whole partition
+delete from orders_by_customer where customer_id = 'C1';
+
+-- Column delete: tombstone for one cell
+delete amount from orders_by_customer where customer_id = 'C1' and order_ts = '...';
+
+-- Range delete
+delete from readings where sensor_id = 's-1' and ts < '2026-01-01T00:00:00Z';
+
+-- TTL delete: cell expires instead of being explicitly deleted
+insert into sessions (user_id, token, expires_at) values ('u-1', 'abc', toTimestamp(now()))
+  using ttl 3600;
+```
+
+```bash
+nodetool tablestats iot.readings | grep -i tombstone
+nodetool garbagecollect iot readings     # drop tombstones past gc_grace_seconds
+nodetool repair iot                      # essential before tombstones can be dropped
+```
+
+*Also asked as: How does Cassandra delete data?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain Tombstone in Cassandra?
+Tombstone is a marker indicating a column or row deletion. These marked columns are deleted during compaction. Tombstones are of great significance as Cassandra supports eventual consistency, where a delete must be recorded rather than simply omitted, otherwise a delayed replica could resurrect the data.
+
+The lifecycle and the failure mode to describe:
+
++ A tombstone has a timestamp; a later write with a higher timestamp can overwrite ("resurrect") the value - this is intentional.
++ Tombstones are kept for `gc_grace_seconds` (default 864000 = 10 days) to give every replica time to learn about the delete.
++ If a node has been down longer than `gc_grace_seconds` and repair did not run, compaction can drop the tombstone on the live replicas; when the stale node returns it still has the old value and can resurrect deleted data. That is why skipping repair for more than 10 days is dangerous.
++ Reading a range with many tombstones is slow: the coordinator must scan and filter all of them, and warnings appear in the logs (`Read ... tombstone cells`).
+
+```sql
+-- Lower gc_grace_seconds only for tables that are repaired frequently
+alter table sessions with gc_grace_seconds = 86400;
+
+-- Set a TTL so data expires instead of accumulating tombstones forever
+insert into sessions (user_id, token) values ('u-1', 'abc') using ttl 3600;
+```
+
+```bash
+# Tombstone counts per table and the fix
+nodetool tablestats iot.sessions | grep -i tombstone
+nodetool repair -full iot
+nodetool garbagecollect iot sessions
+```
+
+*Also asked as: What is Tombstone in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is difference between Column and Super Column?
+Both elements work on the principle of a tuple having name and value. However, the former's value is a string while the value in the latter is a Map of Columns with different data types. Unlike Columns, Super Columns do not contain the third component of timestamp.
+
+```text
+Column:       name -> (value, timestamp)
+SuperColumn:  name -> { col1 -> (v1, ts1), col2 -> (v2, ts2), ... }
+```
+
+Super columns were a Thrift-era construct that nested a map of columns under one name; they were removed because the whole super column had to be read and written as one unit, and their inner columns shared a single row-level ordering. They are gone from modern Cassandra. The CQL equivalents are:
+
+```sql
+-- Replaces "super column" nesting: clustering columns give the inner map
+create table user_contacts (
+  user_id text,
+  contact_type text,
+  contact_value text,
+  primary key ((user_id), contact_type)
+);
+
+-- Or collections / UDTs for small, bounded nested values
+create type phone (country text, number text);
+create table users (
+  user_id uuid primary key,
+  phones map<text, frozen<phone>>
+);
+```
+
+*Also asked as: What is SuperColumn in Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Explain what is Cassandra cqlsh?
+Cassandra cqlsh is a query language shell that enables users to communicate with its database. By using Cassandra cqlsh, you can do the following things:
+
++ Define a schema
++ Insert data and
++ Execute a query
+
+Beyond DDL and DML, cqlsh is the operator's console: `DESCRIBE` prints schema, `COPY` moves CSV, `SOURCE` runs a file, `CAPTURE` records output, `CONSISTENCY` sets the level, and `TRACING` shows where a query spent its time.
+
+```bash
+cqlsh                                        # local node, default port 9042
+cqlsh 10.0.0.11 9042 -u app -p secret -k iot
+cqlsh --version                              # cqlsh version (also: cqlsh-version)
+cqlsh -e "describe keyspace iot"
+```
+
+```text
+cqlsh:iot> DESCRIBE TABLES;
+cqlsh:iot> CONSISTENCY LOCAL_QUORUM;
+cqlsh:iot> TRACING ON;
+cqlsh:iot> SELECT * FROM readings WHERE sensor_id = 's-1' LIMIT 5;
+cqlsh:iot> CAPTURE '/tmp/readings.out';
+cqlsh:iot> SOURCE 'schema.cql';
+cqlsh:iot> COPY readings TO 'readings.csv' WITH HEADER = TRUE;
+```
+
+*Also asked as: Which command is used to start the cqlsh prompt? What is the usage of cqlsh version command?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Mention what does the Shell Commands capture And consistency determines?
+There are various cqlsh shell commands in Cassandra. Command "CAPTURE", captures the output of a command and adds it to a file, while command "CONSISTENCY" displays the current consistency level or sets a new consistency level.
+
+```text
+cqlsh> CAPTURE '/tmp/session.log';   -- start capturing all output
+cqlsh> SELECT * FROM orders_by_customer LIMIT 10;
+cqlsh> CAPTURE OFF;                  -- stop capturing
+
+cqlsh> CONSISTENCY;                  -- show the current level, e.g. LOCAL_ONE
+cqlsh> CONSISTENCY QUORUM;           -- set it for the rest of the session
+cqlsh> CONSISTENCY LOCAL_QUORUM;
+```
+
+Other frequently used shell commands: `SOURCE 'file.cql'` executes a file, `DESCRIBE` introspects schema, `EXPAND ON` prints wide rows vertically (much easier to read), `PAGING 100` controls page size, and `TRACING ON` explains query routing and timing.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Define the use of Source Command in Cassandra?
+Source command is used to execute a file consisting of CQL statements. It is the cqlsh equivalent of `cqlsh -f` and is how schema and seed data are usually applied.
+
+```text
+cqlsh> SOURCE '/opt/app/schema.cql';
+cqlsh> SOURCE '/opt/app/seed_data.cql';
+```
+
+```bash
+# Non-interactive equivalent used in CI and migrations
+cqlsh -f /opt/app/schema.cql -k iot
+cqlsh -e "source '/opt/app/schema.cql'"
+```
+
+Keep schema files idempotent with `create table if not exists` and `create keyspace if not exists` so re-running them in a deployment pipeline is safe.
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is the usage of void close method?
+In Cassandra, the void close() method is used to close the current session instance. It releases the driver's connections and background threads, and in Java it is `session.close()` / `cluster.close()`; other drivers expose the same lifecycle. Always close sessions on application shutdown so the driver does not keep reconnect timers alive.
+
+```python
+from cassandra.cluster import Cluster
+
+cluster = Cluster(["10.0.0.11", "10.0.0.12", "10.0.0.13"])
+session = cluster.connect("iot")
+try:
+    session.execute("select release_version from system.local")
+finally:
+    session.shutdown()   # closes the session
+    cluster.shutdown()   # closes the underlying connections and pools
+```
+
+[Table of Contents](#Apache-Cassandra)
+
+## Mention when you can use Alter Keyspace?
+ALTER KEYSPACE can be used to change properties such as the number of replicas, the replication strategy, and the durable_writes of a keyspace. It changes metadata only and does not move data.
+
+```sql
+-- Add a data center or change RF
+alter keyspace iot
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3, 'dc2': 3}
+  and durable_writes = true;
+```
+
+After an RF change, run `nodetool repair -full` (or `nodetool rebuild -- <dc>` for a brand-new DC) so the new replicas actually receive the data. `ALTER KEYSPACE` cannot change the keyspace name or its partitioner.
+
+*Also asked as: What is the role of ALTER KEYSPACE?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## What platforms does Cassandra run on?
+Cassandra is a Java application, so it runs on any platform with a supported Java Runtime Environment (JRE), and it is commonly deployed on RedHat, CentOS, Debian and Ubuntu Linux. It also runs on Windows, though production deployments are overwhelmingly Linux because of tuning, tooling, and filesystem behavior (ext4/xfs with direct I/O and `nodetool` expectations).
+
+```bash
+java -version                    # Cassandra 4.x requires Java 8 or 11; 5.x requires 11 or 17
+cat /etc/os-release
+nodetool version
+```
+
+Containers are a first-class deployment target as well (official images), but Cassandra wants fast local storage with predictable IOPS: ephemeral container filesystems without persistent volumes are a common and expensive mistake.
+
+*Also asked as: What os Cassandra supports? Does Cassandra work on Windows?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## Name the ports Cassandra uses?
+The default settings state that Cassandra uses 7000 for cluster management (internode, 7001 TLS), 9042 for the CQL native protocol, 7199 for JMX, and 9160 for the legacy Thrift client. Only 9042 is needed by modern clients. These are TCP ports and are configured in `cassandra.yaml` (`storage_port`, `ssl_storage_port`, `native_transport_port`) and `cassandra-env.sh` for JMX.
+
+| Port | Purpose |
+|---|---|
+| 9042 | CQL native transport (clients, cqlsh, drivers) |
+| 7000 | internode communication (gossip, streaming, repair) |
+| 7001 | internode TLS |
+| 7199 | JMX monitoring |
+| 9160 | Thrift (legacy, removed in modern releases) |
+| 8080 | optional REST/metrics endpoint in some distributions |
+
+[Table of Contents](#Apache-Cassandra)
+
+## Can you Add Or Remove column families in a working cluster?
+Yes. Adding a table is a `CREATE TABLE` and is safe at any time; removing one is `DROP TABLE` and is also supported on a live cluster. The old Thrift-era procedure (drain the node, stop Cassandra, delete SSTable files by hand) is obsolete and dangerous - never delete SSTable files manually while the node is running.
+
+```sql
+create table if not exists new_events (
+  user_id text,
+  event_ts timestamp,
+  payload text,
+  primary key ((user_id), event_ts)
+);
+
+drop table if exists old_events;
+```
+
+```bash
+nodetool flush iot old_events    # optional: flush before dropping if you want a clean snapshot
+nodetool describering iot        # confirm the schema propagated
+```
+
+Schema changes propagate through gossip as a schema version and are cluster-wide and blocking in older releases; in modern Cassandra use `nodetool describecluster` to confirm all nodes agree, and avoid concurrent DDL from multiple clients.
 
 [Table of Contents](#Apache-Cassandra)
 
 ## How to Iterate all rows in ColumnFamily?
-Using get_range_slices. You can start iteration with the empty string and after each iteration, the last key read serves as the start key for next iteration.
+Iterating all rows is a full scan, and a full scan of a distributed table should be avoided for large data. The right approaches are token-range scans (split the ring), the driver's automatic paging, or an analytics engine such as Spark.
+
+```python
+from cassandra.cluster import Cluster
+from cassandra.query import SimpleStatement
+
+cluster = Cluster(["10.0.0.11"])
+session = cluster.connect("iot")
+
+# Driver paging: fetch_size controls how many rows are buffered per round trip
+statement = SimpleStatement("select sensor_id, ts, value from readings")
+statement.fetch_size = 500
+for row in session.execute(statement):
+    process(row)
+
+# Token-range scan: split the ring across workers instead of one giant scan
+token_ranges = cluster.metadata.token_map.token_to_host_owner  # illustrative
+for start, end in [(None, "-9223372036854775808"), ("-9223372036854775808", None)]:
+    rows = session.execute(
+        SimpleStatement(
+            "select sensor_id, ts, value from readings "
+            "where token(sensor_id) > %s and token(sensor_id) <= %s",
+            fetch_size=1000,
+        ),
+        (start, end),
+    )
+```
+
+Older drivers exposed `get_range_slices` over Thrift, where you started with an empty key and used the last key read as the next start key. That API is gone; the modern equivalent is `token()` ranges plus paging, and for real bulk analytics, export to Spark or run a full scan with `nodetool`-sized concurrency.
 
 [Table of Contents](#Apache-Cassandra)
 
-## Explain Cassandra.
-Cassandra is a popular NOSQL database management system used to handle large amount of data. It is free and open source distributed database that provides high availability without any failure.
+## List the benefits of using Cassandra?
+Unlike traditional databases, Apache Cassandra delivers near real-time performance, simplifying the work of Developers, Administrators, Data Analysts and Software Engineers.
+
+Instead of master-slave architecture, Cassandra is established on peer-to-peer architecture ensuring no single point of failure.
+It also assures flexibility as it allows insertion of multiple nodes to any Cassandra cluster in any datacenter. Further, any client can forward its request to any server.
+Cassandra facilitates extensible scalability and can be easily scaled up and scaled down as per the requirements. With a high throughput for read and write operations, this NoSQL application need not be restarted while scaling.
+Cassandra is also revered for its strong data replication capability as it allows data storage at multiple locations enabling users to retrieve data from another location if one node fails. Users have the option to set up the number of replicas they want to create.
+It shows brilliant performance when used for massive datasets and thus is the most preferable NoSQL DB by most organizations.
+It operates on a column-oriented structure, which quickens and simplifies the process of slicing. Even data access and retrieval become more efficient with a column-based data model.
+Further, Apache Cassandra supports a schema-free/schema-optional data model, which un-necessitates the purpose of showing all the columns required by your application.
+
+The honest version: linear write scaling, no master, multi-DC replication, and tunable consistency are the real benefits. The costs are no joins, a schema that must be designed per query, and operational discipline around repair and compaction.
+
+*Also asked as: What are the benefits and advantages of Cassandra?*
+
+[Table of Contents](#Apache-Cassandra)
+
+## What is the use of Cassandra and why to use Cassandra?
+Cassandra was designed to handle big data workloads across multiple nodes without any single point of failure. The various factors responsible for using Cassandra are:
+
++ It is fault tolerant and consistent
++ Gigabyte to petabyte scalability
++ It is a column-oriented database
++ No single point of failure
++ No need for a separate caching layer
++ Flexible schema design
++ It has flexible data storage, easy data distribution, and fast writes
++ It supports tunable consistency (not full ACID - do not overstate this)
++ Multi-data center and cloud capable
++ Data compression
+
+The design goal was to handle big data workloads across multiple nodes without a single point of failure, and to keep writing when nodes fail. Use Cassandra for high-volume, append-mostly, known-access-pattern workloads: time series, event and log ingestion, messaging, IoT telemetry, and large user activity stores. Do not use it as a general-purpose relational replacement.
+
+*Also asked as: What was the design goal of Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## In which language Cassandra is written?
-Cassandra is written in Java. It is originally designed by Facebook consisting of flexible schemas. It is highly scalable for big data.
+Cassandra is written in Java. It was originally designed by Facebook, consists of flexible schemas, and is highly scalable for big data.
+
+```bash
+# Confirm the runtime and version on any node
+nodetool version
+java -version
+```
+
+Because it is a JVM application, tuning the JVM (heap size, garbage collector - G1 in modern releases) is part of Cassandra operations. A heap that is too large makes GC pauses longer and worse, which is why Cassandra typically keeps the heap modest and relies on off-heap structures such as the Bloom filters.
 
 [Table of Contents](#Apache-Cassandra)
 
-## Which query language is used in Cassandra database?
-Cassandra introduced its own Cassandra Query Language (CQL). CQL is a simple interface for accessing Cassandra, as an alternative to the traditional Structured Query Language (SQL).
+## Define the management tools in Cassandra?
+DataStax OpsCenter: web-based management and monitoring solution for a Cassandra cluster and DataStax Enterprise. It was free to download and included an additional edition of OpsCenter.
+SPM primarily administers Cassandra metrics and various OS and JVM metrics. Besides Cassandra, SPM also monitors Hadoop, Spark, Solr, Storm, ZooKeeper and other Big Data platforms. The main features of SPM include correlation of events and metrics, distributed transaction tracing, creating real-time graphs with zooming, anomaly detection and heartbeat alerting.
 
-[Table of Contents](#Apache-Cassandra)
-
-## What are the benefits and advantages of Cassandra?
-Cassandra delivers real-time performance simplifying the work of Developers, Administrators, Data Analysts and Software Engineers.
-It provides extensible scalability and can be easily scaled up and scaled down as per the requirements.
-Data can be replicated to several nodes for fault-tolerance.
-Being a distributed management system, there is no single point of failure.
-Every node in a cluster contains different data and able to serve any request.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Where Cassandra stores its data?
-Cassandra stores its data in the data dictionary.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What was the design goal of Cassandra?
-The main design goal of Cassandra was to handle big data workloads across multiple nodes without a single point of failure.
+Modern equivalents to name instead: `nodetool` (status, ring, tablestats, tpstats, compactionstats, repair, netstats, proxyhistograms), Prometheus with the JMX exporter or `collectd`, `metrics-collector`, and managed offerings (DataStax Astra, AWS Keyspaces, Azure Managed Instance for Apache Cassandra). `cqlsh` handles schema and ad-hoc queries; Reaper orchestrates repair schedules.
 
 [Table of Contents](#Apache-Cassandra)
 
 ## How many types of NoSQL databases and give some examples.
 There are mainly 4 types of NoSQL databases:
-+ Document store types ( MongoDB and CouchDB)
-+ Key-Value store types ( Redis and Voldemort)
-+ Column store types ( Cassandra)
-+ Graph store types ( Neo4j and Giraph)
 
-[Table of Contents](#Apache-Cassandra)
++ Document store types (MongoDB and CouchDB)
++ Key-Value store types (Redis and Voldemort)
++ Column store types (Cassandra, HBase)
++ Graph store types (Neo4j and Giraph)
 
-## What is keyspace in Cassandra?
-In Cassandra, a keyspace is a namespace that determines data replication on nodes. A cluster contains of one keyspace per node.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What are the different composite keys in Cassandra?
-In Cassandra, composite keys are used to define key or a column name with a concatenation of data of different type. There are two types of Composite key in Cassandra:
-+ Row Key
-+ Column Name
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is data replication in Cassandra?
-Data replication is an electronic copying of data from a database in one computer or server to a database in another so that all users can share the same level of information. Cassandra stores replicas on multiple nodes to ensure reliability and fault tolerance. The replication strategy decides the nodes where replicas are placed.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is node in Cassandra?
-In Cassandra, node is a place where data is stored.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What do you mean by data center in Cassandra?
-Data center is a complete data of clusters.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What do you mean by commit log in Cassandra?
-In Cassandra, commit log is a crash-recovery mechanism. Every write operation is written to the commit log.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What do you mean by column family in Cassandra?
-Column family is a table in RDMS that contains an ordered collection of rows.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What do you mean by consistency in Cassandra?
-Consistency in Cassandra specifies how to synchronize and up to date a row of Cassandra data and its replicas.
-
-[Table of Contents](#Apache-Cassandra)
-
-## How does Cassandra perform write function?
-Cassandra performs the write function by applying two commits:
-First commit is applied on disk and then second commit to an in-memory structure known as memtable.
-When the both commits are applied successfully, to write is achieved.
-Writes are written in the table structure as SSTable (sorted string table).
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is SSTable?
-SSTable is a short form of 'Sorted String Table'. It refers to an important data file in Cassandra and accepts regular written memtables. They are stored on disk and exist for each Cassandra table.
-
-[Table of Contents](#Apache-Cassandra)
-
-## How the SSTable is different from other relational tables?
-SStables do not allow any further addition and removal of data items once written. For each SSTable, Cassandra creates three separate files like partition index, partition summary and a bloom filter.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is the role of ALTER KEYSPACE?
-ALTER KEYSPACE is used to change the value of DURABLE_WRITES with its related properties.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What are the differences between node and cluster and datacenter in Cassandra?
-+ Node: A node is a single machine running Cassandra.
-+ Cluster: A cluster is a collection of nodes that contains similar types of data together.
-+ Datacenter: A datacenter is a useful component when serving customers in different geographical areas. Different nodes of a cluster can be grouped into different data centers.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is the use of Cassandra CQL collection?
-Cassandra CQL collection is used to collect the data and store it in a column where each collection represents the same type of data. CQL consist of three types of types:
-+ SET: It is a collection of unordered list of unique elements.
-+ List: It is a collection of elements arranged in an order and can contain duplicate values.
-+ MAP: It is a collection of unique elements in a form of key-value pair.
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is the use of Bloom Filter in Cassandra?
-On a request of a data, before doing any disk I/O Bloom filter checks whether the requested data exist in the row of SSTable.
-
-[Table of Contents](#Apache-Cassandra)
-
-## How does Cassandra delete data?
-In Cassandra, to delete a row, it is required to associate the value of column to Tombstone (where Tombstone is a special value).
-
-[Table of Contents](#Apache-Cassandra)
-
-## What is SuperColumn in Cassandra?
-In Cassandra, SuperColumn is a unique element containing similar collection of data. They are actually key-value pairs with values as columns.
+Cassandra is a wide-column store: it is not key-value because rows have multiple columns and clustering, and it is not a document store because values do not nest arbitrarily. The distinction matters because the query model follows from it - Cassandra queries are range scans within a partition, not document lookups by arbitrary nested path.
 
 [Table of Contents](#Apache-Cassandra)
 
 ## What are the Hadoop and HBase and Hive and Cassandra?
-Hadoop, HBase, Hive and Cassandra all are Apache products.
-Apache Hadoop supports file storage, grid compute processing via Map reduce. Apache Hive is a SQL like interface on the top of Hadoop. 
-Apache HBase follows column family storage built like Big Table. 
-Apache Cassandra also follows column family storage built like Big Table with Dynamo topology and consistency.
+Hadoop, HBase, Hive and Cassandra are all Apache products.
+
+Apache Hadoop supports file storage and grid compute processing via MapReduce. Apache Hive is a SQL-like interface on top of Hadoop. Apache HBase follows column-family storage built like Bigtable. Apache Cassandra also follows column-family storage built like Bigtable with Dynamo topology and consistency.
+
+The practical difference: HBase depends on Hadoop/HDFS and has a master (HMaster) for coordination; Cassandra is masterless with its own storage, which is why it can run on plain commodity disks with no HDFS. Cassandra integrates with the Hadoop ecosystem through Spark (the recommended analytics path) rather than through HDFS directly.
 
 [Table of Contents](#Apache-Cassandra)
 
-## What is the usage of void close method?
-In Cassandra, the void close() method is used to close the current session instance.
+## What is Thrift?
+Thrift is a legacy RPC protocol or API unified with a code generation tool for CQL. The purpose of using Thrift in Cassandra was to facilitate access to the DB across programming languages.
 
-[Table of Contents](#Apache-Cassandra)
+Thrift was the original client API (ports 9160) and the reason the old "column family", "super column", "comparator" and "validator" vocabulary exists. It was deprecated in Cassandra 2.x and removed in 4.0; the native CQL binary protocol on port 9042 with drivers for Java, Python, Go, Node.js, C#, Rust and others replaced it entirely.
 
-## Which command is used to start the cqlsh prompt?
-The cqlsh command is used to start the cqlsh prompt.
+```text
+legacy:  client -> Thrift (9160) -> Cassandra
+modern:  client -> CQL native protocol (9042) -> Cassandra
+```
 
-[Table of Contents](#Apache-Cassandra)
+If an interviewer asks about Thrift, the correct modern answer is "historical, removed, use a CQL driver".
 
-## What is the usage of cqlsh version command?
-The "cqlsh-version" command is used to provide the version of the cqlsh you are using.
-
-[Table of Contents](#Apache-Cassandra)
-
-## Does Cassandra work on Windows?
-Yes. Cassandra is compatible on Windows and works pretty well. Now its Linux and Window compatible version are available.
+*Also asked as: What do you mean by Thrift in Cassandra?*
 
 [Table of Contents](#Apache-Cassandra)
 
 ## What is Kundera in Cassandra?
-In Cassandra, Kundera is an object-relational mapping (ORM) implementation which is written using Java annotations.
+In Cassandra, Kundera is an object-relational mapping (ORM) implementation written using Java annotations. It is a legacy third-party library that mapped JPA-style entities onto Cassandra's column families.
 
-[Table of Contents](#Apache-Cassandra)
+Modern applications use the DataStax Java driver directly with `@Table`, `@PartitionKey` and `@ClusteringColumn` (object mapping) rather than a JPA-style ORM, because JPA semantics (joins, lazy loading, arbitrary predicates) do not map onto a distributed wide-column store, and an ORM that hides the partition key hides the thing that determines performance.
 
-## What do you mean by Thrift in Cassandra?
-Thrift is the name of RPC client which is used to communicate with the Cassandra Server.
+```text
+// modern object mapping in the DataStax driver (Java)
+@Table(keyspace = "iot", name = "readings")
+public class Reading {
+    @PartitionKey private String sensorId;
+    @ClusteringColumn private Instant ts;
+    private double value;
+}
+```
 
 [Table of Contents](#Apache-Cassandra)
 
 ## What is Hector in Cassandra?
-Hector was one of the early Cassandra clients. It is an open source project written in Java using the MIT license.
+Hector was one of the early Cassandra clients. It is an open source project written in Java using the MIT license. It is a Thrift-era client and is dead: it does not work with Cassandra 4.0 and later.
+
+Modern equivalents to name: the DataStax Java driver, `cassandra-driver` for Python, `gocql` for Go, `cassandra-driver` for Node.js, and the Spring Data Cassandra / Quarkus extensions built on the Java driver.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Mention what needs to be taken care while adding a Column?
++ While adding a column you need to take care that the column name is not conflicting with the existing column names.
++ The table is not defined with the compact storage option (obsolete in modern Cassandra).
++ The new column is always nullable: CQL has no `DEFAULT` or `NOT NULL` column constraint, so existing rows simply have no value for it.
+
+```sql
+alter table users add last_login timestamp;
+alter table users add country text static;         -- static: one value per partition
+alter table users add rating int;                  -- nullable; null until a write sets it
+
+-- Remove a column (writes tombstones for existing data)
+alter table users drop rating;
+```
+
+Adding a column is metadata-only and instant because Cassandra is schema-on-read: old SSTables simply do not contain it. Dropping a column creates tombstones and should be done during low traffic. Changing a column's type is only allowed for compatible widenings.
+
+[Table of Contents](#Apache-Cassandra)
+
+## What are the trade-offs and when should you not use Cassandra?
+- Consistency vs availability: `LOCAL_QUORUM` reads and writes give strong consistency inside a DC but require a majority of replicas to be up, so a rack failure can block writes. `ONE` keeps serving during failures but returns stale data and, with hinted handoff, can acknowledge a write that no live replica holds yet. Pick per query, and document the choice.
+- Eventual consistency and reconciliation: replicas converge only after read repair, hinted handoff, or `nodetool repair`. If repair does not run within `gc_grace_seconds`, deleted data can be resurrected. Repair is not optional maintenance - it is part of the consistency model.
+- Hot partitions: partitioning by a low-cardinality key (`status`, `country`) or by a monotonically increasing key (`ts` alone) concentrates load on one node and one token range. There is no query planner to save you; a partition is served by a single node, so a single partition can never be read faster than one machine allows.
+- Unbounded partitions: a partition that grows forever (all events of one user) eventually exceeds the practical size limit, triggers GC pressure, and makes reads slow. Bucket by time (`primary key ((user_id, month), ts)`) to keep partitions bounded.
+- Write amplification: every write goes to the commit log and the memtable, then is rewritten during compaction. Tuning for read latency (leveled compaction) increases write amplification, and vice versa. A high read_repair or heavy tombstone load multiplies the effects.
+- No joins, no ad-hoc queries, no aggregations at scale: every new query shape usually needs a new table and a backfill. `ALLOW FILTERING` scans the cluster. Standard `count(*)` on a large table is a full scan.
+- When NOT to use Cassandra: strong multi-row transactional systems (ledgers that must commit across entities), workloads dominated by ad-hoc analytical queries and joins, small datasets (a single PostgreSQL instance is simpler and faster), read-heavy workloads with flexible filter patterns, and anything where the team cannot commit to running repair, monitoring compaction, and designing a table per query.
+
+[Table of Contents](#Apache-Cassandra)
+
+## Real world use cases for Cassandra
+
+### 1. IoT sensor telemetry
+
+Business context: an industrial monitoring platform with 40,000 sensors writing every 10 seconds (~345M rows/day, ~126B rows/year before TTL). Access patterns: last 24 hours for one sensor for dashboards, last 30 days for one sensor for anomaly review, and almost never cross-sensor queries. Retention is 90 days with TTL.
+
+Schema design: partition by `(sensor_id, day)` so each partition is bounded and one day of one sensor (8,640 rows) is a cheap range scan; cluster by `ts` descending. TWCS with a 1-day window means expired windows are dropped whole.
+
+```sql
+create keyspace iot
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3};
+
+create table iot.readings_by_sensor_day (
+  sensor_id text,
+  day date,
+  ts timestamp,
+  value double,
+  quality tinyint,
+  primary key ((sensor_id, day), ts)
+) with clustering order by (ts desc)
+  and default_time_to_live = 7776000
+  and compaction = {
+    'class': 'TimeWindowCompactionStrategy',
+    'compaction_window_unit': 'DAYS',
+    'compaction_window_size': 1
+  };
+
+-- Anomaly review: last 30 days, one sensor, newest first
+select ts, value, quality
+from iot.readings_by_sensor_day
+where sensor_id = 's-1042'
+  and day in ('2026-10-04', '2026-10-03', '2026-10-02')
+order by ts desc
+limit 1000;
+```
+
+```python
+from datetime import datetime, timezone
+from cassandra.cluster import Cluster
+
+cluster = Cluster(["10.0.0.11", "10.0.0.12", "10.0.0.13"])
+session = cluster.connect("iot")
+
+insert_reading = session.prepare(
+    "insert into readings_by_sensor_day (sensor_id, day, ts, value, quality) "
+    "values (?, ?, ?, ?, ?)"
+)
+now = datetime.now(timezone.utc)
+session.execute(insert_reading, ("s-1042", now.date(), now, 21.7, 0))
+```
+
+Why this design: writes are pure appends spread evenly across the ring; every read touches exactly one partition per day and is served by one node; TTL plus TWCS removes old data without a delete job. The partitioning key is high-cardinality and non-monotonic, so no hot node.
+
+### 2. User activity feed and inbox
+
+Business context: a messaging product with 200M users; the inbox for a user must load in under 50 ms, and messages arrive at ~50k/s at peak (about 4B/day). Access patterns: newest N messages in one conversation, mark-as-read, and unread counts. There is no need to query "all messages by sender" online.
+
+Schema design: one table per query. `messages_by_conversation` partitions by `(conversation_id, bucket)` with `bucket` derived from the month or a bucket id to bound partition size; cluster by `message_id` (a `timeuuid`) descending so the newest messages sort naturally.
+
+```sql
+create table chat.messages_by_conversation (
+  conversation_id uuid,
+  bucket int,                       -- e.g. year*100 + month, bounds the partition
+  message_id timeuuid,
+  sender_id uuid,
+  body text,
+  primary key ((conversation_id, bucket), message_id)
+) with clustering order by (message_id desc)
+  and compaction = {'class': 'TimeWindowCompactionStrategy',
+                    'compaction_window_unit': 'MONTHS',
+                    'compaction_window_size': 1};
+
+-- Denormalized second table for the same event, queried by user
+create table chat.conversations_by_user (
+  user_id uuid,
+  last_message_at timestamp,
+  conversation_id uuid,
+  unread int,
+  primary key ((user_id), last_message_at, conversation_id)
+) with clustering order by (last_message_at desc);
+```
+
+```python
+from cassandra.util import uuid_from_time
+from datetime import datetime, timezone
+
+message_id = uuid_from_time(datetime.now(timezone.utc))
+session.execute(
+    "insert into chat.messages_by_conversation "
+    "(conversation_id, bucket, message_id, sender_id, body) values (%s, %s, %s, %s, %s)",
+    (conversation_id, 202610, message_id, sender_id, body),
+)
+# Unread counter for the recipient, same logical event, second table
+session.execute(
+    "update chat.conversations_by_user set unread = unread + 1, "
+    "last_message_at = %s where user_id = %s and last_message_at = %s and conversation_id = %s",
+    (datetime.now(timezone.utc), recipient_id, last_message_at, conversation_id),
+)
+```
+
+Why this design: reads are single-partition and never join; writes are duplicated into the tables that serve the two known queries. Bucketing keeps a very chatty conversation from creating an unbounded partition. The trade-off is that the application owns both writes - there is no join to reconstruct the second view.
+
+### 3. Multi-tenant SaaS event store
+
+Business context: a B2B analytics SaaS ingesting 5,000 events/s across 2,000 tenants, with one tenant producing 40% of the volume. Access patterns: recent events for one tenant (filtered by event type), hourly rollups per tenant, and export to a warehouse nightly. Retention is 30 days in Cassandra and everything in S3.
+
+Schema design: partition by `(tenant_id, hour)` so even the largest tenant is spread across many partitions and every read is tenant-scoped; cluster by `event_ts` and `event_id`, and keep a `day` rollup table for dashboards. The big tenant's volume is handled by partition granularity rather than by a special case.
+
+```sql
+create keyspace saas
+  with replication = {'class': 'NetworkTopologyStrategy', 'dc1': 3, 'dc2': 3};
+
+create table saas.events_by_tenant_hour (
+  tenant_id text,
+  hour timestamp,
+  event_ts timestamp,
+  event_id timeuuid,
+  event_type text,
+  payload text,
+  primary key ((tenant_id, hour), event_ts, event_id)
+) with clustering order by (event_ts desc)
+  and default_time_to_live = 2592000;
+
+create table saas.event_counts_by_tenant_day (
+  tenant_id text,
+  day date,
+  event_type text,
+  count counter,
+  primary key ((tenant_id, day), event_type)
+);
+```
+
+```sql
+-- Update a counter table (counters are their own table type)
+update saas.event_counts_by_tenant_day
+  set count = count + 1
+  where tenant_id = 't-88' and day = '2026-10-04' and event_type = 'checkout';
+
+-- Dashboard query for one tenant, one hour
+select event_type, event_ts, payload
+from saas.events_by_tenant_hour
+where tenant_id = 't-88' and hour = '2026-10-04T14:00:00Z'
+  and event_ts >= '2026-10-04T14:00:00Z'
+limit 200;
+```
+
+Why this design: hour-bucketed partitions stay bounded no matter how large a tenant grows, and `LOCAL_QUORUM` in each data center keeps tenant latency local. Counters are a native Cassandra feature with a caveat: counter updates are not idempotent under retries, so the safer pattern for exact counts is to read from the events table or compute rollups in Spark and write the result with normal `update ... set count = ?`.
+
+### 4. Fintech ledger and idempotent writes
+
+Business context: a payments ledger appending double-entry records at 5,000 writes/s with a strict rule that a retried request must never post twice. Access patterns: all entries for one account ordered by time, lookup by transaction id, and daily reconciliation by account and day.
+
+Schema design: partition by `(account_id, month)` to bound history per account, cluster by `entry_ts` and `entry_id`; a separate table unique on `transaction_id` implements the idempotency guarantee with a lightweight transaction; every write uses `LOCAL_QUORUM` with `SERIAL` for the LWT.
+
+```sql
+create table ledger.entries_by_account_month (
+  account_id text,
+  month text,                         -- '2026-10'
+  entry_ts timestamp,
+  entry_id timeuuid,
+  amount decimal,
+  direction text,
+  transaction_id text,
+  primary key ((account_id, month), entry_ts, entry_id)
+) with clustering order by (entry_ts desc);
+
+create table ledger.txn_by_id (
+  transaction_id text primary key,
+  account_id text,
+  amount decimal,
+  posted_at timestamp,
+  status text
+);
+
+-- Idempotency guard: only the first attempt succeeds
+insert into ledger.txn_by_id (transaction_id, account_id, amount, posted_at, status)
+  values ('txn-7f3a', 'acct-1', 5000, toTimestamp(now()), 'posted')
+  if not exists;
+```
+
+Why this design: the write path is append-only and the LWT gives a real compare-and-set on the idempotency key. `LOCAL_QUORUM` (or `QUORUM` when a single DC) makes the acknowledged write durable on a majority, and `SERIAL` consistency around the LWT prevents two coordinators from both "winning". A ledger is exactly the case where you should be honest that Cassandra gives per-partition atomicity, not multi-table ACID: the debit and credit entries must be designed so the invariant can be checked and the LWT outcome inspected (`was_applied`).
+
+### 5. Time-ordered log and metrics ingestion
+
+Business context: an observability platform ingesting 2 TB/day of application logs and infrastructure metrics. Access patterns: search one service's logs for a short time window, read the latest metrics for a host, and run occasional bulk aggregation in Spark. Old data is moved to object storage after 14 days.
+
+Schema design: partition by `(service, day)` for logs with TWCS, and by `(host_id, day)` for metrics; cluster by timestamp with a `timeuuid` tiebreaker so identical timestamps do not overwrite each other. Compression is tuned up (Zstd) because log lines are highly repetitive.
+
+```sql
+create table logs.entries_by_service_day (
+  service text,
+  day date,
+  ts timestamp,
+  log_id timeuuid,
+  level text,
+  message text,
+  primary key ((service, day), ts, log_id)
+) with clustering order by (ts desc)
+  and default_time_to_live = 1209600
+  and compression = {'class': 'ZstdCompressor', 'chunk_length_in_kb': 64}
+  and compaction = {'class': 'TimeWindowCompactionStrategy',
+                    'compaction_window_unit': 'DAYS',
+                    'compaction_window_size': 1};
+
+-- Search window for one service, newest first
+select ts, level, message
+from logs.entries_by_service_day
+where service = 'checkout' and day = '2026-10-04'
+  and ts >= '2026-10-04T13:00:00Z' and ts < '2026-10-04T14:00:00Z'
+order by ts desc
+limit 500;
+```
+
+```bash
+# Operate a write-heavy cluster: watch compaction, repair, and latency
+nodetool tpstats                 # dropped mutations, pending compactions by stage
+nodetool compactionstats
+nodetool proxyhistograms         # read/write latency percentiles
+nodetool repair -pr iot          # incremental, primary-range repair on a schedule
+nodetool tablestats logs.entries_by_service_day
+```
+
+Why this design: every query is scoped to a service and a day, so it is served from one partition per day and can be parallelized across days. `timeuuid` as the final clustering column guarantees that two log lines with the same millisecond are distinct rows rather than an overwrite. TWCS plus TTL means the oldest window is dropped as a unit, and Zstd keeps the on-disk footprint manageable for a workload where compression is a direct cost lever.
 
 [Table of Contents](#Apache-Cassandra)

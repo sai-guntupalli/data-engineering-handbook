@@ -1,28 +1,51 @@
 ## [Main title](../README.md)
 ### [Interview questions](full.md)
 
-# Hbase
+# Apache HBase
+
+Apache HBase is a distributed, scalable, wide-column NoSQL store modeled on Google Bigtable and built on top of HDFS. It gives random, real-time reads and writes by row key over tables with billions of rows and millions of columns, while HDFS provides the durable storage underneath.
+
+```text
+client -> ZooKeeper (who is the master, where is hbase:meta)
+       -> RegionServer -> region -> MemStore + WAL + HFiles on HDFS
+```
+
+Key ideas:
+
++ Rows are sorted lexicographically by row key and split into regions; a region is the unit of distribution, not a table.
++ A column family is the physical storage and tuning unit; column qualifiers inside it are fully dynamic.
++ Writes land in the write-ahead log (WAL) and the in-memory MemStore, and are flushed to immutable HFiles later.
++ Reads check the MemStore and block cache, then the HFiles; tombstones hide deletes until compaction removes them.
++ HBase is optimized for key-based access and scans, not for joins, ad-hoc SQL analytics, or multi-row transactions across tables.
+
++ [How do you design an HBase row key?](#How-do-you-design-an-HBase-row-key)
++ [When should you use HBase?](#When-should-you-use-HBase)
++ [How do you create and query tables in the HBase shell?](#How-do-you-create-and-query-tables-in-the-HBase-shell)
++ [How do you configure an HBase cluster with hbase-site.xml?](#How-do-you-configure-an-HBase-cluster-with-hbase-sitexml)
++ [How do you read and write data with the HBase Java client?](#How-do-you-read-and-write-data-with-the-HBase-Java-client)
++ [How do you use HBase from Python with HappyBase?](#How-do-you-use-HBase-from-Python-with-HappyBase)
++ [How do you query HBase with Apache Phoenix SQL?](#How-do-you-query-HBase-with-Apache-Phoenix-SQL)
 + [What are the differences between RDBMS and HBase data model?](#What-are-the-differences-between-RDBMS-and-HBase-data-model)
-+ [Explain what is Hbase?](#Explain-what-is-Hbase)
-+ [Explain why to use Hbase?](#Explain-why-to-use-Hbase)
-+ [Mention what are the key components of Hbase?](#Mention-what-are-the-key-components-of-Hbase)
-+ [Explain what does Hbase consists of?](#Explain-what-does-Hbase-consists-of)
-+ [Mention how many operational commands in Hbase?](#Mention-how-many-operational-commands-in-Hbase)
-+ [Explain what is WAL and Hlog in Hbase?](#Explain-what-is-WAL-and-Hlog-in-Hbase)
-+ [When you should use Hbase?](#When-you-should-use-Hbase)
-+ [In Hbase what is column families?](#In-Hbase-what-is-column-families)
++ [Explain what is HBase?](#Explain-what-is-HBase)
++ [Explain why to use HBase?](#Explain-why-to-use-HBase)
++ [Mention what are the key components of HBase?](#Mention-what-are-the-key-components-of-HBase)
++ [Explain what does HBase consists of?](#Explain-what-does-HBase-consists-of)
++ [Mention how many operational commands in HBase?](#Mention-how-many-operational-commands-in-HBase)
++ [Explain what is WAL and HLog in HBase?](#Explain-what-is-WAL-and-HLog-in-HBase)
++ [When you should use HBase?](#When-you-should-use-HBase)
++ [In HBase what is column families?](#In-HBase-what-is-column-families)
 + [Explain what is the row key?](#Explain-what-is-the-row-key)
-+ [Explain deletion in Hbase? Mention what are the three types of tombstone markers in Hbase?](#Explain-deletion-in-Hbase?-Mention-what-are-the-three-types-of-tombstone-markers-in-Hbase)
-+ [Explain how does Hbase actually delete a row?](#Explain-how-does-Hbase-actually-delete-a-row)
++ [Explain deletion in HBase? Mention what are the three types of tombstone markers in HBase?](#Explain-deletion-in-HBase-Mention-what-are-the-three-types-of-tombstone-markers-in-HBase)
++ [Explain how does HBase actually delete a row?](#Explain-how-does-HBase-actually-delete-a-row)
 + [Explain what happens if you alter the block size of a column family on an already occupied database?](#Explain-what-happens-if-you-alter-the-block-size-of-a-column-family-on-an-already-occupied-database)
-+ [Mention the difference between Hbase and Relational Database?](#Mention-the-difference-between-Hbase-and-Relational-Database)
++ [Mention the difference between HBase and Relational Database?](#Mention-the-difference-between-HBase-and-Relational-Database)
 + [What is HBaseFsck class?](#What-is-HBaseFsck-class)
 + [What are the main key structures of HBase?](#What-are-the-main-key-structures-of-HBase)
-+ [Discuss how you can use filters in Apache HBase](#Discuss-how-you-can-use-filters-in-Apache-HBas)
++ [Discuss how you can use filters in Apache HBase](#Discuss-how-you-can-use-filters-in-Apache-HBase)
 + [HBase support syntax structure like SQL yes or No?](#HBase-support-syntax-structure-like-SQL-yes-or-No)
 + [What is the meaning of compaction in HBase?](#What-is-the-meaning-of-compaction-in-HBase)
 + [How will you implement joins in HBase?](#How-will-you-implement-joins-in-HBase)
-+ [Explain JMX concerning HBSE](#Explain-JMX-concerning-HBS)
++ [Explain JMX concerning HBase](#Explain-JMX-concerning-HBase)
 + [What is the use of MasterServer?](#What-is-the-use-of-MasterServer)
 + [Define the Term Thrift.](#Define-the-Term-Thrift)
 + [Why use HColumnDescriptor class?](#Why-use-HColumnDescriptor-class)
@@ -55,21 +78,21 @@
 + [What is the use of ZooKeeper?](#What-is-the-use-of-ZooKeeper)
 + [Define catalog tables in HBase?](#Define-catalog-tables-in-HBase)
 + [Define compaction in HBase?](#Define-compaction-in-HBase)
-+ [Explain what is Hbase?](#Explain-what-is-Hbase)
-+ [Explain why to use Hbase?](#Explain-why-to-use-Hbase)
-+ [Mention what are Key Components of Hbase?](#Mention-what-are-Key-Components-of-Hbase)
-+ [What is the Role of Master Server in Hbase?](#What-is-the-Role-of-Master-Server-in-Hbase)
-+ [Explain what does Hbase consists of?](#Explain-what-does-Hbase-consists-of)
-+ [What is the Role of Zookeeper in Hbase?](#What-is-the-Role-of-Zookeeper-in-Hbase)
-+ [Mention how many operational commands in Hbase?](#Mention-how-many-operational-commands-in-Hbase)
-+ [When do we need to disable a table in Hbase?](#When-do-we-need-to-disable-a-table-in-Hbase)
-+ [Explain what is Wal and Hlog in Hbase?](#Explain-what-is-Wal-and-Hlog-in-Hbase)
-+ [What are the different Types of Filters used in Hbase?](#What-are-the-different-Types-of-Filters-used-in-Hbase)
-+ [In Hbase what is Column Families?](#In-Hbase-what-is-Column-Families)
-+ [Name three disadvantages Hbase has as compared to Rdbms?](#Name-three-disadvantages-Hbase-has-as-compared-to-Rdbms)
++ [Explain what is HBase?](#Explain-what-is-HBase-1)
++ [Explain why to use HBase?](#Explain-why-to-use-HBase-1)
++ [Mention what are Key Components of HBase?](#Mention-what-are-Key-Components-of-HBase)
++ [What is the Role of Master Server in HBase?](#What-is-the-Role-of-Master-Server-in-HBase)
++ [Explain what does HBase consists of?](#Explain-what-does-HBase-consists-of-1)
++ [What is the Role of ZooKeeper in HBase?](#What-is-the-Role-of-ZooKeeper-in-HBase)
++ [Mention how many operational commands in HBase?](#Mention-how-many-operational-commands-in-HBase-1)
++ [When do we need to disable a table in HBase?](#When-do-we-need-to-disable-a-table-in-HBase)
++ [Explain what is WAL and HLog in HBase?](#Explain-what-is-WAL-and-HLog-in-HBase-1)
++ [What are the different Types of Filters used in HBase?](#What-are-the-different-Types-of-Filters-used-in-HBase)
++ [In HBase what is Column Families?](#In-HBase-what-is-Column-Families)
++ [Name three disadvantages HBase has as compared to RDBMS?](#Name-three-disadvantages-HBase-has-as-compared-to-RDBMS)
 + [Explain what is the Row Key?](#Explain-what-is-the-Row-Key)
-+ [Is Hbase a scale out or scale up process?](#Is-Hbase-a-scale-out-or-scale-up-process)
-+ [Explain deletion in Hbase?](#Explain-deletion-in-Hbase)
++ [Is HBase a scale out or scale up process?](#Is-HBase-a-scale-out-or-scale-up-process)
++ [Explain deletion in HBase?](#Explain-deletion-in-HBase)
 + [What are the step in writing something into Hbase by a Client?](#What-are-the-step-in-writing-something-into-Hbase-by-a-Client)
 + [Explain how does Hbase actually delete a Row?](#Explain-how-does-Hbase-actually-delete-a-Row)
 + [What is compaction in Hbase?](#What-is-compaction-in-Hbase)
@@ -91,585 +114,1189 @@
 + [In which scenario should we consider creating a short and wide Hbase Table?](#In-which-scenario-should-we-consider-creating-a-short-and-wide-Hbase-Table)
 + [In Hbase what is Log Splitting?](#In-Hbase-what-is-Log-Splitting)
 + [How does Hbase support Bulk Data Loading?](#How-does-Hbase-support-Bulk-Data-Loading)
-+ [Why Multiwal is Needed?](#Why-Multiwal-is-Needed)
++ [Why MultiWAL is Needed?](#Why-MultiWAL-is-Needed)
 + [How does Hbase provide High Availability?](#How-does-Hbase-provide-High-Availability)
 + [How does Wal help when a Regionserver Crashes?](#How-does-Wal-help-when-a-Regionserver-Crashes)
 + [What is Hregionserver in Hbase?](#What-is-Hregionserver-in-Hbase)
 + [What are the different Block Caches in Hbase?](#What-are-the-different-Block-Caches-in-Hbase)
++ [How do you manage compactions and region splits?](#How-do-you-manage-compactions-and-region-splits)
++ [When should you not use HBase, and what should you use instead?](#When-should-you-not-use-HBase-and-what-should-you-use-instead)
++ [Real world use cases for HBase](#Real-world-use-cases-for-HBase)
 
-[Table of Contents](#Hbase)
+## How do you design an HBase row key?
+An HBase row key should support the main lookup pattern and avoid region hotspotting. Because rows are sorted by key and a region serves a contiguous key range, monotonically increasing keys (timestamps, sequential ids) overload the last region. Use salting, hashing, bucketing, or reversed timestamps to spread writes.
 
+Common patterns:
+
+| Access pattern | Row key design |
+|---|---|
+| latest events for a user | `user_id + reverse_timestamp` |
+| devices by tenant | `salt + tenant_id + device_id` |
+| time-range scans, spread writes | `salt + reverse_timestamp + id` |
+| lookup by many secondary keys | separate index/lookup table keyed by the secondary key |
+| natural unique id | hash(id) or a fixed-width, zero-padded id |
+
+```text
+raw row key:        device-0001|2026-10-04T13:20:00Z
+salted row key:     07|device-0001|2026-10-04T13:20:00Z   (salt = hash(device_id) % 16)
+bucketed row key:   device-0001|bkt-3|1700000000000
+reversed timestamp: device-0001|9999999999999-1700000000000
+```
+
+```python
+# Build a salted, reverse-timestamp row key for recent-first lookups
+import hashlib
+
+def rowkey(device_id: str, ts_ms: int, buckets: int = 16) -> str:
+    salt = int(hashlib.md5(device_id.encode()).hexdigest(), 16) % buckets
+    reverse_ts = 9_999_999_999_999 - ts_ms
+    return f"{salt:02d}|{device_id}|{reverse_ts:013d}"
+```
+
+The trade-off: reads for one device must query every salt bucket (or you scan all prefixes) unless the salt is derivable from the query. Salting spreads writes but fans out reads; reverse timestamps give newest-first scans for a known prefix.
+
+[Table of Contents](#Apache-HBase)
+
+## When should you use HBase?
+Use HBase for sparse, wide, high-scale tables that need random reads/writes by key over large datasets. It fits operational lookups, time-series style access, and serving stores behind an application. It is not ideal for ad-hoc SQL analytics, joins, or full table scans.
+
+Example:
+
++ good: get the latest 100 events for a device id
++ poor: calculate total revenue by region across all history
+
+Analytics usually belongs in Hive, Spark, Impala, or a warehouse, while HBase serves key-based access. A common pattern is to serve from HBase and run analytics on the same data copied to Parquet or Iceberg.
+
+[Table of Contents](#Apache-HBase)
+
+## How do you create and query tables in the HBase shell?
+The HBase shell is a JRuby REPL that talks to the cluster for DDL and DML. Namespaces, tables, and column families are created here; `disable` is required before changing a table.
+
+```bash
+hbase shell
+```
+
+```bash
+# Namespace and table DDL: TTL, versions, block size, and Bloom filter per column family
+create_namespace 'app'
+create 'app:impressions', {NAME => 'i', VERSIONS => 1, TTL => 7776000, BLOOMFILTER => 'ROWCOL', BLOCKSIZE => 65536}
+describe 'app:impressions'
+
+# Add a column family to an existing table
+disable 'app:impressions'
+alter 'app:impressions', {NAME => 'meta', VERSIONS => 3}
+enable 'app:impressions'
+```
+
+```bash
+# DML: put, get, scan, increment, delete, count
+put 'app:impressions', 'u42|9999999999999-1700000000000|a1', 'i:campaign_id', 'cmp-99'
+put 'app:impressions', 'u42|9999999999999-1700000000000|a1', 'i:amount', '42.10'
+get 'app:impressions', 'u42|9999999999999-1700000000000|a1'
+scan 'app:impressions', {STARTROW => 'u42|', ENDROW => 'u42|\xff', LIMIT => 5}
+incr 'app:counters', 'daily|2026-10-04', 'c:impressions', 1
+delete 'app:impressions', 'u42|9999999999999-1700000000000|a1', 'i:amount'
+count 'app:impressions'
+```
+
+```bash
+# Table maintenance and reporting
+status 'detailed'
+list_regions 'app:impressions'
+flush 'app:impressions'
+major_compact 'app:impressions'
+```
+
+[Table of Contents](#Apache-HBase)
+
+## How do you configure an HBase cluster with hbase-site.xml?
+`hbase-site.xml` holds cluster-wide settings; the most important ones control durability, write throughput, and MemStore sizing. The pattern is one `property` block per setting.
+
+```xml
+<configuration>
+  <property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://nn.example.com:8020/hbase</value>
+  </property>
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hbase.zookeeper.quorum</name>
+    <value>zk1.example.com,zk2.example.com,zk3.example.com</value>
+  </property>
+  <property>
+    <name>hbase.regionserver.handler.count</name>
+    <value>60</value>
+  </property>
+  <property>
+    <name>hbase.regionserver.global.memstore.size</name>
+    <value>0.4</value>
+  </property>
+  <property>
+    <name>hbase.hregion.memstore.flush.size</name>
+    <value>134217728</value>
+  </property>
+  <property>
+    <name>hbase.hregion.max.filesize</name>
+    <value>10737418240</value>
+  </property>
+  <property>
+    <name>hbase.hstore.blockingStoreFiles</name>
+    <value>16</value>
+  </property>
+  <property>
+    <name>hbase.wal.provider</name>
+    <value>filesystem</value>
+  </property>
+  <property>
+    <name>hbase.hregion.memstore.mslab.enabled</name>
+    <value>true</value>
+  </property>
+</configuration>
+```
+
+Tuning notes:
+
++ `hbase.regionserver.global.memstore.size = 0.4` caps total MemStore memory at 40% of heap; the rest serves the block cache and reads.
++ Lower `hbase.hregion.memstore.flush.size` when write bursts are spiky; larger values reduce flush frequency but increase heap pressure.
++ `hbase.hregion.max.filesize` controls when a region splits; 10 GB is a common production value.
++ `hbase.hstore.blockingStoreFiles` makes the RegionServer block writes when too many store files pile up, which pushes back on the client instead of failing.
+
+[Table of Contents](#Apache-HBase)
+
+## How do you read and write data with the HBase Java client?
+The Java client is the canonical API. Create the `Connection` once per process and reuse it; `Table` and `Admin` are cheap to obtain from it. Batch and async paths are used for high throughput.
+
+```java
+Configuration conf = HBaseConfiguration.create();
+conf.set("hbase.zookeeper.quorum", "zk1,zk2,zk3");
+
+try (Connection conn = ConnectionFactory.createConnection(conf);
+     Table table = conn.getTable(TableName.valueOf("app:impressions"))) {
+
+    // Write a cell
+    Put put = new Put(Bytes.toBytes("u42|9999999999999-1700000000000|a1"));
+    put.addColumn(Bytes.toBytes("i"), Bytes.toBytes("campaign_id"), Bytes.toBytes("cmp-99"));
+    put.addColumn(Bytes.toBytes("i"), Bytes.toBytes("amount"), Bytes.toBytes("42.10"));
+    table.put(put);
+
+    // Point read with an explicit column selection
+    Get get = new Get(Bytes.toBytes("u42|9999999999999-1700000000000|a1"));
+    get.addColumn(Bytes.toBytes("i"), Bytes.toBytes("campaign_id"));
+    Result result = table.get(get);
+    byte[] campaign = result.getValue(Bytes.toBytes("i"), Bytes.toBytes("campaign_id"));
+
+    // Prefix scan limited to 100 rows
+    Scan scan = new Scan()
+        .withStartRow(Bytes.toBytes("u42|"))
+        .withStopRow(Bytes.toBytes("u42|\uFFFF".getBytes()))
+        .setLimit(100)
+        .setCaching(200);
+    try (ResultScanner scanner = table.getScanner(scan)) {
+        for (Result row : scanner) {
+            System.out.println(Bytes.toString(row.getRow()));
+        }
+    }
+}
+```
+
+Rules that matter under load: never build a `Connection` per request, set `Scan.setCaching` (rows per RPC) and `setBatch` (cells per RPC), keep row keys short, and prefer `BufferedMutator` over many single `put` calls.
+
+[Table of Contents](#Apache-HBase)
+
+## How do you use HBase from Python with HappyBase?
+HappyBase talks to the Thrift gateway (`hbase-daemon.sh start thrift`). It is convenient for services and scripts, but the Thrift gateway is an extra hop compared with the native Java API.
+
+```python
+import happybase
+
+connection = happybase.Connection("hbase-thrift.example.com", port=9090)
+table = connection.table("app:impressions")
+
+# Put a row
+table.put(
+    b"u42|9999999999999-1700000000000|a1",
+    {b"i:campaign_id": b"cmp-99", b"i:amount": b"42.10"},
+)
+
+# Point read
+row = table.row(b"u42|9999999999999-1700000000000|a1")
+print(row.get(b"i:campaign_id"))
+
+# Prefix scan for the most recent impressions of a user
+for key, data in table.scan(row_prefix=b"u42|", limit=10):
+    print(key, data)
+
+# Atomic counter
+counters = connection.table("app:counters")
+counters.counter_inc(b"daily|2026-10-04", b"c:impressions", 1)
+
+connection.close()
+```
+
+Use `happybase.ConnectionPool` in a web service so connections are reused, and keep the Thrift server close to the RegionServers to avoid an extra network round trip per scan.
+
+[Table of Contents](#Apache-HBase)
+
+## How do you query HBase with Apache Phoenix SQL?
+Phoenix adds a SQL layer over HBase: it compiles SQL to HBase scans, maintains secondary indexes in HBase tables, and gives JDBC access. The row key is still the primary key, and the primary key order defines the physical sort order.
+
+```sql
+-- Primary key maps to the HBase row key; the leading columns drive the scan
+CREATE TABLE IF NOT EXISTS impressions (
+    user_id   VARCHAR NOT NULL,
+    ts        TIMESTAMP NOT NULL,
+    campaign  VARCHAR,
+    amount    DECIMAL(10,2),
+    CONSTRAINT pk PRIMARY KEY (user_id, ts DESC)
+);
+
+UPSERT INTO impressions (user_id, ts, campaign, amount)
+VALUES ('u42', CURRENT_TIME(), 'cmp-99', 42.10);
+
+-- Secondary index for queries that do not lead with the primary key
+CREATE INDEX impressions_campaign_idx ON impressions (campaign);
+
+SELECT campaign, COUNT(*), SUM(amount)
+FROM impressions
+WHERE user_id = 'u42'
+GROUP BY campaign;
+```
+
+Phoenix is the right answer when interviewers ask "does HBase support SQL?" - **not natively, but Phoenix provides it**. Beware that a Phoenix query that does not lead with the primary key may fall back to a full scan unless a secondary index exists.
+
+[Table of Contents](#Apache-HBase)
 
 ## What are the differences between RDBMS and HBase data model?
-The main differences between RDBMS and HBase data model are as follows:
-Schema: In RDBMS, there is a schema of tables, columns etc. In HBASE, there is no schema.
-Normalization: RDBMS data model is normalized as per the rule of Relation DB normalization.
-HBase data model does not require any normalization.
-Partition: In RDBMS we can choose to do partitioning. In HBase, partitioning happens automatically.
+Schema: RDBMS defines tables and typed columns up front. HBase defines tables and column families, but column qualifiers inside a family are dynamic and untyped (everything is bytes), so the schema is much looser.
 
-[Table of Contents](#Hbase)
+Normalization: an RDBMS is normalized; HBase is deliberately denormalized and stores wide, sparse rows.
 
-## Explain what is Hbase?
-Hbase is a column-oriented database management system which runs on top of HDFS (Hadoop Distribute File System). Hbase is not a relational data store, and it does not support structured query language like SQL.
-In Hbase, a master node regulates the cluster and region servers to store portions of the tables and operates the work on the data.
+Partitioning: an RDBMS requires manual partitioning and sharding. HBase splits a table into regions automatically as it grows, and can be pre-split manually.
 
-[Table of Contents](#Hbase)
+Other differences: RDBMS supports joins, multi-row transactions, and SQL; HBase supports single-row atomicity, no joins, and no server-side SQL without Phoenix. HBase tables are sparse - a row only stores the cells that exist.
 
-## Explain why to use Hbase?
-High capacity storage system
-Distributed design to cater large tables
-Column-Oriented Stores
-Horizontally Scalable
-High performance & Availability
-Base goal of Hbase is millions of columns, thousands of versions and billions of rows
-Unlike HDFS (Hadoop Distribute File System), it supports random real time CRUD operations
+[Table of Contents](#Apache-HBase)
 
-[Table of Contents](#Hbase)
+## Explain what is HBase?
+HBase is a wide-column, non-relational database management system that runs on top of HDFS. It is not a relational store and does not support SQL natively (Phoenix adds a SQL layer). A master node regulates the cluster and RegionServers store portions of the tables and serve reads and writes.
 
-## Mention what are the key components of Hbase?
-Zookeeper: It does the co-ordination work between client and Hbase Maser
-Hbase Master: Hbase Master monitors the Region Server
-RegionServer: RegionServer monitors the Region
-Region: It contains in memory data store(MemStore) and Hfile.
-Catalog Tables: Catalog tables consist of ROOT and META
+HBase is often loosely called "column-oriented", but the precise term is wide-column or column-family oriented: cells are grouped and stored by column family, unlike a true columnar format such as Parquet where each column is stored separately for analytics.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain what does Hbase consists of?
-Hbase consists of a set of tables
-And each table contains rows and columns like traditional database
-Each table must contain an element defined as a Primary Key
-Hbase column denotes an attribute of an object
+## Explain why to use HBase?
++ High-capacity storage system that scales to billions of rows and millions of columns.
++ Distributed design to cater to very large tables.
++ Column-family-oriented storage with dynamic qualifiers.
++ Horizontally scalable by adding RegionServers.
++ High performance and availability through region replication, WAL, and multiple masters.
++ The design goal is millions of columns, thousands of versions, and billions of rows.
++ Unlike HDFS alone, it supports random real-time CRUD operations.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Mention how many operational commands in Hbase?
-Operational command in Hbases is about five types
-Get
-Put
-Delete
-Scan
-Increment
+## Mention what are the key components of HBase?
++ ZooKeeper: coordinates the cluster, holds the `hbase:meta` location and master election.
++ HBase Master (HMaster): assigns regions, balances load, and performs admin operations.
++ RegionServer: serves regions and handles reads, writes, and flushes.
++ Region: a contiguous range of a table's rows, containing a MemStore and HFiles.
++ Catalog tables: `hbase:meta` maps regions to RegionServers (the older `-ROOT-` table is gone in modern HBase).
++ HDFS: durable storage for WALs and HFiles.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain what is WAL and Hlog in Hbase?
-WAL (Write Ahead Log) is similar to MySQL BIN log; it records all the changes occur in data. It is a standard sequence file by Hadoop and it stores HLogkey’s.  These keys consist of a sequential number as well as actual data and are used to replay not yet persisted data after a server crash. So, in cash of server failure WAL work as a life-line and retrieves the lost data’s.
+## Explain what does HBase consists of?
+HBase consists of a set of tables. Each table contains rows and columns like a traditional database, but a row is identified by a unique row key and columns are grouped into column families. Cells hold multiple versions of a value with timestamps, and a column qualifier denotes an attribute of the object stored in the row.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## When you should use Hbase?
-Data size is huge: When you have tons and millions of records to operate
-Complete Redesign: When you are moving RDBMS to Hbase, you consider it as a complete re-design then mere just changing the ports
-SQL-Less commands: You have several features like transactions; inner joins, typed columns, etc.
-Infrastructure Investment: You need to have enough cluster for Hbase to be really useful
+## Mention how many operational commands in HBase?
+The core data operations are five: Get, Put, Delete, Scan, and Increment. Around them sit admin operations such as Create, Disable/Enable, Alter, Drop, Truncate, Split, Merge, Flush, and Compact.
 
-[Table of Contents](#Hbase)
+```bash
+# One of each core operation in the shell
+put 'app:impressions', 'u42|1', 'i:campaign', 'cmp-99'
+get 'app:impressions', 'u42|1'
+scan 'app:impressions', {LIMIT => 10}
+incr 'app:counters', 'daily|2026-10-04', 'c:impressions', 1
+delete 'app:impressions', 'u42|1', 'i:campaign'
+```
 
-## In Hbase what is column families?
-Column families comprise the basic unit of physical storage in Hbase to which features like compressions are applied.
+[Table of Contents](#Apache-HBase)
 
-[Table of Contents](#Hbase)
+## Explain what is WAL and HLog in HBase?
+The WAL (Write-Ahead Log), historically called HLog, records every mutation before it is applied to memory. It is a Hadoop sequence file of `WALKey` plus cells, and it is used to replay not-yet-flushed data after a server crash. On RegionServer failure, the master splits the WAL by region and replays each region's edits so committed writes are not lost.
+
+```properties
+# Durability settings in hbase-site.xml
+hbase.wal.provider = filesystem
+# ASYNC_WAL is faster but can lose recent writes on crash; SYNC_WAL is the default
+```
+
+[Table of Contents](#Apache-HBase)
+
+## When you should use HBase?
++ When the data is huge - billions of rows and millions of columns.
++ When you need random, real-time read/write access by key, not just batch scans.
++ When moving from an RDBMS, treat it as a complete redesign rather than a port.
++ When you accept no SQL, no joins, and limited transactions (Phoenix can add SQL).
++ When you have enough cluster to make HBase worthwhile - it is not a single-node tool.
+
+[Table of Contents](#Apache-HBase)
+
+## In HBase what is column families?
+A column family is the basic unit of physical storage and the level at which storage features such as compression, block size, Bloom filters, versions, and TTL are configured. All cells in a family for a row are stored together on the same RegionServer, so families should be defined by access pattern, not by convenience.
+
+```bash
+# One family for the hot lookup path, one for cold metadata
+create 'app:impressions', {NAME => 'i', VERSIONS => 1}, {NAME => 'meta', VERSIONS => 3}
+```
+
+Keep the number of column families small (typically 1-3): each family has its own MemStore and flush behavior, and many families multiply memory pressure and flush storms.
+
+[Table of Contents](#Apache-HBase)
 
 ## Explain what is the row key?
-Row key is defined by the application. As the combined key is pre-fixed by the rowkey, it enables the application to define the desired sort order. It also allows logical grouping of cells and make sure that all cells with the same rowkey are co-located on the same server.
+The row key is defined by the application. Because a cell is addressed by `(row key, column family, column qualifier, timestamp)` and rows are sorted by row key, the row key controls the physical sort order and which regions hold which rows. All cells with the same row key are co-located on the same RegionServer. Row keys must be unique, and they cannot be changed after the fact without deleting and rewriting the row.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain deletion in Hbase? Mention what are the three types of tombstone markers in Hbase?
-When you delete the cell in Hbase, the data is not actually deleted but a tombstone marker is set, making the deleted cells invisible.  Hbase deleted are actually removed during compactions.
-Three types of tombstone markers are there:
-Version delete marker: For deletion, it marks a single version of a column
-Column delete marker: For deletion, it marks all the versions of a column
-Family delete marker: For deletion, it marks of all column for a column family
+## Explain deletion in HBase? Mention what are the three types of tombstone markers in HBase?
+When you delete a cell, the data is not immediately removed; a tombstone marker is written that makes the deleted cells invisible, and the data is physically removed during compaction.
 
-[Table of Contents](#Hbase)
+Three types of tombstone marker:
 
-## Explain how does Hbase actually delete a row?
-In Hbase, whatever you write will be stored from RAM to disk, these disk writes are immutable barring compaction. During deletion process in Hbase, major compaction process delete marker while minor compactions don’t. In normal deletes, it results in a delete tombstone marker- these delete data they represent are removed during compaction.
-Also, if you delete data and add more data, but with an earlier timestamp than the tombstone timestamp, further Gets may be masked by the delete/tombstone marker and hence you will not receive the inserted value until after the major compaction.
++ Version delete marker: marks a single version of a column.
++ Column delete marker: marks all versions of one column.
++ Family delete marker: marks all columns in a column family.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
+
+## Explain how does HBase actually delete a row?
+Writes go from RAM to disk as immutable HFiles (except during compaction). During deletion, a major compaction removes delete markers while minor compactions generally do not. A normal delete writes a tombstone; the data it hides is removed during compaction.
+
+If you delete data and then insert new data with an earlier timestamp than the tombstone, subsequent Gets may still be masked by the tombstone and will not see the new value until a major compaction runs. This is why clients should write timestamps that move forward.
+
+[Table of Contents](#Apache-HBase)
 
 ## Explain what happens if you alter the block size of a column family on an already occupied database?
-When you alter the block size of the column family, the new data occupies the new block size while the old data remains within the old block size. During data compaction, old data will take the new block size.  New files as they are flushed, have a new block size whereas existing data will continue to be read correctly. All data should be transformed to the new block size, after the next major compaction.
+When you alter the block size of a column family, newly written data uses the new block size while old data stays in blocks of the old size. Existing data is still read correctly, and new files flushed after the change use the new block size. All data is transformed to the new block size only after the next major compaction.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Mention the difference between Hbase and Relational Database?
-Hbase	Relational Database
-It is schema-less
-It is a column-oriented data store
-It is used to store de-normalized data
-It contains sparsely populated tables
-Automated partitioning is done in Hbase
-It is a schema based database
-It is a row-oriented data store
-It is used to store normalized data
-It contains thin tables
-There is no such provision or built-in support for partitioning
+## Mention the difference between HBase and Relational Database?
+| HBase | Relational Database |
+|---|---|
+| Schema-less for column qualifiers; only family schema is fixed | Fixed schema of typed columns |
+| Wide-column / column-family oriented | Row oriented |
+| Stores denormalized, sparse data | Stores normalized data |
+| Scales horizontally by adding RegionServers | Scales up, or shards manually |
+| Automatic region splitting | Manual partitioning / sharding |
+| Single-row atomicity, no joins, no SQL natively | ACID transactions, joins, SQL |
+| Good for key-based random access at scale | Good for complex queries over moderate data |
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is HBaseFsck class?
-There is a tool name called back is available in HBase, which is implemented by the HBaseFsck class. It offers several command-line switches that influence its behavior.
+`HBaseFsck` implements the `hbck` tool, which offers command-line switches to check region consistency and table integrity and to repair a corrupted HBase. It runs in a read-only inconsistency-identifying mode and a multi-phase read-write repair mode.
 
-[Table of Contents](#Hbase)
+```bash
+hbase hbck
+hbase hbck -details
+hbase hbck -repair
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What are the main key structures of HBase?
-Row key and Column key are the two most important key structures using in HBase
+The row key and the column key (column family plus qualifier) are the two most important key structures. Together with the timestamp they form the cell address: `(row key, column family, column qualifier, timestamp)`.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Discuss how you can use filters in Apache HBase
-Filters In HBase Shell. It was introduced in Apache HBase 0.92 which helps you to conduct server-side filtering for accessing HBase over HBase shell or thrift.
+Filters perform server-side filtering for scans, so rows and cells are discarded on the RegionServer before crossing the network. They were introduced in HBase 0.92 and can be used from the shell, the Java API, and Thrift. Because filtering happens after the scan reads the row from the store, filters reduce network and client work but do not eliminate the underlying I/O - a well-designed row key is still better than a filter.
 
-[Table of Contents](#Hbase)
+```bash
+# Shell examples: prefix, single-column value, and a filter list
+scan 'app:impressions', {FILTER => "PrefixFilter('u42|')", LIMIT => 10}
+scan 'app:impressions', {FILTER => "SingleColumnValueFilter('i', 'campaign_id', =, 'binary:cmp-99')"}
+scan 'app:impressions', {FILTER => "RowFilter(>=, 'binary:u42|') AND ColumnPrefixFilter('camp')"}
+scan 'app:impressions', {FILTER => "PageFilter(100)"}
+```
+
+```python
+# HappyBase: a filter string is passed through to the RegionServer
+for key, data in table.scan(
+    row_prefix=b"u42|",
+    filter=b"SingleColumnValueFilter('i', 'campaign_id', =, 'binary:cmp-99')",
+    limit=50,
+):
+    print(key, data)
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## HBase support syntax structure like SQL yes or No?
-No, unfortunately, SQL support for HBase is not available currently. However, by using Apache Phoenix, we can retrieve data from HBase through SQL queries.
+No, HBase does not support SQL natively. However, Apache Phoenix provides a SQL layer over HBase, translating SQL into HBase scans and supporting secondary indexes and JDBC. Other options are Hive or Spark reading HBase through a connector, and the REST/Thrift gateways for non-Java clients.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the meaning of compaction in HBase?
-At the time of heavy incoming writes, it is impossible to achieve optimal performance by having one file per store. HBase helps you to combines all these HFiles to reduce the number of disk seeds for every read. This process is known as for as Compaction in HBase.
+Under heavy writes it is impractical to keep one file per store, because every read would seek across many files. Compaction merges HFiles to reduce the number of disk seeks per read and to drop deleted or expired cells. Choosing when and how aggressively to compact is a central HBase tuning topic.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## How will you implement joins in HBase?
-HBase, not support joins directly but uses MapReduce jobs join queries can be implemented by retrieving data with the help of different HBase tables.
+HBase does not support joins directly. Use a MapReduce or Spark job that scans the relevant tables and joins them, or denormalize at write time so that the data needed together is stored in one row (the preferred approach for a serving path).
 
-[Table of Contents](#Hbase)
+```python
+# Spark can read HBase through the HBase-Spark connector and join to curated tables
+impressions = (
+    spark.read.format("org.apache.hadoop.hbase.spark")
+    .option("hbase.table", "app:impressions")
+    .option("hbase.columns.mapping", "rowkey STRING :key, campaign STRING i:campaign_id, ts STRING i:ts")
+    .load()
+)
+campaigns = spark.table("curated.campaigns")
+joined = impressions.join(campaigns, impressions.campaign == campaigns.campaign_id)
+```
 
-## Explain JMX concerning HBSE
-Java Management Extensions or JMX is an export status of Java applications is the standard for them.
+The interview point: a join in a serving path means the schema is wrong. Reshape the row key and duplicate the small side into the row instead.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
+
+## Explain JMX concerning HBase
+Java Management Extensions (JMX) is the standard mechanism for exporting the status and metrics of Java applications. HBase exposes RegionServer and Master MBeans through JMX, which monitoring tools scrape for metrics such as requests per second, MemStore size, and compaction queue depth.
+
+```bash
+# Enable the JMX remote agent on a RegionServer
+export HBASE_REGIONSERVER_OPTS="$HBASE_REGIONSERVER_OPTS \
+  -Dcom.sun.management.jmxremote \
+  -Dcom.sun.management.jmxremote.port=10102 \
+  -Dcom.sun.management.jmxremote.authenticate=false"
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What is the use of MasterServer?
-Master sever helps you to assign a region to the region server as well. It also helps you to handle the load balancing we use the MasterServer.
+The Master server assigns regions to RegionServers and handles load balancing across the cluster. It also performs admin operations such as create, alter, and drop table, and coordinates region splits, merges, and recovery. It is not on the read/write data path: clients talk to RegionServers directly, so a brief master outage does not stop serving.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Define the Term Thrift.
-Apache Thrift is written in C++. It provides schema compilers for various programming languages like C++, Perl, PHP, Python, Ruby, and more.
+Apache Thrift is a cross-language RPC framework with a compiler written in C++. It provides schema compilers and runtime libraries for C++, Java, Python, Ruby, PHP, and others. HBase ships a Thrift gateway so non-Java clients (for example Python via HappyBase) can talk to the cluster.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Why use HColumnDescriptor class?
-The detail regarding column family such as compression settings, Number of versions, are stored .in HColumnDescriptor.
+`HColumnDescriptor` describes a column family: compression settings, number of versions, TTL, block size, Bloom filter type, and other per-family attributes. It is used as input when creating a table or adding a column family. Modern code sometimes uses the builder `ColumnFamilyDescriptorBuilder` instead.
 
-[Table of Contents](#Hbase)
+```java
+ColumnFamilyDescriptor cf = ColumnFamilyDescriptorBuilder
+    .newBuilder(Bytes.toBytes("i"))
+    .setMaxVersions(1)
+    .setTimeToLive(7_776_000)
+    .setCompressionType(Compression.Algorithm.SNAPPY)
+    .setBloomFilterType(BloomType.ROWCOL)
+    .build();
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What is a cell in HBase?
-A cell in HBase is the smallest unit of an Hbase table. It helps you to holds a piece of data in the form of a tuple{row, column, version}
+A cell is the smallest unit of an HBase table. It holds a piece of data as a tuple of `{row, column, version}`, where column is `family:qualifier` and version is the timestamp of the value.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is a Bloom filter?
-HBase supports Bloom Filter helps you to improve the overall throughput of the cluster. An HBase Bloom Filter is a space-efficient mechanism to test whether a HFile includes certain row or row-col cell.
+A Bloom filter is a space-efficient structure used to test whether an HFile contains a certain row or row-column cell, which avoids reading HFiles that cannot contain the requested key. HBase supports `ROW` (test row key only) and `ROWCOL` (test row key plus column) Bloom filters per column family, which improves read throughput for random point reads.
 
-[Table of Contents](#Hbase)
+```bash
+# Add a Bloom filter to a family, or tune it at create time
+alter 'app:impressions', {NAME => 'i', BLOOMFILTER => 'ROWCOL'}
+```
+
+Bloom filters help point reads and hurt nothing on writes except a little memory and file size; they do not help scans of many rows.
+
+[Table of Contents](#Apache-HBase)
 
 ## Tell me about the types of HBase Operations?
-Two types of HBase Operations are:
-Read Operation
-Write Operation
+Two broad types: read operations (Get, Scan, and the read half of filters) and write operations (Put, Delete, Increment, and Append). Admin operations such as create, alter, split, merge, flush, and compact form a third practical category.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the use of HBase HMaster?
-Main responsibilities of a master are:
-Coordinating the region servers
-Admin functions
+The main responsibilities of the master are coordinating RegionServers and performing admin functions (table DDL, region assignment, load balancing, and recovery coordination). HBase supports backup masters, so the master is not a permanent single point of failure.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Which technique can you use in HBase to access HFile directly without the help of HBase?
-To access HFile directly without using HBase, we use HFile.main() method.
+You can use the `HFile.main()` method (the `hbase org.apache.hadoop.hbase.io.hfile.HFile` tool) to inspect an HFile without a running HBase cluster.
 
-[Table of Contents](#Hbase)
+```bash
+hbase org.apache.hadoop.hbase.io.hfile.HFile -p -f /hbase/data/default/app_impressions/region/hfile
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Can the region server will be located on all DataNodes?
-Yes, Region Servers run on the same servers as a DataNodes
+Yes. In a normal deployment RegionServers run on the same hosts as DataNodes so that HDFS data locality lets a RegionServer read its regions from local disks.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Name the filter which accepts the page size as the parameter in HBase?
-A filter named PageFilter accepts the page size as the parameter.
+`PageFilter` accepts the page size as a parameter and limits the number of rows returned in one page.
 
-[Table of Contents](#Hbase)
+```bash
+scan 'app:impressions', {FILTER => "PageFilter(100)"}
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## When would you use HBase?
-HBase is used in cases where we need random read and write operations and it can perform a number of operations per second on a large data sets.
-HBase gives strong data consistency.
-It can handle very large tables with billions of rows and millions of columns on top of commodity hardware cluster.
+HBase is used when you need random read and write operations at high throughput on large datasets. It gives strong consistency per row, can handle tables with billions of rows and millions of columns on commodity hardware, and scales horizontally. It is the wrong tool when the workload is analytical SQL over the whole table.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the use of get method?
-get() method is used to read the data from the table.
+`get()` reads a single row (or a specific set of cells within a row) by its row key. It is the point-read path: the client uses `hbase:meta` to find the region, contacts the RegionServer, and checks the MemStore and block cache before the HFiles.
 
-[Table of Contents](#Hbase)
+```python
+row = table.row(b"u42|9999999999999-1700000000000|a1", columns=[b"i:campaign_id", b"i:amount"])
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Define the difference between Hive and HBase?
-Apache Hive is a data warehousing infrastructure built on top of Hadoop. It helps in querying data stored in HDFS for analysis using Hive Query Language (HQL), which is a SQL-like language, that gets translated into MapReduce jobs. Hive performs batch processing on Hadoop.
-Apache HBase is NoSQL key/value store which runs on top of HDFS. Unlike Hive, HBase operations run in real-time on its database rather than MapReduce jobs. HBase partitions the tables, and the tables are further splitted into column families.
-Hive and HBase are two different Hadoop based technologies – Hive is an SQL-like engine that runs MapReduce jobs, and HBase is a NoSQL key/value database of Hadoop. We can use them together. Hive can be used for analytical queries while HBase for real-time querying. Data can even be read and written from HBase to Hive and vice-versa.
+Apache Hive is a data warehousing layer on top of Hadoop. It queries data in HDFS with HiveQL (a SQL-like language) that is translated into MapReduce, Tez, or Spark jobs, and it performs batch processing.
 
-[Table of Contents](#Hbase)
+Apache HBase is a NoSQL wide-column key/value store on top of HDFS. Unlike Hive, HBase operations run in real time against its own database rather than as batch jobs. HBase splits tables into regions and groups columns into column families.
+
+Hive and HBase are complementary: Hive is good for analytical scans and joins, HBase for real-time key-based access. Data can be read and written between them, for example by storing HBase tables in Hive or writing Hive results into HBase.
+
+[Table of Contents](#Apache-HBase)
 
 ## Explain the data model of HBase.
-HBase comprises of:
-Set of tables.
-Each table consists of column families and rows.
-Row key acts as a Primary key in HBase.
-Any access to HBase tables uses this Primary Key.
-Each column qualifier present in HBase denotes attributes corresponding to the object which resides in the cell.
+HBase comprises a set of tables. Each table has rows and column families, and the row key acts as the primary key used for every access. A cell is addressed by row key, column family, qualifier, and timestamp, and each cell can hold multiple versions. Column qualifiers are dynamic per row, so a table can be extremely sparse and wide.
 
-[Table of Contents](#Hbase)
+```text
+table
+  row key (sorted) -> column family -> qualifier -> [version, value]
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Define column families?
-Column Family is a collection of columns, whereas row is a collection of column families.
+A column family is a collection of columns that are stored together and tuned together. A row is composed of cells across one or more column families, and each family has its own MemStore, HFiles, and storage settings.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Define standalone mode in HBase?
-It is a default mode of HBase. In standalone mode, HBase does not use HDFS—it uses the local filesystem instead—and it runs all HBase daemons and a local ZooKeeper in the same JVM process.
+Standalone mode is the default for a fresh install. HBase does not use HDFS; it uses the local filesystem, and it runs all HBase daemons plus a local ZooKeeper in the same JVM. It is intended for development and testing, not production.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is decorating Filters?
-It is useful to modify, or extend, the behavior of a filter to gain additional control over the returned data. These types of filters are known as decorating filter. It includes SkipFilter and WhileMatchFilter.
+A decorating filter wraps another filter to modify or extend its behavior. The two built-ins are `SkipFilter`, which skips the whole row when any cell fails the wrapped filter, and `WhileMatchFilter`, which stops the scan as soon as the wrapped filter stops matching.
 
-[Table of Contents](#Hbase)
+```bash
+# Stop the scan at the first row where campaign_id != cmp-99
+scan 'app:impressions', {FILTER => "WhileMatchFilter(SingleColumnValueFilter('i','campaign_id',=,'binary:cmp-99'))"}
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What is RegionServer?
-A table can be divided into several regions. A group of regions is served to the clients by a Region Server.
+A table is divided into regions, and a RegionServer serves a set of regions to clients. It handles reads and writes, keeps the MemStore, appends to the WAL, flushes to HFiles, and runs compactions and splits. In a distributed cluster a RegionServer runs on a DataNode.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What are the data manipulation commands of HBase?
-Data Manipulation commands of HBase are:
-put – Puts a cell value at a specified column in a specified row in a particular table.
-get – Fetches the contents of a row or a cell.
-delete – Deletes a cell value in a table.
-deleteall – Deletes all the cells in a given row.
-scan – Scans and returns the table data.
-count – Counts and returns the number of rows in a table.
-truncate – Disables, drops, and recreates a specified table.
++ `put` - writes a cell value at a specified row and column.
++ `get` - fetches a row or a specific cell.
++ `delete` - deletes a cell value.
++ `deleteall` - deletes all cells in a row.
++ `scan` - scans and returns table data.
++ `count` - counts the rows in a table.
++ `truncate` - disables, drops, and recreates a table.
++ `incr` - atomically increments a counter cell.
++ `append` - appends bytes to an existing cell value.
 
-[Table of Contents](#Hbase)
+```bash
+# Truncate keeps the table definition but removes all data
+truncate 'app:impressions'
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What happens when you issue a delete command in HBase?
-Once you issue a delete command in HBase for cell, column or column family, it is not deleted instantly. A tombstone marker in inserted. Tombstone is a specified data, which is stored along with standard data. This tombstone makes hides all the deleted data.
-The actual data is deleted at the time of major compaction. In Major compaction, HBase merges and recommits the smaller HFiles of a region to a new HFile. In this process, the same column families are placed together in the new HFile. It drops deleted and expired cell in this process. All the results from scan and get filters the deleted cells.
+A delete is not applied instantly. A tombstone marker is inserted and stored alongside the data, and it hides the deleted cells from reads. The actual data is removed during a major compaction, which merges the HFiles of a region, groups column families together, and drops deleted and expired cells. Scans and gets filter the deleted cells out in the meantime.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What are different tombstone markers in HBase?
-There are three types of tombstone markers in HBase:
-Version Marker: Marks only one version of a column for deletion.
-Column Marker: Marks the whole column (i.e. all version) for deletion.
-Family Marker: Marks the whole column family (i.e. all the columns in the column family) for deletion
++ Version marker: marks one version of a column for deletion.
++ Column marker: marks the whole column (all versions) for deletion.
++ Family marker: marks the whole column family (all columns) for deletion.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## HBase blocksize is configured on which level?
-The blocksize is configured per column family and the default value is 64 KB. This value can be changed as per requirements.
+The HFile block size is configured per column family and defaults to 64 KB. A larger block size favors sequential scans; a smaller block size favors random point reads by reducing read amplification.
 
-[Table of Contents](#Hbase)
+```bash
+create 'app:impressions', {NAME => 'i', BLOCKSIZE => 16384}
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Which command is used to run HBase Shell?
-./bin/hbase shell command is used to run the HBase shell. Execute this command in HBase directory.
+`./bin/hbase shell` from the HBase directory starts the shell. In a packaged install, `hbase shell` is usually already on the PATH.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Which command is used to show the current HBase user?
-whoami command is used to show HBase user.
+The `whoami` command shows the current HBase user in the shell.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the full form of MSLAB?
-MSLAB stands for Memstore-Local Allocation Buffer. Whenever a request thread needs to insert data into a MemStore, it doesn’t allocates the space for that data from the heap at large, but rather allocates memory arena dedicated to the target region.
+MSLAB stands for MemStore-Local Allocation Buffer. When a request thread inserts data into a MemStore it does not allocate space from the heap at large; it allocates from a memory arena dedicated to the target region, which reduces heap fragmentation and full-GC pauses caused by many long-lived MemStore cells.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Define LZO?
-Lempel-Ziv-Oberhumer (LZO) is a lossless data compression algorithm that focuses on decompression speed.
+Lempel-Ziv-Oberhumer (LZO) is a lossless compression algorithm that focuses on decompression speed. HBase supports several codecs per column family (Snappy, LZ4, Zstd, GZIP), and Zstd or Snappy are the common modern choices.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is HBase Fsck?
-HBase comes with a tool called hbck which is implemented by the HBaseFsck class. HBaseFsck (hbck) is a tool for checking for region consistency and table integrity problems and repairing a corrupted HBase. It works in two basic modes – a read-only inconsistency identifying mode and a multi-phase read-write repair mode.
+HBase ships with `hbck`, implemented by the `HBaseFsck` class. It checks region consistency and table integrity and can repair a corrupted HBase. It has a read-only inconsistency-identifying mode and a multi-phase read-write repair mode.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is REST?
-Rest stands for Representational State Transfer which defines the semantics so that the protocol can be used in a generic way to address remote resources. It also provides support for different message formats, offering many choices for a client application to communicate with the server.
+REST (Representational State Transfer) defines semantics so that HTTP can be used generically to address remote resources. The HBase REST server exposes tables and rows over HTTP with support for different message formats (JSON, XML, protobuf), giving non-Java clients an alternative to Thrift.
 
-[Table of Contents](#Hbase)
+```bash
+# Start the REST gateway and read a row
+hbase-daemon.sh start rest -p 8080
+curl -H "Accept: application/json" http://localhost:8080/app:impressions/u42%7C1/i:campaign_id
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What is Nagios?
-Nagios is a very commonly used support tool for gaining qualitative data regarding cluster status. It polls current metrics on a regular basis and compares them with given thresholds.
+Nagios is a widely used monitoring tool for cluster health. It polls current metrics on a schedule and compares them with configured thresholds, alerting when a check fails. HBase metrics can be scraped through JMX or the metrics endpoints that Nagios checks consume.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the use of ZooKeeper?
-The ZooKeeper is used to maintain the configuration information and communication between region servers and clients. It also provides distributed synchronization. It helps in maintaining server state inside the cluster by communicating through sessions.
-Every Region Server along with HMaster Server sends continuous heartbeat at regular interval to Zookeeper and it checks which server is alive and available. It also provides server failure notifications so that, recovery measures can be executed.
+ZooKeeper maintains cluster configuration and the communication path between RegionServers and clients. It also provides distributed synchronization and holds cluster state through sessions. Every RegionServer and the HMaster send heartbeats to ZooKeeper, which detects failures and provides server-failure notifications so recovery can start. Clients also use ZooKeeper to find `hbase:meta`.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Define catalog tables in HBase?
-Catalog tables are used to maintain the metadata information.
+Catalog tables maintain metadata about the cluster. `hbase:meta` maps each region to its RegionServer and start row key. In modern HBase the old `-ROOT-` table no longer exists; the location of `hbase:meta` is stored in ZooKeeper, and clients cache region locations locally.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Define compaction in HBase?
-HBase combines HFiles to reduce the storage and reduce the number of disk seeks needed for a read. This process is called compaction. Compaction chooses some HFiles from a region and combines them. There are two types of compactions.
+HBase combines HFiles to reduce storage and the number of disk seeks needed for a read. Compaction chooses HFiles from a region and merges them, dropping expired and deleted cells. There are two types: minor and major.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain what is Hbase?
-Hbase is a column-oriented database management system which runs on top of HDFS (Hadoop Distribute File System). Hbase is not a relational data store, and it does not support structured query language like SQL.
-In Hbase, a master node regulates the cluster and region servers to store portions of the tables and operates the work on the data.
+## Explain what is HBase?
+HBase is a wide-column, non-relational database management system that runs on top of HDFS. It is not a relational data store and does not support SQL natively. A master node regulates the cluster while RegionServers store portions of the tables and serve the data.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain why to use Hbase?
-High capacity storage system
-Distributed design to cater large tables
-Column-Oriented Stores
-Horizontally Scalable
-High performance & Availability
-Base goal of Hbase is millions of columns, thousands of versions and billions of rows
-Unlike HDFS (Hadoop Distribute File System), it supports random real time CRUD operations
+## Explain why to use HBase?
++ High-capacity storage that scales to billions of rows and millions of columns.
++ Distributed design for very large tables.
++ Wide-column / column-family-oriented storage.
++ Horizontally scalable.
++ High performance and availability through replication.
++ Unlike HDFS, it supports random real-time CRUD operations.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Mention what are Key Components of Hbase?
-Zookeeper: It does the co-ordination work between client and Hbase Maser
-Hbase Master: Hbase Master monitors the Region Server
-RegionServer: RegionServer monitors the Region
-Region: It contains in memory data store(MemStore) and Hfile.
-Catalog Tables: Catalog tables consist of ROOT and META
+## Mention what are Key Components of HBase?
++ ZooKeeper: coordination between clients, the master, and RegionServers.
++ HBase Master: monitors RegionServers and performs admin work.
++ RegionServer: monitors and serves regions.
++ Region: contains an in-memory MemStore and HFiles.
++ Catalog tables: `hbase:meta` (the older `-ROOT-` table is obsolete).
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## What is the Role of Master Server in Hbase?
-The Master server assigns regions to region servers and handles load balancing in the cluster.
+## What is the Role of Master Server in HBase?
+The master assigns regions to RegionServers, handles load balancing, and performs admin operations such as table creation and schema changes. It also coordinates region assignment and recovery after a RegionServer fails.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain what does Hbase consists of?
-Hbase consists of a set of tables
-And each table contains rows and columns like traditional database
-Each table must contain an element defined as a Primary Key
-Hbase column denotes an attribute of an object
+## Explain what does HBase consists of?
+HBase consists of a set of tables. Each table contains rows and columns like a traditional database, and each table has a primary key (the row key). An HBase column denotes an attribute of an object, and columns are grouped into column families.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## What is the Role of Zookeeper in Hbase?
-The zookeeper maintains configuration information, provides distributed synchronization, and also maintains the communication between clients and region servers.
+## What is the Role of ZooKeeper in HBase?
+ZooKeeper maintains configuration information, provides distributed synchronization, and keeps the communication path between clients and RegionServers. It stores the location of `hbase:meta`, elects the active master, and tracks RegionServer liveness through heartbeats.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Mention how many operational commands in Hbase?
-Operational command in Hbases is about five types:
+## Mention how many operational commands in HBase?
+The core data operations are about five: Get, Put, Delete, Scan, and Increment. Append, count, and admin commands extend that set.
+
 + Get
 + Put
 + Delete
 + Scan
 + Increment
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## When do we need to disable a table in Hbase?
-In Hbase a table is disabled to allow it to be modified or change its settings. .When a table is disabled it cannot be accessed through the scan command.
+## When do we need to disable a table in HBase?
+A table must be disabled before certain schema changes, such as altering or dropping a column family. A disabled table cannot be scanned or written, and it is re-enabled with `enable`.
 
-[Table of Contents](#Hbase)
+```bash
+disable 'app:impressions'
+alter 'app:impressions', {NAME => 'meta', TTL => 2592000}
+enable 'app:impressions'
+```
 
-## Explain what is Wal and Hlog in Hbase?
-WAL (Write Ahead Log) is similar to MySQL BIN log; it records all the changes occur in data. It is a standard sequence file by Hadoop and it stores HLogkey’s. These keys consist of a sequential number as well as actual data and are used to replay not yet persisted data after a server crash. So, in cash of server failure WAL work as a life-line and retrieves the lost data’s.
+[Table of Contents](#Apache-HBase)
 
-[Table of Contents](#Hbase)
+## Explain what is WAL and HLog in HBase?
+The WAL (Write Ahead Log), formerly HLog, records all changes to data before they are applied. It is a Hadoop sequence file storing WAL keys with sequential numbers plus the actual cells, and it is used to replay not-yet-persisted data after a server crash. On failure it acts as the lifeline that recovers committed writes.
 
-## What are the different Types of Filters used in Hbase?
-Filters are used to get specific data form a Hbase table rather than all the records.
-They are of the following types.
-Column Value Filter
-Column Value comparators
-KeyValue Metadata filters.
-RowKey filters.
+[Table of Contents](#Apache-HBase)
 
-[Table of Contents](#Hbase)
+## What are the different Types of Filters used in HBase?
+Filters are used to return specific data from an HBase table rather than every record. Main categories:
 
-## In Hbase what is Column Families?
-Column families comprise the basic unit of physical storage in Hbase to which features like compressions are applied.
++ Row key filters: `RowFilter`, `PrefixFilter`, `RowPrefixFilter`, `KeyOnlyFilter`.
++ Column and qualifier filters: `ColumnPrefixFilter`, `FamilyFilter`, `QualifierFilter`.
++ Value filters: `SingleColumnValueFilter`, `ValueFilter`.
++ Structural filters: `PageFilter`, `FirstKeyOnlyFilter`, `TimestampsFilter`.
++ Decorating filters: `SkipFilter`, `WhileMatchFilter`.
++ Composite filters: `FilterList` with `MUST_PASS_ALL` or `MUST_PASS_ONE`.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Name three disadvantages Hbase has as compared to Rdbms?
-Hbase does not have in-built authentication/permission mechanism
-The indexes can be created only on a key column, but in RDBMS it can be done in any column.
-With one HMaster node there is a single point of failure.
+## In HBase what is Column Families?
+A column family is the basic unit of physical storage and the level at which storage features such as compression, block size, and Bloom filters are applied. Cells in the same family for a row are stored together in the same HFiles and served by the same RegionServer.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
+
+## Name three disadvantages HBase has as compared to RDBMS?
++ No joins and no multi-table transactions; a read-modify-write across rows is application logic.
++ No native SQL or strict typing; almost everything is a byte array, and secondary access requires an index table or Phoenix.
++ Operational complexity: ZooKeeper, HDFS, RegionServer tuning, compactions, and region splits all need care.
+
+Some traditional criticisms are outdated: modern HBase supports cell-level ACLs and Kerberos authentication, and backup masters remove the master as a hard single point of failure. Indexing is still limited to the row key unless you build index tables or use Phoenix secondary indexes.
+
+[Table of Contents](#Apache-HBase)
 
 ## Explain what is the Row Key?
-Row key is defined by the application. As the combined key is pre-fixed by the rowkey, it enables the application to define the desired sort order. It also allows logical grouping of cells and make sure that all cells with the same rowkey are co-located on the same server.
+The row key is defined by the application and is the primary key of a row. Because the combined cell key is prefixed by the row key, the application controls the sort order and can group related cells together. All cells with the same row key are co-located on the same server, which is why row key design determines read and write distribution.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Is Hbase a scale out or scale up process?
-Hbase runs on top of Hadoop which is a distributed system. Haddop can only scale uo as and when required by adding more machines on the fly. So Hbase is a scale out process.
+## Is HBase a scale out or scale up process?
+HBase is scale-out. It runs on top of Hadoop, which is distributed, and capacity and throughput grow by adding more machines and RegionServers. Vertical scaling helps a single node, but the architecture is designed to add nodes.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
-## Explain deletion in Hbase?
-When you delete the cell in Hbase, the data is not actually deleted but a tombstone marker is set, making the deleted cells invisible. Hbase deleted are actually removed during compactions.
-Three types of tombstone markers are there:
-+ Version delete marker: For deletion, it marks a single version of a column
-+ Column delete marker: For deletion, it marks all the versions of a column
-+ Family delete marker: For deletion, it marks of all column for a column family
+## Explain deletion in HBase?
+When you delete a cell, the data is not actually deleted; a tombstone marker is set that makes the deleted cells invisible. The data is physically removed during compaction.
 
-[Table of Contents](#Hbase)
+Three types of tombstone marker:
+
++ Version delete marker: marks a single version of a column.
++ Column delete marker: marks all versions of a column.
++ Family delete marker: marks all columns in a column family.
+
+[Table of Contents](#Apache-HBase)
 
 ## What are the step in writing something into Hbase by a Client?
-In Hbase the client does not write directly into the HFile. The client first writes to WAL(Write Access Log), which then is accessed by Memdtore. The Memstore Flushes the data into permanent memory from time to time.
+The client does not write directly to HFiles. It first appends the mutation to the WAL, then applies it to the MemStore of the target region. The MemStore is flushed to disk as an HFile when it reaches a threshold or the region is closed, and the WAL entries for those edits can then be discarded. Region location comes from the client's cache of `hbase:meta`.
 
-[Table of Contents](#Hbase)
+```text
+put -> find region (meta cache) -> RegionServer -> WAL append -> MemStore -> (flush) HFile
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Explain how does Hbase actually delete a Row?
-In Hbase, whatever you write will be stored from RAM to disk, these disk writes are immutable barring compaction. During deletion process in Hbase, major compaction process delete marker while minor compactions don’t. In normal deletes, it results in a delete tombstone marker- these delete data they represent are removed during compaction.
-Also, if you delete data and add more data, but with an earlier timestamp than the tombstone timestamp, further Gets may be masked by the delete/tombstone marker and hence you will not receive the inserted value until after the major compaction.
+Data written from RAM to disk becomes immutable HFiles apart from compaction. A delete writes a tombstone rather than removing bytes. Major compaction removes delete markers and the hidden data; minor compactions generally do not. If new data is written with an earlier timestamp than the tombstone, Gets can remain masked by the tombstone until a major compaction runs.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is compaction in Hbase?
-As more and more data is written to Hbase, many HFiles get created. Compaction is the process of merging these HFiles to one file and after the merged file is created successfully, discard the old file.
+As more data is written, many HFiles are created. Compaction merges HFiles into fewer, larger files and discards the old files after the merge succeeds. It also removes deleted and expired cells, which is what keeps read latency from degrading.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Explain what happens if you alter the Block Size of a column Family on an already occupied Database?
-When you alter the block size of the column family, the new data occupies the new block size while the old data remains within the old block size. During data compaction, old data will take the new block size. New files as they are flushed, have a new block size whereas existing data will continue to be read correctly. All data should be transformed to the new block size, after the next major compaction.
+New data is written with the new block size while old data remains in blocks of the old size. New flushed files use the new block size, existing data continues to be read correctly, and all data is converted to the new block size after the next major compaction.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What are the different compaction types in Hbase?
-There are two types of compaction. Major and Minor compaction. In minor compaction, the adjacent small HFiles are merged to create a single HFile without removing the deleted HFiles. Files to be merged are chosen randomly.
-In Major compaction, all the HFiles of a column are emerged and a single HFiles is created. The delted HFiles are discarded and it is generally triggered manually.
+There are two types. In minor compaction, a small set of adjacent HFiles is merged into one without removing the deleted data, and the files to merge are chosen by policy. In major compaction, all HFiles of a region's column family are merged into one, deleted and expired cells are discarded, and it is often triggered manually or by a schedule.
 
-[Table of Contents](#Hbase)
+```bash
+# Trigger a major compaction on a region (shell) or a single table
+major_compact 'app:impressions'
+```
+
+Major compaction rewrites a lot of data, so it should be scheduled off-peak and rate-limited with `hbase.hstore.compaction.throughput.lower.bound` and related settings.
+
+[Table of Contents](#Apache-HBase)
 
 ## What is a Cell in Hbase?
-A cell in Hbase is the smallest unit of a Hbase table which holds a piece of data in the form of a tuple{row,column,version}
+A cell is the smallest unit of an HBase table. It holds a piece of data as a tuple of `{row, column, version}`, where the column is `family:qualifier` and the version is the value's timestamp.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the Scope of a Rowkey in Hbase?
-Rowkeys are scoped to ColumnFamilies. The same rowkey could exist in each ColumnFamily that exists in a table without collision.
+A row key identifies a row within a table, not within a column family. All column families in that row share the same row key; a row can exist with cells in only some (or none explicitly, if a family marker is written) of the families. Two different column families do not have separate row key spaces.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is the Role of the Class Hcolumndescriptor in Hbase?
-This class is used to store information about a column family such as the number of versions, compression settings, etc. It is used as input when creating a table or adding a column.
+`HColumnDescriptor` stores information about a column family such as the number of versions, TTL, compression settings, block size, and Bloom filter type. It is used as input when creating a table or adding a column family.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is a Namespace in Hbase?
-A Namespace is a logical grouping of tables . It is similar to a database object in a Relational database system.
+A namespace is a logical grouping of tables, similar to a database or schema in a relational database. It organizes tables and controls quotas and permissions. The default namespaces are `default` and `hbase`.
 
-[Table of Contents](#Hbase)
+```bash
+create_namespace 'app'
+create 'app:impressions', 'i'
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## What is the Lower Bound of Versions in Hbase?
-The lower bound of versions indicates the minimum number of versions to be stored in Hbase for a column. For example If the value is set to 3 then three latest version wil be maintained and the older ones will be removed.
+The lower bound (minimum number of versions) is the minimum number of versions to keep for a column. If it is set to 3, the three latest versions are retained when a compaction runs, and older versions are removed subject to the maximum versions and TTL settings.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is Hotspotting in Hbase?
-Hotspotting is a situation when a large amount of client traffic is directed at one node, or only a few nodes, of a cluster. This traffic may represent reads, writes, or other operations. This traffic overwhelms the single machine responsible for hosting that region, causing performance degradation and potentially leading to region unavailability.
+Hotspotting is when a large amount of client traffic is directed at one node, or a few nodes, of a cluster. The traffic can be reads, writes, or other operations, and it overwhelms the machine hosting that region, causing performance degradation and potentially region unavailability. The classic cause is a monotonically increasing row key such as a timestamp or sequential id, which always writes to the last region.
 
-[Table of Contents](#Hbase)
+Fixes, in the order an interviewer usually wants to hear them:
+
++ Salt the row key with a hash prefix so writes spread across regions.
++ Use a reverse timestamp so the newest row is first for a known prefix but writes are not sequential across users.
++ Pre-split the table so the key space starts balanced.
++ Use a random or hashed key when point lookups are by a secondary key.
+
+```python
+import hashlib
+
+def salted_key(user_id: str, ts_ms: int, buckets: int = 32) -> str:
+    salt = int(hashlib.md5(user_id.encode()).hexdigest(), 16) % buckets
+    return f"{salt:02d}|{user_id}|{9_999_999_999_999 - ts_ms:013d}"
+```
+
+Salting costs read fan-out: a query for one user must know the salt (derive it from the user id) rather than scanning all buckets.
+
+[Table of Contents](#Apache-HBase)
 
 ## What is Ttl in Hbase?
-TTL is a data retention technique using which the version of a cell can be preserved till a specific time period.Once that timestamp is reached the specific version will be removed.
+TTL (time to live) is a data retention setting at the column family level. It specifies how long a cell version is kept; once a version's timestamp is older than the TTL, it is removed during compaction and is not returned by reads.
 
-[Table of Contents](#Hbase)
+```bash
+create 'app:impressions', {NAME => 'i', TTL => 7776000}   # 90 days in seconds
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Why do we Pre create empty Regions?
-Tables in HBase are initially created with one region by default. Then for bulk imports, all clients will write to the same region until it is large enough to split and become distributed across the cluster. So empty regions are created to make this process faster.
+Tables are initially created with one region by default. During bulk import, all clients write to that single region until it grows large enough to split, which serializes the load and slows the import. Pre-creating empty regions (pre-splitting) spreads the initial write load across the cluster from the start.
 
-[Table of Contents](#Hbase)
+```bash
+create 'app:impressions', {NAME => 'i'}, SPLITS => ['10', '20', '30', '40']
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## Does Hbase support Table Joins?
-Hbase does not support table joins. But using a mapreduce job we can specify join queries to retrieve data from multiple Hbase tables.
+HBase does not support table joins. Join queries can be implemented with a MapReduce or Spark job that scans multiple HBase tables, but the serving-path answer is to denormalize so the data needed together lives in one row.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## Which File in Hbase is designed after Sstable File of Bigtable?
-The HFile in Habse which stores the Actual data(not metadata) is designed after the SSTable file of BigTable.
+The HFile, which stores the actual data (not metadata), is designed after the SSTable file of Bigtable. HFiles are immutable once written and are merged by compaction.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is a Hbase Store?
-Hbase Store hosts a MemStore and 0 or more StoreFiles (HFiles). A Store corresponds to a column family for a table for a given region.
+A store hosts a MemStore and zero or more StoreFiles (HFiles). A store corresponds to one column family of one region, which is why column families are the unit of memory and flush tuning.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What are the Two Types of Table Design Approach in Hbase?
-They are:
-Short and Wide
-Tall and Thin
+They are short-and-wide and tall-and-thin.
 
-[Table of Contents](#Hbase)
++ Tall-and-thin: many rows, few columns per row. This is the default HBase sweet spot and scales best because rows spread across regions.
++ Short-and-wide: fewer rows, many columns per row. Useful when a natural entity is read as a whole and the number of entities is bounded, but a single row cannot be split across regions, so it limits write parallelism.
+
+Note the common confusion: "short and wide" means few rows and many columns, not few columns and many rows.
+
+[Table of Contents](#Apache-HBase)
 
 ## When do we do Manual Region Splitting?
-The manual region splitting is done we have an unexpected hotspot in your table because of many clients querying the same table.
+Manual region splitting is done when there is an unexpected hotspot caused by many clients querying the same region, or when you know the key distribution ahead of time and want to pre-split for bulk loading. Automatic splitting handles normal growth.
 
-[Table of Contents](#Hbase)
+```bash
+# Split a table at an explicit key, and merge two adjacent regions
+split 'app:impressions', '20'
+merge_region 'ENCODED_REGION_A', 'ENCODED_REGION_B'
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## In which scenario should we consider creating a short and wide Hbase Table?
-The short and wide table design is considered when there is
-There is a small number of columns
-There is a large number of rows
+Use a short-and-wide design when an entity is naturally read as a whole, the number of entity rows is moderate, and the attributes are numerous and sparse. The trade-off is that one row lives in one region, so write parallelism across that entity is limited. For time-series data, tall-and-thin (one row per event) is almost always the better choice.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## In Hbase what is Log Splitting?
-When a region is edited, the edits in the WAL file which belong to that region need to be replayed. Therefore, edits in the WAL file must be grouped by region so that particular sets can be replayed to regenerate the data in a particular region. The process of grouping the WAL edits by region is called log splitting.
+When a RegionServer dies, the edits belonging to its regions must be recovered from the WAL. The edits in the WAL are grouped by region so each set can be replayed to rebuild that region's data. The process of grouping and distributing WAL edits by region is called log splitting.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## How does Hbase support Bulk Data Loading?
-There are two main steps to do a data bulk load in Hbase:
-Generate Hbase data file(StoreFile) using a custom mapreduce job) from the data source. The StoreFile is created in Hbase internal format which can be efficiently loaded.
-The prepared file is imported using another tool like comletebulkload to import data into a running cluster. Each file gets loaded to one specific region.
+Bulk loading writes HFiles directly, bypassing the WAL and MemStore, which makes it much faster than `put` for large imports. Two steps:
 
-[Table of Contents](#Hbase)
+1. Generate HFiles from the source data with a MapReduce or Spark job (`ImportTsv` or a custom job) in HBase's internal format.
+2. Load the prepared files into a running cluster with `completebulkload` / `LoadIncrementalHFiles`, which moves each file into the correct region.
 
-## Why Multiwal is Needed?
-With a single WAL per RegionServer, the RegionServer must write to the WAL serially, because HDFS files must be sequential. This causes the WAL to be a performance bottleneck.
+```bash
+# 1) Convert a TSV on HDFS into HFiles
+hbase org.apache.hadoop.hbase.mapreduce.ImportTsv \
+  -Dimporttsv.columns=HBASE_ROW_KEY,i:campaign_id,i:amount \
+  -Dimporttsv.bulk.output=/tmp/impressions_hfiles \
+  app:impressions /data/incoming/impressions.tsv
 
-[Table of Contents](#Hbase)
+# 2) Load the HFiles into the table (pre-split it first for balance)
+hbase org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles \
+  /tmp/impressions_hfiles app:impressions
+```
+
+Pre-split the table before a bulk load, because `LoadIncrementalHFiles` assigns each HFile to the region that owns its key range.
+
+[Table of Contents](#Apache-HBase)
+
+## Why MultiWAL is Needed?
+With a single WAL per RegionServer, the RegionServer must write to the WAL serially because HDFS files must be sequential. That makes the WAL a throughput bottleneck. MultiWAL gives each RegionServer multiple WAL files so different regions can write concurrently, improving write throughput.
+
+```xml
+<property>
+  <name>hbase.wal.regiongrouping.strategy</name>
+  <value>identity</value>
+</property>
+<property>
+  <name>hbase.wal.provider</name>
+  <value>filesystem</value>
+</property>
+```
+
+[Table of Contents](#Apache-HBase)
 
 ## How does Hbase provide High Availability?
-Hbase uses a feature called region replication. In this feature for each region of a table, there will be multiple replicas that are opened in different RegionServers. The Load Balancer ensures that the region replicas are not co-hosted in the same region servers.
++ Region replication: each region can have replicas served by different RegionServers, and the load balancer avoids co-hosting a replica set.
++ WAL replay: committed edits are recovered from the WAL after a RegionServer crash.
++ Multiple masters: backup H Masters are elected so the master is not a hard single point of failure.
++ HDFS replication: the underlying WALs and HFiles are stored with HDFS replication.
++ For cross-cluster DR, HBase replication ships edits from a source cluster to a peer cluster.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## How does Wal help when a Regionserver Crashes?
-The Write Ahead Log (WAL) records all changes to data in HBase, to file-based storage. if a RegionServer crashes or becomes unavailable before the MemStore is flushed, the WAL ensures that the changes to the data can be replayed.
+The WAL records all changes to data in file-based storage. If a RegionServer crashes or becomes unavailable before the MemStore is flushed, the WAL ensures the changes can be replayed. The master splits the WAL by region and a new RegionServer replays the edits, so acknowledged writes survive the crash.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What is Hregionserver in Hbase?
-HRegionServer is the RegionServer implementation. It is responsible for serving and managing regions. In a distributed cluster, a RegionServer runs on a DataNode.
+`HRegionServer` is the RegionServer implementation. It is responsible for serving and managing regions: hosting MemStores, appending to the WAL, flushing HFiles, and running compactions and splits. In a distributed cluster a RegionServer runs on a DataNode.
 
-[Table of Contents](#Hbase)
+[Table of Contents](#Apache-HBase)
 
 ## What are the different Block Caches in Hbase?
-HBase provides two different BlockCache implementations: the default on-heap LruBlockCache and the BucketCache, which is (usually) off-heap.
+HBase provides two BlockCache implementations: the on-heap `LruBlockCache` (the default) and `BucketCache`, which is usually off-heap. A common production configuration is a combined cache: an LRU cache in front of a `BucketCache` backed by off-heap memory, SSD, or a file, to keep the JVM heap small and avoid GC pauses.
 
-[Table of Contents](#Hbase)
+```xml
+<property>
+  <name>hbase.bucketcache.ioengine</name>
+  <value>offheap</value>
+</property>
+<property>
+  <name>hbase.bucketcache.size</name>
+  <value>16384</value>
+</property>
+<property>
+  <name>hfile.block.cache.size</name>
+  <value>0.2</value>
+</property>
+```
+
+[Table of Contents](#Apache-HBase)
+
+## How do you manage compactions and region splits?
+Compaction and splitting are the two background processes that keep a growing table healthy. Compaction controls read amplification and storage; splitting controls distribution across RegionServers. Both are usually automatic, but the commands and policies matter in interviews.
+
+```bash
+# Inspect and trigger compactions
+major_compact 'app:impressions'
+compact 'app:impressions'
+# Split and merge regions
+split 'app:impressions', '30'
+merge_region 'ENCODED_REGION_A', 'ENCODED_REGION_B'
+```
+
+```xml
+<property>
+  <name>hbase.hregion.majorcompaction</name>
+  <value>604800000</value>
+</property>
+<property>
+  <name>hbase.hregion.majorcompaction.jitter</name>
+  <value>0.5</value>
+</property>
+<property>
+  <name>hbase.hstore.compaction.min</name>
+  <value>3</value>
+</property>
+<property>
+  <name>hbase.hstore.blockingStoreFiles</name>
+  <value>16</value>
+</property>
+<property>
+  <name>hbase.regionserver.region.split.policy</name>
+  <value>org.apache.hadoop.hbase.regionserver.SteppingSplitPolicy</value>
+</property>
+```
+
+Practical guidance:
+
++ Schedule major compactions off-peak and jitter them, because they rewrite the whole region.
++ On a write-heavy table, tune `hbase.hstore.compaction.min` and the throughput bounds rather than disabling compaction.
++ Pre-split new tables and use `SteppingSplitPolicy` to avoid split storms, where one split immediately triggers the next.
++ A region that stays hot after its split is a row key design problem, not a compaction problem.
+
+[Table of Contents](#Apache-HBase)
+
+## When should you not use HBase, and what should you use instead?
++ Analytical SQL over the whole dataset - use a warehouse (Snowflake, BigQuery, Redshift) or a lakehouse table (Iceberg, Delta, Hudi) on Parquet. HBase scans are not columnar and do not support joins.
++ Low-latency key-value at very high write rates with multi-region writes - consider Cassandra or Bigtable, which offer multi-datacenter replication without the RegionServer/ZooKeeper stack.
++ Ordered streaming with replay and many consumers - use Kafka as the backbone, not HBase.
++ Small or medium datasets that fit in a relational database - use PostgreSQL or MySQL; HBase only pays off at scale.
++ Mostly write-once time series analytics - use Parquet/Iceberg with time partitioning; HBase is for point access, not aggregation.
++ Strong multi-row ACID transactions - use a relational or NewSQL database, not HBase.
+
+A useful rule: HBase serves a known key to an application. If the question is "what does this key hold right now", HBase is a candidate; if the question is "aggregate everything matching a predicate", it is not.
+
+[Table of Contents](#Apache-HBase)
+
+## Real world use cases for HBase
+
+### 1. IoT device telemetry time series
+A utility monitors 60,000 smart meters emitting a reading every 15 seconds. The serving API needs the latest readings for a device and a time-range view over the last day, and the raw history must be retained for 90 days.
+
+Business context: outage detection and customer-facing usage dashboards read a single device at a time. Data volume: about 4,000 writes/second, roughly 200 GB/month after compression.
+
+Row key design: `salt|device_id|reverse_timestamp`, where salt is a fixed hash bucket per device and the reverse timestamp makes the newest reading sort first. TTL on the column family drops data after 90 days.
+
+```bash
+# Table with a salted key, one version, 90-day TTL, and a row+column Bloom filter
+create 'iot:readings', {NAME => 'd', VERSIONS => 1, TTL => 7776000, BLOOMFILTER => 'ROWCOL', COMPRESSION => 'SNAPPY'}, SPLITS => ['04', '08', '0c', '10', '14', '18', '1c', '20']
+```
+
+```python
+import hashlib
+
+def reading_key(device_id: str, ts_ms: int, buckets: int = 32) -> str:
+    salt = int(hashlib.md5(device_id.encode()).hexdigest(), 16) % buckets
+    return f"{salt:02d}|{device_id}|{9_999_999_999_999 - ts_ms:013d}"
+```
+
+Why this design: the salt spreads writes across all 32 buckets so no single region takes the load, the device prefix within a bucket makes the latest-reading Get a single point read, and the reverse timestamp makes `scan row_prefix=salt|device` return newest first with a `LIMIT`.
+
+### 2. Clickstream profile store for real-time bidding
+An ad-tech platform records 2 billion impressions per day and must answer "what did this user see in the last 30 minutes" in under 10 ms during an auction.
+
+Business context: the bidder enriches a request with a user's recent behavior. Data volume: about 25,000 writes/second, 2 billion rows/day, 30-minute working set.
+
+Row key design: `salt|user_id|reverse_timestamp` for the recent window, plus a separate compacted table `user_profile` keyed by `salt|user_id` for the latest aggregates. The recent table uses a short TTL and the serving table keeps one version per key.
+
+```java
+Table recent = conn.getTable(TableName.valueOf("rtb:user_events"));
+Scan scan = new Scan()
+    .withStartRow(Bytes.toBytes(saltOf(userId) + "|" + userId + "|"))
+    .withStopRow(Bytes.toBytes(saltOf(userId) + "|" + userId + "|\uFFFF".getBytes()))
+    .setLimit(200)
+    .setCaching(200);
+```
+
+Why this design: point reads and short scans are exactly HBase's strength, the reverse timestamp gives the newest events first without sorting, and the narrow row key keeps the block cache effective. Analytics still runs on a Parquet copy, not on HBase.
+
+### 3. Messaging and conversation history
+A messaging platform stores chat history so a client can open a conversation and load the most recent messages, then page backwards.
+
+Business context: 40 million monthly users, peak 50,000 messages/second, per-conversation ordering required. Data volume: several TB per month.
+
+Row key design: `conversation_id|reverse_timestamp|message_id`. Because a conversation is a natural read unit, the design is tall-and-thin with one row per message; the reverse timestamp gives pagination in both directions (newest first, and older pages by advancing the start row).
+
+```bash
+# Newest 50 messages in a conversation
+scan 'msg:history', {STARTROW => 'conv-88217|', ENDROW => 'conv-88217|\xff', LIMIT => 50}
+```
+
+Why this design: ordering by row key replaces an ORDER BY, pagination is a bounded scan, and atomic increments on a companion counters table provide unread counts without a transaction.
+
+### 4. Wide sparse product catalog with per-attribute updates
+A retailer stores product attributes where different categories have wildly different fields (electronics have voltages, apparel has sizes), and the pricing service updates individual attributes frequently.
+
+Business context: the storefront reads one product at a time and updates a few attributes per event. Data volume: 50 million products, 10-40 attributes each, low-latency reads.
+
+Row key design: `salt|sku`, with attributes as dynamic qualifiers in a single family. Sparse storage means a product only occupies the qualifiers it actually has.
+
+```bash
+put 'catalog:products', '07|sku-99321', 'p:color', 'black'
+put 'catalog:products', '07|sku-99321', 'p:voltage', '220'
+get 'catalog:products', '07|sku-99321'
+```
+
+Why this design: a relational schema would need dozens of sparse columns or an entity-attribute-value table with joins; HBase stores sparse rows natively and reads a whole product in one Get. Salt keeps the catalog write load balanced during bulk price updates.
+
+### 5. Streaming feature store for fraud detection
+A payments company computes features (transaction velocity, recent declines) in a stream processor and serves them to a scoring service with single-digit-millisecond latency.
+
+Business context: the scorer runs on every authorization and cannot wait for a warehouse. Data volume: 8,000 events/second, features for 30 million cards.
+
+Row key design: `salt|card_id` for the current feature vector, with the feature values in one family and short TTLs on the fast-moving counters. A separate `salt|card_id|reverse_timestamp` table holds the recent event trail.
+
+```python
+# Stream processor writes the latest feature vector; scorer reads it
+table.put(
+    (salt(card_id) + "|" + card_id).encode(),
+    {
+        b"f:txn_count_1h": str(count_1h).encode(),
+        b"f:declines_24h": str(declines_24h).encode(),
+        b"f:updated_at": str(now_ms).encode(),
+    },
+)
+```
+
+Why this design: HBase gives a durable, horizontally scalable, low-latency serving layer for a keyed feature vector, writes are single-row atomic so the vector is never half-updated, and the analytics side of the feature computation lives in Kafka plus Flink rather than in HBase.
+
+[Table of Contents](#Apache-HBase)

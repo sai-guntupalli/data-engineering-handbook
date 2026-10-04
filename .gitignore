@@ -8,3 +8,11 @@ out/
 
 # Maven
 target/
+# Python / uv
+.venv/
+__pycache__/
+*.pyc
+
+# Docs build output
+.docs_src/
+site/

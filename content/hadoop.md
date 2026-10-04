@@ -2,13 +2,16 @@
 ### [Interview questions](full.md)
 
 # HADOOP
+
 + [What are the main components of a Hadoop Application?](#What-are-the-main-components-of-a-Hadoop-Application)
++ [What is the role of HDFS in a big data platform?](#What-is-the-role-of-HDFS-in-a-big-data-platform)
++ [Why are small files a problem in Hadoop?](#Why-are-small-files-a-problem-in-Hadoop)
 + [What is the core concept behind Apache Hadoop framework?](#What-is-the-core-concept-behind-Apache-Hadoop-framework)
 + [What is Hadoop Streaming?](#What-is-Hadoop-Streaming)
 + [What is the difference between Nodes in HDFS?](#What-is-the-difference-between-Nodes-in-HDFS)
 + [What is the optimum hardware configuration to run Apache Hadoop?](#What-is-the-optimum-hardware-configuration-to-run-Apache-Hadoop)
 + [What do you know about Block and Block scanner in HDFS?](#What-do-you-know-about-Block-and-Block-scanner-in-HDFS)
-+ [What are the default port numbers on which  Nodes run in Hadoop?](#What-are-the-default-port-numbers-on-which-Nodes-run-in-Hadoop)
++ [What are the default port numbers on which Nodes run in Hadoop?](#What-are-the-default-port-numbers-on-which-Nodes-run-in-Hadoop)
 + [How will you disable a Block Scanner on HDFS DataNode?](#How-will-you-disable-a-Block-Scanner-on-HDFS-DataNode)
 + [How will you get the distance between two nodes in Apache Hadoop?](#How-will-you-get-the-distance-between-two-nodes-in-Apache-Hadoop)
 + [Why do we use commodity hardware in Hadoop?](#Why-do-we-use-commodity-hardware-in-Hadoop)
@@ -40,71 +43,72 @@
 + [What is the meaning of term Data Locality in Hadoop?](#What-is-the-meaning-of-term-Data-Locality-in-Hadoop)
 + [What is a Balancer in HDFS?](#What-is-a-Balancer-in-HDFS)
 + [What are the important points a NameNode considers before selecting the DataNode for placing a data block?](#What-are-the-important-points-a-NameNode-considers-before-selecting-the-DataNode-for-placing-a-data-block)
++ [What is Safemode in HDFS?](#What-is-Safemode-in-HDFS)
 + [How will you replace HDFS data volume before shutting down a DataNode?](#How-will-you-replace-HDFS-data-volume-before-shutting-down-a-DataNode)
 + [What are the important configuration files in Hadoop?](#What-are-the-important-configuration-files-in-Hadoop)
 + [How will you monitor memory used in a Hadoop cluster?](#How-will-you-monitor-memory-used-in-a-Hadoop-cluster)
 + [Why do we need Serialization in Hadoop map reduce methods?](#Why-do-we-need-Serialization-in-Hadoop-map-reduce-methods)
 + [What is the use of Distributed Cache in Hadoop?](#What-is-the-use-of-Distributed-Cache-in-Hadoop)
 + [How will you synchronize the changes made to a file in Distributed Cache in Hadoop?](#How-will-you-synchronize-the-changes-made-to-a-file-in-Distributed-Cache-in-Hadoop)
-+ [Can you elaborate about Mapreduce Job](#Can-you-elaborate-about-Mapreduce-job)
++ [Can you elaborate about Mapreduce job?](#Can-you-elaborate-about-Mapreduce-job)
 + [Why compute nodes and the storage nodes are the same?](#Why-compute-nodes-and-the-storage-nodes-are-the-same)
 + [What is the configuration object importance in Mapreduce?](#What-is-the-configuration-object-importance-in-Mapreduce)
-+ [Where Mapreduce not recommended?](#Where-Mapreduce-not-recommended?)
-+ [What is Namenode and it’s responsibilities?](#What-is-Namenode-and-it’s-responsibilities)
-+ [What is Jobtracker’s responsibility?](#What-is-Jobtracker’s-responsibility)
++ [Where Mapreduce not recommended?](#Where-Mapreduce-not-recommended)
++ [What is Namenode and it’s responsibilities?](#What-is-Namenode-and-its-responsibilities)
++ [What is Jobtracker’s responsibility?](#What-is-Jobtrackers-responsibility)
 + [What are the Jobtracker and Tasktracker?](#What-are-the-Jobtracker-and-Tasktracker)
 + [What is Job scheduling importance in Hadoop Mapreduce?](#What-is-Job-scheduling-importance-in-Hadoop-Mapreduce)
 + [When used Reducer?](#When-used-Reducer)
 + [Where the Shuffle and Sort process does?](#Where-the-Shuffle-and-Sort-process-does)
 + [Java is mandatory to write Mapreduce Jobs?](#Java-is-mandatory-to-write-Mapreduce-Jobs)
-+ [What methods can controle the Map And Reduce function’s output?](#What-methods-can-controle-the-Map-And-Reduce-function’s-output)
++ [What methods can controle the Map And Reduce function’s output?](#What-methods-can-controle-the-Map-And-Reduce-functions-output)
 + [What is the main difference between Mapper And Reducer?](#What-is-the-main-difference-between-Mapper-And-Reducer)
-+ [Why compute Nodes and the Storage Nodes are same?](#Why-compute-Nodes-and-the-Storage-Nodes-are-same?)
++ [Why compute Nodes and the Storage Nodes are same?](#Why-compute-Nodes-and-the-Storage-Nodes-are-same)
 + [What is difference between mapside join and reduce side join?](#What-is-difference-between-mapside-join-and-reduce-side-join)
 + [What happen if number of Reducer is 0?](#What-happen-if-number-of-Reducer-is-0)
-+ [When we are goes to Combiner? Why it is Recommendable?](#When-we-are-goes-to-Combiner)
++ [When we are goes to Combiner?](#When-we-are-goes-to-Combiner)
 + [What is the main difference between Mapreduce Combiner and Reducer?](#What-is-the-main-difference-between-Mapreduce-Combiner-and-Reducer)
-+ [What Is Partition?](#What-is-partition)
++ [What is partition?](#What-is-partition)
 + [When we goes to Partition?](#When-we-goes-to-Partition)
 + [What are the important steps when you are partitioning table?](#What-are-the-important-steps-when-you-are-partitioning-table)
 + [Can you elaborate Mapreduce Job architecture?](#Can-you-elaborate-Mapreduce-Job-architecture)
 + [Why task Tracker launch child Jvm?](#Why-task-Tracker-launch-child-Jvm)
-+ [Why JobClient and Job Tracker submits job resources to file system?](#Why-Jobclient-and-Job-Tracker-submits-job-resources-to-file-system)
++ [Why Jobclient and Job Tracker submits job resources to file system?](#Why-Jobclient-and-Job-Tracker-submits-job-resources-to-file-system)
 + [How many Mappers and Reducers can run?](#How-many-Mappers-and-Reducers-can-run)
-+ [What is InputSplit?](#What-is-Inputsplit)
++ [What is Inputsplit?](#What-is-Inputsplit)
 + [How to configure the split value?](#How-to-configure-the-split-value)
 + [How much ram required to process 64mb data?](#How-much-ram-required-to-process-64mb-data)
 + [What is difference between block And split?](#What-is-difference-between-block-And-split)
 + [Why Hadoop Framework reads a file parallel why not sequential?](#Why-Hadoop-Framework-reads-a-file-parallel-why-not-sequential)
 + [If I am change block size from 64 to 128?](#If-I-am-change-block-size-from-64-to-128)
-+ [What is IsSplitable()?](#What-is-Issplitable())
++ [What is Issplitable()?](#What-is-Issplitable)
 + [How much Hadoop allows maximum block size and minimum block size?](#How-much-Hadoop-allows-maximum-block-size-and-minimum-block-size)
 + [What are the Job Resource files?](#What-are-the-Job-Resource-files)
-+ [What’s the Mapreduce Job consists?](#What’s-the-Mapreduce-Job-consists)
++ [What’s the Mapreduce Job consists?](#Whats-the-Mapreduce-Job-consists)
 + [What is the data locality?](#What-is-the-data-locality)
 + [What is speculative execution?](#What-is-speculative-execution)
 + [What is chain Mapper?](#What-is-chain-Mapper)
 + [How to do value level comparison?](#How-to-do-value-level-comparison)
 + [What is setup and clean up methods?](#What-is-setup-and-clean-up-methods)
 + [How many slots allocate for each task?](#How-many-slots-allocate-for-each-task)
-+ [Why TaskTracker launch child Jvm to do a task? Why not use Existent Jvm?](#Why-Tasktracker-launch-child-Jvm-to-do-a-task)
++ [Why Tasktracker launch child Jvm to do a task?](#Why-Tasktracker-launch-child-Jvm-to-do-a-task)
 + [What main configuration parameters are specified in Mapreduce?](#What-main-configuration-parameters-are-specified-in-Mapreduce)
 + [What is identity Mapper?](#What-is-identity-Mapper)
 + [What is RecordReader in a MapReduce?](#What-is-RecordReader-in-a-MapReduce)
 + [What is OutputCommitter?](#What-is-OutputCommitter)
 + [What are the parameters of Mappers and Reducers?](#What-are-the-parameters-of-Mappers-and-Reducers)
-+ [Explain JobConf in Mapreduce?](#Explain-Jobconf-in-Mapreduce)
++ [Explain Jobconf in Mapreduce?](#Explain-Jobconf-in-Mapreduce)
 + [Explain Job scheduling through Jobtracker?](#Explain-Job-scheduling-through-Jobtracker)
 + [What is SequenceFileInputFormat?](#What-is-SequenceFileInputFormat)
 + [Explain how input and output data format of the Hadoop Framework?](#Explain-how-input-and-output-data-format-of-the-Hadoop-Framework)
-+ [What are the restriction to the Key and Value Class ?](#What-are-the-restriction-to-the-Key-and-Value-Class)
++ [What are the restriction to the Key and Value Class?](#What-are-the-restriction-to-the-Key-and-Value-Class)
 + [Explain the wordcount implementation via Hadoop Framework?](#Explain-the-wordcount-implementation-via-Hadoop-Framework)
 + [How Mapper is instantiated in a running Job?](#How-Mapper-is-instantiated-in-a-running-Job)
 + [Which are the methods in the Mapper Interface?](#Which-are-the-methods-in-the-Mapper-Interface)
-+ [What happens if You don't Override the Mapper methods and keep them as it is?](#What-happens-if-You-don't-Override-the-Mapper-methods-and-keep-them-as-it-is)
++ [What happens if You don't Override the Mapper methods and keep them as it is?](#What-happens-if-You-dont-Override-the-Mapper-methods-and-keep-them-as-it-is)
 + [What is the use of context Object?](#What-is-the-use-of-context-Object)
-+ [How can you Add the arbitrary Key-value pairs in your Mapper?](#How-can-you-Add-the-arbitrary-Key-value-pairs-in-your-Mapper)
-+ [How Does Mapper's Run() Method Works?](#How-does-Mapper's-run-method-works)
++ [How can you Add the arbitrary Key value pairs in your Mapper?](#How-can-you-Add-the-arbitrary-Key-value-pairs-in-your-Mapper)
++ [How does Mapper's run method works?](#How-does-Mappers-run-method-works)
 + [Which Object can be used to get the progress of a particular Job?](#Which-Object-can-be-used-to-get-the-progress-of-a-particular-Job)
 + [What is next step after Mapper Or Maptask?](#What-is-next-step-after-Mapper-Or-Maptask)
 + [How can we control particular Key should go in a specific Reducer?](#How-can-we-control-particular-Key-should-go-in-a-specific-Reducer)
@@ -114,8 +118,8 @@
 + [Explain the core methods of the Reducer?](#Explain-the-core-methods-of-the-Reducer)
 + [What are the primary phases of the Reducer?](#What-are-the-primary-phases-of-the-Reducer)
 + [Explain the Shuffle?](#Explain-the-Shuffle)
-+ [Explain the Reducer's sort phase?](#Explain-the-Reducer's-sort-phase)
-+ [Explain the Reducer's reduce phase?](#Explain-the-Reducer's-reduce-phase)
++ [Explain the Reducer's sort phase?](#Explain-the-Reducers-sort-phase)
++ [Explain the Reducer's reduce phase?](#Explain-the-Reducers-reduce-phase)
 + [How many Reducers should be configured?](#How-many-Reducers-should-be-configured)
 + [It can be possible that a Job has 0 Reducers?](#It-can-be-possible-that-a-Job-has-0-Reducers)
 + [What happens if number of Reducers are 0?](#What-happens-if-number-of-Reducers-are-0)
@@ -128,7 +132,7 @@
 + [How Hdfs differs with Nfs?](#How-Hdfs-differs-with-Nfs)
 + [How does a NameNode handle the failure of the Data Nodes?](#How-does-a-NameNode-handle-the-failure-of-the-Data-Nodes)
 + [Can Reducer talk with each other?](#Can-Reducer-talk-with-each-other)
-+ [Where the Mapper's intermediate data will be stored?](#Where-the-Mapper's-intermediate-data-will-be-stored)
++ [Where the Mapper's intermediate data will be stored?](#Where-the-Mappers-intermediate-data-will-be-stored)
 + [What is the Hadoop Mapreduce api contract for a Key and Value Class?](#What-is-the-Hadoop-Mapreduce-api-contract-for-a-Key-and-Value-Class)
 + [What is a IdentityMapper and IdentityReducer in Mapreduce?](#What-is-a-IdentityMapper-and-IdentityReducer-in-Mapreduce)
 + [What is the meaning of Speculative Execution in Hadoop?](#What-is-the-meaning-of-Speculative-Execution-in-Hadoop)
@@ -145,17 +149,17 @@
 + [What is streaming access?](#What-is-streaming-access)
 + [What is a Commodity Hardware so does Commodity Hardware include Ram?](#What-is-a-Commodity-Hardware-so-does-Commodity-Hardware-include-Ram)
 + [Is NameNode also a Commodity?](#Is-NameNode-also-a-Commodity)
-+ [What is a Metadata?](#What-is-a-Metadata?)
++ [What is a Metadata?](#What-is-a-Metadata)
 + [What is a Daemon?](#What-is-a-Daemon)
 + [What is a Heartbeat in Hdfs?](#What-is-a-Heartbeat-in-Hdfs)
 + [How indexing is done in Hdfs?](#How-indexing-is-done-in-Hdfs)
-+ [If a Data Node is full how it's identified?](#If-a-Data-Node-is-full-how-it's-identified)
++ [If a Data Node is full how it's identified?](#If-a-Data-Node-is-full-how-its-identified)
 + [If DataNodes increase then do we need to upgrade NameNode?](#If-DataNodes-increase-then-do-we-need-to-upgrade-NameNode)
 + [Are Job Tracker and Task Trackers present in separate machines?](#Are-Job-Tracker-and-Task-Trackers-present-in-separate-machines)
 + [On what basis NameNode will decide which DataNode to write on?](#On-what-basis-NameNode-will-decide-which-DataNode-to-write-on)
 + [Who is a user in Hdfs?](#Who-is-a-user-in-Hdfs)
 + [Is client the end user in Hdfs?](#Is-client-the-end-user-in-Hdfs)
-+ [What is the Communication Channel between client and NameNode/DataNode?](#What-is-the-Communication-Channel-between-client-and-NameNode/DataNode)
++ [What is the Communication Channel between client and NameNode/DataNode?](#What-is-the-Communication-Channel-between-client-and-NameNodeDataNode)
 + [What is a Rack?](#What-is-a-Rack)
 + [On what basis Data will be stored on a Rack?](#On-what-basis-Data-will-be-stored-on-a-Rack)
 + [Do we need to place 2nd and 3rd Data in Rack 2 only?](#Do-we-need-to-place-2nd-and-3rd-Data-in-Rack-2-only)
@@ -164,7 +168,7 @@
 + [Do we require two servers for the NameNode and the DataNodes?](#Do-we-require-two-servers-for-the-NameNode-and-the-DataNodes)
 + [Why are the number of splits equal to the number of Maps?](#Why-are-the-number-of-splits-equal-to-the-number-of-Maps)
 + [Is a Job split into maps?](#Is-a-Job-split-into-maps)
-+ [Which are the two types of writes in Hdfs?](#Which-are-the-two-types-of-writes-In-Hdfs)
++ [Which are the two types of writes In Hdfs?](#Which-are-the-two-types-of-writes-In-Hdfs)
 + [Why reading is done in parallel and writing is not in Hdfs?](#Why-reading-is-done-in-parallel-and-writing-is-not-in-Hdfs)
 + [Can Hadoop be compared to Nosql Database like Cassandra?](#Can-Hadoop-be-compared-to-Nosql-Database-like-Cassandra)
 + [How JobTracker schedules a task?](#How-JobTracker-schedules-a-task)
@@ -174,7 +178,7 @@
 + [How NameNode handles DataNode failures?](#How-NameNode-handles-DataNode-failures)
 + [Does Mapreduce programming model provide a way for Reducers to communicate with each other and in a Mapreduce Job can a Reducer communicate with another Reducer?](#Does-Mapreduce-programming-model-provide-a-way-for-Reducers-to-communicate-with-each-other-and-in-a-Mapreduce-Job-can-a-Reducer-communicate-with-another-Reducer)
 + [Can I set the number of Reducers to Zero?](#Can-I-set-the-number-of-Reducers-to-Zero)
-+ [Where is the Mapper Output intermediate Kay-value data stored?](#Where-is-the-Mapper-Output-intermediate-Kay-value-data-stored)
++ [Where is the Mapper Output intermediate Kay value data stored?](#Where-is-the-Mapper-Output-intermediate-Kay-value-data-stored)
 + [If Reducers do not start before all Mappers finish then why does the progress on Mapreduce Job shows something like Map 50 percents Reduce 10 percents and why Reducers progress percentage is displayed when Mapper is not Finished yet?](#If-Reducers-do-not-start-before-all-Mappers-finish-then-why-does-the-progress-on-Mapreduce-Job-shows-something-like-Map-50-percents-Reduce-10-percents-and-why-Reducers-progress-percentage-is-displayed-when-Mapper-is-not-Finished-yet)
 + [Explain in brief the three Modes in which Hadoop can be run?](#Explain-in-brief-the-three-Modes-in-which-Hadoop-can-be-run)
 + [Explain what are the features of Standalone local Mode?](#Explain-what-are-the-features-of-Standalone-local-Mode)
@@ -184,7 +188,7 @@
 + [Tell us what is a spill factor with respect to the ram?](#Tell-us-what-is-a-spill-factor-with-respect-to-the-ram)
 + [Is fs.mapr working for a single directory?](#Is-fs.mapr-working-for-a-single-directory)
 + [Which are the three main Hdfs-site.xml properties?](#Which-are-the-three-main-Hdfs-site.xml-properties)
-+ [How can I restart NameNode?](#How-can-I-restart-Namenode)
++ [How can I restart Namenode?](#How-can-I-restart-Namenode)
 + [How can we check whether Namenode is working or not?](#How-can-we-check-whether-Namenode-is-working-or-not)
 + [At times you get a connection refused Java Exception when you run the file system check command Hadoop fsck?](#At-times-you-get-a-connection-refused-Java-Exception-when-you-run-the-file-system-check-command-Hadoop-fsck)
 + [What is the use of the command Mapred.job.tracker?](#What-is-the-use-of-the-command-Mapred.job.tracker)
@@ -196,7 +200,7 @@
 + [In Hadoop_pid_dir and what does pid stands for?](#In-Hadoop_pid_dir-and-what-does-pid-stands-for)
 + [What does Hadoop-metrics and properties file do?](#What-does-Hadoop-metrics-and-properties-file-do)
 + [What are the network requirements for hadoop?](#What-are-the-network-requirements-for-hadoop)
-+ [Why do we need a password-less ssh in fully distributed environment?](#Why-do-we-need-a-passwordless-ssh-in-fully-distributed-environment)
++ [Why do we need a passwordless ssh in fully distributed environment?](#Why-do-we-need-a-passwordless-ssh-in-fully-distributed-environment)
 + [What will happen if a NameNode has no data?](#What-will-happen-if-a-NameNode-has-no-data)
 + [What happens to job tracker when NameNode is down?](#What-happens-to-job-tracker-when-NameNode-is-down)
 + [Explain what do you mean by formatting of the Dfs?](#Explain-what-do-you-mean-by-formatting-of-the-Dfs)
@@ -205,16 +209,78 @@
 + [Can you tell me if we can create a hadoop cluster from scratch?](#Can-you-tell-me-if-we-can-create-a-hadoop-cluster-from-scratch)
 + [Explain the significance of ssh and what is the port on which port does ssh work and why do we need password in ssh local host?](#Explain-the-significance-of-ssh-and-what-is-the-port-on-which-port-does-ssh-work-and-why-do-we-need-password-in-ssh-local-host)
 + [What is ssh and explain in detail about ssh communication between masters and the slaves?](#What-is-ssh-and-explain-in-detail-about-ssh-communication-between-masters-and-the-slaves)
-+ [Can You Tell Is What Will Happen To A NameNode and When Job Tracker Is Not Up And Running?](#Can-you-tell-is-what-will-happen-to-a-NameNode-and-when-Job-tracker-is-not-up-and-running)
-
-
++ [Can you tell is what will happen to a NameNode and when Job tracker is not up and running?](#Can-you-tell-is-what-will-happen-to-a-NameNode-and-when-Job-tracker-is-not-up-and-running)
++ [What are the key trade-offs in Hadoop and when should you move off it?](#What-are-the-key-trade-offs-in-Hadoop-and-when-should-you-move-off-it)
++ [Real world use cases for Hadoop](#Real-world-use-cases-for-Hadoop)
 
 ## What are the main components of a Hadoop Application?
 Over the time, there are various forms in which a Hadoop application is defined. But in most of the cases there are following four core components of Hadoop application:
 + HDFS: This is the file system in which Hadoop data is stored. It is a distributed file system with very high bandwidth.
-+ Hadoop Common_: This is common set of libraries and utilities used by Hadoop. 
++ Hadoop Common: This is common set of libraries and utilities used by Hadoop.
 + Hadoop MapReduce: This is based on MapReduce algorithm for providing large-scale data processing.
 + Hadoop YARN: This is used for resource management in a Hadoop cluster. It can also schedule tasks for users.
+
+```text
+HDFS          - distributed storage: NameNode, DataNodes, blocks, replicas
+YARN          - cluster resource manager: ResourceManager, NodeManagers, containers
+MapReduce     - batch execution: Mapper, Reducer, shuffle and sort
+Hadoop Common - shared libraries, RPC, configuration, filesystem abstraction
+
+Modern clusters often keep HDFS/YARN for storage and scheduling but replace
+MapReduce with Spark or Tez as the execution engine.
+```
+
+[Table of Contents](#HADOOP)
+
+## What is the role of HDFS in a big data platform?
+HDFS stores large files across a cluster by splitting them into blocks and replicating those blocks for fault tolerance. It is optimized for high-throughput reads and writes of large datasets, not low-latency updates to many small files.
+
+Example:
+
+```text
+1 TB file -> blocks distributed across DataNodes -> NameNode tracks metadata
+```
+
+The NameNode manages file metadata, while DataNodes store the actual blocks. Modern cloud platforms often replace HDFS storage with object storage, but the same concepts of partitioning, file sizing, and distributed reads still matter.
+
+```bash
+# HDFS shell commands that come up in almost every interview
+hdfs dfs -mkdir -p /data/orders/ds=2026-10-04
+hdfs dfs -put ./orders.json /data/orders/ds=2026-10-04/
+hdfs dfs -ls -h /data/orders/ds=2026-10-04/
+hdfs dfs -du -s -h /data/orders
+hdfs dfs -cat /data/orders/ds=2026-10-04/part-00000 | head -5
+hdfs dfs -get /data/orders/ds=2026-10-04/part-00000 ./local.json
+hdfs dfs -rm -r -skipTrash /data/orders/ds=2026-10-04/
+```
+
+[Table of Contents](#HADOOP)
+
+## Why are small files a problem in Hadoop?
+Small files create metadata pressure on the NameNode and reduce processing efficiency. Each file has metadata, and many tiny files create too many tasks with too little work per task. This hurts Spark, Hive, and MapReduce jobs.
+
+Example fix:
+
+```text
+many 1 MB JSON files -> compact into fewer 256 MB Parquet files
+```
+
+Compaction improves scan efficiency, reduces file listing overhead, and makes downstream jobs more stable.
+
+```bash
+# First measure the damage: file count and average size per partition
+hdfs dfs -count -q -h /data/logs/2026/10/04
+hdfs dfs -ls /data/logs/2026/10/04 | wc -l
+
+# Option 1 - Hadoop Archive (HAR) packs many files into one archive
+hadoop archive -archiveName logs.har -p /data/logs/2026/10/04 /data/archive
+
+# Option 2 - preferred: rewrite into a few large Parquet files
+spark-submit --class com.acme.CompactLogs /opt/jobs/compact-logs.jar \
+  --input  hdfs:///data/logs/2026/10/04 \
+  --output hdfs:///data/logs_compact/2026/10/04 \
+  --target-files 8
+```
 
 [Table of Contents](#HADOOP)
 
@@ -230,6 +296,47 @@ Apache Hadoop is based on the concept of MapReduce algorithm. In MapReduce algor
 Hadoop distribution provides a Java utility called Hadoop Streaming. It is packaged in a jar file. With Hadoop Streaming, we can create and run Map Reduce jobs with an executable script.
     We can create executable scripts for Mapper and Reducer functions. These executable scripts are passed to Hadoop Streaming in a command.
     Hadoop Streaming utility creates Map and Reduce jobs and submits these to a cluster. We can also monitor these jobs with this utility.
+
+```python
+# mapper.py - read lines from stdin and emit "word\t1"
+import sys
+
+for line in sys.stdin:
+    for word in line.strip().split():
+        print(f"{word}\t1")
+```
+
+```python
+# reducer.py - sum the counts that arrive sorted by key
+import sys
+
+current_word = None
+current_count = 0
+
+for line in sys.stdin:
+    word, count = line.strip().split("\t", 1)
+    count = int(count)
+    if word == current_word:
+        current_count += count
+    else:
+        if current_word is not None:
+            print(f"{current_word}\t{current_count}")
+        current_word, current_count = word, count
+
+if current_word is not None:
+    print(f"{current_word}\t{current_count}")
+```
+
+```bash
+hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
+  -D mapreduce.job.name=wordcount-streaming \
+  -D mapreduce.job.reduces=4 \
+  -files mapper.py,reducer.py \
+  -mapper  "python3 mapper.py" \
+  -reducer "python3 reducer.py" \
+  -input  /data/books \
+  -output /data/wordcount-out
+```
 
 [Table of Contents](#HADOOP)
 
@@ -253,7 +360,7 @@ To run Apache Hadoop jobs, it is recommended to use dual core machines or dual p
 [Table of Contents](#HADOOP)
 
 ## What do you know about Block and Block scanner in HDFS?
-A large file in HDFS is broken into multiple parts and each part is stored on a different Block. By default a Block is of 64 MB capacity in HDFS.
+A large file in HDFS is broken into multiple parts and each part is stored on a different Block. By default a Block is 128 MB in Hadoop 2/3 (64 MB in Hadoop 1.x).
     Block Scanner is a program that every Data node in HDFS runs periodically to verify the checksum of every block stored on the data node.
     The purpose of a Block Scanner is to detect any data corruption errors on Data node.
 
@@ -261,15 +368,38 @@ A large file in HDFS is broken into multiple parts and each part is stored on a 
 
 ## What are the default port numbers on which Nodes run in Hadoop?
 Default port numbers of Name Node, Job Tracker and Task Tracker are as follows:
-    NameNode runs on port 50070
-    Task Tracker runs on port 50060
-    Job Tracker runs on port 50030
+    NameNode UI runs on port 9870 (50070 on Hadoop 2)
+    Task Tracker (Hadoop 1.x) runs on port 50060
+    Job Tracker (Hadoop 1.x) runs on port 50030
+
+```text
+Component                     Hadoop 3     Hadoop 2 / 1.x
+NameNode UI                   9870         50070
+NameNode RPC                  8020         9000
+DataNode data transfer        9866         50010
+YARN ResourceManager UI       8088         -
+YARN ResourceManager RPC      8032         -
+MapReduce JobHistory UI       19888        -
+JobTracker (Hadoop 1.x)       -            50030
+TaskTracker (Hadoop 1.x)      -            50060
+```
 
 [Table of Contents](#HADOOP)
 
 ## How will you disable a Block Scanner on HDFS DataNode?
 In HDFS, there is a configuration dfs.datanode.scan.period.hours in hdfs-site.xml to set the number of hours interval at which Block Scanner should run.
     We can set dfs.datanode.scan.period.hours=0 to disable the Block Scanner. It means it will not run on HDFS DataNode.
+
+```xml
+<!-- hdfs-site.xml -->
+<configuration>
+  <property>
+    <name>dfs.datanode.scan.period.hours</name>
+    <value>0</value>
+    <description>0 disables the block scanner; default 504 hours (21 days).</description>
+  </property>
+</configuration>
+```
 
 [Table of Contents](#HADOOP)
 
@@ -289,22 +419,51 @@ Hadoop does not require a very high-end server with large memory and processing 
 In Hadoop, there is a utility called DistCP (Distributed Copy) to perform large inter/intra-cluster copying of data. This utility is also based on MapReduce. It creates Map tasks for files given as input.
     After every copy using DistCP, it is recommended to run crosschecks to confirm that there is no data corruption and copy is complete.
 
+```bash
+# DistCp between two HDFS clusters, preserving files, permissions and checksums
+hadoop distcp -m 20 -bandwidth 100 \
+  hdfs://src-nn:8020/data/orders/ds=2026-10-04 \
+  hdfs://dst-nn:8020/data/orders/ds=2026-10-04
+
+# DistCp to object storage (S3A); verify file count and sizes afterwards
+hadoop distcp -Dfs.s3a.access.key="$AWS_ACCESS_KEY_ID" \
+  -Dfs.s3a.secret.key="$AWS_SECRET_ACCESS_KEY" \
+  hdfs:///data/orders s3a://acme-lake/orders
+```
+
 [Table of Contents](#HADOOP)
 
 ## How can we update a file at an arbitrary location in HDFS?
 This is a trick question. In HDFS, it is not allowed to update a file at an arbitrary location. All the files are written in append only mode. It means all writes are done at the end of a file.
     So there is no possibility of updating the files at any random location.
 
+```bash
+# HDFS is append-only: you can add at the end, never edit in the middle
+hdfs dfs -appendToFile local_delta.txt /data/orders/orders.csv
+
+# For real updates, write a new file and atomically swap the partition/table
+hdfs dfs -mv /data/orders_new/ds=2026-10-04 /data/orders/ds=2026-10-04
+```
+
 [Table of Contents](#HADOOP)
 
 ## What is Replication factor in HDFS?
 Replication factor in HDFS is the number of copies of a file in file system. A Hadoop application can specify the number of replicas of a file it wants HDFS to maintain. This information is stored in NameNode. We can set the replication factor in following ways:
     We can use Hadoop fs shell, to specify the replication factor for a file. Command as follows:
-+ $hadoop fs –setrep –w 5 /file_name
++ hdfs dfs -setrep -w 5 /file_name
     In above command, replication factor of file_name  file is set as 5.
     We can also use Hadoop fs shell, to specify the replication factor of all the files in a directory.
-+ $hadoop fs –setrep –w 2 /dir_name
++ hdfs dfs -setrep -w 2 /dir_name
     In above command, replication factor of all the files under directory dir_name is set as 2.
+
+```bash
+# Set replication for one file and for a whole directory tree
+hdfs dfs -setrep -w 5 /data/orders/ds=2026-10-04/part-00000
+hdfs dfs -setrep -w 2 /data/orders
+
+# Verify the effective replication of every block
+hdfs fsck /data/orders -files -blocks -locations
+```
 
 [Table of Contents](#HADOOP)
 
@@ -368,12 +527,48 @@ In Hadoop, most of the components like NameNode, DataNode etc are rack- aware. I
     If we set Replication factor 3 for a file, does it mean any computation will also take place 3 times?
     No. Replication factor of 3 means that there are 3 copies of a file. But computation takes place only one the one copy of file. If the node on which first copy exists, does not respond then computation will be done on second copy.
 
+```xml
+<!-- core-site.xml: call an external script to resolve the rack of each host -->
+<property>
+  <name>net.topology.script.file.name</name>
+  <value>/etc/hadoop/conf/topology.sh</value>
+</property>
+```
+
+```bash
+#!/usr/bin/env bash
+# topology.sh - receives one host name per argument, prints its rack
+while [ -n "$1" ]; do
+  case "$1" in
+    nn1|dn1|dn2) echo "/dc1/rack1" ;;
+    dn3|dn4)     echo "/dc1/rack2" ;;
+    *)           echo "/dc1/rack3" ;;
+  esac
+  shift
+done
+```
+
 [Table of Contents](#HADOOP)
 
 ## How will you check if a file exists in HDFS?
-In Hadoop, we can run hadoop fs command with option e to check the existence of a file in HDFS. This is generally used for testing purpose. Command will be as follows:
-+ %>hadoop fs -test -ezd file_uri e is for checking the existence of file z is for checking non-zero size of
-    File d is for checking if the path is directory
+The hdfs dfs -test options check the existence, length and type of a path. They are mainly used inside scripts because they return an exit code instead of printing output:
++ hdfs dfs -test -e file_uri checks that the path exists.
++ hdfs dfs -test -z file_uri checks that the file has zero length.
++ hdfs dfs -test -d file_uri checks that the path is a directory.
+
+```bash
+# -e exists, -z zero length, -d directory; the exit code is what scripts use
+hdfs dfs -test -e /data/orders/ds=2026-10-04/_SUCCESS && echo "exists"
+hdfs dfs -test -z /data/orders/ds=2026-10-04/part-00000 && echo "empty"
+hdfs dfs -test -d /data/orders && echo "directory"
+
+if hdfs dfs -test -e /data/orders/ds=2026-10-04/_SUCCESS; then
+  echo "partition complete"
+else
+  echo "partition missing or still running"
+  exit 1
+fi
+```
 
 [Table of Contents](#HADOOP)
 
@@ -384,6 +579,14 @@ fsck command is used for getting the details of files and directories in HDFS. M
 + locations: This option prints all the locations of a block in HDFS.
 + racks: This option gives the network topology of data-node locations.
 + blocks: This option gives the report of blocks in HDFS.
+
+```bash
+hdfs fsck /data/orders -files -blocks -locations   # file and block report
+hdfs fsck /data/orders -list-corruptfileblocks     # names of corrupt files
+hdfs fsck /data/orders -move                       # move corrupt blocks to /lost+found
+hdfs fsck /data/orders -delete                     # delete corrupt replicas
+hdfs fsck /data/orders -openforwrite               # files left open by failed writers
+```
 
 [Table of Contents](#HADOOP)
 
@@ -412,6 +615,15 @@ In Hadoop, there are three primary phases of a Reducer:
 Hadoop uses Context object with Mapper to interact with rest of the system. Context object gets the configuration of the system and job in its constructor.
     We use Context object to pass the information in setup(), cleanup() and map() methods. This is an important object that makes the important information available during the map operations.
 
+```java
+@Override
+protected void setup(Context context) throws IOException, InterruptedException {
+    Configuration conf = context.getConfiguration();   // job configuration
+    context.getCounter("etl", "records").increment(1);
+    context.setStatus("loading reference data");
+}
+```
+
 [Table of Contents](#HADOOP)
 
 ## How does partitioning work in Hadoop?
@@ -420,6 +632,21 @@ Partitioning is the phase between Map phase and Reduce phase in Hadoop workflow.
     Partitions can be like Hash based buckets.
     E.g. If we have to find the student with the maximum marks in each gender in each subject. We can first use Map function to map the keys with each gender. Once mapping is done, the result is passed to Partitioner. Partitioner will partition each row with gender on the basis of subject. For each subject there will be a different Reducer. Reducer will take input from each partition and find the student with the highest marks.
 
+```java
+// Default partitioner: hash(key) % numReduceTasks
+public class HashPartitioner<K, V> extends Partitioner<K, V> {
+    @Override
+    public int getPartition(K key, V value, int numReduceTasks) {
+        return (key.hashCode() & Integer.MAX_VALUE) % numReduceTasks;
+    }
+}
+```
+
+```text
+Key design rule: partition on the same key you group by. A poorly chosen
+partitioner sends all hot keys to one reducer and creates data skew.
+```
+
 [Table of Contents](#HADOOP)
 
 ## What is a Combiner in Hadoop?
@@ -427,6 +654,17 @@ Combiner is an optional step between Map and Reduce. Combiner is also called Sem
     Combiner's task is to summarize the outputs from Map into summary records with same key.
     By using Combiner, we can reduce the data transfer between Mapper and
     Reducer. Combiner does the task similar to reduce but it is done on the Map machine itself.
+
+```java
+// Sum is commutative and associative, so it is safe to use as a combiner
+job.setCombinerClass(IntSumReducer.class);
+job.setReducerClass(IntSumReducer.class);
+```
+
+```text
+Safe as a combiner : sum, max, min, count (and average if you emit sum+count)
+Unsafe as a combiner: median, exact distinct count, order-dependent logic
+```
 
 [Table of Contents](#HADOOP)
 
@@ -438,7 +676,17 @@ Default replication factor in HDFS is 3. It means there will be 3 copies of each
 [Table of Contents](#HADOOP)
 
 ## How much storage is allocated by HDFS for storing a file of 25 MB size?
-This is a question to test the basic concepts of HDFS. In HDFS, all the data is stored in blocks. The size of block can be configured in HDFS.In Apache Hadoop, the default block size is 64 MB. To store a file of 25 MB size, at least one block will be allocated. This means at least 64 MB will be allocated for the file of 25 MB size.
+This is a question to test the basic concepts of HDFS. In HDFS, all the data is stored in blocks. The size of block can be configured in HDFS.In Hadoop 2/3 the default block size is 128 MB (Hadoop 1.x used 64 MB). A file of 25 MB still occupies one whole block, so one block of capacity is reserved for it, and with replication factor 3 the physical usage is three blocks.
+
+```text
+Block size defaults:
+  Hadoop 1.x : 64 MB
+  Hadoop 2/3 : 128 MB (dfs.blocksize), configurable per file
+
+A 25 MB file occupies exactly one block, so the reserved capacity is one
+block (64 MB on Hadoop 1.x, 128 MB on Hadoop 2/3) rather than 25 MB.
+With replication factor 3 the physical usage is 3 x block size.
+```
 
 [Table of Contents](#HADOOP)
 
@@ -455,12 +703,36 @@ Partition phase runs between Map and Reduce phase. It is an optional phase. We c
     This method takes three inputs. In this method, numPartitions is same as the number of reducers in our job. We pass key and value to get the partition number to which this key,value record will be assigned. There will be a reducer corresponding to that partition. The reducer will further handle to summarizing of the data.Once custom Partitioner class is ready, we have to set it in the Hadoop job. We can use following method to set it:
         job.setPartitionerClass(CustomPartitioner)
 
+```java
+public class GenderSubjectPartitioner extends Partitioner<Text, IntWritable> {
+    @Override
+    public int getPartition(Text key, IntWritable value, int numPartitions) {
+        String[] parts = key.toString().split("\\|");   // gender|subject
+        return (parts[0].hashCode() & Integer.MAX_VALUE) % numPartitions;
+    }
+}
+```
+
+```java
+job.setPartitionerClass(GenderSubjectPartitioner.class);
+job.setNumReduceTasks(4);   // getPartition must return a value in [0, numPartitions)
+```
+
 [Table of Contents](#HADOOP)
 
 ## What is a Checkpoint node in HDFS?
 A Checkpoint node in HDFS periodically fetches fsimage and edits from NameNode, and merges them. This merge result is called a Checkpoint. Once a Checkpoint is created, Checkpoint Node uploads the Checkpoint to NameNode. Secondary node also takes Checkpoint similar to Checkpoint Node. But it does not upload the Checkpoint to NameNode.
     Main benefit of Checkpoint Node is in case of any failure on NameNode. A NameNode does not merge its edits to fsimage automatically during the runtime. If we have long running task, the edits will become huge. When we restart NameNode, it will take much longer time, because it will first merge the edits. In such a scenario, Checkpoint node helps for a long running task.
     Checkpoint nodes performs the task of merging the edits with fsimage and then uploads these to NameNode. This saves time during the restart of NameNode.
+
+```bash
+# Force the active NameNode to write a new fsimage and start a fresh edits file
+hdfs dfsadmin -saveNamespace
+hdfs dfsadmin -rollEdits
+
+# Inspect the checkpoint directory on the Secondary/Checkpoint NameNode
+hdfs oiv -i fsimage_0000000000000001234 -p XML -o fsimage.xml
+```
 
 [Table of Contents](#HADOOP)
 
@@ -480,6 +752,15 @@ In a Big Data system, the size of data is huge. So it does not make sense to mov
 ## What is a Balancer in HDFS?
 In HDFS, data is stored in blocks on a DataNode. There can be a situation when data is not uniformly spread into blocks on a DataNode. When we add a new DataNode to a cluster, we can face such a situation. In such a case, HDFS provides a useful tool Balancer to analyze the placement of blocks on a DataNode. Some people call it as Rebalancer also. This is an administrative tool used by admin staff. We can use this tool to spread the blocks in a uniform manner on a DataNode.
 
+```bash
+# Check capacity and usage per node, then rebalance
+hdfs dfsadmin -report | grep -E "Name:|DFS Used%|Remaining"
+hdfs balancer -threshold 10
+
+# Limit the bandwidth used so balancing does not starve production jobs
+hdfs dfsadmin -setBalancerBandwidth 104857600   # 100 MB/s
+```
+
 [Table of Contents](#HADOOP)
 
 ## What are the important points a NameNode considers before selecting the DataNode for placing a data block?
@@ -494,11 +775,28 @@ Some of the important points for selecting a DataNode by NameNode are as follows
 Safemode is considered as the read-only mode of NameNode in a cluster. During the startup of NameNode, it is in SafeMode. It does not allow writing to file-system in Safemode. At this time, it collects data and statistics from all the DataNodes. Once it has all the data on blocks, it leaves Safemode.
     The main reason for Safemode is to avoid the situation when NameNode starts replicating data in DataNodes before collecting all the information from DataNodes. It may erroneously assume that a block is not replicated well enough, whereas, the issue is that NameNode does not know about whereabouts of all the replicas of a block. Therefore, in Safemode, NameNode first collects the information about how many replicas exist in cluster and then tries to create replicas wherever the number of replicas is less than the policy.
 
+```bash
+hdfs dfsadmin -safemode get
+hdfs dfsadmin -safemode enter     # force read-only mode during maintenance
+hdfs dfsadmin -safemode leave
+hdfs dfsadmin -report             # capacity, live/dead DataNodes, under-replicated blocks
+```
+
 [Table of Contents](#HADOOP)
 
 ## How will you replace HDFS data volume before shutting down a DataNode?
 In HDFS, DataNode supports hot swappable drives. With a swappable drive we can add or replace HDFS data volumes while the DataNode is still running. The procedure for replacing a hot swappable drive is as follows:
     First we format and mount the new drive. We update the DataNode configuration dfs.datanode.data.dir to reflect the data volume directories. Run the "dfsadmin -reconfig datanode HOST:PORT start" command to start the reconfiguration process Once the reconfiguration is complete, we just unmount the old data volume After unmount we can physically remove the old disks.
+
+```bash
+# 1. Mount the new disk and add it to dfs.datanode.data.dir in hdfs-site.xml
+# 2. Reload the DataNode configuration without a full restart
+hdfs dfsadmin -reconfig datanode dn5:9867 start
+hdfs dfsadmin -reconfig datanode dn5:9867 status
+
+# 3. Wait until the old volume drains, then unmount and physically remove it
+hdfs dfsadmin -report
+```
 
 [Table of Contents](#HADOOP)
 
@@ -506,8 +804,54 @@ In HDFS, DataNode supports hot swappable drives. With a swappable drive we can a
 There are two important configuration files in a Hadoop cluster:
 + Default Configuration: There are core-default.xml, hdfs-default.xml and mapred-default.xml files in which we specify the default configuration for Hadoop cluster. These are read only files.
 + Custom Configuration: We have site-specific custom files like core-site.xml, hdfs-site.xml, mapred-site.xml in which we can specify the site-specific configuration.
-    
+
 All the Jobs in Hadoop and HDFS implementation uses the parameters defined in the above-mentioned files. With customization we can tune these processes according to our use case. In Hadoop API, there is a Configuration class that loads these files and provides the values at run time to different jobs.
+
+```xml
+<!-- core-site.xml -->
+<configuration>
+  <property>
+    <name>fs.defaultFS</name>
+    <value>hdfs://nn1:8020</value>
+  </property>
+  <property>
+    <name>io.file.buffer.size</name>
+    <value>131072</value>
+  </property>
+</configuration>
+```
+
+```xml
+<!-- hdfs-site.xml -->
+<configuration>
+  <property>
+    <name>dfs.replication</name>
+    <value>3</value>
+  </property>
+  <property>
+    <name>dfs.namenode.name.dir</name>
+    <value>/data/1/dfs/nn,/data/2/dfs/nn</value>
+  </property>
+  <property>
+    <name>dfs.datanode.data.dir</name>
+    <value>/data/1/dfs/dn,/data/2/dfs/dn</value>
+  </property>
+</configuration>
+```
+
+```xml
+<!-- mapred-site.xml -->
+<configuration>
+  <property>
+    <name>mapreduce.framework.name</name>
+    <value>yarn</value>
+  </property>
+  <property>
+    <name>yarn.app.mapreduce.am.resource.mb</name>
+    <value>2048</value>
+  </property>
+</configuration>
+```
 
 [Table of Contents](#HADOOP)
 
@@ -516,15 +860,81 @@ In Hadoop, TaskTracker is the one that uses high memory to perform a task. We ca
         mapred.cluster.map.memory.mb, mapred.cluster.reduce.memory.mb: This is the size of virtual memory of a single map/reduce slot in a cluster of Map-Reduce framework. mapred.job.map.memory.mb, mapred.job.reduce.memory.mb: This is the default limit of memory
         set on each map/reduce task in Hadoop. mapred.cluster.max.map.memory.m mapred.cluster.max.reduce.memory This is the maximum limit of memory set on each map/reduce task in Hadoop.
 
+```xml
+<!-- yarn-site.xml: physical memory and vcores offered by each NodeManager -->
+<configuration>
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>98304</value>   <!-- 96 GB usable by containers on a 128 GB node -->
+  </property>
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value>32</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>1024</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.maximum-allocation-mb</name>
+    <value>32768</value>
+  </property>
+</configuration>
+```
+
 [Table of Contents](#HADOOP)
 
 ## Why do we need Serialization in Hadoop map reduce methods?
 In Hadoop, there are multiple data nodes that hold data. During the processing of map and reduce methods data may transfer from one node to another node. Hadoop uses serialization to convert the data from Object structure to Binary format. With serialization, data can be converted to binary format and with de-serialization data can be converted back to Object format with reliability.
 
+```java
+public class Temperature implements WritableComparable<Temperature> {
+    private String city;
+    private double celsius;
+
+    public Temperature() { }   // no-arg constructor is required for deserialization
+
+    @Override
+    public void write(DataOutput out) throws IOException {
+        out.writeUTF(city);
+        out.writeDouble(celsius);
+    }
+
+    @Override
+    public void readFields(DataInput in) throws IOException {
+        city = in.readUTF();
+        celsius = in.readDouble();
+    }
+
+    @Override
+    public int compareTo(Temperature other) {
+        return Double.compare(this.celsius, other.celsius);
+    }
+}
+```
+
 [Table of Contents](#HADOOP)
 
 ## What is the use of Distributed Cache in Hadoop?
 Hadoop provides a utility called Distributed Cache to improve the performance of jobs by caching the files used by applications. An application can specify which file it wants to cache by using JobConf configuration. Hadoop framework copies these files to the nodes one which a task has to be executed. This is done before the start of execution of a task. DistributedCache supports distribution of simple read only text files as well as complex files like jars, zips etc.
+
+```java
+// Hadoop 2/3 API: ship a small read-only lookup file to every task
+job.addCacheFile(new URI("hdfs:///data/reference/country_codes.csv#country_codes.csv"));
+
+// Load it once per task in setup() instead of once per record
+@Override
+protected void setup(Context context) throws IOException {
+    try (BufferedReader reader = new BufferedReader(
+            new FileReader(new File("country_codes.csv")))) {
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String[] parts = line.split(",", 2);
+            codes.put(parts[0], parts[1]);
+        }
+    }
+}
+```
 
 [Table of Contents](#HADOOP)
 
@@ -536,6 +946,24 @@ It is a trick question. In Distributed Cache, it is not allowed to make any chan
 ##  Can you elaborate about Mapreduce job?
 Based on the configuration, the MapReduce Job first splits the input data into independent chunks called Blocks. These blocks processed by Map() and Reduce() functions. First Map function process the data, then processed by reduce function. The Framework takes care of sorts the Map outputs, scheduling the tasks.
 
+A minimal driver shows the full contract of a job:
+
+```java
+Configuration conf = new Configuration();
+Job job = Job.getInstance(conf, "orders-etl");
+job.setJarByClass(OrdersJob.class);
+job.setMapperClass(OrdersMapper.class);
+job.setCombinerClass(OrdersCombiner.class);
+job.setPartitionerClass(RegionPartitioner.class);
+job.setReducerClass(OrdersReducer.class);
+job.setOutputKeyClass(Text.class);
+job.setOutputValueClass(IntWritable.class);
+FileInputFormat.addInputPath(job, new Path(args[0]));
+FileOutputFormat.setOutputPath(job, new Path(args[1]));
+job.setNumReduceTasks(8);
+System.exit(job.waitForCompletion(true) ? 0 : 1);
+```
+
 [Table of Contents](#HADOOP)
 
 ##  Why compute nodes and the storage nodes are the same?
@@ -546,10 +974,26 @@ Compute nodes for processing the data, Storage nodes for storing the data. By de
 ##  What is the configuration object importance in Mapreduce?
 It’s used to set/get of parameter name & value pairs in XML file.It’s used to initialize values, read from external file and set as a value parameter.Parameter values in the program always overwrite with new values which are coming from external configure files.Parameter values received from Hadoop’s default values.
 
+```java
+Configuration conf = new Configuration();   // loads *-default.xml, then *-site.xml
+conf.set("etl.run_date", "2026-10-04");     // programmatic values win over files
+conf.addResource(new Path("/etc/hadoop/conf/core-site.xml"));
+
+String runDate = conf.get("etl.run_date");  // available in Mapper/Reducer Context
+```
+
 [Table of Contents](#HADOOP)
 
 ##  Where Mapreduce not recommended?
-Mapreduce is not recommended for Iterative kind of processing. It means repeat the output in a loop manner.To process Series of Mapreduce jobs, MapReduce not suitable. each job persists data in local disk, then again load to another job. It’s costly operation and not recommended.
+MapReduce is not recommended for iterative processing. It means repeat the output in a loop manner.To process Series of Mapreduce jobs, MapReduce not suitable. each job persists data in local disk, then again load to another job. It’s costly operation and not recommended.
+
+```text
+Good fit    : one-pass batch scans, huge inputs, fault-tolerant batch ETL
+Poor fit    : iterative ML, interactive queries, graph algorithms, streaming,
+              low-latency lookups
+Spark, Tez or Flink replace MapReduce when the same data is revisited many
+times, because they keep intermediate state in memory instead of on disk.
+```
 
 [Table of Contents](#HADOOP)
 
@@ -571,6 +1015,34 @@ MapReduce Framework consists of a single Job Tracker per Cluster, one Task Track
 
 ##  What is Job scheduling importance in Hadoop Mapreduce?
 Scheduling is a systematic procedure of allocating resources in the best possible way among multiple tasks. Hadoop task tracker performing many procedures, sometime a particular procedure should finish quickly and provide more prioriety, to do it few job schedulers come into the picture. Default Schedule is FIFO. Fair scheduling, FIFO and CapacityScheduler are most popular hadoop scheduling in hadoop.
+
+```xml
+<!-- capacity-scheduler.xml: department queues with guaranteed capacity -->
+<configuration>
+  <property>
+    <name>yarn.scheduler.capacity.root.queues</name>
+    <value>etl,bi,adhoc</value>
+  </property>
+  <property><name>yarn.scheduler.capacity.root.etl.capacity</name><value>60</value></property>
+  <property><name>yarn.scheduler.capacity.root.bi.capacity</name><value>25</value></property>
+  <property><name>yarn.scheduler.capacity.root.adhoc.capacity</name><value>15</value></property>
+  <property>
+    <name>yarn.scheduler.capacity.root.etl.maximum-capacity</name>
+    <value>80</value>
+  </property>
+  <property>
+    <name>yarn.scheduler.capacity.root.etl.maximum-am-resource-percent</name>
+    <value>20</value>
+  </property>
+</configuration>
+```
+
+```bash
+# Submit a job to the etl queue
+yarn jar wordcount.jar com.acme.WordCount \
+  -D mapreduce.job.queuename=etl \
+  /data/books /data/wordcount-out
+```
 
 [Table of Contents](#HADOOP)
 
@@ -611,6 +1083,20 @@ Compute nodes are logical processing units, Storage nodes are physical storage u
 ## What is difference between mapside join and reduce side join?
 Join multple tables in mapper side, called map side join. Please note mapside join should has strict format and sorted properly. If dataset is smaller tables, goes through reducer phrase. Data should partitioned properly.
     Join the multiple tables in reducer side called reduce side join. If you have large amount of data tables, planning to join both tables. One table is large amount of rows and columns, another one has few number of tables only, goes through Rreduce side join. It’s the best way to join the multiple tables
+
+```java
+// Map-side join: broadcast the small dimension table to every mapper
+job.addCacheFile(new URI("hdfs:///data/dim/customers.csv#customers.csv"));
+job.setMapperClass(CustomerJoinMapper.class);
+job.setNumReduceTasks(0);   // no shuffle needed
+```
+
+```sql
+-- Reduce-side join: both sides are shuffled and sorted by the join key
+SELECT o.order_id, c.country
+FROM orders o
+JOIN customers c ON o.customer_id = c.customer_id;
+```
 
 [Table of Contents](#HADOOP)
 
@@ -674,22 +1160,47 @@ Data locality. Move competition is cheaper than moving Data. So logic/ competiti
 ##  How many Mappers and Reducers can run?
 By default Hadoop can run 2 mappers and 2 reducers in one datanode. also each node has 2 map slots and 2 reducer slots. It’s possible to change this default values in Mapreduce.xml in conf file.
 
+```xml
+<!-- mapred-site.xml: per-task memory and the number of tasks in the job -->
+<configuration>
+  <property><name>mapreduce.map.memory.mb</name><value>2048</value></property>
+  <property><name>mapreduce.reduce.memory.mb</name><value>4096</value></property>
+  <property><name>mapreduce.job.maps</name><value>200</value></property>
+  <property><name>mapreduce.job.reduces</name><value>50</value></property>
+</configuration>
+```
+
+```text
+Containers per node = min(yarn.nodemanager.resource.memory-mb / task memory,
+                         yarn.nodemanager.resource.cpu-vcores)
+On a 96 GB / 32 vcore node with 2 GB map tasks, roughly 32 maps can run
+concurrently, bounded by vcores.
+```
+
 [Table of Contents](#HADOOP)
 
 ##  What is Inputsplit?
 A chunk of data processed by a single mapper called InputSplit. In another words logical chunk of data which processed by a single mapper called Input split, by default inputSplit = block Size.
 
+```text
+block = physical partition of a file on HDFS (for example 128 MB)
+split = logical range of input handed to a single map task
+
+The number of map tasks equals the number of InputSplits. A split usually
+aligns with a block so the task can be scheduled data-local.
+```
+
 [Table of Contents](#HADOOP)
 
 ## How to configure the split value?
-By default block size = 64mb, but to process the data, job tracker split the data. Hadoop architect use these formulas to know split size.
+By default block size = 128 MB on Hadoop 2/3 (64 MB on Hadoop 1.x), but to process the data, job tracker split the data. Hadoop architect use these formulas to know split size.
 + split size = min (max_splitsize, max (block_size, min_split_size));
 + split size = max(min_split_size, min (block_size, max_split, size));
 
     by default split size = block size. Always No of splits = No of mappers.
     Apply above formula:
-+ split size = Min (max_splitsize, max (64, 512kB) // max _splitsize = depends on env, may 1gb or 10gb split size = min (10gb (let assume), 64) split size = 64MB.
-+ split size = max(min_split_size, min (block_size, max_split, size)); split size = max (512kb, min (64, 10GB)); split size = max (512kb, 64);split size = 64 MB;
++ split size = Min (max_splitsize, max (128, 512kB) // max _splitsize = depends on env, may 1gb or 10gb split size = min (10gb (let assume), 128) split size = 128 MB.
++ split size = max(min_split_size, min (block_size, max_split, size)); split size = max (512kb, min (128, 10GB)); split size = max (512kb, 128);split size = 128 MB;
 
 [Table of Contents](#HADOOP)
 
@@ -717,10 +1228,19 @@ Even you have changed block size not effect existent data. After changed the blo
 ## What is Issplitable()?
 By default this value is true. It is used to split the data in the input format. if un­structured data, it’s not recommendable to split the data, so process entire file as a one split. to do it first change isSplitable() to false.
 
+```java
+public class WholeFileInputFormat extends FileInputFormat<NullWritable, BytesWritable> {
+    @Override
+    protected boolean isSplitable(JobContext context, Path filename) {
+        return false;   // one mapper reads the whole file (e.g. gzip, images)
+    }
+}
+```
+
 [Table of Contents](#HADOOP)
 
 ##  How much Hadoop allows maximum block size and minimum block size?
-+ Minimum: 512 bytes. It’s local OS file system block size. No one can decrease fewer than block size.
++ Minimum: 1 MB (dfs.namenode.fs-limits.min-block-size, default 1048576 bytes in Hadoop 2/3); the NameNode rejects smaller blocks at create time.
 + Maximum: Depends on environment. There is no upper­bound.
 
 [Table of Contents](#HADOOP)
@@ -738,6 +1258,13 @@ MapReduce job is a unit of work that client wants to be performed. It consists o
 ##  What is the data locality?
 Whereever the data is there process the data, computation/process the data where the data available, this process called data locality. “Moving Computation is Cheaper than Moving Data” to achieve this goal follow data locality. It’s possible when the data is splittable, by default it’s true.
 
+```text
+Task placement priority:
+  1. node-local  - data on the same DataNode, no network transfer
+  2. rack-local  - data on the same rack, one switch hop
+  3. off-switch  - data on another rack, slowest and last resort
+```
+
 [Table of Contents](#HADOOP)
 
 ##  What is speculative execution?
@@ -745,6 +1272,12 @@ Hadoop run the process in commodity hardware, so it’s possible to fail the sys
 + Eg: logic distributed on A, B, C, D systems, completed within a time.
 
 System A, System B, System C, System D systems executed 10 min, 8 mins, 9 mins 12 mins simultaneously. So consider system B and kill remaining system processes, framework take care to kill the other system process.
+
+```xml
+<property><name>mapreduce.map.speculative</name><value>true</value></property>
+<property><name>mapreduce.reduce.speculative</name><value>true</value></property>
+<!-- Disable for jobs whose tasks have non-idempotent side effects -->
+```
 
 [Table of Contents](#HADOOP)
 
@@ -761,6 +1294,23 @@ Hadoop can process key level comparison only but not in the value level comparis
 ##  What is setup and clean up methods?
 If you don’t no what is starting and ending point/lines, it’s much difficult to solve those problems. Setup and clean up can resolve it. N number of blocks, by default 1 mapper called to each split. each split has one start and clean up methods. N number of methods, number of lines. Setup is initialize job resources.
     The purpose of clean up is close the job resources. Map is process the data. once last map is completed, cleanup is initialized. It Improves the data transfer performance. All these block size comparison can do in reducer as well. If you have any key and value, compare one key value to another key value use it. If you compare record level used these setup and cleanup. It open once and process many times and close once. So it save a lot of network wastage during process.
+
+```java
+@Override
+protected void setup(Context context) {
+    // runs once per task, before any map() call: open connections, load lookups
+}
+
+@Override
+protected void map(LongWritable key, Text value, Context context) {
+    // runs once per record
+}
+
+@Override
+protected void cleanup(Context context) {
+    // runs once per task, after the last map() call: flush buffers, close handles
+}
+```
 
 [Table of Contents](#HADOOP)
 
@@ -816,6 +1366,15 @@ The four parameters for reducers are:
 + Text (final output)
 + IntWritable (final output)
 
+```java
+// Word count generics: mapper<LongWritable, Text, Text, IntWritable>
+public class TokenizerMapper extends Mapper<LongWritable, Text, Text, IntWritable> { }
+
+// reducer<Text, IntWritable, Text, IntWritable>: the input pair mirrors
+// the mapper output pair, and the output pair is the final result type
+public class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable> { }
+```
+
 [Table of Contents](#HADOOP)
 
 ## Explain Jobconf in Mapreduce?
@@ -831,6 +1390,13 @@ JobTracker communicates with NameNode to identify data location and submits the 
 ## What is SequenceFileInputFormat?
 A compressed binary output file format to read in sequence files and extends the FileInputFormat.It passes data between output-input (between output of one MapReduce job to input of another MapReduce job)phases of MapReduce jobs.
 
+```java
+// SequenceFile stores binary key/value pairs and is splittable
+job.setInputFormatClass(SequenceFileInputFormat.class);
+job.setOutputFormatClass(SequenceFileOutputFormat.class);
+// Typical use: the output of one MapReduce stage feeds the next without parsing text
+```
+
 [Table of Contents](#HADOOP)
 
 ##  Explain how input and output data format of the Hadoop Framework?
@@ -842,6 +1408,16 @@ The MapReduce framework operates exclusively on pairs, that is, the framework vi
 
 ##  What are the restriction to the Key and Value Class?
 The key and value classes have to be serialized by the framework. To make them serializable Hadoop provides a Writable interface. As you know from the java itself that the key of the Map should be comparable, hence the key has to implement one more interface Writable Comparable.
+
+```java
+public interface Writable {
+    void write(DataOutput out) throws IOException;
+    void readFields(DataInput in) throws IOException;
+}
+
+// Keys must additionally be comparable so the framework can sort them
+public interface WritableComparable<T> extends Writable, Comparable<T> { }
+```
 
 [Table of Contents](#HADOOP)
 
@@ -872,6 +1448,80 @@ Output
     Final output would look like
         Hello 4 times
         World 4 times
+
+```java
+// WordCount.java - mapper, reducer and driver
+import java.io.IOException;
+import java.util.StringTokenizer;
+
+import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
+import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Job;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
+import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+
+public class WordCount {
+
+    public static class TokenizerMapper
+            extends Mapper<Object, Text, Text, IntWritable> {
+
+        private final IntWritable one = new IntWritable(1);
+        private final Text word = new Text();
+
+        @Override
+        public void map(Object key, Text value, Context context)
+                throws IOException, InterruptedException {
+            StringTokenizer itr = new StringTokenizer(value.toString());
+            while (itr.hasMoreTokens()) {
+                word.set(itr.nextToken());
+                context.write(word, one);
+            }
+        }
+    }
+
+    public static class IntSumReducer
+            extends Reducer<Text, IntWritable, Text, IntWritable> {
+
+        private final IntWritable result = new IntWritable();
+
+        @Override
+        public void reduce(Text key, Iterable<IntWritable> values, Context context)
+                throws IOException, InterruptedException {
+            int sum = 0;
+            for (IntWritable value : values) {
+                sum += value.get();
+            }
+            result.set(sum);
+            context.write(key, result);
+        }
+    }
+
+    public static void main(String[] args) throws Exception {
+        Configuration conf = new Configuration();
+        Job job = Job.getInstance(conf, "word count");
+        job.setJarByClass(WordCount.class);
+        job.setMapperClass(TokenizerMapper.class);
+        job.setCombinerClass(IntSumReducer.class);
+        job.setReducerClass(IntSumReducer.class);
+        job.setOutputKeyClass(Text.class);
+        job.setOutputValueClass(IntWritable.class);
+        FileInputFormat.addInputPath(job, new Path(args[0]));
+        FileOutputFormat.setOutputPath(job, new Path(args[1]));
+        System.exit(job.waitForCompletion(true) ? 0 : 1);
+    }
+}
+```
+
+```bash
+# Compile locally, package the jar, submit to YARN
+hadoop com.sun.tools.javac.Main WordCount.java
+jar cf wc.jar WordCount*.class
+yarn jar wc.jar WordCount -D mapreduce.job.reduces=4 /data/books /data/wordcount-out
+```
 
 [Table of Contents](#HADOOP)
 
@@ -968,8 +1618,16 @@ In this phase the reduce(MapOutKeyType, Iterable, Context) method is called for 
 
 ##  How many Reducers should be configured?
 The right number of reduces seems to be 0.95 or 1.75 multiplied by
-        (<no.of nades> * mapreduce.tasktracker.reduce.tasks.maximum).
-        With 0.95 all of the reduces can launch immediately and start transfering map outputs as the maps finish. With 1.75 the faster nodes will finish their first round of reduces and launch a second wave of reduces doing a much better job of load balancing. Increasing the number of reduces increases the framework overhead, but increases load balancing and lowers the cost of failures.
+        (number of nodes * mapreduce.tasktracker.reduce.tasks.maximum).
+        With 0.95 all of the reduces can launch immediately and start transferring map outputs as the maps finish. With 1.75 the faster nodes will finish their first round of reduces and launch a second wave of reduces doing a much better job of load balancing. Increasing the number of reduces increases the framework overhead, but increases load balancing and lowers the cost of failures.
+
+```java
+// Rule of thumb: 0.95 x (reduce slots per node) x (nodes) for a single wave,
+// 1.75 x the same when you want a second wave for better load balancing
+int reduceSlotsPerNode = 8;
+int nodes = 100;
+job.setNumReduceTasks((int) (1.75 * reduceSlotsPerNode * nodes));
+```
 
 [Table of Contents](#HADOOP)
 
@@ -1001,6 +1659,15 @@ JobTracker is a daemon service which submits and tracks the MapReduce tasks to t
     A TaskTracker will notify the JobTracker when a task fails. The JobTracker decides what to do then: it may resubmit the job elsewhere, it may mark that specific record as something to avoid, and it may may even blacklist the TaskTracker as unreliable.
     When the work is completed, the JobTracker updates its status.
     Client applications can poll the JobTracker for information.
+
+In Hadoop 2/3 the JobTracker role is split: the ResourceManager schedules
+containers on NodeManagers, and each application runs its own ApplicationMaster.
+
+```xml
+<!-- yarn-site.xml -->
+<property><name>yarn.resourcemanager.hostname</name><value>rm1</value></property>
+<property><name>yarn.nodemanager.aux-services</name><value>mapreduce_shuffle</value></property>
+```
 
 [Table of Contents](#HADOOP)
 
@@ -1219,6 +1886,25 @@ If both rack2 and datanode present in rack 1 fails then there is no chance of ge
 ##  What is the difference between Gen1 and Gen2 Hadoop with regards to the NameNode?
 In Gen 1 Hadoop, Namenode is the single point of failure. In Gen 2 Hadoop, we have what is known as Active and Passive Namenodes kind of a structure. If the active Namenode fails, passive Namenode takes over the charge.
 
+```xml
+<!-- core-site.xml: NameNode HA in Hadoop 2/3 with automatic failover -->
+<configuration>
+  <property><name>fs.defaultFS</name><value>hdfs://acme-ns</value></property>
+  <property><name>dfs.nameservices</name><value>acme-ns</value></property>
+  <property><name>dfs.ha.namenodes.acme-ns</name><value>nn1,nn2</value></property>
+  <property>
+    <name>dfs.namenode.rpc-address.acme-ns.nn1</name>
+    <value>nn1:8020</value>
+  </property>
+  <property>
+    <name>dfs.namenode.rpc-address.acme-ns.nn2</name>
+    <value>nn2:8020</value>
+  </property>
+  <property><name>ha.zookeeper.quorum</name><value>zk1:2181,zk2:2181,zk3:2181</value></property>
+  <property><name>dfs.ha.automatic-failover.enabled</name><value>true</value></property>
+</configuration>
+```
+
 [Table of Contents](#HADOOP)
 
 ##  Do we require two servers for the NameNode and the DataNodes?
@@ -1237,7 +1923,7 @@ No, a job is not split into maps. Spilt is created for the file. The file is pla
 [Table of Contents](#HADOOP)
 
 ##  Which are the two types of writes In Hdfs?
-There are two types of writes in HDFS: 
+There are two types of writes in HDFS:
 + Posted and non-posted write. Posted Write is when we write it and forget about it, without worrying about the acknowledgement.
         It is similar to our traditional Indian post.
 +  Non-posted Write, we wait for the acknowledgement. It is similar to the today’s courier services. Naturally, non-posted write is more expensive than the posted write. It is much more expensive, though both writes are asynchronous.
@@ -1327,6 +2013,12 @@ In Pseudo-distributed mode, each Hadoop daemon runs in a separate Java process, 
 ##  What are the port numbers of NameNode and JobTracker and TaskTracker?
 The port number for Namenode is ’70′, for job tracker is ’30′ and for task tracker is ’60′.
 
+```text
+The old shorthand "70", "30", "60" refers to the 50070 / 50030 / 50060 UIs.
+Use the full numbers, and remember that Hadoop 2/3 moved the NameNode UI
+to 9870 and the RPC port to 8020.
+```
+
 [Table of Contents](#HADOOP)
 
 ##  Tell us what is a spill factor with respect to the ram?
@@ -1339,17 +2031,24 @@ Yes, fs.mapr.working.dir it is just one directory.
 
 [Table of Contents](#HADOOP)
 
-##  Which are the three main Hdfs site.xml properties?
+##  Which are the three main Hdfs-site.xml properties?
 The three main hdfs-site.xml properties are:
-+ Dfs.name.dir which gives you the location on which metadata will be stored and where DFS is located – on disk or onto the remote.
-+ Dfs.data.dir which gives you the location where the data is going to be stored.
-+ Fs.checkpoint.dir which is for secondary Namenode.
++ dfs.namenode.name.dir gives the local directories where the NameNode stores the fsimage and edits files (for example /data/1/dfs/nn,/data/2/dfs/nn).
++ dfs.datanode.data.dir gives the local directories where a DataNode stores block files.
++ dfs.namenode.checkpoint.dir gives the checkpoint directory used by the Secondary NameNode.
 
 [Table of Contents](#HADOOP)
 
 ##  How can I restart Namenode?
-Click on stop-all.sh and then click on start-all.sh OR
-    Write sudo hdfs (press enter), su-hdfs (press enter), /etc/init.d/ha (press enter) and then /etc/init.d/hadoop-0.20-namenode start (press enter).
+Use the HDFS daemon control scripts, then confirm that the NameNode left safe mode:
+
+```bash
+hdfs --daemon stop namenode
+hdfs --daemon start namenode
+hdfs dfsadmin -safemode get
+```
+
+On older packaged installs the equivalent is `service hadoop-hdfs-namenode restart`.
 
 [Table of Contents](#HADOOP)
 
@@ -1366,9 +2065,15 @@ The most possible reason is that the Namenode is not working on your VM.
 ##  What is the use of the command Mapred.job.tracker?
 The command mapred.job.tracker is used by the Job Tracker to list out which host and port that the MapReduce job tracker runs at. If it is "local", then jobs are run in-process as a single map and reduce task.
 
+```properties
+# mapred-site.xml values in the old (Hadoop 1.x) configuration style
+mapred.job.tracker=nn1:8021
+# local - run the whole job in-process as one map and one reduce task
+```
+
 [Table of Contents](#HADOOP)
 
-##  What does etc.init.d do?
+## What does etc/init.d do?
 /etc /init.d specifies where daemons (services) are placed or to see the status of these daemons. It is very LINUX specific, and nothing to do with Hadoop.
 
 [Table of Contents](#HADOOP)
@@ -1398,7 +2103,7 @@ PID stands for ‘Process ID’.
 
 [Table of Contents](#HADOOP)
 
-##  What does Hadoop metrics and properties file do?
+## What does Hadoop-metrics and properties file do?
 Hadoop-metrics Properties is used for ‘Reporting‘purposes. It controls the reporting for hadoop. The default status is ‘not to report‘.
 
 [Table of Contents](#HADOOP)
@@ -1455,5 +2160,83 @@ Secure Socket Shell or SSH is a password-less secure communication that provides
 
 ##  Can you tell is what will happen to a NameNode and when Job tracker is not up and running?
 When the job tracker is down, it will not be in functional mode, all running jobs will be halted because it is a single point of failure. Your whole cluster will be down but still Namenode will be present. As such the cluster will still be accessible if Namenode is working, even if the job tracker is not up and running. But you cannot run your Hadoop job.
+
+[Table of Contents](#HADOOP)
+
+## What are the key trade-offs in Hadoop and when should you move off it?
+
++ **Shuffle cost.** MapReduce and Hive both write intermediate data to disk between stages. A job with five stages reads and writes the shuffle data five times, so fewer, wider stages beat many narrow ones.
++ **Data skew.** A single hot key (a null `customer_id`, one huge tenant) lands on one reducer and turns a 20-minute job into a 4-hour job. Fix it with `hive.optimize.skewjoin`, salting the key, or splitting the hot value into its own pipeline.
++ **Small files.** Every file costs NameNode memory and one task. Compacting to 128-512 MB files is the single highest-leverage storage fix.
++ **Block size versus split size.** Maps equal splits, not blocks; a non-splittable codec (gzip) forces one mapper per file.
++ **Slot-based scheduling is coarse.** YARN allocates whole containers; a task asking for 2 GB on a 1.5 GB container fails with a container error rather than degrading gracefully.
++ **When to move off Hadoop/Hive.** Move to object storage plus Spark/Trino or a lakehouse table format when: most data is cold, clusters are idle most of the day, you need sub-minute dashboards, or the operational cost of an HDFS/YARN cluster exceeds the compute you actually use. Keep HDFS for very large, repeatedly scanned datasets that justify dedicated hardware.
++ **When Hadoop still wins.** Petabyte-scale batch ETL with predictable schedules, strict data residency, and a large installed Hive SQL base is often cheaper on dedicated YARN than paying cloud egress and per-query costs.
+
+[Table of Contents](#HADOOP)
+
+## Real world use cases for Hadoop
+
+### 1. Nightly batch ETL for a retail data platform
+
+A retailer lands 8 TB of point-of-sale and clickstream data per day. The batch layer runs on YARN, reads JSON from HDFS, joins against dimension files held in the distributed cache, and writes partitioned, ORC or Parquet facts that downstream Hive and Spark jobs consume.
+
+```bash
+yarn jar etl.jar com.acme.DailyEtl \
+  -D mapreduce.job.queuename=etl \
+  -D mapreduce.job.reduces=200 \
+  -D mapreduce.map.memory.mb=4096 \
+  /data/raw/2026-10-04 /data/curated/orders/ds=2026-10-04
+```
+
+Why this design: the data is large, append-only and scanned by many downstream jobs, so columnar storage plus a scheduled batch window is both cheap and predictable.
+
+### 2. Web and application log processing
+
+A SaaS platform writes ~2 TB/day of access and application logs. Flume or Kafka lands them in HDFS, a MapReduce or Spark job parses and enriches them, and only a handful of columns are kept; the raw payload stays in a compressed cold prefix.
+
+```text
+hdfs:///logs/raw/ds=2026-10-04/      (gzipped text, compressed)
+hdfs:///logs/parsed/ds=2026-10-04/   (ORC/Parquet, typed columns)
+```
+
+Why this design: log data is write-once and read-many; compression and column projection cut both storage and query cost.
+
+### 3. Multi-tenant YARN cluster with department queues
+
+A shared cluster serves ETL, BI and ad-hoc workloads. Capacity Scheduler queues guarantee 60/25/15 percent of the cluster, forbid ad-hoc jobs from consuming more than their share, and cap the ApplicationMaster resources so a runaway job cannot starve the cluster.
+
+```xml
+<property><name>yarn.scheduler.capacity.root.queues</name><value>etl,bi,adhoc</value></property>
+<property><name>yarn.scheduler.capacity.root.adhoc.maximum-capacity</name><value>40</value></property>
+```
+
+Why this design: without queues, a single ad-hoc query can consume the whole cluster and delay the nightly SLA.
+
+### 4. Offloading an enterprise data warehouse
+
+A bank exports 300 TB of historical facts and slowly changing dimensions from a commercial warehouse to HDFS, keeps five years online in Hive external tables, and retires the most expensive warehouse storage tier.
+
+```bash
+# One-time bulk load, then incremental daily partitions
+sqoop import --connect jdbc:oracle:thin:@dw:1521/DW \
+  --table FACT_TRANSACTIONS --target-dir /data/dw/fact_transactions \
+  --as-parquetfile --split-by txn_id --num-mappers 32
+```
+
+Why this design: HDFS gives cheap storage and Hive keeps the SQL interface analysts already know, so the migration does not require retraining.
+
+### 5. Migrating an on-premises Hadoop cluster to object storage and Spark
+
+An organisation moves its cold partitions to S3, keeps Iceberg as the table format, and runs Spark on Kubernetes. HDFS and YARN are retired only after every job has an owner, a runtime and a target format.
+
+```bash
+# Validate the copy before switching producers to the new path
+hadoop distcp -m 40 hdfs:///data/orders s3a://acme-lake/orders
+hdfs dfs -count -q -h /data/orders
+aws s3 ls s3://acme-lake/orders/ --recursive --summarize --human-readable
+```
+
+Why this design: object storage removes the capacity-planning cycle and separates storage cost from compute, but only makes sense once jobs are decoupled from the old cluster.
 
 [Table of Contents](#HADOOP)
