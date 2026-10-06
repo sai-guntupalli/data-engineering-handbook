@@ -50,9 +50,11 @@ function descriptionFromMarkdown(markdown: string): string {
       continue;
     }
     if (!seenTitle || !line) continue;
-    if (line.startsWith("+") || line.startsWith("-") || line.startsWith("*")) continue;
+    // Skip badges, links, images, lists, quotes, tables and fenced code.
+    if (/^[+\-*[>|`]/.test(line)) continue;
     if (line.startsWith("**Notebook:**") || line.startsWith("*Generated") || line.startsWith("*Converted")) continue;
     const plain = line.replace(/\*\*/g, "").replace(/`/g, "");
+    if (plain.length < 25) continue;
     return plain.length > 150 ? `${plain.slice(0, 147).trimEnd()}...` : plain;
   }
   return "";
