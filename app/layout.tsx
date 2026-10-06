@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Data Engineering Interview Guide",
-    template: "%s | Data Engineering Interview Guide",
+    default: "Data Engineering Interview Notebooks",
+    template: "%s | Data Engineering Interview Notebooks",
   },
   description:
-    "Practical data engineering interview notes for PySpark, SQL, lakehouse formats, cloud platforms, data modeling, CDC, orchestration and BI.",
+    "Collection of runnable Jupyter notebooks for data engineering interviews: Python, SQL, PySpark, lakehouse formats, streaming, cloud platforms, warehousing, AI foundations and more.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

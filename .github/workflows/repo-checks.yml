@@ -1,4 +1,4 @@
-name: Repo checks
+name: Notebook checks
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 jobs:
-  repo-checks:
+  notebooks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -24,17 +24,23 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Install notebook tooling
+        run: uv sync --extra notebooks
+
+      - name: Audit notebooks
+        run: uv run python scripts/audit_notebooks.py --quiet
+
+      - name: Run practice notebooks
+        run: uv run python scripts/run_notebooks.py --check
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "22"
           cache: "npm"
 
-      - name: Install Next.js dependencies
+      - name: Install app dependencies
         run: npm ci
 
-      - name: Run repo checks
-        run: python3 scripts/repo_checks.py
-
-      - name: Build docs app
+      - name: Build gallery app
         run: npm run build

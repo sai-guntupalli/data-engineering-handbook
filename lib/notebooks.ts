@@ -1,87 +1,155 @@
 import fs from "node:fs";
 import path from "node:path";
+import { PRACTICE_GROUP, TOPIC_GROUPS, type NotebookGroup } from "./notebook-groups";
 
 export type NotebookSummary = {
-  pathParts: string[];
-  filename: string;
+  /** Repository-relative path, e.g. notebooks/topics/spark.ipynb */
+  repoPath: string;
+  /** File name without the extension, e.g. spark */
+  slug: string;
   title: string;
-  downloadHref: string;
-  colabHref: string;
-  group: "Practice" | "Topic" | "Markdown";
+  description: string;
   markdownCells: number;
   codeCells: number;
   assertCount: number;
+  colabHref: string;
+  githubHref: string;
 };
 
-const root = process.cwd();
-const notebooksRoot = path.join(root, "notebooks");
-const repoColabBase = "https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master";
+export type NotebookGroupView = {
+  label: string;
+  notebooks: NotebookSummary[];
+};
 
-function sourceToString(source: string | string[] | undefined) {
+const REPO = "sai-guntupalli/data-engineering-interview-questions";
+const BRANCH = "master";
+const GITHUB_BLOB = `https://github.com/${REPO}/blob/${BRANCH}`;
+const COLAB = `https://colab.research.google.com/github/${REPO}/blob/${BRANCH}`;
+
+const notebooksRoot = path.join(process.cwd(), "notebooks");
+
+function sourceToString(source: string | string[] | undefined): string {
   if (Array.isArray(source)) return source.join("");
   return source ?? "";
 }
 
-function titleFromCell(source: string, fallback: string) {
-  const match = source.match(/^#\s+(.+?)\s*$/m);
+function titleFromMarkdown(markdown: string, fallback: string): string {
+  const match = markdown.match(/^#\s+(.+?)\s*$/m);
   if (match?.[1]) return match[1].trim();
-  return fallback.replace(/^\d+_/, "").replace(/\.ipynb$/, "").replaceAll("_", " ").replaceAll("-", " ");
+  return fallback.replace(/^\d+_/, "").replaceAll("_", " ").replaceAll("-", " ");
 }
 
-function walkIpynb(dir: string): string[][] {
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) {
-      return walkIpynb(full);
+/** First real paragraph after the title, used as a card description. */
+function descriptionFromMarkdown(markdown: string): string {
+  const lines = markdown.split("\n");
+  let seenTitle = false;
+  for (const raw of lines) {
+    const line = raw.trim();
+    if (line.startsWith("#")) {
+      seenTitle = true;
+      continue;
     }
-    if (!entry.name.endsWith(".ipynb")) return [];
-    return [path.relative(notebooksRoot, full).split(path.sep)];
-  });
+    if (!seenTitle || !line) continue;
+    if (line.startsWith("+") || line.startsWith("-") || line.startsWith("*")) continue;
+    if (line.startsWith("**Notebook:**") || line.startsWith("*Generated") || line.startsWith("*Converted")) continue;
+    const plain = line.replace(/\*\*/g, "").replace(/`/g, "");
+    return plain.length > 150 ? `${plain.slice(0, 147).trimEnd()}...` : plain;
+  }
+  return "";
 }
 
-function groupForPath(pathParts: string[]): NotebookSummary["group"] {
-  if (pathParts[0] === "topics") return "Topic";
-  if (pathParts[0] === "from-md") return "Markdown";
-  return "Practice";
+function listNotebookFiles(dir: string): string[] {
+  if (!fs.existsSync(dir)) return [];
+  return fs
+    .readdirSync(dir, { withFileTypes: true })
+    .flatMap((entry) => {
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) return listNotebookFiles(full);
+      return entry.name.endsWith(".ipynb") ? [full] : [];
+    })
+    .sort();
 }
 
-function readNotebookSummary(pathParts: string[]): NotebookSummary {
-  const safeParts = pathParts.filter((part) => part !== ".." && !part.includes("/"));
-  const file = path.join(notebooksRoot, ...safeParts);
+function readSummary(file: string): NotebookSummary {
   const notebook = JSON.parse(fs.readFileSync(file, "utf8"));
-  const cells = (notebook.cells ?? []).map((cell: { cell_type?: string; source?: string | string[] }) => ({
-    type: cell.cell_type ?? "markdown",
-    source: sourceToString(cell.source),
-  }));
-  const firstMarkdown = cells.find((cell: { type: string }) => cell.type === "markdown")?.source ?? "";
-  const filename = safeParts.at(-1) ?? "notebook.ipynb";
-  const relative = safeParts.join("/");
-  const repoRelative = `notebooks/${relative}`;
+  const cells: { type: string; source: string }[] = (notebook.cells ?? []).map(
+    (cell: { cell_type?: string; source?: string | string[] }) => ({
+      type: cell.cell_type ?? "markdown",
+      source: sourceToString(cell.source),
+    }),
+  );
+  const markdown = cells
+    .filter((cell) => cell.type === "markdown")
+    .map((cell) => cell.source)
+    .join("\n\n");
+  const repoPath = path.relative(process.cwd(), file).split(path.sep).join("/");
+  const filename = path.basename(file, ".ipynb");
+  const codeCells = cells.filter((cell) => cell.type === "code");
 
   return {
-    pathParts: safeParts,
-    filename,
-    title: titleFromCell(firstMarkdown, filename),
-    downloadHref: `/notebook-files/${relative}`,
-    colabHref: `${repoColabBase}/${repoRelative}`,
-    group: groupForPath(safeParts),
-    markdownCells: cells.filter((cell: { type: string }) => cell.type === "markdown").length,
-    codeCells: cells.filter((cell: { type: string }) => cell.type === "code").length,
-    assertCount: cells.reduce((sum: number, cell: { type: string; source: string }) => sum + (cell.type === "code" ? (cell.source.match(/\bassert\b/g) ?? []).length : 0), 0),
+    repoPath,
+    slug: filename,
+    title: titleFromMarkdown(markdown, filename),
+    description: descriptionFromMarkdown(markdown),
+    markdownCells: cells.length - codeCells.length,
+    codeCells: codeCells.length,
+    assertCount: codeCells.reduce(
+      (total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0),
+      0,
+    ),
+    colabHref: `${COLAB}/${repoPath}`,
+    githubHref: `${GITHUB_BLOB}/${repoPath}`,
   };
 }
 
-export function getAllNotebookSummaries() {
-  return walkIpynb(notebooksRoot)
-    .map(readNotebookSummary)
-    .sort((a, b) => a.group.localeCompare(b.group) || a.title.localeCompare(b.title));
+function allSummaries(): NotebookSummary[] {
+  return listNotebookFiles(notebooksRoot).map(readSummary);
 }
 
-export function topicNotebookDownloadHref(slug: string) {
-  return `/notebook-files/topics/${slug}.ipynb`;
+function pick(
+  summaries: NotebookSummary[],
+  group: NotebookGroup,
+  folder: "root" | "topics",
+): NotebookSummary[] {
+  const wanted = new Set(group.slugs);
+  return summaries
+    .filter((notebook) => {
+      const inFolder =
+        folder === "root"
+          ? !notebook.repoPath.startsWith("notebooks/topics/")
+          : notebook.repoPath.startsWith("notebooks/topics/");
+      return inFolder && wanted.has(notebook.slug);
+    })
+    .sort((a, b) => group.slugs.indexOf(a.slug) - group.slugs.indexOf(b.slug));
 }
 
-export function topicNotebookColabHref(slug: string) {
-  return `${repoColabBase}/notebooks/topics/${slug}.ipynb`;
+/** Grouped notebooks, in the order the groups are declared. */
+export function getNotebookGroups(): NotebookGroupView[] {
+  const summaries = allSummaries();
+  const groups: NotebookGroupView[] = [
+    { label: PRACTICE_GROUP.label, notebooks: pick(summaries, PRACTICE_GROUP, "root") },
+    ...TOPIC_GROUPS.map((group) => ({
+      label: group.label,
+      notebooks: pick(summaries, group, "topics"),
+    })),
+  ];
+
+  const placed = new Set(groups.flatMap((group) => group.notebooks.map((notebook) => notebook.repoPath)));
+  const leftovers = summaries.filter((notebook) => !placed.has(notebook.repoPath));
+  if (leftovers.length > 0) {
+    groups.push({ label: "Other notebooks", notebooks: leftovers });
+  }
+
+  return groups.filter((group) => group.notebooks.length > 0);
 }
+
+export function getNotebookStats() {
+  const summaries = allSummaries();
+  return {
+    notebooks: summaries.length,
+    codeCells: summaries.reduce((total, notebook) => total + notebook.codeCells, 0),
+    checks: summaries.reduce((total, notebook) => total + notebook.assertCount, 0),
+  };
+}
+
+export const repositoryHref = `https://github.com/${REPO}`;

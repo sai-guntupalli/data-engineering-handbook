@@ -750,9 +750,9 @@ wheels = [
 ]
 
 [[package]]
-name = "data-engineering-interview-docs"
+name = "data-engineering-interview-notebooks"
 version = "0.1.0"
-source = { editable = "." }
+source = { virtual = "." }
 
 [package.optional-dependencies]
 notebooks = [

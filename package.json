@@ -1,23 +1,17 @@
 {
-  "name": "data-engineering-interview-guide",
+  "name": "data-engineering-interview-notebooks",
   "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "github-slugger": "^2.0.0",
     "next": "^16.3.8",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-markdown": "^10.1.0",
-    "rehype-autolink-headings": "^7.1.0",
-    "rehype-slug": "^6.0.0",
-    "remark-gfm": "^4.0.1"
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.13",
