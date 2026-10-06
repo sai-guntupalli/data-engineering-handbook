@@ -23,14 +23,14 @@ The questions below mix classic Impala interview questions with modern operation
 + [Does Impala performance improve as it is deployed to more hosts in a cluster in much the same way that Hadoop performance does?](#Does-Impala-performance-improve-as-it-is-deployed-to-more-hosts-in-a-cluster-in-much-the-same-way-that-Hadoop-performance-does)
 + [Is the Hdfs Block Size reduced to achieve faster query results?](#Is-the-Hdfs-Block-Size-reduced-to-achieve-faster-query-results)
 + [Does Impala use caching?](#Does-Impala-use-caching)
-+ [What are the good use cases for Impala as opposed to Hive or Mapreduce?](#What-are-the-good-use-cases-for-Impala-as-opposed-to-Hive-or-Mapreduce)
-+ [Is Mapreduce required for impala and will Impala continue to work as expected if Mapreduce is stopped?](#Is-Mapreduce-required-for-impala-and-will-Impala-continue-to-work-as-expected-if-Mapreduce-is-stopped)
++ [What are the good use cases for Impala as opposed to Hive or MapReduce?](#What-are-the-good-use-cases-for-Impala-as-opposed-to-Hive-or-MapReduce)
++ [Is MapReduce required for impala and will Impala continue to work as expected if MapReduce is stopped?](#Is-MapReduce-required-for-impala-and-will-Impala-continue-to-work-as-expected-if-MapReduce-is-stopped)
 + [Can Impala be used for complex event processing?](#Can-Impala-be-used-for-complex-event-processing)
 + [Is Impala intended to handle Real Time Queries in Low latency Applications or is it for ad Hoc Queries for the purpose of data exploration?](#Is-Impala-intended-to-handle-Real-Time-Queries-in-Low-latency-Applications-or-is-it-for-ad-Hoc-Queries-for-the-purpose-of-data-exploration)
 + [How does Impala compare to Hive and Pig?](#How-does-Impala-compare-to-Hive-and-Pig)
 + [Can I do transforms or add New functionality?](#Can-I-do-transforms-or-add-New-functionality)
 + [Can any Impala Query also be executed in Hive?](#Can-any-Impala-Query-also-be-executed-in-Hive)
-+ [Can I use Impala to Query data already loaded into Hive and Hbase?](#Can-I-use-Impala-to-Query-data-already-loaded-into-Hive-and-Hbase)
++ [Can I use Impala to Query data already loaded into Hive and HBase?](#Can-I-use-Impala-to-Query-data-already-loaded-into-Hive-and-HBase)
 + [Is Hive an Impala requirement?](#Is-Hive-an-Impala-requirement)
 + [Is Impala production ready?](#Is-Impala-production-ready)
 + [How do I configure Hadoop High Availability for Impala?](#How-do-I-configure-Hadoop-High-Availability-for-Impala)
@@ -53,7 +53,7 @@ The questions below mix classic Impala interview questions with modern operation
 + [Is there a dual table?](#Is-there-a-dual-table)
 + [How do I load a big Csv file into a partitioned table?](#How-do-I-load-a-big-Csv-file-into-a-partitioned-table)
 + [Can I Do Insert Select Into a partitioned table?](#Can-I-Do-Insert-Select-Into-a-partitioned-table)
-+ [What kinds of Impala Queries or data are best suited for Hbase?](#What-kinds-of-Impala-Queries-or-data-are-best-suited-for-Hbase)
++ [What kinds of Impala Queries or data are best suited for HBase?](#What-kinds-of-Impala-Queries-or-data-are-best-suited-for-HBase)
 + [When would you use Impala instead of Hive?](#When-would-you-use-Impala-instead-of-Hive)
 + [How do you optimize Impala queries?](#How-do-you-optimize-Impala-queries)
 + [How do you create Impala tables with DDL and choose a file format?](#How-do-you-create-Impala-tables-with-DDL-and-choose-a-file-format)
@@ -278,7 +278,7 @@ For object storage (S3/ADLS), OS cache pinning does not apply; use the storage l
 
 [Table of Contents](#Apache-Impala)
 
-## What are the good use cases for Impala as opposed to Hive or Mapreduce?
+## What are the good use cases for Impala as opposed to Hive or MapReduce?
 Impala is well-suited to executing SQL queries for interactive exploratory analytics on large data sets. Hive and MapReduce are appropriate for very long running, batch-oriented tasks such as ETL.
 
 Rules of thumb:
@@ -289,7 +289,7 @@ Rules of thumb:
 
 [Table of Contents](#Apache-Impala)
 
-## Is Mapreduce required for impala and will Impala continue to work as expected if Mapreduce is stopped?
+## Is MapReduce required for impala and will Impala continue to work as expected if MapReduce is stopped?
 Impala does not use MapReduce at all. It runs its own distributed query fragments inside `impalad` processes, so stopping MapReduce (or never installing it) does not affect Impala. Impala does depend on the Hive metastore, the HDFS NameNode, the statestore, and `catalogd`.
 
 [Table of Contents](#Apache-Impala)
@@ -335,7 +335,7 @@ Yes. There are some minor differences in how some queries are handled, but Impal
 
 [Table of Contents](#Apache-Impala)
 
-## Can I use Impala to Query data already loaded into Hive and Hbase?
+## Can I use Impala to Query data already loaded into Hive and HBase?
 There are no additional steps to allow Impala to query tables managed by Hive, whether they are stored in HDFS or HBase. Make sure that Impala is configured to access the Hive metastore correctly and you should be ready to go. Keep in mind that `impalad`, by default, runs as the `impala` user, so you might need to adjust some file permissions depending on how strict your permissions are currently.
 
 [Table of Contents](#Apache-Impala)
@@ -613,7 +613,7 @@ from staging.orders_clean;
 
 [Table of Contents](#Apache-Impala)
 
-## What kinds of Impala Queries or data are best suited for Hbase?
+## What kinds of Impala Queries or data are best suited for HBase?
 HBase tables are ideal for queries where normally you would use a key-value store. That is, where you retrieve a single row or a few rows, by testing a special unique key column using the `=` or `IN` operators.
 
 HBase tables are not suitable for queries that produce large result sets with thousands of rows. HBase tables are also not suitable for queries that perform full table scans because the WHERE clause does not request specific values from the unique key column.

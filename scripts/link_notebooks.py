@@ -8,8 +8,8 @@ Each content/<topic>.md gets one line directly under its title:
 
 The relative path works in every context:
   * on GitHub, from content/<topic>.md it points at the repository notebook;
-  * on the docs site, the notebooks are copied to .docs_src/notebooks/topics/,
-    so the same relative link resolves from .docs_src/topics/<topic>.md.
+  * in the Next.js app, the topic page exposes the same notebook through the
+    `/notebook-files/topics/<topic>.ipynb` download route.
 
 Usage:
   python3 scripts/link_notebooks.py          # insert or refresh the links

@@ -24,10 +24,17 @@ jobs:
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install Next.js dependencies
+        run: npm ci
+
       - name: Run repo checks
         run: python3 scripts/repo_checks.py
 
-      - name: Build docs website
-        run: |
-          uv run docs-prepare
-          uv run mkdocs build --strict
+      - name: Build docs app
+        run: npm run build

@@ -13,6 +13,11 @@ target/
 __pycache__/
 *.pyc
 
-# Docs build output
+# Node / Next.js
+node_modules/
+.next/
+out/
+
+# Legacy docs build output
 .docs_src/
 site/

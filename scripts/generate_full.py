@@ -23,8 +23,8 @@ CONTENT_DIR = ROOT / "content"
 
 
 def github_slugify(text: str) -> str:
-    # GitHub and MkDocs preserve underscores in heading anchors ("xcom_pull"), so
-    # keep them here; only strip punctuation that both slugifiers drop.
+    # GitHub-style heading anchors preserve underscores ("xcom_pull"), so keep
+    # them here and only strip punctuation that the renderer drops.
     s = text.strip().lower()
     s = re.sub(r"[^a-z0-9 \-_]", "", s)
     s = re.sub(r"\s+", "-", s)
@@ -102,4 +102,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

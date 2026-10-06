@@ -23,7 +23,7 @@ Key ideas:
 + [How do Flume memory channels and file channels differ?](#How-do-Flume-memory-channels-and-file-channels-differ)
 + [What is Apache Flume?](#What-is-Apache-Flume)
 + [Which is the reliable channel in Flume to ensure that there is no Data Loss?](#Which-is-the-reliable-channel-in-Flume-to-ensure-that-there-is-no-Data-Loss)
-+ [How can Flume be used with Hbase?](#How-can-Flume-be-used-with-Hbase)
++ [How can Flume be used with HBase?](#How-can-Flume-be-used-with-HBase)
 + [What is an Agent?](#What-is-an-Agent)
 + [Is it possible to Leverage Real Time Analysis on the Big Data collected by Flume directly?](#Is-it-possible-to-Leverage-Real-Time-Analysis-on-the-Big-Data-collected-by-Flume-directly)
 + [What is a Channel?](#What-is-a-Channel)
@@ -121,7 +121,7 @@ Reliability also depends on the source and sink semantics: a durable channel can
 
 [Table of Contents](#Apache-Flume)
 
-## How can Flume be used with Hbase?
+## How can Flume be used with HBase?
 Apache Flume can write to HBase through one of two sinks:
 
 + HBaseSink (`org.apache.flume.sink.hbase.HBaseSink`) supports secure HBase clusters and the newer HBase IPC introduced in HBase 0.96.

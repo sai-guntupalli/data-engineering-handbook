@@ -163,7 +163,7 @@ There are more windows than spark
 [Table of Contents](#Apache-Flink)
 
 ## Does Flink need to depend on Hadoop?
-Flink can be completely independent of Hadoop and run without relying on Hadoop components, but as the basis of big data, it is conceivable that most big data frameworks cannot bypass it. Flink can support many components, such as Yarn's resource scheduling, Hbase's real-time data storage and dimensional table access, HDFS state storage and offline computing, and so on.
+Flink can be completely independent of Hadoop and run without relying on Hadoop components, but as the basis of big data, it is conceivable that most big data frameworks cannot bypass it. Flink can support many components, such as Yarn's resource scheduling, HBase's real-time data storage and dimensional table access, HDFS state storage and offline computing, and so on.
 
 [Table of Contents](#Apache-Flink)
 
@@ -512,7 +512,7 @@ Scala Shell
 [Table of Contents](#Apache-Flink)
 
 ## Can we consider Apache Flink as an alternative to Hadoop? if so then explain why?
-Apache Flink provides more features and flexibility comparing to Hadoop because it uses the cycle dataflow programming model despite Mapreduce which is a two-stage disk storage model, Flink programs can work in memory and can be used with other filesystems apart from Hadoop. Flink provides the unified framework using that we can create a single data flow that will use batch, streaming, machine learning, and SQL queries.
+Apache Flink provides more features and flexibility comparing to Hadoop because it uses the cycle dataflow programming model despite MapReduce which is a two-stage disk storage model, Flink programs can work in memory and can be used with other filesystems apart from Hadoop. Flink provides the unified framework using that we can create a single data flow that will use batch, streaming, machine learning, and SQL queries.
 
 [Table of Contents](#Apache-Flink)
 

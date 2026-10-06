@@ -49,31 +49,31 @@
 + [How will you replace HDFS data volume before shutting down a DataNode?](#How-will-you-replace-HDFS-data-volume-before-shutting-down-a-DataNode)
 + [What are the important configuration files in Hadoop?](#What-are-the-important-configuration-files-in-Hadoop)
 + [How will you monitor memory used in a Hadoop cluster?](#How-will-you-monitor-memory-used-in-a-Hadoop-cluster)
-+ [Why do we need Serialization in Hadoop map reduce methods?](#Why-do-we-need-Serialization-in-Hadoop-map-reduce-methods)
++ [Why do we need Serialization in Hadoop MapReduce methods?](#Why-do-we-need-Serialization-in-Hadoop-map-reduce-methods)
 + [What is the use of Distributed Cache in Hadoop?](#What-is-the-use-of-Distributed-Cache-in-Hadoop)
 + [How will you synchronize the changes made to a file in Distributed Cache in Hadoop?](#How-will-you-synchronize-the-changes-made-to-a-file-in-Distributed-Cache-in-Hadoop)
-+ [Can you elaborate about Mapreduce job?](#Can-you-elaborate-about-Mapreduce-job)
++ [Can you elaborate about MapReduce job?](#Can-you-elaborate-about-MapReduce-job)
 + [Why compute nodes and the storage nodes are the same?](#Why-compute-nodes-and-the-storage-nodes-are-the-same)
-+ [What is the configuration object importance in Mapreduce?](#What-is-the-configuration-object-importance-in-Mapreduce)
-+ [Where Mapreduce not recommended?](#Where-Mapreduce-not-recommended)
++ [What is the configuration object importance in MapReduce?](#What-is-the-configuration-object-importance-in-MapReduce)
++ [Where MapReduce not recommended?](#Where-MapReduce-not-recommended)
 + [What is Namenode and it’s responsibilities?](#What-is-Namenode-and-its-responsibilities)
 + [What is Jobtracker’s responsibility?](#What-is-Jobtrackers-responsibility)
 + [What are the Jobtracker and Tasktracker?](#What-are-the-Jobtracker-and-Tasktracker)
-+ [What is Job scheduling importance in Hadoop Mapreduce?](#What-is-Job-scheduling-importance-in-Hadoop-Mapreduce)
++ [What is Job scheduling importance in Hadoop MapReduce?](#What-is-Job-scheduling-importance-in-Hadoop-MapReduce)
 + [When used Reducer?](#When-used-Reducer)
 + [Where the Shuffle and Sort process does?](#Where-the-Shuffle-and-Sort-process-does)
-+ [Java is mandatory to write Mapreduce Jobs?](#Java-is-mandatory-to-write-Mapreduce-Jobs)
++ [Java is mandatory to write MapReduce Jobs?](#Java-is-mandatory-to-write-MapReduce-Jobs)
 + [What methods can controle the Map And Reduce function’s output?](#What-methods-can-controle-the-Map-And-Reduce-functions-output)
 + [What is the main difference between Mapper And Reducer?](#What-is-the-main-difference-between-Mapper-And-Reducer)
 + [Why compute Nodes and the Storage Nodes are same?](#Why-compute-Nodes-and-the-Storage-Nodes-are-same)
 + [What is difference between mapside join and reduce side join?](#What-is-difference-between-mapside-join-and-reduce-side-join)
 + [What happen if number of Reducer is 0?](#What-happen-if-number-of-Reducer-is-0)
 + [When we are goes to Combiner?](#When-we-are-goes-to-Combiner)
-+ [What is the main difference between Mapreduce Combiner and Reducer?](#What-is-the-main-difference-between-Mapreduce-Combiner-and-Reducer)
++ [What is the main difference between MapReduce Combiner and Reducer?](#What-is-the-main-difference-between-MapReduce-Combiner-and-Reducer)
 + [What is partition?](#What-is-partition)
 + [When we goes to Partition?](#When-we-goes-to-Partition)
 + [What are the important steps when you are partitioning table?](#What-are-the-important-steps-when-you-are-partitioning-table)
-+ [Can you elaborate Mapreduce Job architecture?](#Can-you-elaborate-Mapreduce-Job-architecture)
++ [Can you elaborate MapReduce Job architecture?](#Can-you-elaborate-MapReduce-Job-architecture)
 + [Why task Tracker launch child Jvm?](#Why-task-Tracker-launch-child-Jvm)
 + [Why Jobclient and Job Tracker submits job resources to file system?](#Why-Jobclient-and-Job-Tracker-submits-job-resources-to-file-system)
 + [How many Mappers and Reducers can run?](#How-many-Mappers-and-Reducers-can-run)
@@ -86,7 +86,7 @@
 + [What is Issplitable()?](#What-is-Issplitable)
 + [How much Hadoop allows maximum block size and minimum block size?](#How-much-Hadoop-allows-maximum-block-size-and-minimum-block-size)
 + [What are the Job Resource files?](#What-are-the-Job-Resource-files)
-+ [What’s the Mapreduce Job consists?](#Whats-the-Mapreduce-Job-consists)
++ [What’s the MapReduce Job consists?](#Whats-the-MapReduce-Job-consists)
 + [What is the data locality?](#What-is-the-data-locality)
 + [What is speculative execution?](#What-is-speculative-execution)
 + [What is chain Mapper?](#What-is-chain-Mapper)
@@ -94,12 +94,12 @@
 + [What is setup and clean up methods?](#What-is-setup-and-clean-up-methods)
 + [How many slots allocate for each task?](#How-many-slots-allocate-for-each-task)
 + [Why Tasktracker launch child Jvm to do a task?](#Why-Tasktracker-launch-child-Jvm-to-do-a-task)
-+ [What main configuration parameters are specified in Mapreduce?](#What-main-configuration-parameters-are-specified-in-Mapreduce)
++ [What main configuration parameters are specified in MapReduce?](#What-main-configuration-parameters-are-specified-in-MapReduce)
 + [What is identity Mapper?](#What-is-identity-Mapper)
 + [What is RecordReader in a MapReduce?](#What-is-RecordReader-in-a-MapReduce)
 + [What is OutputCommitter?](#What-is-OutputCommitter)
 + [What are the parameters of Mappers and Reducers?](#What-are-the-parameters-of-Mappers-and-Reducers)
-+ [Explain Jobconf in Mapreduce?](#Explain-Jobconf-in-Mapreduce)
++ [Explain Jobconf in MapReduce?](#Explain-Jobconf-in-MapReduce)
 + [Explain Job scheduling through Jobtracker?](#Explain-Job-scheduling-through-Jobtracker)
 + [What is SequenceFileInputFormat?](#What-is-SequenceFileInputFormat)
 + [Explain how input and output data format of the Hadoop Framework?](#Explain-how-input-and-output-data-format-of-the-Hadoop-Framework)
@@ -135,8 +135,8 @@
 + [How does a NameNode handle the failure of the Data Nodes?](#How-does-a-NameNode-handle-the-failure-of-the-Data-Nodes)
 + [Can Reducer talk with each other?](#Can-Reducer-talk-with-each-other)
 + [Where the Mapper's intermediate data will be stored?](#Where-the-Mappers-intermediate-data-will-be-stored)
-+ [What is the Hadoop Mapreduce api contract for a Key and Value Class?](#What-is-the-Hadoop-Mapreduce-api-contract-for-a-Key-and-Value-Class)
-+ [What is a IdentityMapper and IdentityReducer in Mapreduce?](#What-is-a-IdentityMapper-and-IdentityReducer-in-Mapreduce)
++ [What is the Hadoop MapReduce api contract for a Key and Value Class?](#What-is-the-Hadoop-MapReduce-api-contract-for-a-Key-and-Value-Class)
++ [What is a IdentityMapper and IdentityReducer in MapReduce?](#What-is-a-IdentityMapper-and-IdentityReducer-in-MapReduce)
 + [What is the meaning of Speculative Execution in Hadoop?](#What-is-the-meaning-of-Speculative-Execution-in-Hadoop)
 + [How Hdfs is different from traditional File Systems?](#How-Hdfs-is-different-from-traditional-File-Systems)
 + [What is Hdfs block size and how is it different from Traditional File System block size?](#What-is-Hdfs-block-size-and-how-is-it-different-from-Traditional-File-System-block-size)
@@ -178,10 +178,10 @@
 + [What is a task instance in Hadoop and where does it run?](#What-is-a-task-instance-in-Hadoop-and-where-does-it-run)
 + [What is configuration of a typical Slave Node on Hadoop Cluster and how many Jvms run on a Slave Node?](#What-is-configuration-of-a-typical-Slave-Node-on-Hadoop-Cluster-and-how-many-Jvms-run-on-a-Slave-Node)
 + [How NameNode handles DataNode failures?](#How-NameNode-handles-DataNode-failures)
-+ [Does Mapreduce programming model provide a way for Reducers to communicate with each other and in a Mapreduce Job can a Reducer communicate with another Reducer?](#Does-Mapreduce-programming-model-provide-a-way-for-Reducers-to-communicate-with-each-other-and-in-a-Mapreduce-Job-can-a-Reducer-communicate-with-another-Reducer)
++ [Does MapReduce programming model provide a way for Reducers to communicate with each other and in a MapReduce Job can a Reducer communicate with another Reducer?](#Does-MapReduce-programming-model-provide-a-way-for-Reducers-to-communicate-with-each-other-and-in-a-MapReduce-Job-can-a-Reducer-communicate-with-another-Reducer)
 + [Can I set the number of Reducers to Zero?](#Can-I-set-the-number-of-Reducers-to-Zero)
 + [Where is the Mapper Output intermediate Kay value data stored?](#Where-is-the-Mapper-Output-intermediate-Kay-value-data-stored)
-+ [If Reducers do not start before all Mappers finish then why does the progress on Mapreduce Job shows something like Map 50 percents Reduce 10 percents and why Reducers progress percentage is displayed when Mapper is not Finished yet?](#If-Reducers-do-not-start-before-all-Mappers-finish-then-why-does-the-progress-on-Mapreduce-Job-shows-something-like-Map-50-percents-Reduce-10-percents-and-why-Reducers-progress-percentage-is-displayed-when-Mapper-is-not-Finished-yet)
++ [If Reducers do not start before all Mappers finish then why does the progress on MapReduce Job shows something like Map 50 percents Reduce 10 percents and why Reducers progress percentage is displayed when Mapper is not Finished yet?](#If-Reducers-do-not-start-before-all-Mappers-finish-then-why-does-the-progress-on-MapReduce-Job-shows-something-like-Map-50-percents-Reduce-10-percents-and-why-Reducers-progress-percentage-is-displayed-when-Mapper-is-not-Finished-yet)
 + [Explain in brief the three Modes in which Hadoop can be run?](#Explain-in-brief-the-three-Modes-in-which-Hadoop-can-be-run)
 + [Explain what are the features of Standalone local Mode?](#Explain-what-are-the-features-of-Standalone-local-Mode)
 + [What are the features of fully distributed mode?](#What-are-the-features-of-fully-distributed-mode)
@@ -331,8 +331,8 @@ if current_word is not None:
 
 ```bash
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-3.3.6.jar \
-  -D mapreduce.job.name=wordcount-streaming \
-  -D mapreduce.job.reduces=4 \
+  -D MapReduce.job.name=wordcount-streaming \
+  -D MapReduce.job.reduces=4 \
   -files mapper.py,reducer.py \
   -mapper  "python3 mapper.py" \
   -reducer "python3 reducer.py" \
@@ -701,7 +701,7 @@ HDFS stores all the data in terms of Blocks. With Block structure there are some
 [Table of Contents](#HADOOP)
 
 ## How will you create a custom Partitioner in a Hadoop job?
-Partition phase runs between Map and Reduce phase. It is an optional phase. We can create a custom partitioner by extending the org.apache.hadoop.mapreduce.Partitio class in Hadoop. In this class, we have to override getPartition(KEY key, VALUE value, int numPartitions) method.
+Partition phase runs between Map and Reduce phase. It is an optional phase. We can create a custom partitioner by extending the org.apache.hadoop.MapReduce.Partitio class in Hadoop. In this class, we have to override getPartition(KEY key, VALUE value, int numPartitions) method.
     This method takes three inputs. In this method, numPartitions is same as the number of reducers in our job. We pass key and value to get the partition number to which this key,value record will be assigned. There will be a reducer corresponding to that partition. The reducer will further handle to summarizing of the data.Once custom Partitioner class is ready, we have to set it in the Hadoop job. We can use following method to set it:
         job.setPartitionerClass(CustomPartitioner)
 
@@ -845,11 +845,11 @@ All the Jobs in Hadoop and HDFS implementation uses the parameters defined in th
 <!-- mapred-site.xml -->
 <configuration>
   <property>
-    <name>mapreduce.framework.name</name>
+    <name>MapReduce.framework.name</name>
     <value>yarn</value>
   </property>
   <property>
-    <name>yarn.app.mapreduce.am.resource.mb</name>
+    <name>yarn.app.MapReduce.am.resource.mb</name>
     <value>2048</value>
   </property>
 </configuration>
@@ -886,7 +886,7 @@ In Hadoop, TaskTracker is the one that uses high memory to perform a task. We ca
 
 [Table of Contents](#HADOOP)
 
-## Why do we need Serialization in Hadoop map reduce methods?
+## Why do we need Serialization in Hadoop MapReduce methods?
 In Hadoop, there are multiple data nodes that hold data. During the processing of map and reduce methods data may transfer from one node to another node. Hadoop uses serialization to convert the data from Object structure to Binary format. With serialization, data can be converted to binary format and with de-serialization data can be converted back to Object format with reliability.
 
 ```java
@@ -945,7 +945,7 @@ It is a trick question. In Distributed Cache, it is not allowed to make any chan
 
 [Table of Contents](#HADOOP)
 
-##  Can you elaborate about Mapreduce job?
+##  Can you elaborate about MapReduce job?
 Based on the configuration, the MapReduce Job first splits the input data into independent chunks called Blocks. These blocks processed by Map() and Reduce() functions. First Map function process the data, then processed by reduce function. The Framework takes care of sorts the Map outputs, scheduling the tasks.
 
 A minimal driver shows the full contract of a job:
@@ -973,7 +973,7 @@ Compute nodes for processing the data, Storage nodes for storing the data. By de
 
 [Table of Contents](#HADOOP)
 
-##  What is the configuration object importance in Mapreduce?
+##  What is the configuration object importance in MapReduce?
 It’s used to set/get of parameter name & value pairs in XML file.It’s used to initialize values, read from external file and set as a value parameter.Parameter values in the program always overwrite with new values which are coming from external configure files.Parameter values received from Hadoop’s default values.
 
 ```java
@@ -986,8 +986,8 @@ String runDate = conf.get("etl.run_date");  // available in Mapper/Reducer Conte
 
 [Table of Contents](#HADOOP)
 
-##  Where Mapreduce not recommended?
-MapReduce is not recommended for iterative processing. It means repeat the output in a loop manner.To process Series of Mapreduce jobs, MapReduce not suitable. each job persists data in local disk, then again load to another job. It’s costly operation and not recommended.
+##  Where MapReduce not recommended?
+MapReduce is not recommended for iterative processing. It means repeat the output in a loop manner.To process Series of MapReduce jobs, MapReduce not suitable. each job persists data in local disk, then again load to another job. It’s costly operation and not recommended.
 
 ```text
 Good fit    : one-pass batch scans, huge inputs, fault-tolerant batch ETL
@@ -1015,7 +1015,7 @@ MapReduce Framework consists of a single Job Tracker per Cluster, one Task Track
 
 [Table of Contents](#HADOOP)
 
-##  What is Job scheduling importance in Hadoop Mapreduce?
+##  What is Job scheduling importance in Hadoop MapReduce?
 Scheduling is a systematic procedure of allocating resources in the best possible way among multiple tasks. Hadoop task tracker performing many procedures, sometime a particular procedure should finish quickly and provide more prioriety, to do it few job schedulers come into the picture. Default Schedule is FIFO. Fair scheduling, FIFO and CapacityScheduler are most popular hadoop scheduling in hadoop.
 
 ```xml
@@ -1042,7 +1042,7 @@ Scheduling is a systematic procedure of allocating resources in the best possibl
 ```bash
 # Submit a job to the etl queue
 yarn jar wordcount.jar com.acme.WordCount \
-  -D mapreduce.job.queuename=etl \
+  -D MapReduce.job.queuename=etl \
   /data/books /data/wordcount-out
 ```
 
@@ -1058,7 +1058,7 @@ After Mapper generate the output temporary store the intermediate data on the lo
 
 [Table of Contents](#HADOOP)
 
-##  Java is mandatory to write Mapreduce Jobs?
+##  Java is mandatory to write MapReduce Jobs?
 No, By default Hadoop implemented in JavaTM, but MapReduce applications need not be written in Java. Hadoop support Python, Ruby, C++ and other Programming languages. Hadoop Streaming API allows to create and run Map/Reduce jobs with any executable or script as the mapper and/or the reducer.Hadoop Pipes allows programmers to implement MapReduce applications by using C++ programs.
 
 [Table of Contents](#HADOOP)
@@ -1108,11 +1108,11 @@ Number of reducer = 0 also valid configuration in MapReduce. In this scenario, N
 [Table of Contents](#HADOOP)
 
 ##  When we are goes to Combiner?
-Mappers and reducers are independent they dont talk each other. When the functions that are commutative(a.b = b.a) and associative {a.(b.c) = (a.b).c} we goes to combiner to optimize the mapreduce process. Many mapreduce jobs are limited by the bandwidth, so by default Hadoop framework minimizes the data bandwidth network wastage. To achieve it’s goal, Mapreduce allows user defined “Cominer function” to run on the map output. It’s an MapReduce optimization technique, but it’s optional.
+Mappers and reducers are independent they dont talk each other. When the functions that are commutative(a.b = b.a) and associative {a.(b.c) = (a.b).c} we goes to combiner to optimize the MapReduce process. Many MapReduce jobs are limited by the bandwidth, so by default Hadoop framework minimizes the data bandwidth network wastage. To achieve it’s goal, MapReduce allows user defined “Cominer function” to run on the map output. It’s an MapReduce optimization technique, but it’s optional.
 
 [Table of Contents](#HADOOP)
 
-##  What is the main difference between Mapreduce Combiner and Reducer?
+##  What is the main difference between MapReduce Combiner and Reducer?
 Both Combiner and Reducer are optional, but most frequently used in MapReduce. There are three main differences such as:
     combiner will get only one input from one Mapper. While Reducer will get multiple mappers from different mappers.
     If aggregation required used reducer, but if the function follows commutative (a.b=b.a) and associative a.(b.c)= (a.b).c law, use combiner.
@@ -1126,7 +1126,7 @@ After combiner and intermediate map­output the Partitioner controls the keys af
 [Table of Contents](#HADOOP)
 
 ## When we goes to Partition?
-By default Hive reads entire dataset even the application have a slice of data. It’s a bottleneck for mapreduce jobs. So Hive allows special option called partitions. When you are creating table, hive partitioning the table based on requirement.
+By default Hive reads entire dataset even the application have a slice of data. It’s a bottleneck for MapReduce jobs. So Hive allows special option called partitions. When you are creating table, hive partitioning the table based on requirement.
 
 [Table of Contents](#HADOOP)
 
@@ -1141,7 +1141,7 @@ insert overwrite table table_name partition(year) select * from non­partition­
 
 [Table of Contents](#HADOOP)
 
-## Can you elaborate Mapreduce Job architecture?
+## Can you elaborate MapReduce Job architecture?
 First Hadoop programmer submit Mpareduce program to JobClient.
     Job Client request the JobTracker to get Job id, Job tracker provide JobID, its’s in the form of Job_HadoopStartedtime_00001. It’s unique ID.
     Once JobClient receive received Job ID copy the Job resources (job.xml, job.jar) to File System (HDFS) and submit job to JobTracker. JobTracker initiate Job and schedule the job.
@@ -1160,15 +1160,15 @@ Data locality. Move competition is cheaper than moving Data. So logic/ competiti
 [Table of Contents](#HADOOP)
 
 ##  How many Mappers and Reducers can run?
-By default Hadoop can run 2 mappers and 2 reducers in one datanode. also each node has 2 map slots and 2 reducer slots. It’s possible to change this default values in Mapreduce.xml in conf file.
+By default Hadoop can run 2 mappers and 2 reducers in one datanode. also each node has 2 map slots and 2 reducer slots. It’s possible to change this default values in MapReduce.xml in conf file.
 
 ```xml
 <!-- mapred-site.xml: per-task memory and the number of tasks in the job -->
 <configuration>
-  <property><name>mapreduce.map.memory.mb</name><value>2048</value></property>
-  <property><name>mapreduce.reduce.memory.mb</name><value>4096</value></property>
-  <property><name>mapreduce.job.maps</name><value>200</value></property>
-  <property><name>mapreduce.job.reduces</name><value>50</value></property>
+  <property><name>MapReduce.map.memory.mb</name><value>2048</value></property>
+  <property><name>MapReduce.reduce.memory.mb</name><value>4096</value></property>
+  <property><name>MapReduce.job.maps</name><value>200</value></property>
+  <property><name>MapReduce.job.reduces</name><value>50</value></property>
 </configuration>
 ```
 
@@ -1252,7 +1252,7 @@ job.xml and job.jar are core resources to process the Job. Job Client copy the r
 
 [Table of Contents](#HADOOP)
 
-##  What’s the Mapreduce Job consists?
+##  What’s the MapReduce Job consists?
 MapReduce job is a unit of work that client wants to be performed. It consists of input data, MapReduce program in Jar file and configuration setting in XML files. Hadoop runs this job by dividing it in different tasks with the help of JobTracker
 
 [Table of Contents](#HADOOP)
@@ -1276,8 +1276,8 @@ Hadoop run the process in commodity hardware, so it’s possible to fail the sys
 System A, System B, System C, System D systems executed 10 min, 8 mins, 9 mins 12 mins simultaneously. So consider system B and kill remaining system processes, framework take care to kill the other system process.
 
 ```xml
-<property><name>mapreduce.map.speculative</name><value>true</value></property>
-<property><name>mapreduce.reduce.speculative</name><value>true</value></property>
+<property><name>MapReduce.map.speculative</name><value>true</value></property>
+<property><name>MapReduce.reduce.speculative</name><value>true</value></property>
 <!-- Disable for jobs whose tasks have non-idempotent side effects -->
 ```
 
@@ -1326,7 +1326,7 @@ Sometime child threads currupt parent threads. It means because of programmer mi
 
 [Table of Contents](#HADOOP)
 
-##  What main configuration parameters are specified in Mapreduce?
+##  What main configuration parameters are specified in MapReduce?
  The MapReduce programmers need to specify following configuration parameters to perform the map and reduce jobs:
 + The input location of the job in HDFs.
 + The output location of the job in HDFS.
@@ -1379,7 +1379,7 @@ public class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable>
 
 [Table of Contents](#HADOOP)
 
-## Explain Jobconf in Mapreduce?
+## Explain Jobconf in MapReduce?
 It is a primary interface to define a map-reduce job in the Hadoop for job execution. JobConf specifies mapper, Combiner, partitioner, Reducer,InputFormat , OutputFormat implementations and other advanced job faets liek Comparators.
 
 [Table of Contents](#HADOOP)
@@ -1460,11 +1460,11 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapreduce.Job;
-import org.apache.hadoop.mapreduce.Mapper;
-import org.apache.hadoop.mapreduce.Reducer;
-import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.MapReduce.Job;
+import org.apache.hadoop.MapReduce.Mapper;
+import org.apache.hadoop.MapReduce.Reducer;
+import org.apache.hadoop.MapReduce.lib.input.FileInputFormat;
+import org.apache.hadoop.MapReduce.lib.output.FileOutputFormat;
 
 public class WordCount {
 
@@ -1522,7 +1522,7 @@ public class WordCount {
 # Compile locally, package the jar, submit to YARN
 hadoop com.sun.tools.javac.Main WordCount.java
 jar cf wc.jar WordCount*.class
-yarn jar wc.jar WordCount -D mapreduce.job.reduces=4 /data/books /data/wordcount-out
+yarn jar wc.jar WordCount -D MapReduce.job.reduces=4 /data/books /data/wordcount-out
 ```
 
 [Table of Contents](#HADOOP)
@@ -1582,7 +1582,7 @@ It is an optional component or class, and can be specify via Job.setCombinerClas
 ##  How many Maps are there in a particular Job?
 The number of maps is usually driven by the total size of the inputs, that is, the total number of blocks of the input files.
     Generally it is around 10-100 maps per-node. Task setup takes awhile, so it is best if the maps take at least a minute to execute.
-    Suppose, if you expect 10TB of input data and have a block size of 128MB, you'll end up with 82,000 maps, to control the number of block you can use the mapreduce.job.maps parameter (which only provides a hint to the framework). Ultimately, the number of tasks is controlled by the number of splits returned by the InputFormat.getSplits() method (which you can override).
+    Suppose, if you expect 10TB of input data and have a block size of 128MB, you'll end up with 82,000 maps, to control the number of block you can use the MapReduce.job.maps parameter (which only provides a hint to the framework). Ultimately, the number of tasks is controlled by the number of splits returned by the InputFormat.getSplits() method (which you can override).
 
 [Table of Contents](#HADOOP)
 
@@ -1620,7 +1620,7 @@ In this phase the reduce(MapOutKeyType, Iterable, Context) method is called for 
 
 ##  How many Reducers should be configured?
 The right number of reduces seems to be 0.95 or 1.75 multiplied by
-        (number of nodes * mapreduce.tasktracker.reduce.tasks.maximum).
+        (number of nodes * MapReduce.tasktracker.reduce.tasks.maximum).
         With 0.95 all of the reduces can launch immediately and start transferring map outputs as the maps finish. With 1.75 the faster nodes will finish their first round of reduces and launch a second wave of reduces doing a much better job of load balancing. Increasing the number of reduces increases the framework overhead, but increases load balancing and lowers the cost of failures.
 
 ```java
@@ -1719,13 +1719,13 @@ The mapper output (intermediate data) is stored on the Local file system (NOT HD
 
 [Table of Contents](#HADOOP)
 
-##  What is the Hadoop Mapreduce api contract for a Key and Value Class?
+##  What is the Hadoop MapReduce api contract for a Key and Value Class?
 The Key must implement the org.apache.hadoop.io.WritableComparable interface.
     The value must implement the org.apache.hadoop.io.Writable interface.
 
 [Table of Contents](#HADOOP)
 
-##  What is a IdentityMapper and IdentityReducer in Mapreduce?
+##  What is a IdentityMapper and IdentityReducer in MapReduce?
 + org.apache.hadoop.mapred.lib.IdentityMapper: Implements the identity function, mapping inputs directly to outputs. If MapReduce programmer does not set the Mapper Class using JobConf.setMapperClass then IdentityMapper.class is used as a default value.
 + org.apache.hadoop.mapred.lib.IdentityReducer : Performs no reduction, writing all input values directly to the output. If MapReduce programmer does not set the Reducer Class using JobConf.setReducerClass then IdentityReducer.class is used as a default value.
 
@@ -1969,7 +1969,7 @@ NameNode periodically receives a Heartbeat and a Blockreport from each of the Da
 
 [Table of Contents](#HADOOP)
 
-## Does Mapreduce programming model provide a way for Reducers to communicate with each other and in a Mapreduce Job can a Reducer communicate with another Reducer?
+## Does MapReduce programming model provide a way for Reducers to communicate with each other and in a MapReduce Job can a Reducer communicate with another Reducer?
 Nope, MapReduce programming model does not allow reducers to communicate with each other. Reducers run in isolation.
 
 [Table of Contents](#HADOOP)
@@ -1984,7 +1984,7 @@ The mapper output (intermediate data) is stored on the Local file system (NOT HD
 
 [Table of Contents](#HADOOP)
 
-##  If Reducers do not start before all Mappers finish then why does the progress on Mapreduce Job shows something like Map 50 percents Reduce 10 percents and why Reducers progress percentage is displayed when Mapper is not Finished yet?
+##  If Reducers do not start before all Mappers finish then why does the progress on MapReduce Job shows something like Map 50 percents Reduce 10 percents and why Reducers progress percentage is displayed when Mapper is not Finished yet?
 Reducers start copying intermediate key-value pairs from the mappers as soon as they are available. The progress calculation also takes in account the processing of data transfer which is done by reduce process, therefore the reduce progress starts showing up as soon as any intermediate key-value pair for a mapper is available to be transferred to reducer. Though the reducer progress is updated still the programmer defined reduce method is called only after all the mappers have finished.
 
 [Table of Contents](#HADOOP)
@@ -2185,9 +2185,9 @@ A retailer lands 8 TB of point-of-sale and clickstream data per day. The batch l
 
 ```bash
 yarn jar etl.jar com.acme.DailyEtl \
-  -D mapreduce.job.queuename=etl \
-  -D mapreduce.job.reduces=200 \
-  -D mapreduce.map.memory.mb=4096 \
+  -D MapReduce.job.queuename=etl \
+  -D MapReduce.job.reduces=200 \
+  -D MapReduce.map.memory.mb=4096 \
   /data/raw/2026-10-04 /data/curated/orders/ds=2026-10-04
 ```
 

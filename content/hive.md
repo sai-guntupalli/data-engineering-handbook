@@ -88,7 +88,7 @@
 + [While loading Data into Hive Table using Load Data Clause so how do you specify it is a Hdfs File and not a Local File?](#While-loading-Data-into-Hive-Table-using-Load-Data-Clause-so-how-do-you-specify-it-is-a-Hdfs-File-and-not-a-Local-File)
 + [If you omit Overwrite clause while creating Hive Table so what happens with File which are new and files which already exist?](#If-you-omit-Overwrite-clause-while-creating-Hive-Table-so-what-happens-with-File-which-are-new-and-files-which-already-exist)
 + [What is a Table Generating Function on Hive?](#What-is-a-Table-Generating-Function-on-Hive)
-+ [How can Hive avoid Mapreduce?](#How-can-Hive-avoid-Mapreduce)
++ [How can Hive avoid MapReduce?](#How-can-Hive-avoid-MapReduce)
 + [What is the difference between Like and Rlike operators in Hive?](#What-is-the-difference-between-Like-and-Rlike-operators-in-Hive)
 + [Is it possible to create Cartesian Join between 2 Tables using Hive?](#Is-it-possible-to-create-Cartesian-Join-between-2-Tables-using-Hive)
 + [As part of optimizing Queries in Hive what should be the Order of Table Size in Join Query?](#As-part-of-optimizing-Queries-in-Hive-what-should-be-the-Order-of-Table-Size-in-Join-Query)
@@ -527,7 +527,7 @@ Tools (ql/tools)
 [Table of Contents](#Apache-Hive)
 
 ## How will you resolve an out of memory error while running a JOIN query?
-An out-of-memory error in a join usually means the build side of the join does not fit in the container. Common fixes are: enable map-side joins for the small table (hive.auto.convert.join), raise the container memory (mapreduce.map.memory.mb / hive.tez.container.size), reduce the number of rows before the join with an earlier filter, and check for data skew on the join key. Simply swapping LEFT and RIGHT outer join does not reduce the data that must be held in memory and is not a general fix.
+An out-of-memory error in a join usually means the build side of the join does not fit in the container. Common fixes are: enable map-side joins for the small table (hive.auto.convert.join), raise the container memory (MapReduce.map.memory.mb / hive.tez.container.size), reduce the number of rows before the join with an earlier filter, and check for data skew on the join key. Simply swapping LEFT and RIGHT outer join does not reduce the data that must be held in memory and is not a general fix.
 
 ```sql
 -- Force a map-side join when the build side fits in memory
@@ -781,7 +781,7 @@ ALTER TABLE fact_orders PARTITION (ds = '2026-10-04') CONCATENATE;
 [Table of Contents](#Apache-Hive)
 
 ## What are the main use cases for using Hive?
-Hive is mainly used for Datawarehouse applications. Hive used Hadoop and MapReduce that put some restrictions on use cases for Hive. Some of the  main use cases for Hive are:
+Hive is mainly used for data warehouse applications. Hive used Hadoop and MapReduce that put some restrictions on use cases for Hive. Some of the  main use cases for Hive are:
 Analysis of static Big data Applications in which less responsive time is acceptable Analysis of data that does not hange rapidly
 What is STREAMTABLE in Hive?
 In Hive, we can optimize a query by using STREAMTABLE hint. We can specify it in SELECT query with JOIN. During the map/reduce stage of JOIN, a table data can be streamed by using this hint.
@@ -908,7 +908,7 @@ There is no way you can delete the DBPROPERTY.
 [Table of Contents](#Apache-Hive)
 
 ## What is the significance of the Hive strict mode setting?
-It sets the mapreduce jobs to strict mode.By which the queries on partitioned tables can not run without a WHERE clause. This prevents very large job running for long time.
+It sets the MapReduce jobs to strict mode.By which the queries on partitioned tables can not run without a WHERE clause. This prevents very large job running for long time.
 
 [Table of Contents](#Apache-Hive)
 
@@ -983,8 +983,8 @@ LATERAL VIEW explode(split(tags, ',')) t AS tag;
 
 [Table of Contents](#Apache-Hive)
 
-## How can Hive avoid Mapreduce?
-If we set the property hive.exec.mode.local.auto to true then hive will avoid mapreduce to fetch query results.
+## How can Hive avoid MapReduce?
+If we set the property hive.exec.mode.local.auto to true then hive will avoid MapReduce to fetch query results.
 
 ```sql
 SET hive.exec.mode.local.auto = true;

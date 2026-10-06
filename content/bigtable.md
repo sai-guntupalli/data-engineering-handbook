@@ -126,7 +126,6 @@ region#bucket#device_id#timestamp
 ```
 
 
-
 ```python
 from datetime import datetime
 

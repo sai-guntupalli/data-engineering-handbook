@@ -95,32 +95,32 @@ Key ideas:
 + [Explain what is the Row Key?](#Explain-what-is-the-Row-Key)
 + [Is HBase a scale out or scale up process?](#Is-HBase-a-scale-out-or-scale-up-process)
 + [Explain deletion in HBase?](#Explain-deletion-in-HBase)
-+ [What are the step in writing something into Hbase by a Client?](#What-are-the-step-in-writing-something-into-Hbase-by-a-Client)
-+ [Explain how does Hbase actually delete a Row?](#Explain-how-does-Hbase-actually-delete-a-Row)
-+ [What is compaction in Hbase?](#What-is-compaction-in-Hbase)
++ [What are the step in writing something into HBase by a Client?](#What-are-the-step-in-writing-something-into-HBase-by-a-Client)
++ [Explain how does HBase actually delete a Row?](#Explain-how-does-HBase-actually-delete-a-Row)
++ [What is compaction in HBase?](#What-is-compaction-in-HBase)
 + [Explain what happens if you alter the Block Size of a column Family on an already occupied Database?](#Explain-what-happens-if-you-alter-the-Block-Size-of-a-column-Family-on-an-already-occupied-Database)
-+ [What are the different compaction types in Hbase?](#What-are-the-different-compaction-types-in-Hbase)
-+ [What is a Cell in Hbase?](#What-is-a-Cell-in-Hbase)
-+ [What is the Scope of a Rowkey in Hbase?](#What-is-the-Scope-of-a-Rowkey-in-Hbase)
-+ [What is the Role of the Class Hcolumndescriptor in Hbase?](#What-is-the-Role-of-the-Class-Hcolumndescriptor-in-Hbase)
-+ [What is a Namespace in Hbase?](#What-is-a-Namespace-in-Hbase)
-+ [What is the Lower Bound of Versions in Hbase?](#What-is-the-Lower-Bound-of-Versions-in-Hbase)
-+ [What is Hotspotting in Hbase?](#What-is-Hotspotting-in-Hbase)
-+ [What is Ttl in Hbase?](#What-is-Ttl-in-Hbase)
++ [What are the different compaction types in HBase?](#What-are-the-different-compaction-types-in-HBase)
++ [What is a Cell in HBase?](#What-is-a-Cell-in-HBase)
++ [What is the Scope of a Rowkey in HBase?](#What-is-the-Scope-of-a-Rowkey-in-HBase)
++ [What is the Role of the Class Hcolumndescriptor in HBase?](#What-is-the-Role-of-the-Class-Hcolumndescriptor-in-HBase)
++ [What is a Namespace in HBase?](#What-is-a-Namespace-in-HBase)
++ [What is the Lower Bound of Versions in HBase?](#What-is-the-Lower-Bound-of-Versions-in-HBase)
++ [What is Hotspotting in HBase?](#What-is-Hotspotting-in-HBase)
++ [What is Ttl in HBase?](#What-is-Ttl-in-HBase)
 + [Why do we Pre create empty Regions?](#Why-do-we-Pre-create-empty-Regions)
-+ [Does Hbase support Table Joins?](#Does-Hbase-support-Table-Joins)
-+ [Which File in Hbase is designed after Sstable File of Bigtable?](#Which-File-in-Hbase-is-designed-after-Sstable-File-of-Bigtable)
-+ [What is a Hbase Store?](#What-is-a-Hbase-Store)
-+ [What are the Two Types of Table Design Approach in Hbase?](#What-are-the-Two-Types-of-Table-Design-Approach-in-Hbase)
++ [Does HBase support Table Joins?](#Does-HBase-support-Table-Joins)
++ [Which File in HBase is designed after Sstable File of Bigtable?](#Which-File-in-HBase-is-designed-after-Sstable-File-of-Bigtable)
++ [What is a HBase Store?](#What-is-a-HBase-Store)
++ [What are the Two Types of Table Design Approach in HBase?](#What-are-the-Two-Types-of-Table-Design-Approach-in-HBase)
 + [When do we do Manual Region Splitting?](#When-do-we-do-Manual-Region-Splitting)
-+ [In which scenario should we consider creating a short and wide Hbase Table?](#In-which-scenario-should-we-consider-creating-a-short-and-wide-Hbase-Table)
-+ [In Hbase what is Log Splitting?](#In-Hbase-what-is-Log-Splitting)
-+ [How does Hbase support Bulk Data Loading?](#How-does-Hbase-support-Bulk-Data-Loading)
++ [In which scenario should we consider creating a short and wide HBase Table?](#In-which-scenario-should-we-consider-creating-a-short-and-wide-HBase-Table)
++ [In HBase what is Log Splitting?](#In-HBase-what-is-Log-Splitting)
++ [How does HBase support Bulk Data Loading?](#How-does-HBase-support-Bulk-Data-Loading)
 + [Why MultiWAL is Needed?](#Why-MultiWAL-is-Needed)
-+ [How does Hbase provide High Availability?](#How-does-Hbase-provide-High-Availability)
++ [How does HBase provide High Availability?](#How-does-HBase-provide-High-Availability)
 + [How does Wal help when a Regionserver Crashes?](#How-does-Wal-help-when-a-Regionserver-Crashes)
-+ [What is Hregionserver in Hbase?](#What-is-Hregionserver-in-Hbase)
-+ [What are the different Block Caches in Hbase?](#What-are-the-different-Block-Caches-in-Hbase)
++ [What is Hregionserver in HBase?](#What-is-Hregionserver-in-HBase)
++ [What are the different Block Caches in HBase?](#What-are-the-different-Block-Caches-in-HBase)
 + [How do you manage compactions and region splits?](#How-do-you-manage-compactions-and-region-splits)
 + [When should you not use HBase, and what should you use instead?](#When-should-you-not-use-HBase-and-what-should-you-use-instead)
 + [Real world use cases for HBase](#Real-world-use-cases-for-HBase)
@@ -924,7 +924,7 @@ Three types of tombstone marker:
 
 [Table of Contents](#Apache-HBase)
 
-## What are the step in writing something into Hbase by a Client?
+## What are the step in writing something into HBase by a Client?
 The client does not write directly to HFiles. It first appends the mutation to the WAL, then applies it to the MemStore of the target region. The MemStore is flushed to disk as an HFile when it reaches a threshold or the region is closed, and the WAL entries for those edits can then be discarded. Region location comes from the client's cache of `hbase:meta`.
 
 ```text
@@ -933,12 +933,12 @@ put -> find region (meta cache) -> RegionServer -> WAL append -> MemStore -> (fl
 
 [Table of Contents](#Apache-HBase)
 
-## Explain how does Hbase actually delete a Row?
+## Explain how does HBase actually delete a Row?
 Data written from RAM to disk becomes immutable HFiles apart from compaction. A delete writes a tombstone rather than removing bytes. Major compaction removes delete markers and the hidden data; minor compactions generally do not. If new data is written with an earlier timestamp than the tombstone, Gets can remain masked by the tombstone until a major compaction runs.
 
 [Table of Contents](#Apache-HBase)
 
-## What is compaction in Hbase?
+## What is compaction in HBase?
 As more data is written, many HFiles are created. Compaction merges HFiles into fewer, larger files and discards the old files after the merge succeeds. It also removes deleted and expired cells, which is what keeps read latency from degrading.
 
 [Table of Contents](#Apache-HBase)
@@ -948,7 +948,7 @@ New data is written with the new block size while old data remains in blocks of 
 
 [Table of Contents](#Apache-HBase)
 
-## What are the different compaction types in Hbase?
+## What are the different compaction types in HBase?
 There are two types. In minor compaction, a small set of adjacent HFiles is merged into one without removing the deleted data, and the files to merge are chosen by policy. In major compaction, all HFiles of a region's column family are merged into one, deleted and expired cells are discarded, and it is often triggered manually or by a schedule.
 
 ```bash
@@ -960,22 +960,22 @@ Major compaction rewrites a lot of data, so it should be scheduled off-peak and 
 
 [Table of Contents](#Apache-HBase)
 
-## What is a Cell in Hbase?
+## What is a Cell in HBase?
 A cell is the smallest unit of an HBase table. It holds a piece of data as a tuple of `{row, column, version}`, where the column is `family:qualifier` and the version is the value's timestamp.
 
 [Table of Contents](#Apache-HBase)
 
-## What is the Scope of a Rowkey in Hbase?
+## What is the Scope of a Rowkey in HBase?
 A row key identifies a row within a table, not within a column family. All column families in that row share the same row key; a row can exist with cells in only some (or none explicitly, if a family marker is written) of the families. Two different column families do not have separate row key spaces.
 
 [Table of Contents](#Apache-HBase)
 
-## What is the Role of the Class Hcolumndescriptor in Hbase?
+## What is the Role of the Class Hcolumndescriptor in HBase?
 `HColumnDescriptor` stores information about a column family such as the number of versions, TTL, compression settings, block size, and Bloom filter type. It is used as input when creating a table or adding a column family.
 
 [Table of Contents](#Apache-HBase)
 
-## What is a Namespace in Hbase?
+## What is a Namespace in HBase?
 A namespace is a logical grouping of tables, similar to a database or schema in a relational database. It organizes tables and controls quotas and permissions. The default namespaces are `default` and `hbase`.
 
 ```bash
@@ -985,12 +985,12 @@ create 'app:impressions', 'i'
 
 [Table of Contents](#Apache-HBase)
 
-## What is the Lower Bound of Versions in Hbase?
+## What is the Lower Bound of Versions in HBase?
 The lower bound (minimum number of versions) is the minimum number of versions to keep for a column. If it is set to 3, the three latest versions are retained when a compaction runs, and older versions are removed subject to the maximum versions and TTL settings.
 
 [Table of Contents](#Apache-HBase)
 
-## What is Hotspotting in Hbase?
+## What is Hotspotting in HBase?
 Hotspotting is when a large amount of client traffic is directed at one node, or a few nodes, of a cluster. The traffic can be reads, writes, or other operations, and it overwhelms the machine hosting that region, causing performance degradation and potentially region unavailability. The classic cause is a monotonically increasing row key such as a timestamp or sequential id, which always writes to the last region.
 
 Fixes, in the order an interviewer usually wants to hear them:
@@ -1012,7 +1012,7 @@ Salting costs read fan-out: a query for one user must know the salt (derive it f
 
 [Table of Contents](#Apache-HBase)
 
-## What is Ttl in Hbase?
+## What is Ttl in HBase?
 TTL (time to live) is a data retention setting at the column family level. It specifies how long a cell version is kept; once a version's timestamp is older than the TTL, it is removed during compaction and is not returned by reads.
 
 ```bash
@@ -1030,22 +1030,22 @@ create 'app:impressions', {NAME => 'i'}, SPLITS => ['10', '20', '30', '40']
 
 [Table of Contents](#Apache-HBase)
 
-## Does Hbase support Table Joins?
+## Does HBase support Table Joins?
 HBase does not support table joins. Join queries can be implemented with a MapReduce or Spark job that scans multiple HBase tables, but the serving-path answer is to denormalize so the data needed together lives in one row.
 
 [Table of Contents](#Apache-HBase)
 
-## Which File in Hbase is designed after Sstable File of Bigtable?
+## Which File in HBase is designed after Sstable File of Bigtable?
 The HFile, which stores the actual data (not metadata), is designed after the SSTable file of Bigtable. HFiles are immutable once written and are merged by compaction.
 
 [Table of Contents](#Apache-HBase)
 
-## What is a Hbase Store?
+## What is a HBase Store?
 A store hosts a MemStore and zero or more StoreFiles (HFiles). A store corresponds to one column family of one region, which is why column families are the unit of memory and flush tuning.
 
 [Table of Contents](#Apache-HBase)
 
-## What are the Two Types of Table Design Approach in Hbase?
+## What are the Two Types of Table Design Approach in HBase?
 They are short-and-wide and tall-and-thin.
 
 + Tall-and-thin: many rows, few columns per row. This is the default HBase sweet spot and scales best because rows spread across regions.
@@ -1066,17 +1066,17 @@ merge_region 'ENCODED_REGION_A', 'ENCODED_REGION_B'
 
 [Table of Contents](#Apache-HBase)
 
-## In which scenario should we consider creating a short and wide Hbase Table?
+## In which scenario should we consider creating a short and wide HBase Table?
 Use a short-and-wide design when an entity is naturally read as a whole, the number of entity rows is moderate, and the attributes are numerous and sparse. The trade-off is that one row lives in one region, so write parallelism across that entity is limited. For time-series data, tall-and-thin (one row per event) is almost always the better choice.
 
 [Table of Contents](#Apache-HBase)
 
-## In Hbase what is Log Splitting?
+## In HBase what is Log Splitting?
 When a RegionServer dies, the edits belonging to its regions must be recovered from the WAL. The edits in the WAL are grouped by region so each set can be replayed to rebuild that region's data. The process of grouping and distributing WAL edits by region is called log splitting.
 
 [Table of Contents](#Apache-HBase)
 
-## How does Hbase support Bulk Data Loading?
+## How does HBase support Bulk Data Loading?
 Bulk loading writes HFiles directly, bypassing the WAL and MemStore, which makes it much faster than `put` for large imports. Two steps:
 
 1. Generate HFiles from the source data with a MapReduce or Spark job (`ImportTsv` or a custom job) in HBase's internal format.
@@ -1084,13 +1084,13 @@ Bulk loading writes HFiles directly, bypassing the WAL and MemStore, which makes
 
 ```bash
 # 1) Convert a TSV on HDFS into HFiles
-hbase org.apache.hadoop.hbase.mapreduce.ImportTsv \
+hbase org.apache.hadoop.hbase.MapReduce.ImportTsv \
   -Dimporttsv.columns=HBASE_ROW_KEY,i:campaign_id,i:amount \
   -Dimporttsv.bulk.output=/tmp/impressions_hfiles \
   app:impressions /data/incoming/impressions.tsv
 
 # 2) Load the HFiles into the table (pre-split it first for balance)
-hbase org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles \
+hbase org.apache.hadoop.hbase.MapReduce.LoadIncrementalHFiles \
   /tmp/impressions_hfiles app:impressions
 ```
 
@@ -1114,7 +1114,7 @@ With a single WAL per RegionServer, the RegionServer must write to the WAL seria
 
 [Table of Contents](#Apache-HBase)
 
-## How does Hbase provide High Availability?
+## How does HBase provide High Availability?
 + Region replication: each region can have replicas served by different RegionServers, and the load balancer avoids co-hosting a replica set.
 + WAL replay: committed edits are recovered from the WAL after a RegionServer crash.
 + Multiple masters: backup H Masters are elected so the master is not a hard single point of failure.
@@ -1128,12 +1128,12 @@ The WAL records all changes to data in file-based storage. If a RegionServer cra
 
 [Table of Contents](#Apache-HBase)
 
-## What is Hregionserver in Hbase?
+## What is Hregionserver in HBase?
 `HRegionServer` is the RegionServer implementation. It is responsible for serving and managing regions: hosting MemStores, appending to the WAL, flushing HFiles, and running compactions and splits. In a distributed cluster a RegionServer runs on a DataNode.
 
 [Table of Contents](#Apache-HBase)
 
-## What are the different Block Caches in Hbase?
+## What are the different Block Caches in HBase?
 HBase provides two BlockCache implementations: the on-heap `LruBlockCache` (the default) and `BucketCache`, which is usually off-heap. A common production configuration is a combined cache: an LRU cache in front of a `BucketCache` backed by off-heap memory, SSD, or a file, to keep the JVM heap small and avoid GC pauses.
 
 ```xml

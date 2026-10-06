@@ -146,15 +146,15 @@
 + [What is the difference between Etl Tool and Olap Tool and what are various Etl in the Market?](#what-is-the-difference-between-etl-tool-and-olap-tool-and-what-are-various-etl-in-the-market)
 + [Steps in building the Data Model.](#steps-in-building-the-data-model)
 + [Why is Data Modeling important?](#why-is-data-modeling-important)
-+ [What Type of Indexing Mechanism do we need use for a typical Datawarehouse?](#what-type-of-indexing-mechanism-do-we-need-use-for-a-typical-datawarehouse)
++ [What Type of Indexing Mechanism do we need use for a typical data warehouse?](#what-type-of-indexing-mechanism-do-we-need-use-for-a-typical-datawarehouse)
 + [What are Semi additive and Factless Facts?](#what-are-semi-additive-and-factless-facts)
 + [Is it correct develop a Data Mart using an Ods?](#is-it-correct-develop-a-data-mart-using-an-ods)
 + [Explain degenerated dimension.](#explain-degenerated-dimension)
 + [What are the different methods of loading Dimension Tables?](#what-are-the-different-methods-of-loading-dimension-tables)
 + [What are Slowly Changing Dimensions?](#what-are-slowly-changing-dimensions)
-+ [What is meant by Metadata in context of a Datawarehouse?](#what-is-meant-by-metadata-in-context-of-a-datawarehouse)
++ [What is meant by Metadata in context of a data warehouse?](#what-is-meant-by-metadata-in-context-of-a-datawarehouse)
 + [What are Modeling Tools available in the Market](#what-are-modeling-tools-available-in-the-market)
-+ [What is the main difference between Schema in Rdbms and Schemas in Datawarehouse?](#what-is-the-main-difference-between-schema-in-rdbms-and-schemas-in-datawarehouse)
++ [What is the main difference between Schema in Rdbms and Schemas in data warehouse?](#what-is-the-main-difference-between-schema-in-rdbms-and-schemas-in-datawarehouse)
 + [What is a general purpose Scheduling Tool?](#what-is-a-general-purpose-scheduling-tool)
 + [What is the need of Surrogate Key and why Primary Key not used as Surrogate Key?](#what-is-the-need-of-surrogate-key-and-why-primary-key-not-used-as-surrogate-key)
 + [What is Snow Flake Schema?](#what-is-snow-flake-schema)
@@ -1410,7 +1410,7 @@ Metadata is data about data. E.g. if in data mart we are receiving any file. The
 
 ## What is the Definitions for Datawarehose And Datamart?
 
-Datamart is subset of Datawarehouse we can say a datamart is collection of individual departmental information...Where as datawarehouse in collection of datamart.
+Datamart is subset of data warehouse we can say a datamart is collection of individual departmental information...Where as datawarehouse in collection of datamart.
 Data mart is a single subject and datawarehouse is a integration of multiple subjects.
 
 [Table of Contents](#Data-Warehousing-Architecture)
@@ -1761,7 +1761,7 @@ Data modeling is probably the most labor-intensive and time-consuming part of th
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
-## What Type of Indexing Mechanism do we need use for a typical Datawarehouse?
+## What Type of Indexing Mechanism do we need use for a typical data warehouse?
 
 On the fact table it is best to use bitmap indexes. Dimension tables can use bitmap and/or the other types of clustered/non-clustered, unique/non-unique indexes.
 To my knowledge, SQLServer does not support bitmap indexes. Only Oracle supports bitmaps.
@@ -1948,7 +1948,7 @@ Choose Type 1 for corrections, Type 2 when the business must reproduce history, 
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
-## What is meant by Metadata in context of a Datawarehouse?
+## What is meant by Metadata in context of a data warehouse?
 
 Metadata or Meta Data Metadata is data about data. Examples of metadata include data element descriptions, data type descriptions, attribute/property descriptions, range/domain descriptions, and process/method descriptions. The repository environment encompasses all corporate metadata resources: database catalogs, data dictionaries, and navigation services. Metadata includes things like the name, length, valid values, and description of a data element. Metadata is stored in a data dictionary and repository. It insulates the data warehouse from changes in the schema of operational systems. Metadata Synchronization The process of consolidating, relating and synchronizing data elements with the same or similar meaning from different systems. Metadata synchronization joins these differing elements together in the data warehouse to allow for easier access.
 
@@ -1980,7 +1980,7 @@ Power Designer Sybase.
 
 [Table of Contents](#Data-Warehousing-Architecture)
 
-## What is the main difference between Schema in Rdbms and Schemas in Datawarehouse?
+## What is the main difference between Schema in Rdbms and Schemas in data warehouse?
 
 RDBMS Schema
 * Used for OLTP systems

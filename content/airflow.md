@@ -7,7 +7,7 @@
 
 Apache Airflow is a batch workflow orchestrator: you describe pipelines as Python DAGs and Airflow schedules, retries, backfills, and monitors them.
 
-Examples below are shown for both versions: **Airflow 3** first, then the **Airflow 2** equivalent wherever the code differs. Airflow 2's final line (2.11.x) reached end of life on April 22, 2026, so Airflow 3 is the target for new work, but Airflow 2 code is still common in production and interviews.
+Examples below are shown **Airflow 2.x first**, because Airflow 2 remains common in production and interviews. Airflow 3 notes are included where imports, scheduling, assets, or runtime behavior changed.
 + [What is Airflow?](#What-is-Airflow)
 + [What problems does Airflow solve compared to cron?](#What-problems-does-Airflow-solve-compared-to-cron)
 + [When should you not use Airflow?](#When-should-you-not-use-Airflow)
@@ -44,20 +44,21 @@ Apache Airflow is an open-source workflow orchestration platform. It started at 
 
 Airflow does not move or transform data itself. It orchestrates work that runs somewhere else: SQL in Snowflake, BigQuery, Redshift, or Postgres, dbt models, Spark jobs, Kubernetes pods, Python functions, shell scripts, or an HTTP call. Think of it as the *when and in what order* layer, not the *how* layer.
 
-The current line is Airflow 3.x (3.3.x at the time of writing). The most important change for DAG authors is that authoring uses the public `airflow.sdk` namespace, and task code can no longer touch the metadata database directly. `from airflow import DAG` still resolves to the SDK class, and legacy paths such as `airflow.models.dag.DAG` still import but emit deprecation warnings; new code should use `airflow.sdk`.
+Modern Airflow 2.x code should usually use the TaskFlow API. It is clearer than wiring many `PythonOperator` objects by hand, and it makes dependencies visible through normal Python function calls.
 
-A minimal Airflow 3 DAG:
+A minimal Airflow 2.x DAG:
 
 ```python
 import pendulum
-from airflow.sdk import DAG, task
+from airflow.decorators import dag, task
 
-with DAG(
-    dag_id="hello_airflow",
+@dag(
+    dag_id="hello_airflow_2",
     start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
     schedule="@daily",
     catchup=False,
-):
+)
+def hello_airflow():
 
     @task
     def greet() -> str:
@@ -68,20 +69,23 @@ with DAG(
         print(f"{message.upper()} from Airflow")
 
     shout(greet())
+
+hello_airflow()
 ```
-The same DAG in Airflow 2 uses the classic imports and `schedule_interval`:
+
+The same DAG in Airflow 3 uses the public SDK imports:
 
 ```python
-from airflow import DAG
-from airflow.decorators import task
-from airflow.utils.dates import days_ago   # removed in Airflow 3
+import pendulum
+from airflow.sdk import dag, task
 
-with DAG(
-    dag_id="hello_airflow",
-    start_date=days_ago(1),
-    schedule_interval="@daily",                 # renamed to schedule= in Airflow 3
+@dag(
+    dag_id="hello_airflow_3",
+    start_date=pendulum.datetime(2026, 1, 1, tz="UTC"),
+    schedule="@daily",
     catchup=False,
-) as dag:
+)
+def hello_airflow():
 
     @task
     def greet() -> str:
@@ -92,7 +96,11 @@ with DAG(
         print(f"{message.upper()} from Airflow")
 
     shout(greet())
+
+hello_airflow()
 ```
+
+Interview point: for Airflow 2.x, know TaskFlow, `@dag`, `@task`, dynamic task mapping, Datasets, sensors, retries, pools, and backfills. For Airflow 3, know that authoring moves to `airflow.sdk`, Datasets are renamed Assets, and task execution is more isolated from the metadata database.
 
 For an interview, the short version is: Airflow is an orchestrator (control plane), it models a pipeline as a DAG of idempotent tasks, and it separates scheduling from execution through executors and workers.
 

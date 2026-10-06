@@ -21,7 +21,7 @@ Suggested study paths:
 
 ## Notebooks
 
-Every topic in this guide also exists as a Jupyter notebook. All 54 topic docs are converted under [`notebooks/topics/`](./notebooks/topics), and the Python, SQL and Spark notebooks also contain their hands-on exercises, merged in.
+Every tracked Markdown file in this repo also exists as a Google Colab-friendly notebook. Content docs are converted under [`notebooks/topics/`](./notebooks/topics), and repository docs such as this README are mirrored under [`notebooks/from-md/`](./notebooks/from-md). The Python, SQL and Spark notebooks also contain their hands-on exercises, merged in.
 
 | Notebook | What it covers | Dependencies | Run in Colab |
 |---|---|---|---|
@@ -32,38 +32,38 @@ Every topic in this guide also exists as a Jupyter notebook. All 54 topic docs a
 
 ```bash
 make setup-notebooks     # uv sync --extra notebooks
-make topic-notebooks     # regenerate notebooks/topics/*.ipynb from content/*.md
+make topic-notebooks     # regenerate notebooks from every tracked .md file
+make notebook-audit      # validate notebook structure and cell inventory
 make notebooks           # execute the practice notebooks and save outputs
 jupyter lab notebooks/   # open them interactively
 ```
 
 The standalone practice notebooks (`notebooks/01_python_basics.ipynb` through `notebooks/04_pyspark_concepts.ipynb`) remain available and are the sources merged into the Python, SQL and Spark topic notebooks.
 
-In a topic notebook every `##` section is a markdown cell, every Python block is a runnable cell, and snippets in SQL, shell, YAML or Scala stay as formatted blocks because they need their own engine.
+In a generated notebook every `##` section is a markdown cell. Python and PySpark fences become code cells, shell fences become `%%bash` cells, and SQL fences become `%%sql` cells backed by an in-memory SQLite connection when `ipython-sql` is installed. YAML, Scala, JSON and other platform-specific snippets stay formatted when a Colab Python kernel cannot execute them directly.
 
-Prefer zero setup? Click an **Open in Colab** badge to run a notebook in the browser straight from this repository. The Python and SQL notebooks need nothing installed; the Spark notebook needs one extra step in Colab: run `!pip install pyspark` in a new cell, then pick **Runtime -> Restart session** and run all cells.
+Prefer zero setup? Click an **Open in Colab** badge to run a notebook in the browser straight from this repository. Generated notebooks include a setup cell that prints missing packages and the `pip install` command to run first. PySpark notebooks need `pyspark` and Java; Colab usually has Java already.
 
 PySpark locally needs `uv sync --extra notebooks --extra notebooks-spark` plus a Java 17+ runtime; without them, the Spark notebook prints setup instructions and skips the Spark cells instead of failing.
 
-## Documentation website
+## Documentation app
 
-This repo can be served as a MkDocs Material website. The Markdown files under `content/` stay as the source of truth, and `scripts/build_docs_source.py` generates a MkDocs-friendly `.docs_src/` directory.
+This repo ships a Next.js documentation app. The Markdown files under `content/` stay as the source of truth, and the app renders them directly with topic search, grouped navigation, Colab notebook links, downloads, and styled code blocks.
 
 ```bash
 uv sync
-uv run docs-prepare
-uv run mkdocs serve
+npm install
+npm run dev
 ```
 
 For CI or local validation:
 
 ```bash
-uv run docs-prepare
-uv run mkdocs build --strict
 python3 scripts/repo_checks.py
+npm run build
 ```
 
-To add a new topic later, create a new `content/<topic>.md` file with a top-level `# Topic Name` heading. Then add the topic slug to `TOPIC_GROUPS` in `scripts/build_docs_source.py` so it appears in the right study path on the website.
+To add a new topic later, create a new `content/<topic>.md` file with a top-level `# Topic Name` heading. Then add the topic slug to `topicGroups` in `lib/topics.ts` so it appears in the right study path on the website.
 
 ## Real-world interview examples
 
@@ -149,17 +149,32 @@ What to discuss in an interview: table grain, SCD Type 2 dimensions, surrogate k
 Scenario: the pipeline must run every day, retry transient failures, and avoid duplicate writes during backfills.
 
 ```python
-with DAG(
+from airflow.decorators import dag, task
+from pendulum import datetime
+
+@dag(
     dag_id="daily_orders_pipeline",
     schedule="@daily",
+    start_date=datetime(2026, 1, 1, tz="UTC"),
     catchup=True,
     max_active_runs=1,
-) as dag:
-    extract = PythonOperator(task_id="extract_orders", python_callable=extract_orders)
-    validate = PythonOperator(task_id="validate_orders", python_callable=validate_orders)
-    publish = PythonOperator(task_id="publish_orders", python_callable=publish_orders)
+)
+def daily_orders_pipeline():
+    @task
+    def extract_orders(ds=None):
+        return f"s3://company-raw/orders/ds={ds}/"
 
-    extract >> validate >> publish
+    @task
+    def validate_orders(raw_path: str):
+        return {"raw_path": raw_path, "status": "valid"}
+
+    @task
+    def publish_orders(validation_result: dict):
+        print(f"Publishing {validation_result['raw_path']}")
+
+    publish_orders(validate_orders(extract_orders()))
+
+daily_orders_pipeline()
 ```
 
 What to discuss in an interview: logical dates, backfills, retries, task idempotency, alerting, dependency management, and publishing only after validation.
@@ -199,9 +214,9 @@ What to discuss in an interview: logical dates, backfills, retries, task idempot
     <th><a href="https://github.com/ramnes/awesome-mongodb">Awesome MongoDB</a></th>
   </tr>
   <tr>
-    <th><a href="https://github.com/apache/hbase"><img  style="vertical-align:middle"  src="img/icon/github.ico" alt="Hbase"></a></th>
-    <th><a href="https://hbase.apache.org/"><img style="vertical-align:middle" src="img/icon/hbase.ico" alt="Hbase"></a></th>
-    <th><a href="./content/hbase.md">Apache Hbase</a></th>
+    <th><a href="https://github.com/apache/hbase"><img  style="vertical-align:middle"  src="img/icon/github.ico" alt="HBase"></a></th>
+    <th><a href="https://hbase.apache.org/"><img style="vertical-align:middle" src="img/icon/hbase.ico" alt="HBase"></a></th>
+    <th><a href="./content/hbase.md">Apache HBase</a></th>
     <th>HBase is an open-source non-relational distributed database.</th>
     <th><a href="https://github.com/rayokota/awesome-hbase">Awesome HBase</a></th>
   </tr>
