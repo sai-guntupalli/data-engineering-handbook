@@ -69,6 +69,8 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
             errors.append(f"cell {index} still contains an old markdown-pipeline note")
         if cell_type == "markdown":
             counts["markdown"] += 1
+            if source.count("```") % 2:
+                errors.append(f"cell {index} has unbalanced code fences")
         elif cell_type == "code":
             counts["code"] += 1
             counts["asserts"] += source.count("assert ")
