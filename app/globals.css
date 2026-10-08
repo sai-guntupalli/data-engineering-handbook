@@ -110,8 +110,7 @@ a {
   grid-template-columns: minmax(0, 1.1fr) minmax(280px, 0.75fr);
   margin: 0 auto;
   max-width: 1280px;
-  min-height: calc(100dvh - 68px);
-  padding: clamp(4rem, 9vw, 7rem) clamp(1rem, 4vw, 3rem);
+  padding: clamp(3.5rem, 8vw, 6rem) clamp(1rem, 4vw, 3rem);
   place-items: center;
 }
 
@@ -242,7 +241,104 @@ a {
 }
 
 .page-top {
-  padding-top: clamp(3rem, 7vw, 6rem);
+  padding-top: 1rem;
+}
+
+.search-bar {
+  align-items: center;
+  backdrop-filter: blur(18px);
+  background: color-mix(in srgb, var(--bg) 86%, transparent);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  color: var(--muted);
+  display: flex;
+  gap: 0.65rem;
+  margin-bottom: 0.4rem;
+  padding: 0.25rem 0.45rem 0.25rem 0.9rem;
+  position: sticky;
+  top: 68px;
+  z-index: 15;
+}
+
+.search-bar input {
+  background: transparent;
+  border: 0;
+  color: var(--text);
+  font: inherit;
+  height: 3rem;
+  outline: 0;
+  width: 100%;
+}
+
+.search-bar input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+.search-bar:focus-within {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  color: var(--accent);
+}
+
+.search-clear {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.3rem;
+  padding: 0.4rem 0.75rem;
+}
+
+.search-clear:hover {
+  background: var(--surface-muted);
+  color: var(--text);
+}
+
+.results-meta {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin: 0 0 1.6rem;
+  padding-left: 0.2rem;
+}
+
+.results-meta strong {
+  color: var(--text);
+}
+
+.search-empty {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1.1rem;
+  color: var(--muted);
+  margin: 2rem 0 4rem;
+  padding: 2.5rem 2rem;
+}
+
+.search-empty p:first-child {
+  color: var(--text);
+  font-size: 1.1rem;
+  margin: 0 0 0.6rem;
+}
+
+.search-empty p {
+  margin: 0;
+}
+
+.search-empty button {
+  background: none;
+  border: 0;
+  color: var(--accent);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 650;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
 }
 
 .topic-card {
@@ -251,17 +347,10 @@ a {
   display: flex;
   flex-direction: column;
   gap: 0.45rem;
-  min-height: 8.5rem;
+  min-height: 7.5rem;
   padding: 0.95rem;
   text-decoration: none;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
-}
-
-.topic-card span {
-  color: var(--accent);
-  font-family: var(--font-mono), monospace;
-  font-size: 0.72rem;
-  font-weight: 700;
 }
 
 .topic-card strong {
@@ -317,7 +406,6 @@ a {
 @media (max-width: 900px) {
   .hero {
     grid-template-columns: 1fr;
-    min-height: auto;
   }
 
   .hero h1 {

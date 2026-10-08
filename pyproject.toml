@@ -1,7 +1,7 @@
 [project]
-name = "data-engineering-interview-notebooks"
+name = "data-engineering-handbook"
 version = "0.1.0"
-description = "Runnable Jupyter notebooks for data engineering interview preparation."
+description = "The data engineering handbook: runnable Jupyter notebooks for every topic."
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

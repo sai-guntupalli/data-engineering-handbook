@@ -1,16 +1,16 @@
 #!/usr/bin/env python3
 """
-Keep the Colab self-contained copies inside topic notebooks in sync with the
+Keep the self-contained merged copies inside topic notebooks in sync with the
 practice notebooks they were merged from.
 
 Three topic notebooks carry a copy of a practice notebook at the bottom so the
-Colab link is self-contained:
+handbook reads as one self-contained notebook per subject in Colab-like viewers:
 
     notebooks/topics/python.ipynb  <- 01_python_basics, 02_python_coding_problems
     notebooks/topics/spark.ipynb   <- 04_pyspark_concepts
     notebooks/topics/sql.ipynb     <- 03_sql_interview_questions
 
-Each merged region starts with a note cell that says "merged here so this Colab
+Each merged region starts with a note cell that says "merged here so this
 notebook is self-contained" and names the source notebook in backticks. This script:
 
 - "sync" mode (default): pair the region's code cells with the source's code cells
@@ -38,7 +38,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 
-MERGE_NOTE = "merged here so this Colab notebook is self-contained"
+MERGE_NOTE = "merged here so this notebook is self-contained"
 
 # topic notebook -> {source notebook: mode}; anything unlisted defaults to "sync"
 CONFIG: dict[str, dict[str, str]] = {
@@ -186,7 +186,7 @@ def main() -> int:
         print(f"\n{len(problems)} problem(s) found.", file=sys.stderr)
         return 1
     if args.check:
-        print("All merged Colab copies are in sync with their practice notebooks.")
+        print("All merged copies are in sync with their practice notebooks.")
     return 0
 
 

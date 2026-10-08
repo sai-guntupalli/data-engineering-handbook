@@ -12,7 +12,6 @@ export type NotebookSummary = {
   markdownCells: number;
   codeCells: number;
   assertCount: number;
-  colabHref: string;
   githubHref: string;
 };
 
@@ -21,10 +20,11 @@ export type NotebookGroupView = {
   notebooks: NotebookSummary[];
 };
 
-const REPO = "sai-guntupalli/data-engineering-interview-questions";
+const REPO = "sai-guntupalli/data-engineering-handbook";
 const BRANCH = "master";
 const GITHUB_BLOB = `https://github.com/${REPO}/blob/${BRANCH}`;
-const COLAB = `https://colab.research.google.com/github/${REPO}/blob/${BRANCH}`;
+// Note: Google Colab can only open notebooks in public repositories, so this
+// gallery links to the private repository's files instead.
 
 const notebooksRoot = path.join(process.cwd(), "notebooks");
 
@@ -119,7 +119,6 @@ function readSummary(file: string): NotebookSummary {
       (total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0),
       0,
     ),
-    colabHref: `${COLAB}/${repoPath}`,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
   };
 }

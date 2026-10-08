@@ -7,7 +7,7 @@ export function SiteHeader() {
     <header className="site-header">
       <Link className="brand" href="/">
         <span>DE</span>
-        Interview Notebooks
+        Handbook
       </Link>
       <nav aria-label="Primary navigation">
         {NAV_ITEMS.map((item) => (

@@ -26,10 +26,11 @@ make validate         # audit + sync + execution + app lint + gallery build
 Practice notebooks live at `notebooks/01..05_*.ipynb`; they are executed by CI, so keep them deterministic, standard
 library only, and fast.
 
-## Merged Colab copies
+## Merged copies
 
-`topics/python.ipynb`, `topics/spark.ipynb` and `topics/sql.ipynb` end with a copy of a practice notebook so the Colab
-link is self-contained. After editing `01`–`04`, refresh the copies so they keep reading and running like the source:
+`topics/python.ipynb`, `topics/spark.ipynb` and `topics/sql.ipynb` end with a copy of a practice notebook so each topic
+reads and runs as one self-contained notebook. After editing `01`–`04`, refresh the copies so they keep reading and
+running like the source:
 
 ```bash
 make notebooks                                    # execute the practice notebooks and save outputs

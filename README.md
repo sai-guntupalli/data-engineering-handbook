@@ -1,7 +1,7 @@
-# Data Engineering Interview Notebooks
+# Data Engineering Handbook
 
-Runnable Jupyter notebooks for data engineering interview preparation. There is no separate prose documentation:
-every topic is a notebook, so the explanation and the code that proves it live in the same place.
+A private handbook of runnable Jupyter notebooks for data engineering. There is no separate prose
+documentation: every topic is a notebook, so the explanation and the code that proves it live in the same place.
 
 - **Practice notebooks** (`notebooks/01..05`) are hands-on: run them top to bottom and the `assert`s check your answers.
 - **Topic notebooks** (`notebooks/topics/*.ipynb`) cover one subject each, from Python basics to Snowflake, Kafka and LLMs.
@@ -10,10 +10,12 @@ every topic is a notebook, so the explanation and the code that proves it live i
 
 | Where | How |
 |---|---|
-| Gallery app | `npm install` then `make serve` → <http://localhost:3000> |
-| Google Colab | `https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/topics/<topic>.ipynb` |
+| Gallery app | `npm install` then `make serve` → <http://localhost:3000> — searchable, grouped cards |
 | Jupyter locally | `make setup-notebooks` then `jupyter lab notebooks/` |
 | GitHub | open any file under [`notebooks/`](notebooks) — runnable cells keep their committed output; platform-only snippets are marked `# ILLUSTRATIVE` |
+
+> The repository is private, so notebook links open only for collaborators. Google Colab cannot open private
+> repositories; use Jupyter locally instead.
 
 ## What is inside
 
@@ -34,7 +36,7 @@ every topic is a notebook, so the explanation and the code that proves it live i
 notebooks/
   01_python_basics.ipynb ... 05_interview_questions.ipynb   practice notebooks
   topics/<topic>.ipynb                                       54 topic notebooks
-app/                    Next.js gallery: grouped cards with Colab + GitHub links
+app/                    Next.js gallery: searchable grouped cards with GitHub links
 lib/notebooks.ts        reads the notebooks and builds the gallery data
 lib/notebook-groups.ts  which notebook belongs to which group
 scripts/                audit_notebooks.py, run_notebooks.py, sync_colab_merges.py
@@ -44,19 +46,12 @@ scripts/                audit_notebooks.py, run_notebooks.py, sync_colab_merges.
 
 ```bash
 make check            # notebook structure audit
-make sync-check       # merged Colab copies match their practice notebooks
+make sync-check       # merged copies match their practice notebooks
 make notebooks-check  # execute the practice notebooks (no writes)
 make lint             # lint the gallery app
 make validate         # audit + sync + execution + app lint + gallery build
 make stats            # notebook counts
 ```
-
-The gallery publishes to GitHub Pages on every push to `master` via
-[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml); that build sets
-`NEXT_PUBLIC_BASE_PATH=/data-engineering-interview-questions` and `NEXT_PUBLIC_SITE_URL` to the Pages origin.
-
-Set `NEXT_PUBLIC_SITE_URL=<origin>` yourself when building for a different domain, so metadata, `sitemap.xml`
-and `robots.txt` cite it.
 
 ## Contributing
 

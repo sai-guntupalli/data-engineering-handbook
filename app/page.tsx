@@ -1,5 +1,5 @@
 import { Code, GithubLogo, Lightning, Notebook } from "@phosphor-icons/react/dist/ssr";
-import { anchorFor } from "@/lib/notebook-groups";
+import { NotebookExplorer } from "@/components/NotebookExplorer";
 import { getNotebookGroups, getNotebookStats, repositoryHref } from "@/lib/notebooks";
 
 // Locale-pinned so the prerendered HTML matches what the client hydrates.
@@ -20,11 +20,12 @@ export default function Home() {
     <main id="main-content">
       <section className="hero">
         <div className="hero-copy">
-          <p className="kicker">Data engineering interview notebooks</p>
+          <p className="kicker">The data engineering handbook</p>
           <h1>Every topic is a notebook you can run.</h1>
           <p>
-            Notes and code live together as Jupyter notebooks. Open one in Colab to run the cells, or read the
-            source on GitHub. No separate documentation to keep in sync.
+            Notes and code live together as Jupyter notebooks: one explanation per cell, a runnable example right
+            below it, and self-checks that verify every claim. Browse the gallery, open a topic, predict the output
+            before you run the cell.
           </p>
           <div className="hero-actions">
             <a className="button primary" href="#hands-on-practice">
@@ -49,33 +50,18 @@ export default function Home() {
       </section>
 
       <div className="content-shell page-top">
-        {groups.map((group) => (
-          <section key={group.label} className="topic-group" id={anchorFor(group.label)}>
-            <div className="section-heading">
-              <h2>{group.label}</h2>
-              <p>
-                {group.notebooks.length} {group.notebooks.length === 1 ? "notebook" : "notebooks"}
-              </p>
-            </div>
-            <div className="topic-grid">
-              {group.notebooks.map((notebook) => (
-                <article key={notebook.repoPath} className="topic-card">
-                  <span>{notebook.codeCells} code cells</span>
-                  <strong>{notebook.title}</strong>
-                  {notebook.description ? <p>{notebook.description}</p> : null}
-                  <div className="notebook-links">
-                    <a href={notebook.colabHref} target="_blank" rel="noreferrer">
-                      Open in Colab
-                    </a>
-                    <a href={notebook.githubHref} target="_blank" rel="noreferrer">
-                      GitHub
-                    </a>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        ))}
+        <NotebookExplorer
+          groups={groups.map((group) => ({
+            label: group.label,
+            notebooks: group.notebooks.map(({ repoPath, slug, title, description, githubHref }) => ({
+              repoPath,
+              slug,
+              title,
+              description,
+              githubHref,
+            })),
+          }))}
+        />
       </div>
     </main>
   );

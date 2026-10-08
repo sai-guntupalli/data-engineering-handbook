@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const siteName = "Data Engineering Interview Notebooks";
+const siteName = "Data Engineering Handbook";
 const siteDescription =
-  "Collection of runnable Jupyter notebooks for data engineering interviews: Python, SQL, PySpark, lakehouse formats, streaming, cloud platforms, warehousing, AI foundations and more.";
+  "A private handbook of runnable Jupyter notebooks for data engineering: Python, SQL, PySpark, lakehouse formats, streaming, cloud platforms, warehousing, AI foundations and more.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

@@ -1,9 +1,8 @@
 /**
  * Canonical site origin used for metadata, sitemap and robots.
  *
- * Published to GitHub Pages at the repository URL; override with
- * `NEXT_PUBLIC_SITE_URL` at build time if the site ever moves.
+ * The handbook lives in a private repository, so there is no public origin.
+ * Set `NEXT_PUBLIC_SITE_URL` at build time if you ever deploy the gallery
+ * (GitHub Pages for a private repository needs GitHub Pro or above).
  */
-export const siteUrl = (
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sai-guntupalli.github.io/data-engineering-interview-questions"
-).replace(/\/+$/, "");
+export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
