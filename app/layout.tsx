@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/SiteHeader";
+import { repositoryHref } from "@/lib/notebooks";
 import { siteUrl } from "@/lib/site";
 
 const geist = Geist({
@@ -25,6 +26,8 @@ export const metadata: Metadata = {
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
+  authors: [{ name: "Sai Guntupalli", url: "https://github.com/sai-guntupalli" }],
+  creator: "Sai Guntupalli",
   openGraph: {
     type: "website",
     siteName,
@@ -47,6 +50,17 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         </a>
         <SiteHeader />
         {children}
+        <footer className="site-footer">
+          <span>Built by</span>
+          <a href="https://github.com/sai-guntupalli" target="_blank" rel="noreferrer">
+            Sai Guntupalli
+          </a>
+          <nav aria-label="Footer navigation">
+            <a href={repositoryHref} target="_blank" rel="noreferrer">
+              Repository
+            </a>
+          </nav>
+        </footer>
       </body>
     </html>
   );

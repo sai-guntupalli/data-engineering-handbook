@@ -51,8 +51,12 @@ make validate         # audit + sync + execution + app lint + gallery build
 make stats            # notebook counts
 ```
 
-Set `NEXT_PUBLIC_SITE_URL=<origin>` at build time when deploying, so metadata, `sitemap.xml`
-and `robots.txt` cite the production URL instead of the localhost default.
+The gallery publishes to GitHub Pages on every push to `master` via
+[`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages.yml); that build sets
+`NEXT_PUBLIC_BASE_PATH=/data-engineering-interview-questions` and `NEXT_PUBLIC_SITE_URL` to the Pages origin.
+
+Set `NEXT_PUBLIC_SITE_URL=<origin>` yourself when building for a different domain, so metadata, `sitemap.xml`
+and `robots.txt` cite it.
 
 ## Contributing
 

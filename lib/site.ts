@@ -1,7 +1,9 @@
 /**
  * Canonical site origin used for metadata, sitemap and robots.
  *
- * The gallery has no fixed production URL yet, so it can be overridden with
- * `NEXT_PUBLIC_SITE_URL` at build time. The default matches `make serve`.
+ * Published to GitHub Pages at the repository URL; override with
+ * `NEXT_PUBLIC_SITE_URL` at build time if the site ever moves.
  */
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/+$/, "");
+export const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://sai-guntupalli.github.io/data-engineering-interview-questions"
+).replace(/\/+$/, "");
