@@ -58,7 +58,12 @@ def main() -> int:
             print(f"MISS {path}")
             continue
 
-        notebook = nbformat.read(path, as_version=4)
+        try:
+            notebook = nbformat.read(path, as_version=4)
+        except Exception as exc:  # nbformat raises ValidationError for unreadable files
+            failures.append(f"{path.name}: unreadable notebook ({exc})")
+            print(f"FAIL {path.name}: unreadable notebook")
+            continue
         client = NotebookClient(
             notebook,
             timeout=args.timeout,

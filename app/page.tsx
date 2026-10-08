@@ -1,12 +1,23 @@
 import { Code, GithubLogo, Lightning, Notebook } from "@phosphor-icons/react/dist/ssr";
+import { anchorFor } from "@/lib/notebook-groups";
 import { getNotebookGroups, getNotebookStats, repositoryHref } from "@/lib/notebooks";
+
+// Locale-pinned so the prerendered HTML matches what the client hydrates.
+const count = new Intl.NumberFormat("en-US");
+
+const heroStats = [
+  { icon: Notebook, label: "notebooks" },
+  { icon: Code, label: "code cells" },
+  { icon: GithubLogo, label: "self-checks" },
+];
 
 export default function Home() {
   const groups = getNotebookGroups();
   const stats = getNotebookStats();
+  const values = [stats.notebooks, stats.codeCells, stats.checks];
 
   return (
-    <main>
+    <main id="main-content">
       <section className="hero">
         <div className="hero-copy">
           <p className="kicker">Data engineering interview notebooks</p>
@@ -24,23 +35,17 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="hero-panel" aria-label="Notebook statistics">
-          <div>
-            <Notebook size={24} weight="bold" />
-            <strong>{stats.notebooks}</strong>
-            <span>notebooks</span>
-          </div>
-          <div>
-            <Code size={24} weight="bold" />
-            <strong>{stats.codeCells.toLocaleString()}</strong>
-            <span>code cells</span>
-          </div>
-          <div>
-            <GithubLogo size={24} weight="bold" />
-            <strong>{stats.checks.toLocaleString()}</strong>
-            <span>self-checks</span>
-          </div>
-        </div>
+        <dl className="hero-panel" aria-label="Notebook statistics">
+          {heroStats.map(({ icon: Icon, label }, index) => (
+            <div key={label}>
+              <dt>{label}</dt>
+              <dd>
+                <Icon size={24} weight="bold" />
+                <strong>{count.format(values[index])}</strong>
+              </dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <div className="content-shell page-top">
@@ -74,8 +79,4 @@ export default function Home() {
       </div>
     </main>
   );
-}
-
-function anchorFor(label: string) {
-  return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }

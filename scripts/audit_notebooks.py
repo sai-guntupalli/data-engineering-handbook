@@ -27,7 +27,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 NOTEBOOKS_DIR = ROOT / "notebooks"
 
-MAGIC_RE = re.compile(r"^\s*(?:%%|!)", re.M)
+# Lines that begin with an IPython cell/line magic or a shell escape: %%cell, %line,
+# !shell. A bare "%%" or "!" followed by a word character is required so that modulo
+# expressions and negations that start a line are not flagged.
+MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
 PIPELINE_MARKERS = (
     "Generated from `content/",
     "Notebook inventory:",
@@ -73,7 +76,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
                 errors.append(f"cell {index} has unbalanced code fences")
         elif cell_type == "code":
             counts["code"] += 1
-            counts["asserts"] += source.count("assert ")
+            counts["asserts"] += len(re.findall(r"\bassert\b", source))
             if MAGIC_RE.search(source):
                 errors.append(f"cell {index} uses an IPython magic or shell escape")
                 continue

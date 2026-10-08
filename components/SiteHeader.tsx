@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { NAV_ITEMS } from "@/lib/notebook-groups";
 import { repositoryHref } from "@/lib/notebooks";
 
 export function SiteHeader() {
@@ -9,10 +10,11 @@ export function SiteHeader() {
         Interview Notebooks
       </Link>
       <nav aria-label="Primary navigation">
-        <Link href="/#hands-on-practice">Practice</Link>
-        <Link href="/#core-pipeline-skills">Core</Link>
-        <Link href="/#lakehouse-and-formats">Lakehouse</Link>
-        <Link href="/#cloud-and-platforms">Cloud</Link>
+        {NAV_ITEMS.map((item) => (
+          <Link key={item.href} href={item.href}>
+            {item.label}
+          </Link>
+        ))}
         <a href={repositoryHref} target="_blank" rel="noreferrer">
           GitHub
         </a>

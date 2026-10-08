@@ -9,7 +9,9 @@ contribution is usually just one `.ipynb` file.
 make setup            # Python tooling + app dependencies
 make check            # notebook structure audit
 make notebooks-check  # execute the practice notebooks
-make validate         # audit + execution + gallery build
+make sync-check       # merged Colab copies match their practice notebooks
+make lint             # lint the gallery app
+make validate         # audit + sync + execution + app lint + gallery build
 ```
 
 `make validate` is what CI runs.
@@ -24,6 +26,19 @@ make validate         # audit + execution + gallery build
 Practice notebooks live at `notebooks/01..05_*.ipynb`; they are executed by CI, so keep them deterministic, standard
 library only, and fast.
 
+## Merged Colab copies
+
+`topics/python.ipynb`, `topics/spark.ipynb` and `topics/sql.ipynb` end with a copy of a practice notebook so the Colab
+link is self-contained. After editing `01`–`04`, refresh the copies so they keep reading and running like the source:
+
+```bash
+make notebooks                                    # execute the practice notebooks and save outputs
+uv run python scripts/sync_colab_merges.py        # refresh the merged copies (copies code + outputs)
+make validate
+```
+
+CI runs `make sync-check` and fails when a merged copy drifted from its source.
+
 ## Notebook style
 
 The goal is that a reader who has never seen the topic can follow it from the top.
@@ -37,6 +52,11 @@ The goal is that a reader who has never seen the topic can follow it from the to
 - Prefer the standard library. Guard optional runtimes (PySpark, databases) behind an availability check and print a
   helpful message instead of failing.
 - Use plain, concrete language and short sentences; define a term the first time it appears.
+- Every runnable demo must be self-contained: create fixture files inline (`io.StringIO`, `tempfile`) instead of
+  reading from disk, and never reference files outside the notebook.
+- Cells that need a platform (Spark, Kafka, a cloud SDK) must not break the run: either guard them with
+  `try`/`except ModuleNotFoundError` printing a `SKIPPED` message, or mark them with a first-line
+  `# ILLUSTRATIVE - requires <deps>: install to run, or read on.` comment.
 
 ## Commit checklist
 

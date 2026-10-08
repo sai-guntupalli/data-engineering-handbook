@@ -13,7 +13,7 @@ every topic is a notebook, so the explanation and the code that proves it live i
 | Gallery app | `npm install` then `make serve` → <http://localhost:3000> |
 | Google Colab | `https://colab.research.google.com/github/sai-guntupalli/data-engineering-interview-questions/blob/master/notebooks/topics/<topic>.ipynb` |
 | Jupyter locally | `make setup-notebooks` then `jupyter lab notebooks/` |
-| GitHub | open any file under [`notebooks/`](notebooks) — outputs are committed, so they read like a book |
+| GitHub | open any file under [`notebooks/`](notebooks) — runnable cells keep their committed output; platform-only snippets are marked `# ILLUSTRATIVE` |
 
 ## What is inside
 
@@ -37,17 +37,22 @@ notebooks/
 app/                    Next.js gallery: grouped cards with Colab + GitHub links
 lib/notebooks.ts        reads the notebooks and builds the gallery data
 lib/notebook-groups.ts  which notebook belongs to which group
-scripts/                audit_notebooks.py, run_notebooks.py
+scripts/                audit_notebooks.py, run_notebooks.py, sync_colab_merges.py
 ```
 
 ## Checks
 
 ```bash
 make check            # notebook structure audit
+make sync-check       # merged Colab copies match their practice notebooks
 make notebooks-check  # execute the practice notebooks (no writes)
-make validate         # audit + execution + gallery build
+make lint             # lint the gallery app
+make validate         # audit + sync + execution + app lint + gallery build
 make stats            # notebook counts
 ```
+
+Set `NEXT_PUBLIC_SITE_URL=<origin>` at build time when deploying, so metadata, `sitemap.xml`
+and `robots.txt` cite the production URL instead of the localhost default.
 
 ## Contributing
 

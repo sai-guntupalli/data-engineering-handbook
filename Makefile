@@ -12,7 +12,7 @@ NPM ?= npm
 
 PORT ?= 3000
 
-.PHONY: help setup setup-notebooks setup-spark check notebooks notebooks-check notebook-audit site serve validate stats clean
+.PHONY: help setup setup-notebooks setup-spark check notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -40,13 +40,19 @@ notebooks-check: ## Execute the practice notebooks without writing outputs (CI-s
 notebook-audit: ## Print a notebook inventory with cell counts
 	$(PY) scripts/audit_notebooks.py
 
+sync-check: ## Verify merged Colab copies match their practice notebooks
+	$(PY) scripts/sync_colab_merges.py --check
+
 site: ## Build the notebook gallery app
 	$(NPM) run build
+
+lint: ## Lint the gallery app
+	$(NPM) run lint
 
 serve: ## Serve the gallery locally (PORT=3000 by default)
 	$(NPM) run dev -- --port $(PORT)
 
-validate: check notebooks-check site ## Full pipeline: notebook audit + execution + app build
+validate: check sync-check notebooks-check lint site ## Full pipeline: notebook audit + sync + execution + app lint + build
 	@echo "validate: all checks passed"
 
 stats: ## Show notebook counts and size

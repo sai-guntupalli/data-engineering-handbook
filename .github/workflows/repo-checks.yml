@@ -1,3 +1,6 @@
+# Mirrors `make validate` (Makefile): notebook audit -> notebook execution without
+# writes -> app lint + build. Keep the two in sync when changing either.
+
 name: Notebook checks
 
 on:
@@ -9,6 +12,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: repo-checks-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   notebooks:
     runs-on: ubuntu-latest
@@ -19,16 +26,22 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          # Matches .python-version and pyproject.toml requires-python.
+          python-version: "3.13"
 
       - name: Setup uv
         uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
 
       - name: Install notebook tooling
         run: uv sync --extra notebooks
 
       - name: Audit notebooks
         run: uv run python scripts/audit_notebooks.py --quiet
+
+      - name: Check merged Colab copies
+        run: uv run python scripts/sync_colab_merges.py --check
 
       - name: Run practice notebooks
         run: uv run python scripts/run_notebooks.py --check
@@ -41,6 +54,9 @@ jobs:
 
       - name: Install app dependencies
         run: npm ci
+
+      - name: Lint app
+        run: npm run lint
 
       - name: Build gallery app
         run: npm run build

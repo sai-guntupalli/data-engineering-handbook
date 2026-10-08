@@ -50,10 +50,10 @@ function descriptionFromMarkdown(markdown: string): string {
       continue;
     }
     if (!seenTitle || !line) continue;
-    // Skip badges, links, images, lists, quotes, tables and fenced code.
-    if (/^[+\-*[>|`]/.test(line)) continue;
+    // Skip badges, links, images, lists, quotes, tables, fenced code and HTML.
+    if (/^[+\-*[>|`<]/.test(line)) continue;
     if (line.startsWith("**Notebook:**") || line.startsWith("*Generated") || line.startsWith("*Converted")) continue;
-    const plain = line.replace(/\*\*/g, "").replace(/`/g, "");
+    const plain = inlineToText(line);
     if (plain.length < 25) continue;
     return plain.length > 150 ? `${plain.slice(0, 147).trimEnd()}...` : plain;
   }
@@ -72,10 +72,30 @@ function listNotebookFiles(dir: string): string[] {
     .sort();
 }
 
+type RawCell = { cell_type?: string; source?: string | string[] };
+type RawNotebook = { cells?: RawCell[] };
+
+/** Turn inline markdown (code spans, links, images, emphasis) into plain text. */
+function inlineToText(line: string): string {
+  return line
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .trim();
+}
+
 function readSummary(file: string): NotebookSummary {
-  const notebook = JSON.parse(fs.readFileSync(file, "utf8"));
+  let notebook: RawNotebook;
+  try {
+    notebook = JSON.parse(fs.readFileSync(file, "utf8")) as RawNotebook;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Could not parse notebook ${path.relative(process.cwd(), file)}: ${reason}`);
+  }
   const cells: { type: string; source: string }[] = (notebook.cells ?? []).map(
-    (cell: { cell_type?: string; source?: string | string[] }) => ({
+    (cell: RawCell) => ({
       type: cell.cell_type ?? "markdown",
       source: sourceToString(cell.source),
     }),
@@ -104,8 +124,12 @@ function readSummary(file: string): NotebookSummary {
   };
 }
 
+let cachedSummaries: NotebookSummary[] | undefined;
+
+/** Parsed once per build; the notebooks tree is static repository content. */
 function allSummaries(): NotebookSummary[] {
-  return listNotebookFiles(notebooksRoot).map(readSummary);
+  cachedSummaries ??= listNotebookFiles(notebooksRoot).map(readSummary);
+  return cachedSummaries;
 }
 
 function pick(
@@ -125,8 +149,41 @@ function pick(
     .sort((a, b) => group.slugs.indexOf(a.slug) - group.slugs.indexOf(b.slug));
 }
 
+/**
+ * Fail the build when lib/notebook-groups.ts references a notebook that does not
+ * exist, lives in the wrong folder, or is registered twice. Without this guard a
+ * mistyped slug would make the card silently disappear from the gallery.
+ */
+function ensureRegisteredSlugsExist(): void {
+  const bySlug = new Map<string, string[]>();
+  for (const notebook of allSummaries()) {
+    bySlug.set(notebook.slug, [...(bySlug.get(notebook.slug) ?? []), notebook.repoPath]);
+  }
+
+  const problems: string[] = [];
+  const registered = new Set<string>();
+  for (const group of [PRACTICE_GROUP, ...TOPIC_GROUPS]) {
+    const folder = group === PRACTICE_GROUP ? "notebooks" : "notebooks/topics";
+    for (const slug of group.slugs) {
+      if (registered.has(slug)) {
+        problems.push(`"${slug}" is registered in more than one group`);
+        continue;
+      }
+      registered.add(slug);
+      const hits = bySlug.get(slug) ?? [];
+      if (!hits.some((repoPath) => path.dirname(repoPath) === folder)) {
+        problems.push(`${folder}/${slug}.ipynb is missing (group "${group.label}")`);
+      }
+    }
+  }
+  if (problems.length > 0) {
+    throw new Error(`lib/notebook-groups.ts issues:\n${problems.map((problem) => `  - ${problem}`).join("\n")}`);
+  }
+}
+
 /** Grouped notebooks, in the order the groups are declared. */
 export function getNotebookGroups(): NotebookGroupView[] {
+  ensureRegisteredSlugsExist();
   const summaries = allSummaries();
   const groups: NotebookGroupView[] = [
     { label: PRACTICE_GROUP.label, notebooks: pick(summaries, PRACTICE_GROUP, "root") },
