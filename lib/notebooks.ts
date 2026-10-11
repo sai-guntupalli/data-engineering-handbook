@@ -1,6 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { PRACTICE_GROUP, TOPIC_GROUPS, type NotebookGroup } from "./notebook-groups";
+import { repository } from "./site";
 
 export type NotebookSummary = {
   /** Repository-relative path, e.g. notebooks/topics/spark.ipynb */
@@ -12,7 +13,19 @@ export type NotebookSummary = {
   markdownCells: number;
   codeCells: number;
   assertCount: number;
+  /** "### Try it" exercise blocks in the markdown. */
+  tryItBlocks: number;
+  /** Code cells marked `# ILLUSTRATIVE` (need a platform; will not run locally). */
+  illustrativeCells: number;
+  /** Coarse reading time: markdown words / 200wpm plus 8s per runnable cell. */
+  readingMinutes: number;
+  /** Code cells and asserts that are verbatim copies of a practice notebook
+   *  (merged self-contained regions). Zero except for python/spark/sql topics. */
+  mergedCodeCells: number;
+  mergedAsserts: number;
   githubHref: string;
+  /** Opens this notebook in Google Colab (repository must stay public). */
+  colabHref: string;
 };
 
 export type NotebookGroupView = {
@@ -20,13 +33,56 @@ export type NotebookGroupView = {
   notebooks: NotebookSummary[];
 };
 
-const REPO = "sai-guntupalli/data-engineering-handbook";
 const BRANCH = "master";
-const GITHUB_BLOB = `https://github.com/${REPO}/blob/${BRANCH}`;
-// Note: Google Colab can only open notebooks in public repositories, so this
-// gallery links to the private repository's files instead.
+const GITHUB_BLOB = `https://github.com/${repository}/blob/${BRANCH}`;
+// Google Colab can only open notebooks from public repositories. The handbook
+// is public, so every carry gets a Colab permalink next to the GitHub link.
+const COLAB_HREF = "https://colab.research.google.com/github";
 
 const notebooksRoot = path.join(process.cwd(), "notebooks");
+
+/**
+ * Marker of a merged self-contained copy of a practice notebook. Must stay in
+ * step with MERGE_NOTE in scripts/sync_merged_copies.py, which owns the
+ * convention.
+ */
+const MERGE_NOTE = "merged here so this notebook is self-contained";
+
+/**
+ * Count code cells (and their asserts) that sit inside a merged-copy region,
+ * i.e. verbatim copies of a practice notebook. A region starts at the markdown
+ * merge-note cell and runs to the next merge note or the end of the notebook.
+ * These are subtracted from repository-level stats so the hero does not report
+ * every practice notebook twice (it is executed once directly and once merged).
+ *
+ * Region rules are owned by scripts/sync_merged_copies.py: its --check fails
+ * when a merge-note notebook is missing from its CONFIG, or when unmerged code
+ * cells trail a region without committed outputs, so these two implementations
+ * cannot silently disagree about which cells count as merged.
+ */
+function mergedCopyCells(cells: RawCell[]): { codeCells: number; asserts: number } {
+  const regions: Array<[number, number]> = [];
+  let start = -1;
+  for (let index = 0; index < cells.length; index++) {
+    const cell = cells[index];
+    if (cell.cell_type === "markdown" && sourceToString(cell.source).includes(MERGE_NOTE)) {
+      if (start >= 0) regions.push([start, index]);
+      start = index;
+    }
+  }
+  if (start >= 0) regions.push([start, cells.length]);
+
+  let codeCount = 0;
+  let assertCount = 0;
+  for (const [from, to] of regions) {
+    for (const cell of cells.slice(from + 1, to)) {
+      if (cell.cell_type !== "code") continue;
+      codeCount++;
+      assertCount += sourceToString(cell.source).match(/\bassert\b/g)?.length ?? 0;
+    }
+  }
+  return { codeCells: codeCount, asserts: assertCount };
+}
 
 function sourceToString(source: string | string[] | undefined): string {
   if (Array.isArray(source)) return source.join("");
@@ -107,6 +163,14 @@ function readSummary(file: string): NotebookSummary {
   const repoPath = path.relative(process.cwd(), file).split(path.sep).join("/");
   const filename = path.basename(file, ".ipynb");
   const codeCells = cells.filter((cell) => cell.type === "code");
+  const illustrativeCells = codeCells.filter((cell) => cell.source.includes("# ILLUSTRATIVE")).length;
+  const tryItBlocks = (markdown.match(/### Try it/g) ?? []).length;
+  const markdownWords = markdown.split(/\s+/).filter(Boolean).length;
+  const readingMinutes = Math.max(
+    1,
+    Math.round(markdownWords / 200 + ((codeCells.length - illustrativeCells) * 8) / 60),
+  );
+  const merged = mergedCopyCells(notebook.cells ?? []);
 
   return {
     repoPath,
@@ -119,7 +183,13 @@ function readSummary(file: string): NotebookSummary {
       (total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0),
       0,
     ),
+    tryItBlocks,
+    illustrativeCells,
+    readingMinutes,
+    mergedCodeCells: merged.codeCells,
+    mergedAsserts: merged.asserts,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
+    colabHref: `${COLAB_HREF}/${repository}/blob/${BRANCH}/${repoPath}`,
   };
 }
 
@@ -203,11 +273,32 @@ export function getNotebookGroups(): NotebookGroupView[] {
 
 export function getNotebookStats() {
   const summaries = allSummaries();
+  // Exclude merged copies of the practice notebooks so self-contained topics
+  // (python, spark, sql) do not report the same cells and self-checks twice.
   return {
     notebooks: summaries.length,
-    codeCells: summaries.reduce((total, notebook) => total + notebook.codeCells, 0),
-    checks: summaries.reduce((total, notebook) => total + notebook.assertCount, 0),
+    codeCells: summaries.reduce(
+      (total, notebook) => total + notebook.codeCells - notebook.mergedCodeCells,
+      0,
+    ),
+    checks: summaries.reduce(
+      (total, notebook) => total + notebook.assertCount - notebook.mergedAsserts,
+      0,
+    ),
   };
 }
 
-export const repositoryHref = `https://github.com/${REPO}`;
+/** Slim header-search index: one row per notebook in group order, shared by
+ *  the home, /search and /license pages' SiteHeader. The ?q= query itself is
+ *  client state (components/search-context.tsx); this is the build-time data. */
+export function getSearchIndex() {
+  return getNotebookGroups().flatMap((group) =>
+    group.notebooks.map(({ slug, title, repoPath, githubHref }) => ({
+      slug,
+      title,
+      groupLabel: group.label,
+      repoPath,
+      githubHref,
+    })),
+  );
+}

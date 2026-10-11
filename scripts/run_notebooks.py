@@ -26,7 +26,27 @@ def _fail(message: str) -> int:
     return 1
 
 
+def python_version_gate() -> int:
+    """Refuse interpreters older than pyproject.toml requires-python (>=3.12).
+
+    The practice notebooks use 3.10+ syntax (match/case); on an old kernel this
+    would surface as per-cell syntax errors instead of a clear setup message.
+    """
+    if sys.version_info >= (3, 12):
+        return 0
+    print(
+        f"This repository requires Python 3.12+; found "
+        f"{sys.version_info.major}.{sys.version_info.minor}.\n"
+        "Install the pinned interpreter first: make setup-notebooks",
+        file=sys.stderr,
+    )
+    return 1
+
+
 def main() -> int:
+    gate = python_version_gate()
+    if gate:
+        return gate
     try:
         import nbformat
         from nbclient import NotebookClient

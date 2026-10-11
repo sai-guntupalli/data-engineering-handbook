@@ -10,9 +10,10 @@ documentation: every topic is a notebook, so the explanation and the code that p
 
 | Where | How |
 |---|---|
-| Gallery app | `npm install` then `make serve` → <http://localhost:3000> — searchable, grouped cards |
+| **Live** | <https://sai-guntupalli.github.io/data-engineering-handbook/> — deployed from `master` by [GitHub Actions](.github/workflows) |
+| Gallery app | `npm install` then `make serve` → <http://localhost:3000> — header search with suggestions (press <kbd>/</kbd>), a dedicated search page (`/search?q=…`), star your go-to notebooks |
 | Jupyter locally | `make setup-notebooks` then `jupyter lab notebooks/` |
-| GitHub | open any file under [`notebooks/`](notebooks) — runnable cells keep their committed output; platform-only snippets are marked `# ILLUSTRATIVE` |
+| GitHub | open any file under [`notebooks/`](notebooks) — runnable cells keep their committed output; platform-only snippets are marked `# ILLUSTRATIVE`. Every gallery card also has an **Open in Colab** button that runs the notebook in a hosted Jupyter — no local setup |
 
 > The repository is private, so notebook links open only for collaborators. Google Colab cannot open private
 > repositories; use Jupyter locally instead.
@@ -39,13 +40,18 @@ notebooks/
 app/                    Next.js gallery: searchable grouped cards with GitHub links
 lib/notebooks.ts        reads the notebooks and builds the gallery data
 lib/notebook-groups.ts  which notebook belongs to which group
-scripts/                audit_notebooks.py, run_notebooks.py, sync_colab_merges.py
+scripts/                audit_notebooks.py, run_notebooks.py, sync_merged_copies.py, watermark_notebooks.py
 ```
+
+Every notebook carries an author watermark — `metadata.watermark` (author, repository, and a permalink
+to the file) plus a visible credit line under the title — stamped by
+`scripts/watermark_notebooks.py` and enforced by `make check`.
 
 ## Checks
 
 ```bash
-make check            # notebook structure audit
+make check            # notebook structure audit (incl. the author watermark)
+make watermark        # stamp the author watermark into all notebooks
 make sync-check       # merged copies match their practice notebooks
 make notebooks-check  # execute the practice notebooks (no writes)
 make lint             # lint the gallery app
@@ -53,7 +59,20 @@ make validate         # audit + sync + execution + app lint + gallery build
 make stats            # notebook counts
 ```
 
+CI: [repo-checks](.github/workflows/repo-checks.yml) runs `validate` on every push and PR. The
+[deploy workflow](.github/workflows/deploy-pages.yml) builds the app with `NEXT_PUBLIC_BASE_PATH`
+and publishes `out/` to GitHub Pages on every push to `master`.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md). The short version: edit or add a notebook, add its slug to
 `lib/notebook-groups.ts`, then run `make validate`.
+
+## License
+
+© [Sai Guntupalli](https://github.com/sai-guntupalli) — [Creative Commons Attribution 4.0
+International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/). Reuse, remixing and
+teaching are free; the one requirement is **giving credit** (author name, repository link, license,
+and a note of any modifications). The full legal text is in [LICENSE](LICENSE), the human-friendly
+summary with a copyable credit line is the gallery's `/license` page, and every notebook carries the
+license inside its `metadata.watermark` block.

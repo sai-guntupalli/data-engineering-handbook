@@ -4,7 +4,7 @@ Keep the self-contained merged copies inside topic notebooks in sync with the
 practice notebooks they were merged from.
 
 Three topic notebooks carry a copy of a practice notebook at the bottom so the
-handbook reads as one self-contained notebook per subject in Colab-like viewers:
+handbook reads as one self-contained notebook per subject for single-file viewers:
 
     notebooks/topics/python.ipynb  <- 01_python_basics, 02_python_coding_problems
     notebooks/topics/spark.ipynb   <- 04_pyspark_concepts
@@ -24,8 +24,8 @@ notebook is self-contained" and names the source notebook in backticks. This scr
   (markdown, code and outputs).
 
 Usage:
-  python3 scripts/sync_colab_merges.py             # apply
-  python3 scripts/sync_colab_merges.py --check     # verify only; exit 1 on drift
+  python3 scripts/sync_merged_copies.py             # apply
+  python3 scripts/sync_merged_copies.py --check     # verify only; exit 1 on drift
 """
 
 from __future__ import annotations
@@ -179,6 +179,20 @@ def main() -> int:
             problems.append(f"{topic_rel}: file missing")
             continue
         process(topic_rel, args.check, problems)
+
+    # lib/notebooks.ts subtracts merged-copy cells from the gallery stats for
+    # ANY notebook carrying the merge-note marker, but sync/rebuild above only
+    # run for CONFIG entries. Fail loudly when the two scopes disagree, so a
+    # new merged copy outside CONFIG cannot silently skew the gallery numbers.
+    for notebook_path in sorted((ROOT / "notebooks").rglob("*.ipynb")):
+        notebook_rel = notebook_path.relative_to(ROOT).as_posix()
+        if notebook_rel in CONFIG:
+            continue
+        if MERGE_NOTE in notebook_path.read_text(encoding="utf-8", errors="ignore"):
+            problems.append(
+                f"{notebook_rel}: contains {MERGE_NOTE!r} but is not registered in "
+                "CONFIG, so this script neither syncs nor checks it"
+            )
 
     if problems:
         for problem in problems:

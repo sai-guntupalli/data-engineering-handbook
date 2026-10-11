@@ -6,13 +6,14 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-# Prefer the repository virtualenv when it exists; otherwise fall back to system tools.
-PY  ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; else echo python3; fi)
+# Prefer the repository virtualenv, then uv's pinned interpreter; bare `python3`
+# is a last resort that may predate the notebooks' 3.12 requirement.
+PY  ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; elif command -v uv >/dev/null 2>&1; then echo "uv run python"; else echo python3; fi)
 NPM ?= npm
 
 PORT ?= 3000
 
-.PHONY: help setup setup-notebooks setup-spark check notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
+.PHONY: help setup setup-notebooks setup-spark check watermark notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -31,6 +32,9 @@ setup-spark: ## Install notebook tooling plus PySpark and pandas (requires Java 
 check: ## Validate every notebook (format, metadata, non-empty cells)
 	$(PY) scripts/audit_notebooks.py --quiet
 
+watermark: ## Stamp the author watermark (metadata + credit line) into all notebooks
+	$(PY) scripts/watermark_notebooks.py
+
 notebooks: ## Execute the practice notebooks and save their outputs
 	$(PY) scripts/run_notebooks.py
 
@@ -40,8 +44,8 @@ notebooks-check: ## Execute the practice notebooks without writing outputs (CI-s
 notebook-audit: ## Print a notebook inventory with cell counts
 	$(PY) scripts/audit_notebooks.py
 
-sync-check: ## Verify merged Colab copies match their practice notebooks
-	$(PY) scripts/sync_colab_merges.py --check
+sync-check: ## Verify merged copies match their practice notebooks
+	$(PY) scripts/sync_merged_copies.py --check
 
 site: ## Build the notebook gallery app
 	$(NPM) run build

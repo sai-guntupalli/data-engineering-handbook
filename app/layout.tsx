@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { SiteHeader } from "@/components/SiteHeader";
-import { repositoryHref } from "@/lib/notebooks";
-import { siteUrl } from "@/lib/site";
+import { SearchProvider } from "@/components/search-context";
+import { repositoryHref, siteUrl } from "@/lib/site";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 const siteName = "Data Engineering Handbook";
 const siteDescription =
-  "A private handbook of runnable Jupyter notebooks for data engineering: Python, SQL, PySpark, lakehouse formats, streaming, cloud platforms, warehousing, AI foundations and more.";
+  "An open handbook of runnable Jupyter notebooks for data engineering: Python, SQL, PySpark, lakehouse formats, streaming, cloud platforms, warehousing, AI foundations and more.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -48,19 +48,21 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <SiteHeader />
-        {children}
-        <footer className="site-footer">
-          <span>Built by</span>
-          <a href="https://github.com/sai-guntupalli" target="_blank" rel="noreferrer">
-            Sai Guntupalli
-          </a>
-          <nav aria-label="Footer navigation">
-            <a href={repositoryHref} target="_blank" rel="noreferrer">
-              Repository
+        <SearchProvider>
+          {children}
+          <footer className="site-footer">
+            <span>Built by</span>
+            <a href="https://github.com/sai-guntupalli" target="_blank" rel="noreferrer">
+              Sai Guntupalli
             </a>
-          </nav>
-        </footer>
+            <nav aria-label="Footer navigation">
+              <Link href="/license">License</Link>
+              <a href={repositoryHref} target="_blank" rel="noreferrer">
+                Repository
+              </a>
+            </nav>
+          </footer>
+        </SearchProvider>
       </body>
     </html>
   );

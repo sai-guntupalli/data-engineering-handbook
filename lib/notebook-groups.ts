@@ -93,15 +93,3 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
 export function anchorFor(label: string) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
-
-/**
- * Header nav, derived from group labels so that renaming a group cannot desync
- * the anchors from the ids rendered on the page. Short display labels live here;
- * hrefs are always computed.
- */
-export const NAV_ITEMS = [
-  { label: "Practice", href: `/#${anchorFor(PRACTICE_GROUP.label)}` },
-  { label: "Core", href: `/#${anchorFor(TOPIC_GROUPS[0].label)}` },
-  { label: "Lakehouse", href: `/#${anchorFor(TOPIC_GROUPS[1].label)}` },
-  { label: "Cloud", href: `/#${anchorFor(TOPIC_GROUPS[2].label)}` },
-] as const;

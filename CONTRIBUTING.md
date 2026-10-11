@@ -8,8 +8,9 @@ contribution is usually just one `.ipynb` file.
 ```bash
 make setup            # Python tooling + app dependencies
 make check            # notebook structure audit
+make watermark        # stamp the author watermark into every notebook
 make notebooks-check  # execute the practice notebooks
-make sync-check       # merged Colab copies match their practice notebooks
+make sync-check       # merged copies match their practice notebooks
 make lint             # lint the gallery app
 make validate         # audit + sync + execution + app lint + gallery build
 ```
@@ -34,9 +35,14 @@ running like the source:
 
 ```bash
 make notebooks                                    # execute the practice notebooks and save outputs
-uv run python scripts/sync_colab_merges.py        # refresh the merged copies (copies code + outputs)
++ uv run python scripts/watermark_notebooks.py     # stamp the author watermark
+uv run python scripts/sync_merged_copies.py       # refresh the merged copies (copies code + outputs)
 make validate
 ```
+
+Contributions are published under the repository's [CC BY 4.0](LICENSE) license; by opening a pull
+request you agree your contribution is licensed the same way (credit in derivative reuse goes to the
+handbook's author).
 
 CI runs `make sync-check` and fails when a merged copy drifted from its source.
 

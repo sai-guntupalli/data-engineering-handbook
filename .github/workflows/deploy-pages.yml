@@ -1,0 +1,91 @@
+# Deploys the static gallery to GitHub Pages on every push to master.
+#
+# One-time prerequisite (repository settings): Pages -> Build and deployment ->
+# Source: "GitHub Actions". The site then lives at
+#   https://sai-guntupalli.github.io/data-engineering-handbook/
+#
+# The Pages build sets NEXT_PUBLIC_BASE_PATH (see next.config.ts) because
+# project pages serve under /<repo>. Local dev and the repo-checks workflow
+# keep building at the bare origin.
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deployment at a time; a newer push supersedes an in-flight deployment.
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          # Matches .python-version and pyproject.toml requires-python.
+          python-version: "3.13"
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - name: Install notebook tooling
+        run: uv sync --extra notebooks
+
+      # Cheap structural gates before shipping; full notebook execution stays
+      # in the repo-checks workflow.
+      - name: Audit notebooks
+        run: uv run python scripts/audit_notebooks.py --quiet
+
+      - name: Check merged copies
+        run: uv run python scripts/sync_merged_copies.py --check
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install app dependencies
+        run: npm ci
+
+      - name: Build the gallery app
+        run: npm run build
+        env:
+          # GitHub Pages project pages serve under /data-engineering-handbook.
+          NEXT_PUBLIC_BASE_PATH: /data-engineering-handbook
+
+      # Without this, GitHub Pages' implicit Jekyll build drops the `_next/`
+      # asset directory (it treats underscore-prefixed paths as Jekyll internals).
+      - name: Disable Jekyll processing
+        run: touch out/.nojekyll
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
