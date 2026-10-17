@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { BookOpen } from "@phosphor-icons/react/dist/ssr";
+import { ChatPanel } from "@/components/chat-panel";
 import { NotebookViewer } from "@/components/notebook-viewer";
 import { SiteHeader } from "@/components/SiteHeader";
 import { readNotebookPage } from "@/lib/notebook-content";
@@ -56,6 +57,7 @@ export default async function TopicPage({ params }: { params: Promise<{ name: st
             <article className="viewer-article">
               <NotebookViewer page={page} />
             </article>
+            <ChatPanel notebookTitle={page.title} outline={page.sections.map((section) => section.heading)} />
           </div>
         </div>
       </main>

@@ -864,7 +864,7 @@ a {
   align-items: flex-start;
   display: grid;
   gap: clamp(1.5rem, 3vw, 3rem);
-  grid-template-columns: 190px minmax(0, 1fr);
+  grid-template-columns: 190px minmax(0, 1fr) 300px;
 }
 
 .toc {
@@ -1269,5 +1269,208 @@ a {
     border-left: 0;
     border-bottom: 2px solid var(--border);
     padding: 0.1rem 0;
+  }
+}
+
+/* Chat panel: the notebook-side column that streams tutor replies against the
+   local backend; without it the panel still explains its configuration. */
+.chat-panel {
+  align-self: start;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 0.8rem;
+  display: grid;
+  gap: 0.6rem;
+  grid-column: 3;
+  max-height: calc(100dvh - 116px);
+  padding: 0.9rem 1rem;
+  position: sticky;
+  top: 84px;
+}
+
+.chat-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.chat-title {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.chat-settings-toggle {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  color: var(--muted);
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0.3rem;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.chat-settings-toggle:hover {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  color: var(--accent);
+}
+
+.chat-settings {
+  background: var(--surface-muted);
+  border: 1px dashed color-mix(in srgb, var(--accent) 42%, var(--border));
+  border-radius: 0.6rem;
+  display: grid;
+  font-size: 0.8rem;
+  gap: 0.45rem;
+  padding: 0.6rem 0.75rem;
+}
+
+.chat-settings-list,
+.chat-settings-item {
+  display: grid;
+  gap: 0.15rem;
+  margin: 0;
+}
+
+.chat-settings-label {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.chat-settings-value {
+  font-family: var(--font-mono), monospace;
+  margin: 0;
+  word-break: break-all;
+}
+
+.chat-settings-note {
+  color: var(--muted);
+  margin: 0;
+}
+
+.chat-settings-warning {
+  color: var(--danger);
+  margin: 0;
+}
+
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+  min-height: 8rem;
+  overflow: auto;
+}
+
+.chat-empty {
+  color: var(--muted);
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.chat-bubble {
+  align-self: flex-start;
+  background: var(--surface-muted);
+  border-radius: 0.7rem;
+  font-size: 0.88rem;
+  line-height: 1.55;
+  margin: 0;
+  max-width: 92%;
+  padding: 0.5rem 0.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: color-mix(in srgb, var(--accent) 14%, transparent);
+}
+
+.chat-bubble-waiting {
+  color: var(--muted);
+}
+
+.chat-bubble-error {
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--danger) 45%, var(--border));
+  color: var(--danger);
+}
+
+.chat-composer {
+  align-items: flex-end;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 0.5rem;
+  padding-top: 0.6rem;
+}
+
+.chat-input {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  color: var(--text);
+  flex: 1;
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  padding: 0.45rem 0.6rem;
+  resize: none;
+}
+
+.chat-input:focus {
+  border-color: color-mix(in srgb, var(--accent) 48%, var(--border));
+  outline: none;
+}
+
+.chat-send {
+  align-items: center;
+  background: var(--text);
+  border: 0;
+  border-radius: 999px;
+  color: var(--bg);
+  cursor: pointer;
+  display: inline-flex;
+  flex: none;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.3rem;
+  padding: 0.35rem 0.8rem;
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.chat-send:hover:not([disabled]) {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.chat-send[disabled] {
+  cursor: default;
+  opacity: 0.6;
+}
+
+@media (max-width: 1200px) {
+  .topic-layout {
+    grid-template-columns: 190px minmax(0, 1fr);
+  }
+
+  .chat-panel {
+    grid-column: 1 / -1;
+    max-height: 26rem;
+    position: static;
+  }
+}
+
+@media (max-width: 900px) {
+  .chat-panel {
+    max-height: 24rem;
   }
 }
