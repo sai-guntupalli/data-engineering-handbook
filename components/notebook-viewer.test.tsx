@@ -2,6 +2,7 @@
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { StrictMode } from "react";
 import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 
@@ -115,6 +116,20 @@ function sseResponse(chunks: string[], contentType: string) {
 }
 
 describe("NotebookViewer", () => {
+  it("fires exactly one kernel reset for the page on mount, even under React StrictMode's double-invoke", () => {
+    const fetch = mockFetch();
+    vi.stubGlobal("fetch", fetch);
+    render(
+      <StrictMode>
+        <NotebookViewer page={oneSectionPage()} />
+      </StrictMode>,
+    );
+
+    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(fetch.mock.calls[0]![0]).toBe(`${BACKEND_URL}/reset`);
+    expect(sentBody(fetch)).toEqual({ notebook: "fake" });
+  });
+
   it("renders markdown HTML, a Run button on the editable cell, and only the ILLUSTRATIVE badge on the read-only one", () => {
     const { container } = render(<NotebookViewer page={oneSectionPage()} />);
     expect(container.querySelector("table")).not.toBeNull();
@@ -133,6 +148,7 @@ describe("NotebookViewer", () => {
     const fetch = mockFetch();
     vi.stubGlobal("fetch", fetch);
     render(<NotebookViewer page={oneSectionPage()} />);
+    fetch.mockClear(); // ignore the mount-reset probe
 
     fireEvent.click(screen.getByRole("button", { name: /^Run$/ }));
 
@@ -156,6 +172,7 @@ describe("NotebookViewer", () => {
 
     const textarea = screen.getByLabelText(/editable code cell/i) as HTMLTextAreaElement;
     expect(textarea.value).toBe("print(\"counting\")");
+    fetch.mockClear(); // ignore the mount-reset probe
     fireEvent.change(textarea, { target: { value: "print(\"edited\")" } });
     fireEvent.click(screen.getByRole("button", { name: /^Run$/ }));
 
@@ -188,6 +205,7 @@ describe("NotebookViewer", () => {
     ]);
     vi.stubGlobal("fetch", fetch);
     render(<NotebookViewer page={oneSectionPage()} />);
+    fetch.mockClear(); // ignore the mount-reset probe
 
     fireEvent.click(screen.getByRole("button", { name: /Elaborate/ }));
 
@@ -213,6 +231,7 @@ describe("NotebookViewer", () => {
     // Sections render in order: intro, load, notes — the middle one is "load".
     const buttons = screen.getAllByRole("button", { name: /Elaborate/ });
     expect(buttons).toHaveLength(3);
+    fetch.mockClear(); // ignore the mount-reset probe
     fireEvent.click(buttons[1]!);
 
     expect(await screen.findByText("ok")).not.toBeNull();
@@ -233,6 +252,32 @@ describe("NotebookViewer", () => {
     fireEvent.click(screen.getByRole("button", { name: /Elaborate/ }));
 
     expect(await screen.findByText(/openrouter request failed with HTTP 500/)).not.toBeNull();
+  });
+
+  it("re-requests the elaboration after a failed stream instead of replaying the error", async () => {
+    // First /chat errored, second /chat answers properly.
+    const responses = [
+      ["data: {\"error\": \"openrouter request failed with HTTP 500\"}\n\n"],
+      ["data: {\"delta\": \"Second\"}\n\n", "data: {\"done\": true}\n\n"],
+    ];
+    let responseIndex = 0;
+    const fetch = vi.fn(async (url: string, _init: RequestInit) =>
+      String(url).endsWith("/chat")
+        ? sseResponse(responses[responseIndex++] ?? [], "text/event-stream")
+        : execResult("ok", ""),
+    );
+    vi.stubGlobal("fetch", fetch);
+    render(<NotebookViewer page={oneSectionPage()} />);
+    fetch.mockClear(); // ignore the mount-reset probe
+
+    fireEvent.click(screen.getByRole("button", { name: /Elaborate/ }));
+    expect(await screen.findByText(/openrouter request failed with HTTP 500/)).not.toBeNull();
+
+    // The failed stream is not cached: the re-click re-requests.
+    fireEvent.click(screen.getByRole("button", { name: /Elaborate/ }));
+    expect(await screen.findByText("Second")).not.toBeNull();
+    const chatCalls = fetch.mock.calls.filter(([url]) => String(url).endsWith("/chat"));
+    expect(chatCalls).toHaveLength(2);
   });
 
   it("names the missing env key when the chat request is refused", async () => {

@@ -29,16 +29,19 @@ const chatHistory = (bubbles: ChatBubble[]): ChatMessage[] =>
  * Per-notebook chat: streamed replies from the local backend (`mode: "chat"`
  * with the running history in state — nothing persists server-side), a
  * provider/model popover, and errors surfaced inline as error bubbles with the
- * input left enabled so a failed turn can simply be retried.
+ * input left enabled so a failed turn can simply be retried. The section ids
+ * it receives (`sectionIds`, the viewer's `data-nb-section-id` rows) drive a
+ * small IntersectionObserver that keeps `visible_section` live: the reader's
+ * current section is context the tutor answers from.
  */
 export function ChatPanel({
   notebookTitle,
   outline,
-  visibleSection,
+  sectionIds,
 }: {
   notebookTitle: string;
   outline: string[];
-  visibleSection?: string;
+  sectionIds: string[];
 }) {
   const [bubbles, setBubbles] = useState<ChatBubble[]>([]);
   const [draft, setDraft] = useState("");
@@ -46,6 +49,7 @@ export function ChatPanel({
   const [settings, setSettings] = useState<ChatSettings | null>(null);
   const [settingsFailed, setSettingsFailed] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [visibleSection, setVisibleSection] = useState(sectionIds[0] ?? "");
   const logRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -62,6 +66,36 @@ export function ChatPanel({
       alive = false;
     };
   }, []);
+
+  // Track which section the reader is in: of the observed, still-intersecting
+  // sections the one closest to the viewport top wins; before any callback the
+  // first section is the fallback. Environments without IntersectionObserver
+  // (old browsers) just chat without section context.
+  useEffect(() => {
+    if (typeof IntersectionObserver === "undefined") return;
+    const tops = new Map<string, number>(sectionIds.map((id) => [id, Number.POSITIVE_INFINITY]));
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const id = entry.target.getAttribute("data-nb-section-id");
+        if (id === null) continue;
+        tops.set(id, entry.isIntersecting ? (entry.boundingClientRect.top ?? Infinity) : Number.POSITIVE_INFINITY);
+      }
+      let current: string | null = null;
+      let closestTop = Number.POSITIVE_INFINITY;
+      for (const [id, top] of tops) {
+        if (top < closestTop) {
+          closestTop = top;
+          current = id;
+        }
+      }
+      if (current !== null) setVisibleSection(current);
+    });
+    for (const id of sectionIds) {
+      const target = document.querySelector(`[data-nb-section-id="${id}"]`);
+      if (target) observer.observe(target);
+    }
+    return () => observer.disconnect();
+  }, [sectionIds]);
 
   // Keep the newest turn in view while a reply streams in.
   useEffect(() => {

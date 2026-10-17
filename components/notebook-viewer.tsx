@@ -1,9 +1,9 @@
 "use client";
 
 import { CircleNotch, Play, Sparkle, X } from "@phosphor-icons/react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { executeCell, streamChat, type ExecResponse } from "@/lib/interactive-api";
+import { executeCell, resetKernel, streamChat, type ExecResponse } from "@/lib/interactive-api";
 import type {
   CodeSectionBlock,
   NotebookPage,
@@ -41,6 +41,15 @@ export function NotebookViewer({ page }: { page: NotebookPage }) {
   const kernelHintSectionId = page.sections.find((section) =>
     section.blocks.some((block) => block.kind === "code"),
   )?.id;
+  // Make "Reload resets it" true: a fresh page load starts the notebook's
+  // kernel empty. Fire-and-forget once per page load (the ref guard keeps
+  // React's dev double-invoke from resetting twice).
+  const resetFired = useRef(false);
+  useEffect(() => {
+    if (resetFired.current) return;
+    resetFired.current = true;
+    void resetKernel(page.slug);
+  }, [page.slug]);
 
   return (
     <div className="viewer">
@@ -97,11 +106,12 @@ function NotebookSectionView({
     .map((block) => block.source)
     .join("\n\n");
 
-  /** First click streams; a re-click collapses to the cached text instead of
-   *  re-billing the tutor, and re-opening replays it. */
+  /** First click streams; with a cached result a re-click collapses (re-opening
+   *  replays it), but a failed stream is not cached — its re-click re-requests
+   *  so the failure is tryable. */
   const toggleElaborate = () => {
     if (elaborate.busy) return;
-    if (elaborate.open) {
+    if (elaborate.open && elaborate.started) {
       setElaborate((state) => ({ ...state, open: false }));
       return;
     }
@@ -117,11 +127,13 @@ function NotebookSectionView({
         outline,
       },
       (text) => setElaborate((state) => ({ ...state, text: state.text + text })),
-    ).then((error) => setElaborate((state) => ({ ...state, busy: false, error })));
+    ).then((error) =>
+      setElaborate((state) => ({ ...state, busy: false, error, started: error === null })),
+    );
   };
 
   return (
-    <section id={section.id} className="nb-section">
+    <section id={section.id} className="nb-section" data-nb-section-id={section.id}>
       <div className="nb-section-header">
         {section.id === "intro" ? null : <h2>{section.heading}</h2>}
         {sectionMarkdown ? (

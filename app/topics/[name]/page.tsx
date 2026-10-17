@@ -57,7 +57,11 @@ export default async function TopicPage({ params }: { params: Promise<{ name: st
             <article className="viewer-article">
               <NotebookViewer page={page} />
             </article>
-            <ChatPanel notebookTitle={page.title} outline={page.sections.map((section) => section.heading)} />
+            <ChatPanel
+              notebookTitle={page.title}
+              outline={page.sections.map((section) => section.heading)}
+              sectionIds={page.sections.map((section) => section.id)}
+            />
           </div>
         </div>
       </main>

@@ -8,6 +8,7 @@ import { ChatPanel } from "./chat-panel";
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  FakeIntersectionObserver.instances = [];
 });
 
 const jsonResponse = (payload: unknown) => ({
@@ -56,11 +57,45 @@ function typeAndSend(message: string) {
   fireEvent.click(screen.getByRole("button", { name: /send/i }));
 }
 
+/** jsdom has no IntersectionObserver, so ChatPanel cannot see the sections
+ *  unless a stub is installed; `emit` fakes one intersection batch. */
+class FakeIntersectionObserver {
+  static instances: FakeIntersectionObserver[] = [];
+  readonly observed: Element[] = [];
+  private readonly callback: IntersectionObserverCallback;
+
+  constructor(callback: IntersectionObserverCallback) {
+    this.callback = callback;
+    FakeIntersectionObserver.instances.push(this);
+  }
+
+  observe(target: Element): void {
+    this.observed.push(target);
+  }
+
+  disconnect(): void {}
+
+  unobserve(): void {}
+
+  emit(target: Element, geometry: { isIntersecting: boolean; top: number }): void {
+    this.callback(
+      [
+        {
+          target,
+          isIntersecting: geometry.isIntersecting,
+          boundingClientRect: { top: geometry.top },
+        } as unknown as IntersectionObserverEntry,
+      ],
+      this as unknown as IntersectionObserver,
+    );
+  }
+}
+
 describe("ChatPanel", () => {
   it("renders the message input, the Send button and the settings toggle", async () => {
     const fetch = mockBackend([]);
     vi.stubGlobal("fetch", fetch);
-    render(<ChatPanel notebookTitle="Viewer Fixture" outline={["Load"]} />);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={["Load"]} sectionIds={["load"]} />);
 
     expect(screen.getByLabelText(INPUT_LABEL)).not.toBeNull();
     expect(screen.getByRole("button", { name: /send/i })).not.toBeNull();
@@ -76,7 +111,8 @@ describe("ChatPanel", () => {
       ["data: {\"delta\": \"Again\"}\n\n", "data: {\"done\": true}\n\n"],
     ]);
     vi.stubGlobal("fetch", fetch);
-    render(<ChatPanel notebookTitle="Viewer Fixture" outline={["Load", "Notes"]} visibleSection="load" />);
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={["Load", "Notes"]} sectionIds={["load", "notes"]} />);
 
     typeAndSend("What is a kernel?");
 
@@ -110,10 +146,40 @@ describe("ChatPanel", () => {
     });
   });
 
+  it("sends the live visible section as visible_section", async () => {
+    const fetch = mockBackend([["data: {\"delta\": \"Hi\"}\n\n", "data: {\"done\": true}\n\n"]]);
+    vi.stubGlobal("fetch", fetch);
+    vi.stubGlobal("IntersectionObserver", FakeIntersectionObserver);
+    render(
+      <div>
+        <section data-nb-section-id="load" />
+        <section data-nb-section-id="notes" />
+        <ChatPanel notebookTitle="Viewer Fixture" outline={["Load", "Notes"]} sectionIds={["load", "notes"]} />
+      </div>,
+    );
+
+    const observer = FakeIntersectionObserver.instances.at(-1)!;
+    expect(observer.observed.map((target) => target.getAttribute("data-nb-section-id"))).toEqual([
+      "load",
+      "notes",
+    ]);
+
+    // The "notes" section scrolls in (its top is above "load"'s) mid-conversation.
+    const notes = observer.observed[1]!;
+    observer.emit(notes, { isIntersecting: true, top: 10 });
+    observer.emit(observer.observed[0]!, { isIntersecting: false, top: 400 });
+
+    typeAndSend("Where am I?");
+
+    expect(await screen.findByText("Hi")).not.toBeNull();
+    const chatIndex = fetch.mock.calls.findIndex(([url]) => String(url).endsWith("/chat"));
+    expect(sentBody(fetch, chatIndex)).toMatchObject({ visible_section: "notes" });
+  });
+
   it("surfaces a stream error as an error bubble and keeps the input enabled", async () => {
     const fetch = mockBackend([["data: {\"error\": \"openrouter request failed with HTTP 500\"}\n\n"]]);
     vi.stubGlobal("fetch", fetch);
-    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} />);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} sectionIds={[]} />);
 
     typeAndSend("What is a kernel?");
 
@@ -137,7 +203,7 @@ describe("ChatPanel", () => {
   it("shows a plain note bubble when the stream finishes without a single delta", async () => {
     const fetch = mockBackend([["data: {\"done\": true}\n\n"]]);
     vi.stubGlobal("fetch", fetch);
-    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} />);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} sectionIds={[]} />);
 
     typeAndSend("Say something");
 
@@ -149,7 +215,7 @@ describe("ChatPanel", () => {
   it("warns in the settings popover when the provider key is missing", async () => {
     const fetch = mockBackend([], { provider: "openrouter", model: "anthropic/claude-sonnet-4.5", key_present: false });
     vi.stubGlobal("fetch", fetch);
-    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} />);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} sectionIds={[]} />);
 
     fireEvent.click(screen.getByRole("button", { name: /chat model settings/i }));
 

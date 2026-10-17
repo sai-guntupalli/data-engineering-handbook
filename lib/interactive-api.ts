@@ -76,9 +76,11 @@ export async function executeCell(
       body: JSON.stringify({ notebook, path, cell_index: cellIndex, code }),
     });
     if (!response.ok) {
+      // A refusal (bad path, not a code cell, ...) ran nothing but is not a
+      // kernel crash — "crashed" stays reserved for transport failure only.
       const detail = await errorDetail(response);
       return terminalExec(
-        "crashed",
+        "error",
         `The backend refused the request (HTTP ${response.status})${detail ? `: ${detail}` : ""}.`,
       );
     }
@@ -93,6 +95,32 @@ export async function executeCell(
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
     return terminalExec("crashed", offlineTraceback(reason));
+  }
+}
+
+/**
+ * Wipe the notebook's kernel namespace by POSTing `/reset` (the promise the
+ * viewer makes: reloading the page also resets, because the mount calls this).
+ * Resolves to null when the backend is absent — a reset that cannot happen
+ * must not become a visible failure on top of whatever else is on screen.
+ */
+export async function resetKernel(notebook: string): Promise<ExecResponse | null> {
+  try {
+    const response = await fetch(`${BACKEND_URL}/reset`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ notebook }),
+    });
+    if (!response.ok) {
+      return terminalExec(
+        "error",
+        `The backend refused the reset (HTTP ${response.status}): ${await errorDetail(response)}.`,
+      );
+    }
+    const parsed = (await response.json()) as Partial<ExecResponse>;
+    return { ...terminalExec("ok"), status: parsed.status ?? "ok" };
+  } catch {
+    return null; // No backend, no kernel to reset; the viewer degrades quietly.
   }
 }
 
