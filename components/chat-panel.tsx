@@ -93,17 +93,25 @@ export function ChatPanel({
       },
       appendDelta,
     ).then((error) => {
-      if (error !== null) {
-        // Surface the failure instead of finishing the turn; an already-started
-        // streaming bubble keeps its partial text and gets a sibling error bubble.
-        setBubbles((current) => {
-          const last = current[current.length - 1];
-          if (last?.role === "assistant" && last.content === "" && last.error !== true) {
-            return [...current.slice(0, -1), { role: "assistant", content: error, error: true }];
-          }
-          return [...current, { role: "assistant", content: error, error: true }];
-        });
-      }
+      setBubbles((current) => {
+        const last = current[current.length - 1];
+        if (last === undefined) return current;
+        if (last.role !== "assistant" || last.error === true) {
+          return error === null
+            ? current
+            : [...current, { role: "assistant", content: error, error: true }];
+        }
+        // Surface the failure instead of finished text; an already-started streaming
+        // bubble without deltas becomes the message outright. A silent stream (no
+        // error, no delta) would otherwise leave an invisible empty bubble — say so
+        // explicitly, the same way.
+        const replacement =
+          error ?? (last.content === "" ? "The tutor returned an empty reply for this turn." : null);
+        if (replacement === null) return current;
+        return last.content === ""
+          ? [...current.slice(0, -1), { role: "assistant", content: replacement, error: replacement === error && error !== null }]
+          : [...current, { role: "assistant", content: replacement, error: true }];
+      });
       setBusy(false);
     });
   };

@@ -134,6 +134,18 @@ describe("ChatPanel", () => {
     expect(body.history).toEqual([{ role: "user", content: "What is a kernel?" }]);
   });
 
+  it("shows a plain note bubble when the stream finishes without a single delta", async () => {
+    const fetch = mockBackend([["data: {\"done\": true}\n\n"]]);
+    vi.stubGlobal("fetch", fetch);
+    render(<ChatPanel notebookTitle="Viewer Fixture" outline={[]} />);
+
+    typeAndSend("Say something");
+
+    // A silent turn still has to leave something visible in the log.
+    const note = await screen.findByText(/returned an empty reply/i);
+    expect((note as HTMLElement).className).not.toContain("chat-bubble-error");
+  });
+
   it("warns in the settings popover when the provider key is missing", async () => {
     const fetch = mockBackend([], { provider: "openrouter", model: "anthropic/claude-sonnet-4.5", key_present: false });
     vi.stubGlobal("fetch", fetch);

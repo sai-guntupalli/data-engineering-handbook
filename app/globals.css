@@ -1470,6 +1470,12 @@ a {
 }
 
 @media (max-width: 900px) {
+  /* Re-asserted after the 1200px block above (same specificity, later wins),
+     so the pre-existing single-column mobile layout survives the chat panel. */
+  .topic-layout {
+    grid-template-columns: 1fr;
+  }
+
   .chat-panel {
     max-height: 24rem;
   }
