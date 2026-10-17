@@ -35,8 +35,9 @@ async def request_validation_as_400(request: Request, exc: RequestValidationErro
     return JSONResponse({"detail": "invalid request body"}, status_code=400)
 
 # Kernel statuses map onto the HTTP-layer vocabulary: an interrupt-based
-# timeout is communicated as "timeout", and the traceback says what happened.
-_HTTP_STATUS = {"ok": "ok", "error": "error", "interrupted": "timeout"}
+# timeout is communicated as "timeout", a dead child as "crashed", and the
+# traceback always says what happened.
+_HTTP_STATUS = {"ok": "ok", "error": "error", "crashed": "crashed", "interrupted": "timeout"}
 
 
 class ExecuteRequest(BaseModel):
@@ -93,7 +94,9 @@ def _execute_target(request: ExecuteRequest) -> dict[str, Any]:
 
     assert request.cell_index is not None  # validated: exactly one of the two
     try:
-        source, illustrative = sessions.load_cell_source(request.path, request.cell_index)
+        source, cell_type, illustrative = sessions.load_cell_source(
+            request.path, request.cell_index
+        )
     except FileNotFoundError as exc:  # path resolves outside notebooks/
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:  # unparseable notebook JSON
@@ -101,16 +104,20 @@ def _execute_target(request: ExecuteRequest) -> dict[str, Any]:
     except KeyError as exc:  # cell index out of range
         raise HTTPException(status_code=400, detail=str(exc)) from exc
 
+    if cell_type != "code":
+        raise HTTPException(status_code=400, detail=f"cell {request.cell_index} is not a code cell")
     if illustrative:
         return _terminal_response("illustrative")
     return _run_code(request.notebook, source)
 
 
 def _run_code(notebook: str, code: str) -> dict[str, Any]:
-    kernel = sessions.get_kernel(notebook)
-    if not kernel.alive():
-        return _terminal_response("crashed", "kernel process exited")
-    return _execution_response(kernel.execute(code))
+    """Run ``code`` on the session kernel; the kernel reports crashed children.
+
+    ``get_kernel`` replaces a kernel whose subprocess already died, so an
+    ``ExecResult`` of "crashed" means the death happened mid-run.
+    """
+    return _execution_response(sessions.get_kernel(notebook).execute(code))
 
 
 def _execution_response(result: ExecResult) -> dict[str, Any]:

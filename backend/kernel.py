@@ -25,8 +25,13 @@ _INTERRUPTED_TRACEBACK = "kernel did not respond to interrupt"
 _DEAD_TRACEBACK = "kernel process exited"
 
 
+# "crashed" marks a dead child: the execute that observed the death carries it
+# (traceback _DEAD_TRACEBACK); the next execute gets a fresh kernel.
+_ResultStatus = Literal["ok", "error", "interrupted", "crashed"]
+
+
 class ExecResult(TypedDict):
-    status: Literal["ok", "error", "interrupted"]
+    status: _ResultStatus
     stdout: str
     stderr: str
     traceback: str | None
@@ -92,7 +97,7 @@ class Kernel:
             try:
                 self._write_request(request_id, code)
             except (OSError, ValueError):
-                return _synthesized_error(_DEAD_TRACEBACK, started)
+                return _synthesized_result("crashed", _DEAD_TRACEBACK, started)
 
             try:
                 response = response_queue.get(timeout=self._timeout_seconds)
@@ -101,9 +106,9 @@ class Kernel:
                 try:
                     response = response_queue.get(timeout=INTERRUPT_GRACE_SECONDS)
                 except queue.Empty:
-                    return _synthesized_error(_INTERRUPTED_TRACEBACK, started)
+                    return _synthesized_result("error", _INTERRUPTED_TRACEBACK, started)
             if response is None:
-                return _synthesized_error(_DEAD_TRACEBACK, started)
+                return _synthesized_result("crashed", _DEAD_TRACEBACK, started)
         finally:
             with self._waiters_lock:
                 self._waiters.pop(request_id, None)
@@ -189,9 +194,10 @@ class Kernel:
                     pass
 
 
-def _synthesized_error(traceback_text: str, started: float) -> ExecResult:
+def _synthesized_result(status: _ResultStatus, traceback_text: str, started: float) -> ExecResult:
+    """Build a result without a child response (dead child or dead interrupt)."""
     return ExecResult(
-        status="error",
+        status=status,
         stdout="",
         stderr="",
         traceback=traceback_text,

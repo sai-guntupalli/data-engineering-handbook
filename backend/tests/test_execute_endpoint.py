@@ -90,6 +90,15 @@ class TestExecuteCell:
 
         assert response.status_code == 404
 
+    def test_markdown_cell_target_returns_400(self, client: TestClient) -> None:
+        response = client.post(
+            "/execute",
+            json={"notebook": "t10", "path": NOTEBOOK_PATH, "cell_index": 0},
+        )
+
+        assert response.status_code == 400
+        assert "not a code cell" in response.json()["detail"]
+
 
 class TestKernelLifecycle:
     def test_dead_kernel_is_replaced_lazily(self, client: TestClient) -> None:
@@ -106,6 +115,27 @@ class TestKernelLifecycle:
         assert body["status"] == "ok"
         assert body["stdout"] == "fresh\n"
         assert sessions.get_kernel("t6") is not kernel
+
+    def test_kernel_death_mid_run_reports_crashed_then_next_request_recovers(
+        self, client: TestClient
+    ) -> None:
+        killed = client.post(
+            "/execute",
+            json={"notebook": "t11", "path": NOTEBOOK_PATH, "code": "import os; os._exit(0)"},
+        )
+
+        killed_body = killed.json()
+        assert killed_body["status"] == "crashed"
+        assert "kernel process exited" in (killed_body["traceback"] or "")
+        assert killed_body["elapsed_seconds"] is not None
+
+        recovered = client.post(
+            "/execute",
+            json={"notebook": "t11", "path": NOTEBOOK_PATH, "code": "print('recovered')"},
+        )
+
+        assert recovered.json()["status"] == "ok"
+        assert recovered.json()["stdout"] == "recovered\n"
 
     def test_in_flight_run_replies_busy_and_lets_first_finish(
         self, client: TestClient, monkeypatch: pytest.MonkeyPatch
@@ -148,6 +178,71 @@ class TestKernelLifecycle:
         thread.join(timeout=10)
         assert body_holder["first"]["status"] == "ok"
         assert body_holder["first"]["stdout"] == "first done\n"
+
+
+class _ScriptedKernel:
+    """Fake Kernel answering execute() with one canned ExecResult."""
+
+    def __init__(self, result: dict[str, Any]) -> None:
+        self._result = result
+
+    def alive(self) -> bool:
+        return True
+
+    def execute(self, code: str) -> dict[str, Any]:
+        return self._result
+
+
+INTERRUPTED_RESULT: dict[str, Any] = {
+    "status": "interrupted",
+    "stdout": "",
+    "stderr": "",
+    "traceback": "kernel did not respond to interrupt",
+    "elapsed_seconds": 60.5,
+}
+CRASHED_RESULT: dict[str, Any] = {
+    "status": "crashed",
+    "stdout": "",
+    "stderr": "",
+    "traceback": "kernel process exited",
+    "elapsed_seconds": 12.5,
+}
+ERROR_RESULT: dict[str, Any] = {
+    "status": "error",
+    "stdout": "",
+    "stderr": "",
+    "traceback": "ZeroDivisionError: division by zero",
+    "elapsed_seconds": 0.2,
+}
+
+
+class TestKernelStatusMapping:
+    @pytest.mark.parametrize(
+        ("kernel_result", "http_status"),
+        [
+            (INTERRUPTED_RESULT, "timeout"),
+            (CRASHED_RESULT, "crashed"),
+            (ERROR_RESULT, "error"),
+        ],
+    )
+    def test_kernel_status_travels_as(
+        self,
+        client: TestClient,
+        monkeypatch: pytest.MonkeyPatch,
+        kernel_result: dict[str, Any],
+        http_status: str,
+    ) -> None:
+        monkeypatch.setattr(sessions, "get_kernel", lambda notebook: _ScriptedKernel(kernel_result))
+
+        response = client.post(
+            "/execute",
+            json={"notebook": "t-map", "path": NOTEBOOK_PATH, "code": "x = 1"},
+        )
+
+        body = response.json()
+        assert body["status"] == http_status
+        assert body["traceback"] == kernel_result["traceback"]
+        assert body["elapsed_seconds"] == kernel_result["elapsed_seconds"]
 
 
 class TestReset:
@@ -216,9 +311,10 @@ class TestExecuteRequestValidation:
 
 
 def test_load_cell_source_joined_like_notebooks_ts() -> None:
-    source, illustrative = sessions.load_cell_source(NOTEBOOK_PATH, RUNNABLE_CELL_INDEX)
+    source, cell_type, illustrative = sessions.load_cell_source(NOTEBOOK_PATH, RUNNABLE_CELL_INDEX)
 
     assert source.startswith("shuffle_bytes = 200 * 1024 ** 3")
+    assert cell_type == "code"
     assert illustrative is False
 
 
@@ -229,7 +325,8 @@ def test_load_cell_source_missing_source_key_is_empty_string(
     notebook.write_text('{"cells": [{"cell_type": "code"}]}', encoding="utf-8")
     monkeypatch.setattr(sessions, "NOTEBOOKS_DIR", tmp_path)
 
-    source, illustrative = sessions.load_cell_source(str(notebook), 0)
+    source, cell_type, illustrative = sessions.load_cell_source(str(notebook), 0)
 
     assert source == ""
+    assert cell_type == "code"
     assert illustrative is False

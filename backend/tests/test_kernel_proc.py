@@ -76,3 +76,25 @@ class TestKernel:
             assert second["stdout"] == "after\n"
         finally:
             kernel.close()
+
+    def test_child_that_dies_mid_run_reports_crashed(self) -> None:
+        kernel = Kernel()
+
+        try:
+            result = kernel.execute("import os; os._exit(0)")
+
+            assert result["status"] == "crashed"
+            assert "kernel process exited" in (result["traceback"] or "")
+            assert result["stdout"] == ""
+        finally:
+            kernel.close()
+
+    def test_reset_recovers_after_kernel_death(self, kernel: Kernel) -> None:
+        kernel.execute("import os; os._exit(0)")
+        assert not kernel.alive()
+
+        kernel.reset()
+        result = kernel.execute('print("back")')
+
+        assert result["status"] == "ok"
+        assert result["stdout"] == "back\n"

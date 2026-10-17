@@ -80,21 +80,23 @@ def resolve_notebook_path(notebook_path: str) -> Path:
     return resolved
 
 
-def load_cell_source(notebook_path: str, index: int) -> tuple[str, bool]:
-    """Return ``(source, is_illustrative)`` for cell ``index`` of a notebook.
+def load_cell_source(notebook_path: str, index: int) -> tuple[str, str, bool]:
+    """Return ``(source, cell_type, is_illustrative)`` for cell ``index`` of a notebook.
 
-    The path is repo-relative as returned by the notebook listing
-    (``notebooks/topics/spark.ipynb``). Cell sources are joined like
-    ``lib/notebooks.ts`` does, so a cell whose ``source`` key is missing counts
-    as empty. Raises ``KeyError`` when ``index`` is out of range and
-    ``ValueError`` when the notebook JSON is unparseable.
+    ``index`` addresses the raw ``cells`` array — the same indexing the viewer
+    frontend uses. Cell sources are joined like ``lib/notebooks.ts`` does, so a
+    cell whose ``source`` key is missing counts as empty, and a cell without a
+    ``cell_type`` counts as ``"markdown"`` (the TS reader's default). Raises
+    ``KeyError`` when ``index`` is out of range and ``ValueError`` when the
+    notebook JSON is unparseable.
     """
     notebook = json.loads(resolve_notebook_path(notebook_path).read_text(encoding="utf-8"))
     cells = notebook.get("cells", [])
     if not 0 <= index < len(cells):
         raise KeyError(f"cell index {index} out of range (notebook has {len(cells)} cells)")
-    source = _cell_source(cells[index])
-    return source, ILLUSTRATIVE_MARKER in source
+    cell = cells[index]
+    source = _cell_source(cell)
+    return source, cell.get("cell_type", "markdown"), ILLUSTRATIVE_MARKER in source
 
 
 def _cell_source(cell: dict) -> str:
