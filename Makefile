@@ -13,7 +13,7 @@ NPM ?= npm
 
 PORT ?= 3000
 
-.PHONY: help setup setup-notebooks setup-spark chat-install check watermark notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
+.PHONY: help setup setup-notebooks setup-spark chat-install check watermark notebooks notebooks-check notebook-audit sync-check site lint serve dev-local test validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -58,6 +58,15 @@ lint: ## Lint the gallery app
 
 serve: ## Serve the gallery locally (PORT=3000 by default)
 	$(NPM) run dev -- --port $(PORT)
+
+dev-local: ## Run the chat backend (127.0.0.1:8077) and the gallery dev server together
+	PORT=$(PORT) ./scripts/dev-local.sh
+
+test: ## Run gallery unit tests and the chat backend tests
+	$(NPM) test
+	# All three extras are named explicitly: `uv run` prunes any extra not listed,
+	# so this must not strip the notebook tooling `make validate` needs from the venv.
+	uv run --extra notebooks --extra notebooks-spark --extra interactive pytest backend/tests -q
 
 validate: check sync-check notebooks-check lint site ## Full pipeline: notebook audit + sync + execution + app lint + build
 	@echo "validate: all checks passed"

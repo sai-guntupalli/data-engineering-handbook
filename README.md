@@ -18,6 +18,33 @@ documentation: every topic is a notebook, so the explanation and the code that p
 > The repository is private, so notebook links open only for collaborators. Google Colab cannot open private
 > repositories; use Jupyter locally instead.
 
+## Interactive local viewer
+
+Topic pages can also run notebook cells and stream an LLM chat — all locally. One command starts
+both servers:
+
+```bash
+make setup          # base deps (uv sync + npm install)
+make chat-install   # interactive backend deps (fastapi, uvicorn, httpx)
+make dev-local      # chat backend on http://127.0.0.1:8077 + gallery on http://localhost:3000
+```
+
+Two things about extras (`uv` installs exactly what a command names and removes the rest):
+`make chat-install` alone means no PySpark — Spark topics need `make setup-spark` too — while
+`make dev-local` and `make test` name all three extras (`notebooks`, `notebooks-spark`,
+`interactive`), so they never strip packages the notebook tooling needs.
+
+- Chat needs an API key in the environment: `OPENROUTER_API_KEY` (default provider) or
+  `OLLAMA_API_KEY` for local models. `CHAT_PROVIDER` and `CHAT_MODEL` override the defaults; copy
+  [`chat.config.example.yml`](chat.config.example.yml) to `chat.config.yml` (gitignored) for
+  other options.
+- On a topic page: **Run** executes a cell against a live kernel (each run gets 60 seconds), **Elaborate**
+  asks the LLM to expand a section inline, and the chat panel streams answers over SSE.
+- The backend binds to 127.0.0.1 and only allows browser calls from `localhost:3000`
+  (`127.0.0.1:3000` too), so keep the gallery on its default port; it is never part of the published
+  site — the static export still builds exactly as before, and viewer pages ship in it as a static
+  reading view (Run buttons explain themselves when the backend is absent).
+
 ## What is inside
 
 | Group | Notebooks |
@@ -55,6 +82,7 @@ make watermark        # stamp the author watermark into all notebooks
 make sync-check       # merged copies match their practice notebooks
 make notebooks-check  # execute the practice notebooks (no writes)
 make lint             # lint the gallery app
+make test             # gallery unit tests + interactive backend tests
 make validate         # audit + sync + execution + app lint + gallery build
 make stats            # notebook counts
 ```
