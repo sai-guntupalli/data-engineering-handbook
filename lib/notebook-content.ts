@@ -8,6 +8,10 @@ export type NotebookSectionBlock =
   | { kind: "markdown"; source: string; html: string }
   | { kind: "code"; source: string; illustrative: boolean; cellIndex: number };
 
+/** Aliases the viewer's cell renderer can switch on without re-writing Extract. */
+export type MarkdownSectionBlock = Extract<NotebookSectionBlock, { kind: "markdown" }>;
+export type CodeSectionBlock = Extract<NotebookSectionBlock, { kind: "code" }>;
+
 export type NotebookSection = { id: string; heading: string; blocks: NotebookSectionBlock[] };
 
 export type NotebookPage = {
