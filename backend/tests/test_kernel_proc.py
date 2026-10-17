@@ -60,3 +60,19 @@ class TestKernel:
         assert result["status"] == "ok"
         assert len(result["stdout"]) <= 20000
         assert "... [truncated]" in result["stdout"]
+
+    def test_non_protocol_stdout_line_does_not_kill_reader(self) -> None:
+        kernel = Kernel(timeout_seconds=2.0)
+
+        try:
+            first = kernel.execute('import sys; print("42", file=sys.__stdout__)')
+
+            assert first["status"] == "ok"
+            assert kernel.alive()
+
+            second = kernel.execute('print("after")')
+
+            assert second["status"] == "ok"
+            assert second["stdout"] == "after\n"
+        finally:
+            kernel.close()

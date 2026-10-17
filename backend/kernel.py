@@ -41,6 +41,33 @@ def _truncate(value: str) -> str:
     return value
 
 
+def _parse_response(line: str) -> dict | None:
+    """Parse one stdout line as a protocol response, or return None.
+
+    Lines that are not well-formed responses are skipped rather than killing
+    the reader: user code can print JSON to the real stdout
+    (``print(42, file=sys.__stdout__)``), which shares this pipe with us.
+    """
+    try:
+        response = json.loads(line)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(response, dict):
+        return None
+    if response.get("status") not in ("ok", "error", "interrupted"):
+        return None
+    if not isinstance(response.get("stdout"), str) or not isinstance(response.get("stderr"), str):
+        return None
+    if response.get("traceback") is not None and not isinstance(response.get("traceback"), str):
+        return None
+    try:
+        response["id"] = int(response["id"])
+        response["elapsed_seconds"] = float(response["elapsed_seconds"])
+    except (KeyError, TypeError, ValueError):
+        return None
+    return response
+
+
 class Kernel:
     """A persistent Python kernel subprocess with an interrupt-based timeout."""
 
@@ -120,12 +147,11 @@ class Kernel:
         """Forward each parsed response to the waiter matching its request id."""
         assert proc.stdout is not None  # created with stdout=PIPE
         for line in proc.stdout:
-            try:
-                response = json.loads(line)
-            except json.JSONDecodeError:
+            response = _parse_response(line)
+            if response is None:
                 continue
             with self._waiters_lock:
-                waiter = self._waiters.pop(int(response["id"]), None)
+                waiter = self._waiters.pop(response["id"], None)
             if waiter is not None:
                 waiter.put(response)
 
@@ -145,7 +171,7 @@ class Kernel:
             stdout=_truncate(response["stdout"]),
             stderr=_truncate(response["stderr"]),
             traceback=response["traceback"],
-            elapsed_seconds=float(response["elapsed_seconds"]),
+            elapsed_seconds=response["elapsed_seconds"],
         )
 
     def _terminate(self) -> None:
