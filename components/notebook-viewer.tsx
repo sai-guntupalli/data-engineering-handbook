@@ -15,7 +15,7 @@ const KERNEL_HINT =
   "The kernel persists top-to-bottom — variables stay between Runs. Reload resets it.";
 
 const STATUS_NOTES: Partial<Record<ExecResponse["status"], string>> = {
-  timeout: "The cell was stopped by the 60s interrupt; the kernel itself survived.",
+  timeout: "The cell ran past the 60 s limit and was stopped.",
   busy: "The kernel is still busy with an earlier cell. Wait for it, or Reload to reset.",
   illustrative: "This cell was refused — it is marked ILLUSTRATIVE and never runs here.",
 };
