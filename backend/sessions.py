@@ -91,6 +91,8 @@ def load_cell_source(notebook_path: str, index: int) -> tuple[str, str, bool]:
     notebook JSON is unparseable.
     """
     notebook = json.loads(resolve_notebook_path(notebook_path).read_text(encoding="utf-8"))
+    if not isinstance(notebook, dict):
+        raise ValueError(f"notebook JSON is not a notebook object: {notebook_path}")
     cells = notebook.get("cells", [])
     if not 0 <= index < len(cells):
         raise KeyError(f"cell index {index} out of range (notebook has {len(cells)} cells)")

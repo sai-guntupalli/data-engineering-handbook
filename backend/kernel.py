@@ -21,7 +21,6 @@ MAX_OUTPUT_CHARS = 20_000
 _TRUNCATION_MARKER = "\n... [truncated]"
 INTERRUPT_GRACE_SECONDS = 5.0
 
-_INTERRUPTED_TRACEBACK = "kernel did not respond to interrupt"
 _DEAD_TRACEBACK = "kernel process exited"
 
 
@@ -76,8 +75,13 @@ def _parse_response(line: str) -> dict | None:
 class Kernel:
     """A persistent Python kernel subprocess with an interrupt-based timeout."""
 
-    def __init__(self, timeout_seconds: float = 60.0) -> None:
+    def __init__(
+        self,
+        timeout_seconds: float = 60.0,
+        interrupt_grace_seconds: float = INTERRUPT_GRACE_SECONDS,
+    ) -> None:
         self._timeout_seconds = timeout_seconds
+        self._interrupt_grace_seconds = interrupt_grace_seconds
         self._request_ids = itertools.count()
         self._waiters: dict[int, queue.Queue[dict | None]] = {}
         self._waiters_lock = threading.Lock()
@@ -104,9 +108,17 @@ class Kernel:
             except queue.Empty:
                 self._proc.send_signal(signal.SIGINT)
                 try:
-                    response = response_queue.get(timeout=INTERRUPT_GRACE_SECONDS)
+                    response = response_queue.get(timeout=self._interrupt_grace_seconds)
                 except queue.Empty:
-                    return _synthesized_result("error", _INTERRUPTED_TRACEBACK, started)
+                    # The interrupt never landed: the namespace is wedged, so
+                    # the timed-out kernel resets for the next cell instead of
+                    # staying busy for good.
+                    self.reset()
+                    traceback = (
+                        f"cell timed out after {self._timeout_seconds}s; "
+                        "interrupt did not respond; kernel was reset"
+                    )
+                    return _synthesized_result("interrupted", traceback, started)
             if response is None:
                 return _synthesized_result("crashed", _DEAD_TRACEBACK, started)
         finally:

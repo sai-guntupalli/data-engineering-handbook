@@ -1,7 +1,9 @@
 """Tests for the /execute HTTP layer: session registry, status mapping, CORS."""
 
+import json
 import threading
 from collections.abc import Callable
+from pathlib import Path
 from typing import Any
 
 import pytest
@@ -11,9 +13,25 @@ from backend import sessions
 from backend.main import app, ExecuteRequest
 
 NOTEBOOK_PATH = "notebooks/topics/spark.ipynb"
-# First runnable code cell of spark.ipynb (cell 13 is the first ILLUSTRATIVE one).
-RUNNABLE_CELL_INDEX = 214
 ILLUSTRATIVE_CELL_INDEX = 13
+
+
+def _first_runnable_cell_index(path: str) -> int:
+    """The first code cell without the ILLUSTRATIVE marker (the viewer indexes
+    this way, and the marker must stay in step with lib/notebooks.ts)."""
+    raw = (Path(__file__).resolve().parents[2] / path).read_text(encoding="utf-8")
+    cells = json.loads(raw).get("cells", [])
+    for index, cell in enumerate(cells):
+        if cell.get("cell_type") != "code":
+            continue
+        source = cell.get("source")
+        text = "".join(source) if isinstance(source, list) else (source or "")
+        if sessions.ILLUSTRATIVE_MARKER not in text:
+            return index
+    raise AssertionError(f"no runnable code cell found in {path}")
+
+
+RUNNABLE_CELL_INDEX = _first_runnable_cell_index(NOTEBOOK_PATH)
 
 
 @pytest.fixture(autouse=True)
@@ -98,6 +116,21 @@ class TestExecuteCell:
 
         assert response.status_code == 400
         assert "not a code cell" in response.json()["detail"]
+
+    def test_non_dict_notebook_json_returns_400(
+        self, tmp_path: Path, monkeypatch: pytest.MonkeyPatch, client: TestClient
+    ) -> None:
+        notebook = tmp_path / "flat.json"
+        notebook.write_text("[]", encoding="utf-8")
+        monkeypatch.setattr(sessions, "NOTEBOOKS_DIR", tmp_path)
+
+        response = client.post(
+            "/execute",
+            json={"notebook": "t-flat", "path": str(notebook), "cell_index": 0},
+        )
+
+        assert response.status_code == 400
+        assert "not a notebook" in response.json()["detail"]
 
 
 class TestKernelLifecycle:

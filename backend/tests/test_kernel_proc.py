@@ -54,6 +54,26 @@ class TestKernel:
         finally:
             blocked.close()
 
+    def test_grace_expiry_reports_interrupted_and_auto_resets(self) -> None:
+        # Code that ignores SIGINT wedges the kernel: the timeout's interrupt
+        # never lands, the grace expires, and the kernel must come back ready.
+        wedged = Kernel(timeout_seconds=0.5, interrupt_grace_seconds=0.5)
+
+        try:
+            result = wedged.execute(
+                "import signal, time; signal.signal(signal.SIGINT, signal.SIG_IGN); time.sleep(60)"
+            )
+
+            assert result["status"] == "interrupted"
+            assert "kernel was reset" in (result["traceback"] or "")
+
+            follow_up = wedged.execute("print('ok')")
+
+            assert follow_up["status"] == "ok"
+            assert follow_up["stdout"] == "ok\n"
+        finally:
+            wedged.close()
+
     def test_oversized_output_is_truncated(self, kernel: Kernel) -> None:
         result = kernel.execute('print("a" * 30000)')
 
