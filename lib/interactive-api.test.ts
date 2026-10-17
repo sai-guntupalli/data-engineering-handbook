@@ -27,7 +27,7 @@ const execResult = (status: string, stdout: string) => ({
 
 describe("executeCell", () => {
   it("runs one /execute POST and returns the backend's result", async () => {
-    const fetch = vi.fn(async () => execResult("ok", "42\n"));
+    const fetch = vi.fn(async (_url: string, _init: RequestInit) => execResult("ok", "42\n"));
     vi.stubGlobal("fetch", fetch);
 
     const result = await executeCell("spark", "notebooks/topics/spark.ipynb", 214, null);
@@ -45,7 +45,7 @@ describe("executeCell", () => {
   });
 
   it("maps an HTTP refusal to error with the refusal detail, keeping crashed for transport only", async () => {
-    const fetch = vi.fn(async () => refusal(400, "cell 3 is not a code cell"));
+    const fetch = vi.fn(async (_url: string, _init: RequestInit) => refusal(400, "cell 3 is not a code cell"));
     vi.stubGlobal("fetch", fetch);
 
     const result = await executeCell("spark", "notebooks/topics/spark.ipynb", 3, null);
@@ -57,7 +57,7 @@ describe("executeCell", () => {
   });
 
   it("keeps crashed for a transport failure (backend unreachable)", async () => {
-    const fetch = vi.fn(async () => {
+    const fetch = vi.fn(async (_url: string, _init: RequestInit) => {
       throw new TypeError("fetch failed");
     });
     vi.stubGlobal("fetch", fetch);
@@ -71,7 +71,7 @@ describe("executeCell", () => {
 
 describe("resetKernel", () => {
   it("POSTs the notebook slug to /reset and reports the backend's answer", async () => {
-    const fetch = vi.fn(async () => execResult("ok", ""));
+    const fetch = vi.fn(async (_url: string, _init: RequestInit) => execResult("ok", ""));
     vi.stubGlobal("fetch", fetch);
 
     const result = await resetKernel("spark");
@@ -85,7 +85,7 @@ describe("resetKernel", () => {
   });
 
   it("survives an unreachable backend by resolving to null", async () => {
-    const fetch = vi.fn(async () => {
+    const fetch = vi.fn(async (_url: string, _init: RequestInit) => {
       throw new TypeError("fetch failed");
     });
     vi.stubGlobal("fetch", fetch);

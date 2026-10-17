@@ -264,7 +264,7 @@ describe("NotebookViewer", () => {
     const fetch = vi.fn(async (url: string, _init: RequestInit) =>
       String(url).endsWith("/chat")
         ? sseResponse(responses[responseIndex++] ?? [], "text/event-stream")
-        : execResult("ok", ""),
+        : execResult(""),
     );
     vi.stubGlobal("fetch", fetch);
     render(<NotebookViewer page={oneSectionPage()} />);
