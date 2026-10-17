@@ -259,6 +259,31 @@ class TestChatEndpoint:
         assert "server exploded" in response.text
         assert all("delta" not in event for event in events)
 
+    @pytest.mark.parametrize(
+        "raw_chunk",
+        [
+            b'data: {"choices": [null]}\n\n',
+            b'data: {"choices": [{"delta": "text"}]}\n\n',
+        ],
+        ids=["null-choice", "delta-as-string"],
+    )
+    def test_malformed_chunk_shapes_yield_error_event(
+        self,
+        client: TestClient,
+        fake_provider: Callable[[Handler], list[httpx.Request]],
+        monkeypatch: pytest.MonkeyPatch,
+        raw_chunk: bytes,
+    ) -> None:
+        monkeypatch.setenv("OPENROUTER_API_KEY", "test-key")
+        fake_provider(lambda request: httpx.Response(200, content=raw_chunk))
+
+        response = client.post("/chat", json=_chat_body("elaborate"))
+
+        events = _parse_sse_events(response.text)
+        error_events = [event for event in events if "error" in event]
+        assert any("openrouter" in event["error"] for event in error_events)
+        assert all("delta" not in event for event in events)
+
     def test_missing_key_returns_400_naming_env_var(
         self, client: TestClient, tmp_path: Path, monkeypatch: pytest.MonkeyPatch
     ) -> None:

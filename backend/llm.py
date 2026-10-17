@@ -107,7 +107,7 @@ async def _chunks(lines: AsyncIterator[str], provider: str) -> AsyncIterator[dic
             return
         try:
             content = json.loads(payload)["choices"][0].get("delta", {}).get("content")
-        except (json.JSONDecodeError, KeyError, IndexError, TypeError):
+        except (json.JSONDecodeError, KeyError, IndexError, TypeError, AttributeError):
             yield {"error": f"{provider} returned a malformed streaming chunk"}
             return
         if content:
