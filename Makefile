@@ -13,7 +13,7 @@ NPM ?= npm
 
 PORT ?= 3000
 
-.PHONY: help setup setup-notebooks setup-spark check watermark notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
+.PHONY: help setup setup-notebooks setup-spark chat-install check watermark notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -28,6 +28,9 @@ setup-notebooks: ## Install notebook tooling (nbformat, nbclient, ipykernel)
 
 setup-spark: ## Install notebook tooling plus PySpark and pandas (requires Java 17+)
 	uv sync --extra notebooks --extra notebooks-spark
+
+chat-install: ## Install interactive-viewer backend tooling (fastapi, uvicorn, httpx, pytest-httpx)
+	uv sync --extra interactive
 
 check: ## Validate every notebook (format, metadata, non-empty cells)
 	$(PY) scripts/audit_notebooks.py --quiet
