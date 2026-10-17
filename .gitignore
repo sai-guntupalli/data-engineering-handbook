@@ -22,3 +22,6 @@ tsconfig.tsbuildinfo
 # Legacy docs build output
 .docs_src/
 site/
+
+# Git worktrees (implementation scratch spaces)
+.worktrees/
