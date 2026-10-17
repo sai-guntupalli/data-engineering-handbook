@@ -43,7 +43,9 @@ function slugify(heading: string): string {
 /**
  * Split a markdown cell's source at its "## " heading lines. Segments between
  * headings keep their raw source; heading lines surface as `heading` and own a
- * new viewer section instead of rendering twice.
+ * new viewer section instead of rendering twice. A "## " line inside a fenced
+ * code block is fence content, not a heading — otherwise the fence would be
+ * torn into two unterminated segments and a bogus section created.
  */
 function splitAtHeadings(
   source: string,
@@ -51,9 +53,11 @@ function splitAtHeadings(
   const segments: Array<{ heading: string | null; source: string }> = [];
   let lines: string[] = [];
   let heading: string | null = null;
+  let inFence = false;
 
   for (const line of source.split("\n")) {
-    const match = line.match(SECTION_HEADING);
+    if (/^\s*```/.test(line)) inFence = !inFence;
+    const match = inFence ? undefined : line.match(SECTION_HEADING);
     if (match?.[1]) {
       segments.push({ heading, source: lines.join("\n") });
       heading = match[1].trim();
@@ -89,13 +93,21 @@ export function readNotebookPage(summary: NotebookSummary): NotebookPage {
   }
 
   const sections: NotebookSection[] = [];
-  const usedIds = new Map<string, number>();
+  // ids already handed out, including suffixed forms — candidates are checked
+  // against this set so ["Notes", "Notes 2", "Notes"] cannot yield two
+  // "notes-2" sections (anchors would collide).
+  const usedIds = new Set<string>();
 
   const usedSectionId = (heading: string): string => {
     const base = slugify(heading);
-    const count = (usedIds.get(base) ?? 0) + 1;
-    usedIds.set(base, count);
-    return count === 1 ? base : `${base}-${count}`;
+    let candidate = base;
+    let suffix = 1;
+    while (usedIds.has(candidate)) {
+      suffix += 1;
+      candidate = `${base}-${suffix}`;
+    }
+    usedIds.add(candidate);
+    return candidate;
   };
 
   const startSection = (id: string, heading: string): NotebookSection => {
@@ -103,6 +115,7 @@ export function readNotebookPage(summary: NotebookSummary): NotebookPage {
     sections.push(created);
     return created;
   };
+  usedIds.add("intro"); // a "## Intro" heading must not duplicate the intro anchor
   let section = startSection("intro", summary.title);
 
   for (const [cellIndex, cell] of (notebook.cells ?? []).entries()) {

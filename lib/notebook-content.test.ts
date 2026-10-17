@@ -118,6 +118,43 @@ describe("readNotebookPage", () => {
     expect(codeBlocks).toEqual([true, false]);
   });
 
+  it("keeps a ## line inside a fenced block as ordinary fence content", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell(["## Config\n", "Set it up:\n", "```python\n", "# setup\n", "## comment\n", "x = 1\n", "```"]),
+      ]),
+    );
+    expect(page.sections.map((section) => section.id)).toEqual(["intro", "config"]);
+    expect(page.sections[1].blocks).toHaveLength(1);
+    const block = page.sections[1].blocks[0];
+    if (block.kind !== "markdown") throw new Error("expected a markdown block");
+    expect(block.source).toBe("Set it up:\n```python\n# setup\n## comment\nx = 1\n```");
+    expect(block.html).toContain('<code class="language-python">');
+  });
+
+  it("does not resuffix an id whose suffixed form is already taken", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell(["## Notes"]),
+        markdownCell(["## Notes 2"]),
+        markdownCell(["## Notes"]),
+      ]),
+    );
+    expect(page.sections.map((section) => section.id)).toEqual([
+      "intro",
+      "notes",
+      "notes-2",
+      "notes-3",
+    ]);
+  });
+
+  it("keeps the hardcoded intro id unique against a ## Intro heading", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [markdownCell(["## Intro"])]),
+    );
+    expect(page.sections.map((section) => section.id)).toEqual(["intro", "intro-2"]);
+  });
+
   it("gives repeated headings distinct ids with a numeric suffix", () => {
     const page = readNotebookPage(
       summaryFor("Spark Basics", [
