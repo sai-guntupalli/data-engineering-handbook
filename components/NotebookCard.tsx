@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Star } from "@phosphor-icons/react";
 import { toggleStar, useStarred } from "./starred";
 
@@ -65,6 +66,12 @@ export function NotebookCard({ notebook }: { notebook: CardNotebook }) {
         ) : null}
       </p>
       <div className="notebook-links">
+        <Link
+          href={`/topics/${notebook.slug}`}
+          title="Read and run this notebook right here in the site viewer"
+        >
+          Read
+        </Link>
         <a
           href={notebook.colabHref}
           target="_blank"

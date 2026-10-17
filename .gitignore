@@ -13,6 +13,9 @@ target/
 __pycache__/
 *.pyc
 
+# Chat provider config (may hold local model choices; keys stay in the env)
+chat.config.yml
+
 # Node / Next.js
 node_modules/
 .next/
@@ -22,3 +25,6 @@ tsconfig.tsbuildinfo
 # Legacy docs build output
 .docs_src/
 site/
+
+# Git worktrees (implementation scratch spaces)
+.worktrees/
