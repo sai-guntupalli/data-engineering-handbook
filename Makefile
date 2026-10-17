@@ -29,7 +29,7 @@ setup-notebooks: ## Install notebook tooling (nbformat, nbclient, ipykernel)
 setup-spark: ## Install notebook tooling plus PySpark and pandas (requires Java 17+)
 	uv sync --extra notebooks --extra notebooks-spark
 
-chat-install: ## Install interactive-viewer backend tooling (fastapi, uvicorn, httpx, pytest-httpx)
+chat-install: ## Install interactive-viewer backend tooling (fastapi, uvicorn, httpx)
 	uv sync --extra interactive
 
 check: ## Validate every notebook (format, metadata, non-empty cells)

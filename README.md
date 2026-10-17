@@ -40,6 +40,9 @@ Two things about extras (`uv` installs exactly what a command names and removes 
   other options.
 - On a topic page: **Run** executes a cell against a live kernel (each run gets 60 seconds), **Elaborate**
   asks the LLM to expand a section inline, and the chat panel streams answers over SSE.
+- The kernel is per notebook, not per tab: the same notebook open in two browser tabs shares one
+  server-side kernel, so variables interleave across tabs — loading (or reloading) the page resets
+  it to an empty namespace.
 - The backend binds to 127.0.0.1 and only allows browser calls from `localhost:3000`
   (`127.0.0.1:3000` too), so keep the gallery on its default port; it is never part of the published
   site — the static export still builds exactly as before, and viewer pages ship in it as a static
