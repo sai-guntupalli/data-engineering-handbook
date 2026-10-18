@@ -13,12 +13,19 @@ from backend import sessions
 from backend.main import app, ExecuteRequest
 
 NOTEBOOK_PATH = "notebooks/topics/spark.ipynb"
-ILLUSTRATIVE_CELL_INDEX = 13
+
+# The deterministic runnable cell: the shuffle-partition arithmetic cell. The
+# viewer's literally-first runnable cell is the sample-data SparkSession
+# bootstrap (Part 2), which needs Java, so the tests below pin this stdlib-only
+# cell instead of an index that a future edit would silently move.
+RUNNABLE_MARKER = "shuffle_bytes = 200 * 1024 ** 3"
+
+# The first ILLUSTRATIVE code cell (the illustration marker doubles as the
+# viewer's read-only badge; keep in step with lib/notebooks.ts).
+ILLUSTRATIVE_MARKER = "# ILLUSTRATIVE"
 
 
-def _first_runnable_cell_index(path: str) -> int:
-    """The first code cell without the ILLUSTRATIVE marker (the viewer indexes
-    this way, and the marker must stay in step with lib/notebooks.ts)."""
+def _cell_index_for_marker(path: str, marker: str, *, present: bool) -> int:
     raw = (Path(__file__).resolve().parents[2] / path).read_text(encoding="utf-8")
     cells = json.loads(raw).get("cells", [])
     for index, cell in enumerate(cells):
@@ -26,12 +33,13 @@ def _first_runnable_cell_index(path: str) -> int:
             continue
         source = cell.get("source")
         text = "".join(source) if isinstance(source, list) else (source or "")
-        if sessions.ILLUSTRATIVE_MARKER not in text:
+        if (marker in text) is present:
             return index
-    raise AssertionError(f"no runnable code cell found in {path}")
+    raise AssertionError(f"no matching code cell found in {path}")
 
 
-RUNNABLE_CELL_INDEX = _first_runnable_cell_index(NOTEBOOK_PATH)
+ILLUSTRATIVE_CELL_INDEX = _cell_index_for_marker(NOTEBOOK_PATH, ILLUSTRATIVE_MARKER, present=True)
+RUNNABLE_CELL_INDEX = _cell_index_for_marker(NOTEBOOK_PATH, RUNNABLE_MARKER, present=True)
 
 
 @pytest.fixture(autouse=True)
