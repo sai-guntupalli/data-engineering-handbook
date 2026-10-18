@@ -25,6 +25,8 @@ The interactive notebook viewer is implemented; the final-review fix wave and tw
   - FINAL-11: `RUNNABLE_CELL_INDEX` is computed from the notebook at test time, no longer hardcoded
 - [x] 2026-10-18 — Grid blowout at ≥1200px (cb38d8f, found by live browser verification): the article column could not shrink below min-content and slid under the sticky chat panel; fixed with `minmax(0, 1fr)` grid tracks + `min-width: 0`, plus scrolling tables and `overflow-wrap` on inline code
 - [x] 2026-10-18 — Code cells auto-fit their content (6989afa, found by the user's report, verified live — 114/114 code cells fit with no crop): code cell textareas auto-grow to content via `useLayoutEffect` + `scrollHeight`, soft-wrap with `overflow-wrap: anywhere`, and the resize grip was removed
+- [x] 2026-10-18 — Syntax highlighting for pristine code cells (highlight.js, python/sql via `detectLanguage`, json/bash/plaintext registered): untouched cells render highlighted `<pre><code class="hljs">` (pre-wrap, no crop); an Edit button swaps the one cell into the textarea, Revert restores the pristine source; Run keeps the cell_index/ad-hoc exactly-one-of contract
+- [x] 2026-10-18 — Starring no longer reorders the explore gallery (groups render in declared order, hint line removed); stars stay a pure card marker (search page keeps its starred-first behavior)
 
 ## In Progress
 
