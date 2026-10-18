@@ -1,8 +1,9 @@
 "use client";
 
-import { CircleNotch, Play, Sparkle, X } from "@phosphor-icons/react";
+import { ArrowCounterClockwise, CircleNotch, PencilSimple, Play, Sparkle, X } from "@phosphor-icons/react";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
+import { highlightCell } from "@/lib/highlight";
 import { executeCell, resetKernel, streamChat, type ExecResponse } from "@/lib/interactive-api";
 import type {
   CodeSectionBlock,
@@ -246,6 +247,7 @@ function CodeCellView({
   withHint: boolean;
 }) {
   const [source, setSource] = useState(block.source);
+  const [editing, setEditing] = useState(false);
   const [running, setRunning] = useState(false);
   const [result, setResult] = useState<ExecResponse | null>(null);
 
@@ -258,6 +260,51 @@ function CodeCellView({
       .then((response) => setResult(response))
       .finally(() => setRunning(false));
   };
+
+  const toolbar = (
+    <>
+      <div className="cell-actions">
+        <button
+          type="button"
+          className="cell-run"
+          onClick={run}
+          disabled={running}
+          title="Runs on the page kernel — earlier Runs stay in scope"
+        >
+          {running ? <CircleNotch size={16} className="cell-spin" /> : <Play size={16} weight="bold" />}
+          {running ? "Running" : "Run"}
+        </button>
+        {block.illustrative ? null : editing ? (
+          <button
+            type="button"
+            className="cell-edit"
+            onClick={() => {
+              setSource(block.source);
+              setEditing(false);
+            }}
+            title="Revert to the original cell and its highlight view"
+          >
+            <ArrowCounterClockwise size={16} weight="bold" />
+            Revert
+          </button>
+        ) : (
+          <button
+            type="button"
+            className="cell-edit"
+            onClick={() => setEditing(true)}
+            aria-label="Edit and run"
+            title="Edit and run"
+          >
+            <PencilSimple size={16} weight="bold" />
+            Edit
+          </button>
+        )}
+      </div>
+      {result?.elapsed_seconds != null ? (
+        <span className="output-meta">{elapsedLabel(result.elapsed_seconds)}</span>
+      ) : null}
+    </>
+  );
 
   if (block.illustrative) {
     return (
@@ -277,24 +324,23 @@ function CodeCellView({
     );
   }
 
+  if (!editing) {
+    return (
+      <div className="nb-cell">
+        <pre className="cell-code">
+          <code className="hljs" dangerouslySetInnerHTML={{ __html: highlightCell(block.source) }} />
+        </pre>
+        <div className="cell-toolbar">{toolbar}</div>
+        {result !== null ? <CellOutput result={result} /> : null}
+        {withHint ? <p className="kernel-hint">{KERNEL_HINT}</p> : null}
+      </div>
+    );
+  }
+
   return (
     <div className="nb-cell">
       <CodeTextarea value={source} onChange={setSource} ariaLabel={`Editable code cell ${block.cellIndex}`} />
-      <div className="cell-toolbar">
-        <button
-          type="button"
-          className="cell-run"
-          onClick={run}
-          disabled={running}
-          title="Runs on the page kernel — earlier Runs stay in scope"
-        >
-          {running ? <CircleNotch size={16} className="cell-spin" /> : <Play size={16} weight="bold" />}
-          {running ? "Running" : "Run"}
-        </button>
-        {result?.elapsed_seconds != null ? (
-          <span className="output-meta">{elapsedLabel(result.elapsed_seconds)}</span>
-        ) : null}
-      </div>
+      <div className="cell-toolbar">{toolbar}</div>
       {result !== null ? <CellOutput result={result} /> : null}
       {withHint ? <p className="kernel-hint">{KERNEL_HINT}</p> : null}
     </div>

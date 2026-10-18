@@ -144,6 +144,56 @@ describe("NotebookViewer", () => {
     expect(illustrativeCell.querySelector("textarea")).not.toBeNull();
   });
 
+  it("renders a pristine code cell highlighted (no textarea), with an Edit affordance", () => {
+    const { container } = render(<NotebookViewer page={oneSectionPage()} />);
+
+    const code = container.querySelector("pre code.hljs");
+    expect(code).not.toBeNull();
+    expect(code?.textContent).toBe("print(\"counting\")");
+    expect(code?.querySelector("[class^='hljs-'], [class*=' hljs-']")).not.toBeNull();
+
+    // The untouched cell is not a textarea — only the illustrative one is.
+    const textareas = container.querySelectorAll("textarea");
+    expect(textareas).toHaveLength(1);
+
+    expect(screen.getByRole("button", { name: "Edit and run" })).toBeTruthy();
+  });
+
+  it("highlights a SQL cell as SQL by its leading statement", () => {
+    const sqlPage = pageFromCells("Viewer Fixture", [
+      { cell_type: "code", source: "-- the roster\nSELECT * FROM employees" },
+    ]);
+    const { container } = render(<NotebookViewer page={sqlPage} />);
+
+    const code = container.querySelector("pre code.hljs") as HTMLElement;
+    expect(code.querySelector(".hljs-keyword")).not.toBeNull();
+  });
+
+  it("swaps exactly the clicked cell into its textarea on Edit, with the same source", () => {
+    const { container } = render(<NotebookViewer page={oneSectionPage()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit and run" }));
+
+    const textareas = container.querySelectorAll("textarea");
+    expect(textareas).toHaveLength(2); // the clicked cell + the illustrative one
+    const textarea = screen.getByLabelText(/editable code cell/i) as HTMLTextAreaElement;
+    expect(textarea.value).toBe("print(\"counting\")");
+    expect(container.querySelector("pre code.hljs")).toBeNull();
+  });
+
+  it("reverts an edited cell back to the highlighted pristine view", () => {
+    const { container } = render(<NotebookViewer page={oneSectionPage()} />);
+
+    fireEvent.click(screen.getByRole("button", { name: "Edit and run" }));
+    const textarea = screen.getByLabelText(/editable code cell/i) as HTMLTextAreaElement;
+    fireEvent.change(textarea, { target: { value: "print(\"edited\")" } });
+    fireEvent.click(screen.getByRole("button", { name: /Revert/ }));
+
+    const code = container.querySelector("pre code.hljs");
+    expect(code?.textContent).toBe("print(\"counting\")");
+    expect(screen.queryByLabelText(/editable code cell/i)).toBeNull();
+  });
+
   it("runs the untouched cell by its index and shows captured stdout", async () => {
     const fetch = mockFetch();
     vi.stubGlobal("fetch", fetch);
@@ -170,6 +220,7 @@ describe("NotebookViewer", () => {
     vi.stubGlobal("fetch", fetch);
     render(<NotebookViewer page={oneSectionPage()} />);
 
+    fireEvent.click(screen.getByRole("button", { name: "Edit and run" }));
     const textarea = screen.getByLabelText(/editable code cell/i) as HTMLTextAreaElement;
     expect(textarea.value).toBe("print(\"counting\")");
     fetch.mockClear(); // ignore the mount-reset probe
@@ -183,6 +234,8 @@ describe("NotebookViewer", () => {
       cell_index: null,
       code: "print(\"edited\")",
     });
+    // A successful edit-run keeps the cell in its edited (textarea) state.
+    expect(screen.getByLabelText(/editable code cell/i)).toBeTruthy();
   });
 
   it("shows the make dev-local hint when the backend is unreachable", async () => {
@@ -305,9 +358,11 @@ describe("NotebookViewer", () => {
     try {
       setScrollHeight(137);
       render(<NotebookViewer page={oneSectionPage()} />);
+      // The pristine cell shows highlighted code; Edit reveals its textarea.
+      fireEvent.click(screen.getByRole("button", { name: "Edit and run" }));
 
       const textareas = screen.getAllByLabelText(/code cell \d/i) as HTMLTextAreaElement[];
-      expect(textareas.length).toBe(2); // editable + illustrative
+      expect(textareas.length).toBe(2); // the edited cell + the illustrative one
       for (const el of textareas) {
         expect(el.style.height).toBe("137px");
         expect(el.style.resize).toBe("none");
@@ -337,7 +392,7 @@ describe("NotebookViewer", () => {
     const hint = screen.getAllByText(/kernel persists top-to-bottom/i);
     expect(hint).toHaveLength(1);
     const hintedCell = hint[0].closest(".nb-cell") as HTMLElement;
-    const hintedTextarea = hintedCell.querySelector("textarea") as HTMLTextAreaElement;
-    expect(hintedTextarea.value).toBe("print(\"a\")");
+    const hintedCode = hintedCell.querySelector("pre code.hljs") as HTMLElement;
+    expect(hintedCode.textContent).toBe("print(\"a\")");
   });
 });

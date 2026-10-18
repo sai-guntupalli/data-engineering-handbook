@@ -12,6 +12,12 @@
   --accent-strong: #173caa;
   --code-bg: #0f172a;
   --danger: #c93a3a;
+  --hljs-keyword: #8fb8ff;
+  --hljs-string: #b5d99c;
+  --hljs-comment: #7d89a3;
+  --hljs-number: #f0b48c;
+  --hljs-title: #e5c07b;
+  --hljs-built_in: #7ee0c2;
   --shadow: 0 24px 80px rgba(31, 41, 55, 0.12);
 }
 
@@ -26,6 +32,12 @@
     --accent: #8eabff;
     --accent-strong: #bfd0ff;
     --danger: #ff9188;
+    --hljs-keyword: #a9c4ff;
+    --hljs-string: #c3e6a0;
+    --hljs-comment: #98a4bd;
+    --hljs-number: #ffc3a0;
+    --hljs-title: #f2d592;
+    --hljs-built_in: #9ff0d8;
     --shadow: 0 24px 80px rgba(0, 0, 0, 0.32);
   }
 }
@@ -1162,12 +1174,89 @@ a {
   opacity: 0.8;
 }
 
+/* Pristine cell view: highlighted source, same chrome as the textarea and
+   auto-fit by nature (pre-wrap grows the block, no inner scrolling, no crop). */
+.cell-code {
+  background: var(--code-bg);
+  border-radius: 0.75rem;
+  color: #dbe4ff;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.82rem;
+  line-height: 1.55;
+  margin: 0;
+  min-height: 3.4rem;
+  overflow-wrap: anywhere;
+  padding: 0.85rem 1rem;
+  white-space: pre-wrap;
+  width: 100%;
+}
+
+/* highlight.js tokens. Cell code sits on --code-bg in BOTH schemes, so the
+   tints only soften slightly for the dark scheme; vars keep the palette
+   theme-aware with the rest of the site. */
+.hljs-keyword {
+  color: var(--hljs-keyword);
+  font-weight: 600;
+}
+
+.hljs-string {
+  color: var(--hljs-string);
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment);
+  font-style: italic;
+}
+
+.hljs-number,
+.hljs-literal {
+  color: var(--hljs-number);
+}
+
+.hljs-title,
+.hljs-function {
+  color: var(--hljs-title);
+}
+
+.hljs-built_in,
+.hljs-type {
+  color: var(--hljs-built_in);
+}
+
 .cell-toolbar {
   align-items: center;
   display: flex;
   gap: 0.7rem;
   justify-content: space-between;
   min-height: 2rem;
+}
+
+.cell-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cell-edit {
+  align-items: center;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  color: var(--muted);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  gap: 0.35rem;
+  padding: 0.3rem 0.9rem;
+  transition: color 140ms ease, border-color 140ms ease;
+}
+
+.cell-edit:hover {
+  border-color: color-mix(in srgb, var(--text) 40%, var(--border));
+  color: var(--text);
 }
 
 .cell-run {
