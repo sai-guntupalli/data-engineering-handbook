@@ -75,6 +75,10 @@ function splitAtHeadings(
   return segments;
 }
 
+/** Rendered in the client too (the viewer's Elaborate gate); client-safe
+ *  module without node:fs, re-exported here as the single section API. */
+export { isElaboratable } from "./section-elaborate";
+
 /**
  * Parse the notebook at summary.repoPath into viewer sections. `## ` headings
  * start a section (slugified id; repeated headings get -2/-3 suffixes); content

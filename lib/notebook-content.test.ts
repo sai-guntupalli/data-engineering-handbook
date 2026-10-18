@@ -4,7 +4,7 @@ import path from "node:path";
 import { afterAll, describe, expect, it } from "vitest";
 
 import { getNotebookSummaries, type NotebookSummary } from "./notebooks";
-import { readNotebookPage } from "./notebook-content";
+import { isElaboratable, readNotebookPage } from "./notebook-content";
 import { renderMarkdown } from "./markdown";
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(), "notebook-content-"));
@@ -169,6 +169,78 @@ describe("readNotebookPage", () => {
       "notes-2",
       "notes-3",
     ]);
+  });
+});
+
+describe("isElaboratable", () => {
+  it("is false for the intro section, however long it is", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell(["# Spark Basics", "\n", `${"A long how-to paragraph. ".repeat(40)}`]),
+        markdownCell(["## Setup"]),
+      ]),
+    );
+    expect(page.sections[0].id).toBe("intro");
+    expect(isElaboratable(page.sections[0])).toBe(false);
+  });
+
+  it("is false for pure-navigation headings like Contents", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell([
+          "## Contents",
+          "\n",
+          `- [Some very long section title one](${"#one"})`,
+          `- [Some very long section title two](${"#two"})`,
+          `- [Some very long section title three](${"#three"}-x)`,
+        ]),
+        markdownCell(["## Real"]),
+      ]),
+    );
+    const contents = page.sections.find((section) => section.heading === "Contents");
+    expect(contents).toBeDefined();
+    expect(isElaboratable(contents!)).toBe(false);
+  });
+
+  it("is false for a tiny link-list-only section with a non-navigation heading", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell([
+          "## Resources",
+          "\n",
+          "- [FastAPI docs](https://fastapi.tiangolo.com)",
+          "- [React docs](https://react.dev)",
+        ]),
+      ]),
+    );
+    expect(isElaboratable(page.sections[1])).toBe(false);
+  });
+
+  it("is true for a normal section with code, even without prose", () => {
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [
+        markdownCell(["## Setup", "\n", "Run this:"]),
+        codeCell(["spark = SparkSession.builder.getOrCreate()"]),
+      ]),
+    );
+    expect(isElaboratable(page.sections[1])).toBe(true);
+  });
+
+  it("is true for a tiny section that carries a code block", () => {
+    const page = readNotebookPage(summaryFor("Spark Basics", [
+      markdownCell(["## Snippet"]),
+      codeCell(["x = 1"]),
+    ]));
+    expect(isElaboratable(page.sections[1])).toBe(true);
+  });
+
+  it("is true for a short-heading section whose explanation exceeds 400 chars", () => {
+    const explanation = `${"This section explains the tuning order in prose, not code: first read the plan, ".repeat(8)}`;
+    expect(explanation.length).toBeGreaterThan(400);
+    const page = readNotebookPage(
+      summaryFor("Spark Basics", [markdownCell(["## Tuning", "\n", explanation])]),
+    );
+    expect(isElaboratable(page.sections[1])).toBe(true);
   });
 });
 

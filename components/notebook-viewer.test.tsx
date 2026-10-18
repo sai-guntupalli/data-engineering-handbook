@@ -43,10 +43,12 @@ function pageFromCells(title: string, cells: object[]): NotebookPage {
   });
 }
 
-/** One section with a markdown table, an editable code cell and an illustrative one. */
+/** One elaboratable section (heading + markdown table + editable/illustrative
+ *  code cells) — the intro itself never carries an Elaborate button. */
 function oneSectionPage(): NotebookPage {
   return pageFromCells("Viewer Fixture", [
     { cell_type: "markdown", source: "# Viewer Fixture" },
+    { cell_type: "markdown", source: "## Load" },
     {
       cell_type: "markdown",
       source: "| a | b |\n|---|---|\n| 1 | 2 |\n",
@@ -210,7 +212,7 @@ describe("NotebookViewer", () => {
     expect(sentBody(fetch)).toEqual({
       notebook: "fake",
       path: expect.any(String),
-      cell_index: 2,
+      cell_index: 3, // after "# Viewer Fixture" and "## Load" markdown cells
       code: null,
     });
   });
@@ -273,7 +275,7 @@ describe("NotebookViewer", () => {
     expect(body.mode).toBe("elaborate");
     expect(body.notebook_title).toBe("Viewer Fixture");
     expect(body.section_markdown).toContain("| a | b |");
-    expect(body.context_cells).toEqual([]);
+    expect(body.context_cells).toEqual(["# Viewer Fixture"]);
   });
 
   it("sends up to three surrounding cell sources with an elaborate request", async () => {
@@ -281,11 +283,12 @@ describe("NotebookViewer", () => {
     vi.stubGlobal("fetch", fetch);
     render(<NotebookViewer page={sectionsPage()} />);
 
-    // Sections render in order: intro, load, notes — the middle one is "load".
+    // Sections render in order: intro, load, notes — the intro is never
+    // elaboratable and the code-bearing "load" carries the first button.
     const buttons = screen.getAllByRole("button", { name: /Elaborate/ });
-    expect(buttons).toHaveLength(3);
+    expect(buttons).toHaveLength(2);
     fetch.mockClear(); // ignore the mount-reset probe
-    fireEvent.click(buttons[1]!);
+    fireEvent.click(buttons[0]!);
 
     expect(await screen.findByText("ok")).not.toBeNull();
     const body = sentBody(fetch) as { context_cells: string[]; outline: string[] };
@@ -295,6 +298,23 @@ describe("NotebookViewer", () => {
       "Note detail.",
     ]);
     expect(body.outline).toEqual(["Viewer Fixture", "Load", "Notes"]);
+  });
+
+  it("skips the Elaborate button on intro and navigation sections", () => {
+    const page = pageFromCells("Viewer Fixture", [
+      { cell_type: "markdown", source: "# Viewer Fixture\n\nHow to use this notebook." },
+      {
+        cell_type: "markdown",
+        source: "## Contents\n\n- [Load](#load)\n- [Notes](#notes)",
+      },
+      { cell_type: "markdown", source: "## Load" },
+      { cell_type: "markdown", source: "Run the cells below." },
+      { cell_type: "code", source: "print(\"a\")" },
+    ]);
+    render(<NotebookViewer page={page} />);
+
+    expect(screen.getAllByRole("button", { name: /Elaborate/ })).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /Elaborate/ }).closest("section")?.id).toBe("load");
   });
 
   it("surfaces a stream error inside the elaborate panel", async () => {

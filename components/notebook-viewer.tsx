@@ -4,6 +4,7 @@ import { ArrowCounterClockwise, CircleNotch, PencilSimple, Play, Sparkle, X } fr
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { highlightCell } from "@/lib/highlight";
+import { isElaboratable } from "@/lib/section-elaborate";
 import { executeCell, resetKernel, streamChat, type ExecResponse } from "@/lib/interactive-api";
 import type {
   CodeSectionBlock,
@@ -101,6 +102,9 @@ function NotebookSectionView({
   showKernelHint: boolean;
 }) {
   const [elaborate, setElaborate] = useState<ElaborateState>(ELABORATE_CLOSED);
+  // The intro, navigation headings and bare link lists get no Elaborate — the
+  // tutor has nothing to add there. Panel plumbing is unchanged either way.
+  const elaboratable = isElaboratable(section);
   const firstCodeBlockIndex = section.blocks.findIndex((block) => block.kind === "code");
   const sectionMarkdown = section.blocks
     .filter((block) => block.kind === "markdown")
@@ -137,7 +141,7 @@ function NotebookSectionView({
     <section id={section.id} className="nb-section" data-nb-section-id={section.id}>
       <div className="nb-section-header">
         {section.id === "intro" ? null : <h2>{section.heading}</h2>}
-        {sectionMarkdown ? (
+        {elaboratable && sectionMarkdown ? (
           <button
             type="button"
             className="elaborate-button"
