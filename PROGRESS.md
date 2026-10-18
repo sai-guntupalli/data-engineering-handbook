@@ -2,9 +2,20 @@
 
 ## Current Status
 
-The interactive notebook viewer is implemented; the final-review fix wave and two live-verification fixes are done (grid blowout at ≥1200px, code-cell auto-fit crop) — suites green (pytest 46, vitest 34), awaiting PR merge.
+`feat/sql-duckdb` (stacked on `feat/interactive-notebook-viewer`): the SQL interview notebook (03) is deep-rewritten from in-memory sqlite3 to in-memory DuckDB (engine + helpers, Q1–Q22 ported, new Part 7 with five DuckDB-only lessons, theory cards refreshed), the merged topics/sql copy retired, `make validate` green and the viewer smoke ran cells against the live kernel; viewer polish follow-ups applied (Elaborate gated to real sections, dev-local sources a git-ignored `.env`).
 
 ## Completed
+
+- [x] 2026-10-18 — Elaborate only on sections worth explaining (0f95791, from user feedback on the data-warehouse-architecture notebook): the intro (title/author/how-to) and pure-navigation sections ("Contents"/"Table of Contents"/"Outline"/"Index" headings, or code-less sections whose link-stripped prose is under 400 chars) no longer render an Elaborate button; the gate is `isElaboratable` in the client-safe `lib/section-elaborate.ts` (re-exported from `lib/notebook-content.ts`) — a runtime import from `notebook-content.ts` itself would drag its `node:fs` into the client bundle and break the Turbopack build. Panel plumbing unchanged; 7 new lib tests + 1 viewer gating test (54 vitest)
+- [x] 2026-10-18 — `dev-local` loads a git-ignored `.env` (215070b): `scripts/dev-local.sh` runs `set -a; source ./.env 2>/dev/null || true; set +a` before uvicorn, so `OPENROUTER_API_KEY`/`OLLAMA_API_KEY`/`CHAT_PROVIDER`/`CHAT_MODEL` persist across sessions (shell exports still work); `.env` gitignored, README's interactive section documents the flow, snippet verified standalone with a throwaway .env (since removed)
+
+- [x] 2026-10-18 — Plan written (`.superpowers/sdd/2026-10-18-sql-notebook-duckdb/`, plan doc committed first)
+- [x] 2026-10-18 — Task 1: `duckdb>=1.0` in the `notebooks` extra (`uv lock`); setup rewritten — `duckdb.connect(":memory:")`, same `run`/`show` signatures, DuckDB-native `DATE`/`TIMESTAMP` columns, helpers + seed asserted; mechanical dialect swaps keep the bank runnable
+- [x] 2026-10-18 — Task 2: Q1–Q22 ported (date/timestamp asserts, strftime months, `date_diff`, Q7 `UPDATE ... FROM` check, Q17 real `PIVOT`/`UNPIVOT` + CASE, Q18 `median()`/`quantile_cont` + portable window version, Q22 `COUNT(DISTINCT) OVER`)
+- [x] 2026-10-18 — Task 3: Part 7 "DuckDB skills that SQLite could not teach" (QUALIFY, PIVOT/UNPIVOT, ASOF JOIN with a new `fx_rates` seed, LIST/STRUCT, EXPLAIN/EXPLAIN ANALYZE); T1/T2/T4/T5/T9/T13/T14 + closing refreshed
+- [x] 2026-10-18 — Task 4: `make watermark` + audit; merged `notebooks/topics/sql.ipynb` grown to the new cell set and sync'd (108 code cells + topic bonuses, sync-check green); `make validate` green; live viewer smoke (setup cells + Q1 ran in the browser kernel, duckdb 1.5.6)
+- [x] 2026-10-18 — Review-fix wave: Q9's expected count (11, not 12), Part 5 intro credits DuckDB's `median()`, seed summary now states the real three tied salary pairs + two duplicate email pairs, Q2's tie check ordered deterministically, Q5's second delete compares within the scratch table itself, RANGE-frame / ASOF-cast / `updated_at` wording corrected
+- [x] 2026-10-18 — Task 5: retired `notebooks/topics/sql.ipynb` (hands-on practice notebook is canonical; the identical merged copy is redundant to maintain) — removed the sync CONFIG entry, the "sql" slug from `lib/notebook-groups.ts`, README's group-table row and count (54 → 53), and CONTRIBUTING's merged-copies mention; all gates green (audit 58 notebooks, vitest 35, pytest 46, `make validate`)
 
 - [x] 2026-10-17 — Spec written (`.superpowers/sdd/2026-10-17-interactive-notebook-viewer/`)
 - [x] 2026-10-17 — Plan written with recorded rulings (browser → FastAPI direct, SIGINT interrupt, chat in React state, static reading view)
