@@ -50,8 +50,9 @@
 
 ## Next Steps
 
-1. Open a PR for `feat/spark-story` (stacked on the SQL/violet chains; merge order: viewer → SQL → spark story).
-2. Note that CI's `run_notebooks.py --check` has no Java: the Spark-shaped guards only really evaluate where a JDK exists. A follow-up could add a Java install to the repo-checks workflow so order-bugs like the two fixed here fail in CI too.
+1. Open a PR for `feat/spark-story` (stacked on the SQL/viewer chains; merge order: viewer → SQL → spark story).
+2. Wire CI for the two test suites into `.github/workflows/repo-checks.yml` (vitest via `npm test`, backend via `uv run --extra interactive pytest backend/tests`) — final-review recommendation.
+3. Note that CI's `run_notebooks.py --check` has no Java: the Spark-shaped guards only really evaluate where a JDK exists. A follow-up could add a Java install to the repo-checks workflow so order-bugs like the two fixed here fail in CI too.
 
 ## Blockers
 
