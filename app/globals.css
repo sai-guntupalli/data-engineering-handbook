@@ -867,6 +867,13 @@ a {
   grid-template-columns: 190px minmax(0, 1fr) 300px;
 }
 
+/* The article track is minmax(0, 1fr); without min-width: 0 the item's
+   min-content size (long code lines) would blow it past the 300px chat
+   column and slide underneath the sticky panel. */
+.viewer-article {
+  min-width: 0;
+}
+
 .toc {
   display: flex;
   flex-direction: column;
@@ -900,9 +907,13 @@ a {
   color: var(--text);
 }
 
+/* A single explicit minmax(0, 1fr) column: the implicit auto track would size
+   to the min-content of wide code lines and blow the article out under the
+   sticky chat panel (overflow is cut off here; pre/table scroll instead). */
 .viewer {
   display: grid;
   gap: 1.4rem;
+  grid-template-columns: minmax(0, 1fr);
   min-width: 0;
 }
 
@@ -913,6 +924,7 @@ a {
   box-shadow: 0 8px 30px rgba(31, 41, 55, 0.06);
   display: grid;
   gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
   padding: 1.3rem 1.5rem;
 }
 
@@ -933,6 +945,7 @@ a {
 .nb-blocks {
   display: grid;
   gap: 1.2rem;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 /* Rendered markdown of a section (repo-authored, marked's defaults). */
@@ -1003,13 +1016,18 @@ a {
   border: 1px solid var(--border);
   border-radius: 0.4rem;
   font-size: 0.85em;
+  overflow-wrap: anywhere; /* an overlong token (pipeline lines) wraps instead of poking past the column */
   padding: 0.05rem 0.35rem;
 }
 
+/* A wide table scrolls inside the article the same way code fences do,
+   instead of pushing the column past the chat panel. */
 .nb-markdown table {
   border-collapse: collapse;
+  display: block;
   margin: 0.8rem 0 0;
-  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .nb-markdown th,
@@ -1282,6 +1300,7 @@ a {
   display: grid;
   gap: 0.6rem;
   grid-column: 3;
+  grid-template-columns: minmax(0, 1fr);
   max-height: calc(100dvh - 116px);
   padding: 0.9rem 1rem;
   position: sticky;
