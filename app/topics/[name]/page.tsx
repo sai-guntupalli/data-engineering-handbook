@@ -4,7 +4,7 @@ import { BookOpen } from "@phosphor-icons/react/dist/ssr";
 import { ChatPanel } from "@/components/chat-panel";
 import { NotebookViewer } from "@/components/notebook-viewer";
 import { SiteHeader } from "@/components/SiteHeader";
-import { readNotebookPage } from "@/lib/notebook-content";
+import { readNotebookPage, type NotebookPage } from "@/lib/notebook-content";
 import { getNotebookSummaries, getSearchIndex } from "@/lib/notebooks";
 
 /** One static page per notebook, folder-agnostic (the viewer's reading view). */
@@ -26,7 +26,16 @@ export default async function TopicPage({ params }: { params: Promise<{ name: st
   const { name } = await params;
   const summary = getNotebookSummaries().find((candidate) => candidate.slug === name);
   if (!summary) notFound();
-  const page = readNotebookPage(summary);
+  // The dev server caches summaries per process (lib/notebooks.ts), so a
+  // notebook deleted or renamed mid-session is still "found" here while its
+  // file is gone. Degrade to the shared 404 view instead of a 500; fresh
+  // builds enumerate only existing files, so this is dev-only.
+  let page: NotebookPage;
+  try {
+    page = readNotebookPage(summary);
+  } catch {
+    return notFound();
+  }
 
   return (
     <>
