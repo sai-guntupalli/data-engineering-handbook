@@ -2,7 +2,7 @@
 
 ## Current Status
 
-The interactive notebook viewer is implemented, and the full-branch final-review fix wave is done (kernel auto-reset on grace expiry, live `visible_section` context, mount-time kernel reset, retryable Elaborate, refusal mapping, test/deps/docs hygiene) — suites green (pytest 46, vitest 34), awaiting PR merge.
+The interactive notebook viewer is implemented; the final-review fix wave and two live-verification fixes are done (grid blowout at ≥1200px, code-cell auto-fit crop) — suites green (pytest 46, vitest 34), awaiting PR merge.
 
 ## Completed
 
@@ -23,6 +23,8 @@ The interactive notebook viewer is implemented, and the full-branch final-review
   - FINAL-4/FINAL-6: non-dict notebook JSON is a 400 (`backend/sessions.py`); HTTP refusals map to status `error` with the detail in the traceback, "crashed" reserved for transport failure (`lib/interactive-api.ts`)
   - FINAL-5/FINAL-8: dead `pytest-httpx` dependency removed (pyproject, Makefile help, uv.lock); EOF newlines added to seven files; README notes the per-notebook (shared-across-tabs) kernel
   - FINAL-11: `RUNNABLE_CELL_INDEX` is computed from the notebook at test time, no longer hardcoded
+- [x] 2026-10-18 — Grid blowout at ≥1200px (cb38d8f, found by live browser verification): the article column could not shrink below min-content and slid under the sticky chat panel; fixed with `minmax(0, 1fr)` grid tracks + `min-width: 0`, plus scrolling tables and `overflow-wrap` on inline code
+- [x] 2026-10-18 — Code cells auto-fit their content (6989afa, found by the user's report, verified live — 114/114 code cells fit with no crop): code cell textareas auto-grow to content via `useLayoutEffect` + `scrollHeight`, soft-wrap with `overflow-wrap: anywhere`, and the resize grip was removed
 
 ## In Progress
 
@@ -32,7 +34,7 @@ The interactive notebook viewer is implemented, and the full-branch final-review
 
 1. Open a PR for `feat/interactive-notebook-viewer` (review → merge to `master` per the GitHub workflow).
 2. Run `make dev-local` for a live hands-on smoke: run a non-Spark and a Spark cell, and one chat turn (needs `OPENROUTER_API_KEY` or `OLLAMA_API_KEY` in the environment); visually check the viewer + chat panel at browser widths.
-3. Wire CI for the two test suites (vitest via `npm test`, backend via `uv run --extra interactive pytest backend/tests`) — final-review recommendation.
+3. Wire CI for the two test suites into `.github/workflows/repo-checks.yml` (vitest via `npm test`, backend via `uv run --extra interactive pytest backend/tests`) — final-review recommendation.
 4. Optional polish (deferred, minor; the cleanup list lives in `.superpowers/sdd/2026-10-17-interactive-notebook-viewer/progress.md` while that workspace exists): persist chat history across reloads (currently React state only, per plan ruling); a same-origin `/api/*` proxy would require dropping `output: "export"` — revisit only if the viewer ever needs a non-local deployment.
 
 ## Blockers
