@@ -11,6 +11,14 @@ check`, sync-check, both test suites, lint + site build, and a live-viewer smoke
 
 ## Completed
 
+- [x] 2026-10-18 — Review riders on the seed work ("fix: portable seed session timezone and marker wording"):
+  schemas-intro wording ("sample tables above"), bootstrap pins
+  `spark.sql.session.timeZone=UTC` (Chicago assert + timestamp round-trips verified
+  portable under TZ=UTC / Asia/Kolkata / America/Los_Angeles probes; raw-ts shows remain
+  host-wall-time under a UTC session tz), and the three S3-read illustrative cells now
+  say "reads s3:// - needs real object storage" instead of the stale
+  "requires pyspark" wording. Full real-Spark re-run + `make check` + sync-check green;
+  pushed to `origin/feat/spark-story` (PR #27).
 - [x] 2026-10-18 — Shared sample data for the spark notebook lessons (report
   `.superpowers/sdd/spark-seed-report.md`): new "Sample data: the tables every lesson below
   runs on" section in Part 2 of `notebooks/topics/spark.ipynb` (12 cells: intro, session
