@@ -2,10 +2,15 @@
 
 ## Current Status
 
-`feat/sql-duckdb` (stacked on `feat/interactive-notebook-viewer`): the SQL interview notebook (03) is deep-rewritten from in-memory sqlite3 to in-memory DuckDB (engine + helpers, Q1–Q22 ported, new Part 7 with five DuckDB-only lessons, theory cards refreshed), the merged topics/sql copy retired, `make validate` green and the viewer smoke ran cells against the live kernel; viewer polish follow-ups applied (Elaborate gated to real sections, dev-local sources a git-ignored `.env`).
+`feat/spark-story` (stacked on `feat/sql-duckdb`): the PySpark story restructure is complete — the practice notebook `04_pyspark_concepts.ipynb` is reorganized into five named parts with the two order-bugs fixed (cells used `spark`/`customers` before the cells that define them now run after; self-check 3's truly-wrong row count corrected and verified against a real local Spark run), the merged topics/spark tail regenerated via the sync script, and the topic-authored arc rebuilt into a five-part story (orientation → first session/execution model → shaping data → production patterns → real world and interview). Audit, sync-check, notebooks-check (both with and without a real Spark runtime), lint, site build and the live viewer smoke are all green.
 
 ## Completed
 
+- [x] 2026-10-18 — Spark story restructure complete (plan `docs/superpowers/plans/2026-10-18-spark-notebook-story.md` committed first, report in `.superpowers/sdd/2026-10-18-spark-notebook-story/spark-story-report.md`):
+  - [x] Task 1 (75dbf10): practice notebook `04` restructured — five part headers with connective prose, intro rewritten to a five-part map, six two-idea markdown cells split, two statefulness bugs fixed (depth-check used `spark` before the session cell; join-plan comparison used `customers` before the inputs cell — both NameErrors under a real Spark runtime, invisible in CI where Java is absent), self-check 3's row count corrected 5→4 (paid x3 + shipped x1). Verified: `run_notebooks.py --check` green with AND without Java (Spark 4.2 via homebrew openjdk@21); outputs saved; audit 183 md / 81 code / 73 asserts (code and asserts unchanged).
+  - [x] Task 2 (14fa340): merged tail of `topics/spark.ipynb` rebuilt verbatim by `scripts/sync_merged_copies.py` (never hand-edited); `--check` green.
+  - [x] Task 3 (2c8dc6a): topic-authored arc rebuilt into the five-part story — intro section condensed into three labelled cells, RDD-vs-DataFrame prose to orientation with its two illustrative one-liners moved to Part 2, new "When you would NOT use PySpark" section, bold one-idea cookbook leads, performance already split into labelled lessons, use cases + interview-answer structure as Part 5, closing pointer into the merged workbook. All 23 original sections and all 67 authored code cells survive; illustrative/runnable statuses unchanged (code=148, asserts=77); markdown words 18458→19243 (+4.2%). Viewer smoke: bootstrap probe, session-creation and DataFrame cells ran in the live browser kernel with zero errors and a clean console.
+  - [x] Task 4: `make validate` green (audit + sync-check + notebooks-check + lint + site build).
 - [x] 2026-10-18 — Elaborate only on sections worth explaining (0f95791, from user feedback on the data-warehouse-architecture notebook): the intro (title/author/how-to) and pure-navigation sections ("Contents"/"Table of Contents"/"Outline"/"Index" headings, or code-less sections whose link-stripped prose is under 400 chars) no longer render an Elaborate button; the gate is `isElaboratable` in the client-safe `lib/section-elaborate.ts` (re-exported from `lib/notebook-content.ts`) — a runtime import from `notebook-content.ts` itself would drag its `node:fs` into the client bundle and break the Turbopack build. Panel plumbing unchanged; 6 new lib tests + 1 viewer gating test (54 vitest)
 - [x] 2026-10-18 — `dev-local` loads a git-ignored `.env` (215070b): `scripts/dev-local.sh` runs `set -a; source ./.env 2>/dev/null || true; set +a` before uvicorn, so `OPENROUTER_API_KEY`/`OLLAMA_API_KEY`/`CHAT_PROVIDER`/`CHAT_MODEL` persist across sessions (shell exports still work); `.env` gitignored, README's interactive section documents the flow, snippet verified standalone with a throwaway .env (since removed)
 
@@ -41,14 +46,12 @@
 
 ## In Progress
 
-- Nothing — implementation, review fixes and verification are complete.
+- Nothing — story restructure complete and all gates green.
 
 ## Next Steps
 
-1. Open a PR for `feat/interactive-notebook-viewer` (review → merge to `master` per the GitHub workflow).
-2. Run `make dev-local` for a live hands-on smoke: run a non-Spark and a Spark cell, and one chat turn (needs `OPENROUTER_API_KEY` or `OLLAMA_API_KEY` in the environment); visually check the viewer + chat panel at browser widths.
-3. Wire CI for the two test suites into `.github/workflows/repo-checks.yml` (vitest via `npm test`, backend via `uv run --extra interactive pytest backend/tests`) — final-review recommendation.
-4. Optional polish (deferred, minor; the cleanup list lives in `.superpowers/sdd/2026-10-17-interactive-notebook-viewer/progress.md` while that workspace exists): persist chat history across reloads (currently React state only, per plan ruling); a same-origin `/api/*` proxy would require dropping `output: "export"` — revisit only if the viewer ever needs a non-local deployment.
+1. Open a PR for `feat/spark-story` (stacked on the SQL/violet chains; merge order: viewer → SQL → spark story).
+2. Note that CI's `run_notebooks.py --check` has no Java: the Spark-shaped guards only really evaluate where a JDK exists. A follow-up could add a Java install to the repo-checks workflow so order-bugs like the two fixed here fail in CI too.
 
 ## Blockers
 
