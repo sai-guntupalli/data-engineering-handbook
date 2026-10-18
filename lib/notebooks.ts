@@ -271,6 +271,13 @@ export function getNotebookGroups(): NotebookGroupView[] {
   return groups.filter((group) => group.notebooks.length > 0);
 }
 
+/** Every summary in reading order, ungrouped. Consumers that need the layout,
+ *  with its slug-guard, should use getNotebookGroups; this is for the
+ *  viewer's generateStaticParams (one page per notebook, folder agnostic). */
+export function getNotebookSummaries(): NotebookSummary[] {
+  return allSummaries();
+}
+
 export function getNotebookStats() {
   const summaries = allSummaries();
   // Exclude merged copies of the practice notebooks so self-contained topics
