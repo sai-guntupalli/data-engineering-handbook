@@ -2,10 +2,30 @@
 
 ## Current Status
 
-`feat/spark-story` (stacked on `feat/sql-duckdb`): the PySpark story restructure is complete — the practice notebook `04_pyspark_concepts.ipynb` is reorganized into five named parts with the two order-bugs fixed (cells used `spark`/`customers` before the cells that define them now run after; self-check 3's truly-wrong row count corrected and verified against a real local Spark run), the merged topics/spark tail regenerated via the sync script, and the topic-authored arc rebuilt into a five-part story (orientation → first session/execution model → shaping data → production patterns → real world and interview). Audit, sync-check, notebooks-check (both with and without a real Spark runtime), lint, site build and the live viewer smoke are all green.
+`feat/spark-story` (stacked on `feat/sql-duckdb`): the shared sample-data section is in
+`topics/spark.ipynb` Part 2 (customers/orders/order_items/events seed with explicit
+schemas, show()s and a sanity-check assert cell) and 13 data-shaping lesson cells now run
+on it as runnable cells (joins, aggregations, windows, the dates/tz/nulls/flags/dedupe
+cookbook). Verified by a real local Spark 4.2 run of the whole topic notebook, `make
+check`, sync-check, both test suites, lint + site build, and a live-viewer smoke.
 
 ## Completed
 
+- [x] 2026-10-18 — Shared sample data for the spark notebook lessons (report
+  `.superpowers/sdd/spark-seed-report.md`): new "Sample data: the tables every lesson below
+  runs on" section in Part 2 of `notebooks/topics/spark.ipynb` (12 cells: intro, session
+  bootstrap, four seeded tables with explicit schemas + committed `show()`/`printSchema()`
+  outputs, row-count sanity cell with per-order ledger reconciliation asserts); 13
+  illustrative lesson cells re-wired to run on the seed (joins 85/87/90,
+  aggregations 94/96, windows 102/108, cookbook 114/116/120/124/130/135); old
+  `main.bronze.orders` binder cell removed; Part headers + section intros updated;
+  merged region + practice notebook untouched (byte-verified). Gates: full real-Spark
+  nbclient run of the topic notebook (illustrative cells skipped per the viewer's
+  read-only contract; merged region ran live), `make check`, sync-check, vitest 54,
+  backend pytest 46 (test_execute_endpoint.py now locates its two pinned cells by
+  marker instead of hardcoded indexes), lint + site build, live-viewer smoke of the
+  seed section + join lesson (java shim-symlinked into `.venv/bin/java` for the running
+  backend).
 - [x] 2026-10-18 — Spark story restructure complete (plan `docs/superpowers/plans/2026-10-18-spark-notebook-story.md` committed first, report in `.superpowers/sdd/2026-10-18-spark-notebook-story/spark-story-report.md`):
   - [x] Task 1 (75dbf10): practice notebook `04` restructured — five part headers with connective prose, intro rewritten to a five-part map, six two-idea markdown cells split, two statefulness bugs fixed (depth-check used `spark` before the session cell; join-plan comparison used `customers` before the inputs cell — both NameErrors under a real Spark runtime, invisible in CI where Java is absent), self-check 3's row count corrected 5→4 (paid x3 + shipped x1). Verified: `run_notebooks.py --check` green with AND without Java (Spark 4.2 via homebrew openjdk@21); outputs saved; audit 183 md / 81 code / 73 asserts (code and asserts unchanged).
   - [x] Task 2 (14fa340): merged tail of `topics/spark.ipynb` rebuilt verbatim by `scripts/sync_merged_copies.py` (never hand-edited); `--check` green.
@@ -46,11 +66,11 @@
 
 ## In Progress
 
-- Nothing — story restructure complete and all gates green.
+- Nothing — sample-data seed complete and all gates green.
 
 ## Next Steps
 
-1. Open a PR for `feat/spark-story` (stacked on the SQL/viewer chains; merge order: viewer → SQL → spark story).
+1. Add the sample-data commit to PR #27 (`feat/spark-story`); it lands on top of 07f851d.
 2. Wire CI for the two test suites into `.github/workflows/repo-checks.yml` (vitest via `npm test`, backend via `uv run --extra interactive pytest backend/tests`) — final-review recommendation.
 3. Note that CI's `run_notebooks.py --check` has no Java: the Spark-shaped guards only really evaluate where a JDK exists. A follow-up could add a Java install to the repo-checks workflow so order-bugs like the two fixed here fail in CI too.
 
