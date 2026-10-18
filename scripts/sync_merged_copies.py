@@ -3,7 +3,7 @@
 Keep the self-contained merged copies inside topic notebooks in sync with the
 practice notebooks they were merged from.
 
-Three topic notebooks carry a copy of a practice notebook at the bottom so the
+Two topic notebooks carry a copy of a practice notebook at the bottom so the
 handbook reads as one self-contained notebook per subject for single-file viewers:
 
     notebooks/topics/python.ipynb  <- 01_python_basics, 02_python_coding_problems

@@ -20,7 +20,7 @@ export type NotebookSummary = {
   /** Coarse reading time: markdown words / 200wpm plus 8s per runnable cell. */
   readingMinutes: number;
   /** Code cells and asserts that are verbatim copies of a practice notebook
-   *  (merged self-contained regions). Zero except for python/spark/sql topics. */
+   *  (merged self-contained regions). Zero except for python/spark topics. */
   mergedCodeCells: number;
   mergedAsserts: number;
   githubHref: string;
