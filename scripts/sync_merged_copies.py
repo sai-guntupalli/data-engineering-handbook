@@ -3,12 +3,11 @@
 Keep the self-contained merged copies inside topic notebooks in sync with the
 practice notebooks they were merged from.
 
-Three topic notebooks carry a copy of a practice notebook at the bottom so the
+Two topic notebooks carry a copy of a practice notebook at the bottom so the
 handbook reads as one self-contained notebook per subject for single-file viewers:
 
     notebooks/topics/python.ipynb  <- 01_python_basics, 02_python_coding_problems
     notebooks/topics/spark.ipynb   <- 04_pyspark_concepts
-    notebooks/topics/sql.ipynb     <- 03_sql_interview_questions
 
 Each merged region starts with a note cell that says "merged here so this
 notebook is self-contained" and names the source notebook in backticks. This script:
@@ -48,9 +47,6 @@ CONFIG: dict[str, dict[str, str]] = {
     },
     "notebooks/topics/spark.ipynb": {
         "notebooks/04_pyspark_concepts.ipynb": "rebuild",
-    },
-    "notebooks/topics/sql.ipynb": {
-        "notebooks/03_sql_interview_questions.ipynb": "sync",
     },
 }
 
