@@ -23,7 +23,6 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
       "python",
       "python-basics",
       "python-coding",
-      "sql",
       "scala",
       "spark",
       "spark-tuning",

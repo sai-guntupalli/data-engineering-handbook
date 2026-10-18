@@ -29,7 +29,7 @@ library only, and fast.
 
 ## Merged copies
 
-`topics/python.ipynb`, `topics/spark.ipynb` and `topics/sql.ipynb` end with a copy of a practice notebook so each topic
+`topics/python.ipynb` and `topics/spark.ipynb` end with a copy of a practice notebook so each topic
 reads and runs as one self-contained notebook. After editing `01`–`04`, refresh the copies so they keep reading and
 running like the source:
 

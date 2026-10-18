@@ -54,7 +54,7 @@ Two things about extras (`uv` installs exactly what a command names and removes 
 | Group | Notebooks |
 |---|---|
 | Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions`, `04_pyspark_concepts`, `05_interview_questions` |
-| Core pipeline skills | Python, Python basics, Python coding problems, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
+| Core pipeline skills | Python, Python basics, Python coding problems, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
 | Lakehouse and formats | Parquet, Delta Lake, Apache Iceberg, Apache Hudi, Avro, Change data capture, Data modeling |
 | Cloud and platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino and Presto, ClickHouse, DynamoDB, Bigtable |
 | Streaming and distributed systems | Kafka, Flink, Redis, Hadoop, Hive, HBase, Cassandra, Kubernetes |
@@ -67,7 +67,7 @@ Two things about extras (`uv` installs exactly what a command names and removes 
 ```text
 notebooks/
   01_python_basics.ipynb ... 05_interview_questions.ipynb   practice notebooks
-  topics/<topic>.ipynb                                       54 topic notebooks
+  topics/<topic>.ipynb                                       53 topic notebooks
 app/                    Next.js gallery: searchable grouped cards with GitHub links
 lib/notebooks.ts        reads the notebooks and builds the gallery data
 lib/notebook-groups.ts  which notebook belongs to which group
