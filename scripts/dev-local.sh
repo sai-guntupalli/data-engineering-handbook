@@ -9,6 +9,12 @@ set -euo pipefail
 
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 
+# Optional repo-root .env (git-ignored): plain KEY=value lines, exported for the
+# backend — OPENROUTER_API_KEY, OLLAMA_API_KEY, CHAT_PROVIDER, CHAT_MODEL, ...
+set -a
+source ./.env 2>/dev/null || true
+set +a
+
 PORT="${PORT:-3000}"
 CHAT_PORT="${CHAT_PORT:-8077}"
 HEALTH_URL="http://127.0.0.1:${CHAT_PORT}/health"

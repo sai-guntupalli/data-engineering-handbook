@@ -32,3 +32,6 @@ site/
 # SDD/scraper scratch
 .superpowers/
 .playwright-mcp/
+
+# Local provider keys for the interactive viewer (dev-local sources this; never committed)
+.env

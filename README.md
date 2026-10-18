@@ -34,10 +34,11 @@ Two things about extras (`uv` installs exactly what a command names and removes 
 `make dev-local` and `make test` name all three extras (`notebooks`, `notebooks-spark`,
 `interactive`), so they never strip packages the notebook tooling needs.
 
-- Chat needs an API key in the environment: `OPENROUTER_API_KEY` (default provider) or
-  `OLLAMA_API_KEY` for local models. `CHAT_PROVIDER` and `CHAT_MODEL` override the defaults; copy
-  [`chat.config.example.yml`](chat.config.example.yml) to `chat.config.yml` (gitignored) for
-  other options.
+- Chat needs an API key: create a `.env` in the repo root (git-ignored, loaded by
+  `make dev-local`) with one variable per line, e.g. `OPENROUTER_API_KEY=sk-or-...` or
+  `OLLAMA_API_KEY=...` for local models; `CHAT_PROVIDER` and `CHAT_MODEL` may live there too.
+  Exporting variables directly in your shell works as before. For options beyond one key, copy
+  [`chat.config.example.yml`](chat.config.example.yml) to `chat.config.yml` (gitignored).
 - On a topic page: **Run** executes a cell against a live kernel (each run gets 60 seconds), **Elaborate**
   asks the LLM to expand a section inline, and the chat panel streams answers over SSE.
 - The kernel is per notebook, not per tab: the same notebook open in two browser tabs shares one
