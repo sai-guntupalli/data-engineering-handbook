@@ -1136,9 +1136,11 @@ a {
   gap: 0.55rem;
 }
 
+/* No border: the component sizes the box to scrollHeight, so with
+   box-sizing: border-box the border would shave pixels off the last line. */
 .cell-textarea {
   background: var(--code-bg);
-  border: 1px solid transparent;
+  border: 0;
   border-radius: 0.75rem;
   color: #dbe4ff;
   font-family: var(--font-mono), monospace;
@@ -1146,15 +1148,14 @@ a {
   line-height: 1.55;
   margin: 0;
   min-height: 3.4rem;
+  overflow-wrap: anywhere;
   padding: 0.85rem 1rem;
-  resize: vertical;
-  transition: border-color 140ms ease;
+  white-space: pre-wrap;
   width: 100%;
 }
 
 .cell-textarea:focus-visible {
-  border-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  outline: none;
+  outline: 2px solid color-mix(in srgb, var(--accent) 55%, transparent);
 }
 
 .cell-textarea[readonly] {

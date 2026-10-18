@@ -1,7 +1,7 @@
 "use client";
 
 import { CircleNotch, Play, Sparkle, X } from "@phosphor-icons/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 
 import { executeCell, resetKernel, streamChat, type ExecResponse } from "@/lib/interactive-api";
 import type {
@@ -200,6 +200,40 @@ function NotebookSectionView({
   );
 }
 
+/** A code area that never crops: grown to its content on every change
+ *  (auto → scrollHeight), soft-wrapped, no inner scrolling and no resize grip.
+ *  resize/overflow stay inline because the fit contract lives here — the
+ *  stylesheet cannot express "matches this element's measured height". */
+function CodeTextarea({
+  value,
+  onChange,
+  ariaLabel,
+}: {
+  value: string;
+  onChange?: (next: string) => void;
+  ariaLabel: string;
+}) {
+  const ref = useRef<HTMLTextAreaElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    el.style.height = "auto";
+    el.style.height = `${el.scrollHeight}px`;
+  }, [value]);
+  return (
+    <textarea
+      ref={ref}
+      className="cell-textarea"
+      value={value}
+      onChange={onChange ? (event) => onChange(event.target.value) : undefined}
+      readOnly={!onChange}
+      spellCheck={false}
+      style={{ resize: "none", overflow: "hidden" }}
+      aria-label={ariaLabel}
+    />
+  );
+}
+
 function CodeCellView({
   block,
   notebook,
@@ -228,13 +262,7 @@ function CodeCellView({
   if (block.illustrative) {
     return (
       <div className="nb-cell">
-        <textarea
-          className="cell-textarea"
-          value={block.source}
-          readOnly
-          spellCheck={false}
-          aria-label={`Illustrative code cell ${block.cellIndex} (read-only)`}
-        />
+        <CodeTextarea value={block.source} ariaLabel={`Illustrative code cell ${block.cellIndex} (read-only)`} />
         <div className="cell-toolbar">
           <span
             className="illustrative-badge"
@@ -251,13 +279,7 @@ function CodeCellView({
 
   return (
     <div className="nb-cell">
-      <textarea
-        className="cell-textarea"
-        value={source}
-        onChange={(event) => setSource(event.target.value)}
-        spellCheck={false}
-        aria-label={`Editable code cell ${block.cellIndex}`}
-      />
+      <CodeTextarea value={source} onChange={setSource} ariaLabel={`Editable code cell ${block.cellIndex}`} />
       <div className="cell-toolbar">
         <button
           type="button"

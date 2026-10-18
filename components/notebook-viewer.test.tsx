@@ -294,6 +294,37 @@ describe("NotebookViewer", () => {
     expect(await screen.findByText(/OPENROUTER_API_KEY/)).not.toBeNull();
   });
 
+  it("auto-fits every code textarea to its content — no crop, no scroll", () => {
+    // jsdom cannot lay out text; the stub makes the fit measurable. Editing
+    // re-asserts it against a CHANGED stub height so the re-application on
+    // edit is proven, not just the mount pass.
+    const proto = HTMLTextAreaElement.prototype as typeof HTMLTextAreaElement.prototype & { scrollHeight?: number };
+    const original = Object.getOwnPropertyDescriptor(proto, "scrollHeight") ?? null;
+    const setScrollHeight = (value: number) =>
+      Object.defineProperty(proto, "scrollHeight", { configurable: true, value });
+    try {
+      setScrollHeight(137);
+      render(<NotebookViewer page={oneSectionPage()} />);
+
+      const textareas = screen.getAllByLabelText(/code cell \d/i) as HTMLTextAreaElement[];
+      expect(textareas.length).toBe(2); // editable + illustrative
+      for (const el of textareas) {
+        expect(el.style.height).toBe("137px");
+        expect(el.style.resize).toBe("none");
+        expect(el.style.overflow).toBe("hidden");
+      }
+
+      setScrollHeight(55);
+      const editable = screen.getByLabelText(/editable code cell/i) as HTMLTextAreaElement;
+      fireEvent.change(editable, { target: { value: 'print("x" * 120)  # a much longer edit' } });
+      expect(editable.style.height).toBe("55px");
+    } finally {
+      // Restore exactly what jsdom had: its own descriptor, or no own property.
+      if (original) Object.defineProperty(proto, "scrollHeight", original);
+      else delete (proto as { scrollHeight?: unknown }).scrollHeight;
+    }
+  });
+
   it("anchors each section with its id and shows the kernel hint once, under the first code cell", () => {
     const { container } = render(<NotebookViewer page={sectionsPage()} />);
 
