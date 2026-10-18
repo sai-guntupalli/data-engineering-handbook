@@ -28,3 +28,7 @@ site/
 
 # Git worktrees (implementation scratch spaces)
 .worktrees/
+
+# SDD/scraper scratch
+.superpowers/
+.playwright-mcp/
