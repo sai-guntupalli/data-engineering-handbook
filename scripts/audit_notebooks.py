@@ -30,7 +30,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from notebook_format import ROOT, NOTEBOOKS_DIR, cell_source, format_notebook, serialize  # noqa: E402
+from notebook_format import NOTEBOOKS_DIR, ROOT, cell_source, format_notebook, serialize  # noqa: E402
 
 MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
 LOCALHOST_RE = re.compile(r"(?:localhost|127\.0\.0\.1):\d+")
@@ -62,9 +62,8 @@ def setup_packages(code_cells: list[str]) -> dict[str, str] | None:
         except SyntaxError:
             continue
         for node in tree.body:
-            if (
-                isinstance(node, ast.Assign)
-                and any(isinstance(target, ast.Name) and target.id == SETUP_NAME for target in node.targets)
+            if isinstance(node, ast.Assign) and any(
+                isinstance(target, ast.Name) and target.id == SETUP_NAME for target in node.targets
             ):
                 value = ast.literal_eval(node.value)
                 if isinstance(value, dict):

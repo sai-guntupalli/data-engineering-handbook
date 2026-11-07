@@ -24,3 +24,20 @@ notebooks-spark = [
 [tool.uv]
 # This repository ships notebooks and a web app, not an importable Python package.
 package = false
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3",
+    "ruff>=0.6",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["notebooks", "site"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]

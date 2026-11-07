@@ -15,9 +15,7 @@ export type NotebookSummary = {
   assertCount: number;
   /** "### Try it" exercise blocks in the markdown. */
   tryItBlocks: number;
-  /** Code cells marked `# ILLUSTRATIVE` (need a platform; will not run locally). */
-  illustrativeCells: number;
-  /** Coarse reading time: markdown words / 200wpm plus 8s per runnable cell. */
+  /** Coarse reading time: markdown words / 200wpm plus 8s per code cell. */
   readingMinutes: number;
   githubHref: string;
   /** Opens this notebook in Google Colab (repository must stay public). */
@@ -118,12 +116,11 @@ function readSummary(file: string): NotebookSummary {
   const repoPath = path.relative(repoRoot, file).split(path.sep).join("/");
   const filename = path.basename(file, ".ipynb");
   const codeCells = cells.filter((cell) => cell.type === "code");
-  const illustrativeCells = codeCells.filter((cell) => cell.source.includes("# ILLUSTRATIVE")).length;
   const tryItBlocks = (markdown.match(/### Try it/g) ?? []).length;
   const markdownWords = markdown.split(/\s+/).filter(Boolean).length;
   const readingMinutes = Math.max(
     1,
-    Math.round(markdownWords / 200 + ((codeCells.length - illustrativeCells) * 8) / 60),
+    Math.round(markdownWords / 200 + (codeCells.length * 8) / 60),
   );
 
   return {
@@ -138,7 +135,6 @@ function readSummary(file: string): NotebookSummary {
       0,
     ),
     tryItBlocks,
-    illustrativeCells,
     readingMinutes,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
     colabHref: `${COLAB_HREF}/${repository}/blob/${BRANCH}/${repoPath}`,

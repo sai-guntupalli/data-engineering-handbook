@@ -36,10 +36,7 @@ AUTHOR_URL = "https://github.com/sai-guntupalli"
 REPOSITORY = "sai-guntupalli/data-engineering-handbook"
 BRANCH = "master"
 
-CREDIT_LINE = (
-    f"*Author: [{AUTHOR_NAME}]({AUTHOR_URL}) · "
-    f"[{REPOSITORY}](https://github.com/{REPOSITORY}) · CC BY 4.0*"
-)
+CREDIT_LINE = f"*Author: [{AUTHOR_NAME}]({AUTHOR_URL}) · [{REPOSITORY}](https://github.com/{REPOSITORY}) · CC BY 4.0*"
 COLAB_BADGE_IMAGE = "https://colab.research.google.com/assets/colab-badge.svg"
 COLAB_BASE = f"https://colab.research.google.com/github/{REPOSITORY}/blob/{BRANCH}"
 

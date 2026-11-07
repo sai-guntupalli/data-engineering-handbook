@@ -12,7 +12,6 @@ export type CardNotebook = {
   codeCells: number;
   assertCount: number;
   tryItBlocks: number;
-  illustrativeCells: number;
   readingMinutes: number;
   groupLabel: string;
   githubHref: string;
@@ -44,14 +43,6 @@ export function NotebookCard({ notebook }: { notebook: CardNotebook }) {
           ? `${notebook.tryItBlocks} ${notebook.tryItBlocks === 1 ? "exercise" : "exercises"} · `
           : ""}
         ~{notebook.readingMinutes} min
-        {notebook.illustrativeCells > 0 ? (
-          <span
-            className="meta-pill"
-            title="Cells marked # ILLUSTRATIVE need an external platform (Spark, Kafka, a cloud SDK); they will not run in plain Jupyter."
-          >
-            {notebook.illustrativeCells} illustrative
-          </span>
-        ) : null}
       </p>
       <div className="notebook-links">
         <a

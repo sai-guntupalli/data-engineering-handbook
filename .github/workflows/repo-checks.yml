@@ -1,62 +1,56 @@
-# Mirrors `make validate` (Makefile): notebook audit -> notebook execution without
-# writes -> app lint + build. Keep the two in sync when changing either.
+# Mirrors `make validate`: lint + tests, notebook audit, execute every notebook
+# (as Colab's "Run all" would), then build the site. Keep the two in sync.
 
-name: Notebook checks
+name: Checks
 
 on:
   push:
-    branches:
-      - "**"
+    branches: [master]
   pull_request:
 
 permissions:
   contents: read
 
 concurrency:
-  group: repo-checks-${{ github.ref }}
+  group: checks-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  notebooks:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          # Matches .python-version and pyproject.toml requires-python.
-          python-version: "3.13"
-
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v5
+      - uses: astral-sh/setup-uv@v5
         with:
           enable-cache: true
 
-      - name: Install notebook tooling
-        run: uv sync --extra notebooks
+      # PySpark notebooks need a JVM; Spark 3.5 supports Java 8-21.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
 
-      - name: Audit notebooks
-        run: uv run python scripts/audit_notebooks.py --quiet
-
-      - name: Check merged copies
-        run: uv run python scripts/sync_merged_copies.py --check
-
-      - name: Run practice notebooks
-        run: uv run python scripts/run_notebooks.py --check
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: "22"
-          cache: "npm"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
 
-      - name: Install app dependencies
-        run: npm ci
+      - name: Install
+        run: make install
 
-      - name: Lint app
-        run: npm run lint
+      - name: Lint
+        run: make lint
 
-      - name: Build gallery app
-        run: npm run build
+      - name: Unit tests
+        run: make test
+
+      - name: Audit notebooks
+        run: make check
+
+      - name: Run every notebook
+        run: make notebooks JOBS=4
+
+      - name: Build site
+        run: make build
