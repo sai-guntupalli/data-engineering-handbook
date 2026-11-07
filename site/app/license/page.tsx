@@ -67,7 +67,6 @@ export default function LicensePage() {
       <main id="main-content">
         <div className="content-shell prose-shell">
           <header className="page-heading">
-            <p className="eyebrow">License</p>
             <h1>Free to use, with one condition: credit.</h1>
             <p className="page-lede">
               Written and maintained by{" "}

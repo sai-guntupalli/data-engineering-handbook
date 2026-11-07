@@ -6,6 +6,11 @@ notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: Restyled the site (`feat/site-cool-palette`): a cool, light-first palette with one blue accent, Geist for
+  headings instead of the serif, drawn-out kicker labels removed, primary buttons in the accent, and matching dark theme.
+  Layout, content and behaviour are unchanged. The design detector reports no findings. `PRODUCT.md` records the product
+  context for future design work.
+
 - 2026-11-07: Python learning path (`feat/python-learning-path`): the single `topics/python` notebook is replaced by nine
   chapters, following the SQL path. Chapters 1-8 cover values and types, collections, control flow and functions,
   iterators and generators, classes and dataclasses, files and formats, errors, logging and testing, and concurrency.
