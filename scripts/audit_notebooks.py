@@ -38,6 +38,8 @@ FENCE_RE = re.compile(r"^\s*```")
 HEADING_RE = re.compile(r"^(#{1,6})\s+\S")
 LINK_RE = re.compile(r"\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 SETUP_NAME = "PACKAGES"
+# Imported by the setup cell itself behind an ImportError guard (preinstalled in Colab).
+SETUP_HELPER_MODULES = {"packaging"}
 
 
 def markdown_headings(text: str) -> list[int]:
@@ -120,7 +122,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
     cells = notebook.get("cells") or []
     code_sources = [cell_source(cell) for cell in cells if cell.get("cell_type") == "code"]
     packages = setup_packages(code_sources)
-    provided = {name.split(".")[0] for name in packages or {}} | local_modules(code_sources)
+    provided = {name.split(".")[0] for name in packages or {}} | local_modules(code_sources) | SETUP_HELPER_MODULES
 
     counts = {"markdown": 0, "code": 0, "asserts": 0}
     h1_count = 0

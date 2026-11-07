@@ -21,8 +21,6 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     label: "Core pipeline skills",
     slugs: [
       "python",
-      "python-basics",
-      "python-coding",
       "sql",
       "scala",
       "spark",
