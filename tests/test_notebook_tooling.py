@@ -144,3 +144,17 @@ class TestAudit:
         path.write_text(path.read_text().replace('"nbformat_minor": 5', '"nbformat_minor": 4'))
         errors, _ = audit_notebooks.audit(path)
         assert any("make format" in error for error in errors)
+
+
+class TestPipInstallLines:
+    def test_pip_install_declares_the_package_it_names(self, tmp_path, monkeypatch):
+        path = write_formatted(
+            tmp_path, monkeypatch, md("# T"), code("!pip install -q pyspark"), code("import pyspark")
+        )
+        errors, _ = audit_notebooks.audit(path)
+        assert errors == []
+
+    def test_other_imports_are_still_reported_next_to_a_pip_line(self, tmp_path, monkeypatch):
+        path = write_formatted(tmp_path, monkeypatch, md("# T"), code("!pip install -q pyspark"), code("import duckdb"))
+        errors, _ = audit_notebooks.audit(path)
+        assert any("duckdb" in error for error in errors), errors

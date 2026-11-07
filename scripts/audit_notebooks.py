@@ -33,6 +33,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from notebook_format import NOTEBOOKS_DIR, ROOT, cell_source, format_notebook, serialize  # noqa: E402
 
 MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
+# `!pip install <pkg>` is the one shell escape allowed: it is how a notebook installs PySpark in Colab.
+PIP_INSTALL_RE = re.compile(r"^!pip install\b[^\n]*$", re.M)
 LOCALHOST_RE = re.compile(r"(?:localhost|127\.0\.0\.1):\d+")
 FENCE_RE = re.compile(r"^\s*```")
 HEADING_RE = re.compile(r"^(#{1,6})\s+\S")
@@ -88,6 +90,21 @@ def third_party_imports(source: str) -> set[str]:
     return {name for name in modules if name not in sys.stdlib_module_names}
 
 
+def pip_installed_imports(code_cells: list[str]) -> set[str]:
+    """Import names of packages named in ``!pip install`` lines (``!pip install -q pyspark`` -> pyspark)."""
+    names: set[str] = set()
+    for source in code_cells:
+        for line in PIP_INSTALL_RE.findall(source):
+            for token in line.split()[2:]:
+                if not token.startswith("-"):
+                    names.add(re.split(r"[<>=!~\[]", token)[0].replace("-", "_"))
+    return names
+
+
+def without_pip_lines(source: str) -> str:
+    return PIP_INSTALL_RE.sub("", source)
+
+
 def local_modules(code_cells: list[str]) -> set[str]:
     """Module names a notebook writes itself (``Path("x.py").write_text`` and friends)."""
     names: set[str] = set()
@@ -122,7 +139,12 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
     cells = notebook.get("cells") or []
     code_sources = [cell_source(cell) for cell in cells if cell.get("cell_type") == "code"]
     packages = setup_packages(code_sources)
-    provided = {name.split(".")[0] for name in packages or {}} | local_modules(code_sources) | SETUP_HELPER_MODULES
+    provided = (
+        {name.split(".")[0] for name in packages or {}}
+        | pip_installed_imports(code_sources)
+        | local_modules(code_sources)
+        | SETUP_HELPER_MODULES
+    )
 
     counts = {"markdown": 0, "code": 0, "asserts": 0}
     h1_count = 0
@@ -148,6 +170,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
         elif cell_type == "code":
             counts["code"] += 1
             counts["asserts"] += len(re.findall(r"\bassert\b", source))
+            source = without_pip_lines(source)
             if MAGIC_RE.search(source):
                 errors.append(f"cell {index} uses an IPython magic or shell escape")
                 continue

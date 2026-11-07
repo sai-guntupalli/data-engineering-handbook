@@ -21,7 +21,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
   {
     label: "SQL learning path",
     slugs: [
-      "sql-01-filtering-and-grouping",
+      "sql-01-basics",
       "sql-02-where-vs-having",
       "sql-03-null-handling",
       "sql-04-case-expressions",

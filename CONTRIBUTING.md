@@ -46,6 +46,9 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   ```
 
   Add the same packages to the `notebooks` extra in `pyproject.toml` so local runs and CI have them.
+- **Colab-style installs.** A notebook may instead install a package with a plain `!pip install <package>` line,
+  as the SQL path does for PySpark. The audit counts those packages as declared. Such a notebook still needs pip in
+  the notebooks extra, which is already there.
 - **No live systems.** Never connect to `localhost`, a cloud endpoint, or use credentials. Use in-process
   stand-ins: DuckDB for warehouse SQL, PySpark local mode, `deltalake`, `pyiceberg` (SQLite catalog), `fakeredis`,
   `mongomock`, `moto`, or a small pure-Python simulation.
