@@ -23,15 +23,15 @@ are shown in markdown code blocks.
 
 | Group | Notebooks |
 |---|---|
-| Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
+| Interview practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
 | SQL learning path | SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data, interview drills, interview concepts (Spark SQL) |
-| Core pipeline skills | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
-| Lakehouse and formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
-| Cloud and platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
-| Streaming and distributed systems | Kafka, Flink, Redis, Hadoop, Hive, HBase, Cassandra, Kubernetes |
-| Warehousing, BI and governance | Data warehousing, System design, Statistics, Data governance, Cost optimization, Tableau, Looker, Superset |
-| AI and LLM foundations | LLM and AI terminology (fully offline) |
-| Additional tools | MongoDB, NiFi, Flume, Greenplum, Impala, Elasticsearch, Docker, Data structures |
+| Data Engineering | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
+| Lakehouse Formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
+| Cloud Platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
+| Streaming and Distributed Systems | Kafka, Flink, Redis, Hadoop, Hive, HBase, Cassandra, Kubernetes |
+| Warehousing and BI | Data warehousing, System design, Statistics, Data governance, Cost optimization, Tableau, Looker, Superset |
+| AI Foundations | LLM and AI terminology (fully offline) |
+| Other Tools | MongoDB, NiFi, Flume, Greenplum, Impala, Elasticsearch, Docker, Data structures |
 
 ## Layout
 

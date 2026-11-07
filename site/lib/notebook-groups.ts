@@ -12,8 +12,8 @@ export type NotebookGroup = {
 const PRACTICE_FOLDER = "notebooks";
 const TOPIC_FOLDER = "notebooks/topics";
 
-export const PRACTICE_GROUP: NotebookGroup = {
-  label: "Hands-on practice",
+export const INTERVIEW_GROUP: NotebookGroup = {
+  label: "Interview practice",
   folder: PRACTICE_FOLDER,
   slugs: [
     "01_python_basics",
@@ -48,7 +48,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "sql-13-interview-drills",
     "sql-14-interview-concepts",
   ]),
-  topicGroup("Core pipeline skills", [
+  topicGroup("Data Engineering", [
     "python",
     "sql",
     "scala",
@@ -59,8 +59,8 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "data-quality",
     "observability",
   ]),
-  topicGroup("Lakehouse and formats", ["parquet", "delta", "iceberg", "hudi", "avro", "cdc", "data-modeling"]),
-  topicGroup("Cloud and platforms", [
+  topicGroup("Lakehouse Formats", ["parquet", "delta", "iceberg", "hudi", "avro", "cdc", "data-modeling"]),
+  topicGroup("Cloud Platforms", [
     "aws",
     "azure",
     "gcp",
@@ -73,7 +73,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "dynamodb",
     "bigtable",
   ]),
-  topicGroup("Streaming and distributed systems", [
+  topicGroup("Streaming and Distributed Systems", [
     "kafka",
     "flink",
     "redis",
@@ -83,7 +83,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "cassandra",
     "kubernetes",
   ]),
-  topicGroup("Warehousing, BI and governance", [
+  topicGroup("Warehousing and BI", [
     "dwha",
     "system-design",
     "statistics",
@@ -93,8 +93,8 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "looker",
     "superset",
   ]),
-  topicGroup("AI and LLM foundations", ["llm"]),
-  topicGroup("Additional tools", [
+  topicGroup("AI Foundations", ["llm"]),
+  topicGroup("Other Tools", [
     "mongo",
     "nifi",
     "flume",
@@ -106,9 +106,9 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
   ]),
 ];
 
-export const ALL_GROUPS: NotebookGroup[] = [PRACTICE_GROUP, ...TOPIC_GROUPS];
+export const ALL_GROUPS: NotebookGroup[] = [INTERVIEW_GROUP, ...TOPIC_GROUPS];
 
-/** URL anchor id for a group label, e.g. "Core pipeline skills" -> "core-pipeline-skills". */
+/** URL anchor id for a group label, e.g. "Data Engineering" -> "core-pipeline-skills". */
 export function anchorFor(label: string) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }

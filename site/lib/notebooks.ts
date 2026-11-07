@@ -37,10 +37,11 @@ function sourceToString(source: string | string[] | undefined): string {
   return source ?? "";
 }
 
+/** Titles read as plain prose: a leading "04 - " or "05 — " index is dropped, the list shows the number already. */
 function titleFromMarkdown(markdown: string, fallback: string): string {
   const match = markdown.match(/^#\s+(.+?)\s*$/m);
-  if (match?.[1]) return match[1].trim();
-  return fallback.replace(/^\d+_/, "").replaceAll("_", " ").replaceAll("-", " ");
+  const raw = match?.[1]?.trim() ?? fallback.replace(/^\d+_/, "").replaceAll("_", " ").replaceAll("-", " ");
+  return raw.replace(/^\d+\s*[-—–:.]\s*/, "");
 }
 
 /** Turn inline markdown (code spans, links, images, emphasis) into plain text. */
@@ -64,19 +65,20 @@ function truncateAtWord(text: string, limit: number): string {
   return `${cut.slice(0, lastSpace > 0 ? lastSpace : limit).trimEnd()}…`;
 }
 
-/** First real paragraph after the title, used as a card description. */
+/** First real paragraph after the title, used as a card description. The whole paragraph is read,
+ *  because notebooks hard-wrap their markdown and a single physical line can end mid-sentence. */
 function descriptionFromMarkdown(markdown: string): string {
   let seenTitle = false;
-  for (const raw of markdown.split("\n")) {
-    const line = raw.trim();
-    if (line.startsWith("#")) {
+  for (const block of markdown.split(/\n\s*\n/)) {
+    const text = block.trim();
+    if (!text) continue;
+    if (text.startsWith("#")) {
       seenTitle = true;
       continue;
     }
-    if (!seenTitle || !line) continue;
     // Skip badges, links, images, lists, quotes, tables, fenced code and HTML.
-    if (/^[+\-*[>|`<]/.test(line)) continue;
-    const plain = inlineToText(line);
+    if (!seenTitle || /^[+\-*[>|`<]/.test(text)) continue;
+    const plain = inlineToText(text.split("\n").map((line) => line.trim()).join(" "));
     if (plain.length < 25) continue;
     return truncateAtWord(plain, MAX_DESCRIPTION_LENGTH);
   }
