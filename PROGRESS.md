@@ -1,10 +1,14 @@
 # Progress
 
-**Current Status**: 67 notebooks are Colab-runnable and executed by CI. The SQL learning path (10 Spark SQL notebooks,
-`feat/sql-notebook-split`) is complete locally and awaits review; PR #28 (Colab restructure) is merged.
+**Current Status**: 68 notebooks are Colab-runnable and executed by CI. PR #28 (Colab restructure) and PR #29 (PySpark
+coding challenges) are merged. The SQL learning path (10 Spark SQL notebooks) is in PR #30, rebased onto master and
+awaiting review and merge.
 
 ## Completed
 
+- 2026-11-07: Added `notebooks/06_pyspark_coding_challenges.ipynb`: five interview-style PySpark problems
+  (latest-record dedupe, grain-aware joins, SCD as-of join, sessionization, salted skew join) with fixtures, reference
+  solutions and 19 asserts; runs locally in 13s. Recovered from the old WIP in `notebooks/04_pyspark_concepts.ipynb`.
 - 2026-11-07: SQL learning path split (`feat/sql-notebook-split`):
   - `03_sql_interview_questions` is now the index/navigation page; its DuckDB content moved into ten notebooks in
     `topics/sql-01…sql-10`: filtering and grouping, WHERE vs HAVING, NULL handling, CASE, joins, window functions,
@@ -36,7 +40,7 @@
 
 ## In Progress
 
-- SQL learning path: PR #30 open for review (https://github.com/sai-guntupalli/data-engineering-handbook/pull/30); CI not yet confirmed.
+- SQL learning path: PR #30 rebased onto master for review (https://github.com/sai-guntupalli/data-engineering-handbook/pull/30); CI not yet confirmed.
 
 ## Next Steps
 
