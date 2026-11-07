@@ -6,16 +6,8 @@ import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { MagnifyingGlass, X } from "@phosphor-icons/react";
 import { TopicsMenu } from "./TopicsMenu";
 import { repositoryHref } from "@/lib/site";
+import { matchNotebooks, type SearchableNotebook } from "@/lib/search";
 import { useSearch } from "./search-context";
-
-/** Slim row for the suggestions panel; the /search page holds the full data. */
-export type SearchIndexItem = {
-  slug: string;
-  title: string;
-  groupLabel: string;
-  repoPath: string;
-  githubHref: string;
-};
 
 const MAX_SUGGESTIONS = 8;
 
@@ -48,7 +40,7 @@ export function SiteHeader({
   autoFocus = false,
   panelOnFocus = true,
 }: {
-  index: SearchIndexItem[];
+  index: SearchableNotebook[];
   autoFocus?: boolean;
   /** Open the suggestions panel when the input gains focus. The /search page
    * sets this false: its results are already on screen, so the panel should
@@ -67,19 +59,9 @@ export function SiteHeader({
   }, [autoFocus]);
 
   const matches = useMemo(() => {
-    if (!q) return { rows: [], total: 0 };
-    const ranked = index
-      .map((item) => {
-        const title = item.title.toLowerCase();
-        if (title.startsWith(q)) return { item, rank: 0 };
-        if (title.includes(q)) return { item, rank: 1 };
-        if (`${item.groupLabel} ${item.slug}`.toLowerCase().includes(q)) return { item, rank: 2 };
-        return null;
-      })
-      .filter((row): row is { item: SearchIndexItem; rank: number } => row !== null)
-      .sort((a, b) => a.rank - b.rank);
-    return { rows: ranked.slice(0, MAX_SUGGESTIONS), total: ranked.length };
-  }, [index, q]);
+    const found = matchNotebooks(index, query);
+    return { rows: found.slice(0, MAX_SUGGESTIONS), total: found.length };
+  }, [index, query]);
 
   const panelOpen = open && q.length > 0;
 
@@ -119,7 +101,7 @@ export function SiteHeader({
       event.preventDefault();
       const picked = active >= 0 ? matches.rows[active] : null;
       if (picked) {
-        window.open(picked.item.githubHref, "_blank", "noopener");
+        window.open(picked.githubHref, "_blank", "noopener");
         setOpen(false);
         setActive(-1);
       } else {
@@ -176,8 +158,8 @@ export function SiteHeader({
             {matches.rows.length > 0 ? (
               matches.rows.map((row, position) => (
                 <a
-                  key={row.item.repoPath}
-                  href={row.item.githubHref}
+                  key={row.repoPath}
+                  href={row.githubHref}
                   target="_blank"
                   rel="noreferrer"
                   className={position === active ? "suggest-item active" : "suggest-item"}
@@ -190,9 +172,9 @@ export function SiteHeader({
                   }}
                 >
                   <span className="suggest-title">
-                    <Highlighted text={row.item.title} query={query.trim()} />
+                    <Highlighted text={row.title} query={query.trim()} />
                   </span>
-                  <span className="suggest-group">{row.item.groupLabel}</span>
+                  <span className="suggest-group">{row.groupLabel}</span>
                 </a>
               ))
             ) : (

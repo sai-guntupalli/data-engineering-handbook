@@ -6,6 +6,20 @@ awaiting review and merge.
 
 ## Completed
 
+- 2026-11-07: Untangled the non-notebook code (`chore/untangle-codebase`):
+  - One registry: each group in `site/lib/notebook-groups.ts` declares its folder. The build fails on a missing or
+    unregistered notebook (the "Other notebooks" fallback is gone).
+  - One repository identity: `site/lib/site.ts` holds the branch, author and license URL; a test keeps the Python
+    formatter's copies in step with it.
+  - One notebook list and one search rule: `site/lib/search.ts` defines what matches; header suggestions and /search
+    share it, so they agree on the fields searched.
+  - Removed dead special cases: the "How to use" boilerplate removal, the `.py`-module allowance in the audit, the
+    hard-coded setup-helper list (the setup cell is now exempt from the import check), and the description prefixes.
+  - CI runs `make validate`, the same target as local development.
+  - Comments that restated the code were removed; tests that checked implementation details were rewritten to check
+    behaviour.
+  - Rendered gallery text is unchanged versus master. Intended change: header suggestions also match description text.
+
 - 2026-11-07: Added `notebooks/06_pyspark_coding_challenges.ipynb`: five interview-style PySpark problems
   (latest-record dedupe, grain-aware joins, SCD as-of join, sessionization, salted skew join) with fixtures, reference
   solutions and 19 asserts; runs locally in 13s. Recovered from the old WIP in `notebooks/04_pyspark_concepts.ipynb`.

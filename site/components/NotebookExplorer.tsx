@@ -2,29 +2,19 @@
 
 import { useMemo } from "react";
 import { anchorFor } from "@/lib/notebook-groups";
-import { NotebookCard, type CardNotebook } from "./NotebookCard";
-import { useStarred } from "./starred";
-
-export type ExplorerGroup = {
-  label: string;
-  notebooks: CardNotebook[];
-};
+import type { NotebookGroupView } from "@/lib/notebooks";
+import { NotebookCard } from "./NotebookCard";
+import { starredFirst, useStarred } from "./starred";
 
 /**
  * The browse-mode gallery: every group in declared order, always unfiltered.
  * Search lives in the header suggestions panel and the /search page.
  */
-export function NotebookExplorer({ groups }: { groups: ExplorerGroup[] }) {
+export function NotebookExplorer({ groups }: { groups: NotebookGroupView[] }) {
   const starred = useStarred();
 
   const sections = useMemo(
-    () =>
-      groups.map((group) => ({
-        ...group,
-        notebooks: [...group.notebooks].sort(
-          (a, b) => Number(starred.has(b.repoPath)) - Number(starred.has(a.repoPath)),
-        ),
-      })),
+    () => groups.map((group) => ({ ...group, notebooks: starredFirst(group.notebooks, starred) })),
     [groups, starred],
   );
 

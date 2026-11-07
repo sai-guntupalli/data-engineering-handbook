@@ -30,7 +30,7 @@ from pathlib import Path
 from urllib.parse import unquote, urlparse
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from notebook_format import NOTEBOOKS_DIR, ROOT, cell_source, format_notebook, serialize  # noqa: E402
+from notebook_format import ROOT, cell_source, format_notebook, notebook_paths, serialize  # noqa: E402
 
 MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
 LOCALHOST_RE = re.compile(r"(?:localhost|127\.0\.0\.1):\d+")
@@ -38,8 +38,6 @@ FENCE_RE = re.compile(r"^\s*```")
 HEADING_RE = re.compile(r"^(#{1,6})\s+\S")
 LINK_RE = re.compile(r"\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
 SETUP_NAME = "PACKAGES"
-# Imported by the setup cell itself behind an ImportError guard (preinstalled in Colab).
-SETUP_HELPER_MODULES = {"packaging"}
 
 
 def markdown_headings(text: str) -> list[int]:
@@ -88,12 +86,12 @@ def third_party_imports(source: str) -> set[str]:
     return {name for name in modules if name not in sys.stdlib_module_names}
 
 
-def local_modules(code_cells: list[str]) -> set[str]:
-    """Module names a notebook writes itself (``Path("x.py").write_text`` and friends)."""
-    names: set[str] = set()
-    for source in code_cells:
-        names.update(re.findall(r"""["']([A-Za-z_][A-Za-z0-9_]*)\.py["']""", source))
-    return names
+def setup_cell_index(cells: list[dict]) -> int | None:
+    """Index of the code cell that declares ``PACKAGES``, or None."""
+    for index, cell in enumerate(cells):
+        if cell.get("cell_type") == "code" and setup_packages([cell_source(cell)]) is not None:
+            return index
+    return None
 
 
 def broken_links(text: str, notebook_path: Path) -> list[str]:
@@ -121,8 +119,8 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
 
     cells = notebook.get("cells") or []
     code_sources = [cell_source(cell) for cell in cells if cell.get("cell_type") == "code"]
-    packages = setup_packages(code_sources)
-    provided = {name.split(".")[0] for name in packages or {}} | local_modules(code_sources) | SETUP_HELPER_MODULES
+    declared = {name.split(".")[0] for name in setup_packages(code_sources) or {}}
+    setup_index = setup_cell_index(cells)
 
     counts = {"markdown": 0, "code": 0, "asserts": 0}
     h1_count = 0
@@ -160,7 +158,8 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
             except SyntaxError as exc:
                 errors.append(f"cell {index} has a Python syntax error: {exc.msg} (line {exc.lineno})")
                 continue
-            missing_imports |= third_party_imports(source) - provided
+            if index != setup_index:  # the setup cell installs packages, so its own imports are exempt
+                missing_imports |= third_party_imports(source) - declared
         else:
             errors.append(f"cell {index} has unexpected type {cell_type!r}")
 
@@ -179,7 +178,7 @@ def main() -> int:
     parser.add_argument("--quiet", action="store_true", help="only print failures and the summary")
     args = parser.parse_args()
 
-    paths = [Path(f).resolve() for f in args.files] or sorted(NOTEBOOKS_DIR.rglob("*.ipynb"))
+    paths = notebook_paths(args.files)
     failures = 0
     totals = {"markdown": 0, "code": 0, "asserts": 0}
     for path in paths:

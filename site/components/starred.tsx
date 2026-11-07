@@ -21,11 +21,11 @@ function subscribeStarred(callback: () => void) {
 }
 
 function getStarredSnapshot(): Set<string> {
-  let raw: string | null = null;
+  let raw: string | null;
   try {
     raw = window.localStorage.getItem(STARRED_KEY);
   } catch {
-    // storage unavailable: treat as empty
+    return EMPTY_STARRED;
   }
   if (raw !== starredRaw) {
     starredRaw = raw;
@@ -45,6 +45,11 @@ const getServerStarredSnapshot = (): Set<string> => EMPTY_STARRED;
 /** The set of starred notebook paths (localStorage-backed, hydration-safe). */
 export function useStarred(): Set<string> {
   return useSyncExternalStore(subscribeStarred, getStarredSnapshot, getServerStarredSnapshot);
+}
+
+/** Starred notebooks first; the original order is kept within each half. */
+export function starredFirst<T extends { repoPath: string }>(notebooks: T[], starred: Set<string>): T[] {
+  return [...notebooks].sort((a, b) => Number(starred.has(b.repoPath)) - Number(starred.has(a.repoPath)));
 }
 
 export function toggleStar(repoPath: string) {
