@@ -1,10 +1,13 @@
 # Progress
 
-**Current Status**: All 57 notebooks are Colab-runnable, lean, and executed by CI; the gallery site lives in
-`site/`. The restructure is on `chore/colab-runnable-notebooks`, awaiting review/merge.
+**Current Status**: All 57 notebooks are Colab-runnable, lean, and executed by CI (green on PR #28); the gallery
+site lives in `site/`. PR #28 (`chore/colab-runnable-notebooks`) awaits review/merge.
 
 ## Completed
 
+- 2026-11-07: Verified PR #28: GitHub Checks green (all 57 notebooks executed on Linux + Java 17, 2m32s);
+  smoke-tested in a real Google Colab runtime with "Run all": `topics/dynamodb` (30/30 cells), `topics/spark`
+  (51/51, setup cell installed PySpark), `topics/iceberg` (22/22) — no errors.
 - 2026-11-07: Colab-runnable restructure (`chore/colab-runnable-notebooks`):
   - Merged the open per-notebook cleanup PRs (#1–#22) and the notebook parts of #26 (DuckDB SQL) and #27
     (PySpark story); the interactive viewer (#24/#25) was intentionally dropped.
@@ -27,14 +30,13 @@
 
 ## Next Steps
 
-1. Review and merge the `chore/colab-runnable-notebooks` PR; confirm the Checks workflow passes on GitHub
-   (first CI run of all 57 notebooks with Java 17 on Linux).
-2. Close the superseded PRs #1–#27 (their content is in this PR; #24/#25 viewer dropped by decision).
-3. Smoke-test a few notebooks in a real Colab runtime (one Spark: `topics/spark.ipynb`; one Iceberg:
-   `topics/iceberg.ipynb`; one moto: `topics/dynamodb.ipynb`) to confirm Colab's preinstalled versions + setup cell.
+1. Review and merge PR #28 (https://github.com/sai-guntupalli/data-engineering-handbook/pull/28).
+2. Close the superseded PRs #1–#27 (their content is in #28; #24/#25 viewer dropped by decision).
+3. Reconcile the uncommitted exercise edits to `notebooks/04_pyspark_concepts.ipynb` in the main checkout
+   (made against the old version) with the restructured notebook from #28.
 4. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
-5. Delete the stale local branches once the PR merges.
+5. Delete the stale local branches once #28 merges.
 
 ## Blockers
 
