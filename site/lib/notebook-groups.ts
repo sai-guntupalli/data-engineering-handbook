@@ -34,7 +34,7 @@ const topicGroup = (label: string, slugs: string[]): NotebookGroup => ({
 export const TOPIC_GROUPS: NotebookGroup[] = [
   topicGroup("SQL learning path", [
     "sql-01-basics",
-    "sql-02-where-vs-having",
+    "sql-02-aggregations-and-ctes",
     "sql-03-null-handling",
     "sql-04-case-expressions",
     "sql-05-joins",

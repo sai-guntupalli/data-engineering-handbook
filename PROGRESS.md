@@ -6,6 +6,9 @@ awaiting review and merge.
 
 ## Completed
 
+- 2026-11-07: Merged the WHERE vs HAVING notebook into `sql-01-basics` (new section 7). Replaced it with
+  `sql-02-aggregations-and-ctes`: more aggregates, `ROLLUP`, subqueries, CTEs and a recursive CTE, with five practice
+  questions and answers. Both run on Spark 4.0.2.
 - 2026-11-07: Untangled the non-notebook code (`chore/untangle-codebase`):
   - One registry: each group in `site/lib/notebook-groups.ts` declares its folder. The build fails on a missing or
     unregistered notebook (the "Other notebooks" fallback is gone).
