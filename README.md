@@ -24,7 +24,7 @@ are shown in markdown code blocks.
 | Group | Notebooks |
 |---|---|
 | Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
-| SQL learning path | SQL basics, WHERE vs HAVING, NULL handling, CASE, Joins, Window functions, Deduplication, Time-series, Modeling and optimization, Interview drills (Spark SQL) |
+| SQL learning path | SQL basics, aggregations and CTEs, NULL handling, CASE, Joins, Window functions, Deduplication, Time-series, Modeling and optimization, Interview drills (Spark SQL) |
 | Core pipeline skills | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
 | Lakehouse and formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
 | Cloud and platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
