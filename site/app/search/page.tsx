@@ -15,8 +15,8 @@ export default function SearchPage() {
   return (
     <>
       <SiteHeader index={index} autoFocus panelOnFocus={false} />
-      <main id="main-content" className="search-page">
-        <div className="content-shell page-top search-shell">
+      <main id="main-content">
+        <div className="content-shell prose-shell">
           <SearchResults notebooks={notebooks} />
         </div>
       </main>

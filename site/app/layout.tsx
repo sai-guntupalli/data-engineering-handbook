@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
 import { SearchProvider } from "@/components/search-context";
-import { authorHref, authorName, repositoryHref, siteUrl } from "@/lib/site";
+import { authorHref, authorName, licenseName, repositoryHref, siteUrl } from "@/lib/site";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -13,6 +13,12 @@ const geist = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+});
+
+const newsreader = Newsreader({
+  variable: "--font-serif",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
 });
 
 const siteName = "Data Engineering Handbook";
@@ -43,7 +49,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${geist.variable} ${geistMono.variable} ${newsreader.variable}`}>
       <body>
         <a href="#main-content" className="skip-link">
           Skip to content
@@ -51,16 +57,22 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <SearchProvider>
           {children}
           <footer className="site-footer">
-            <span>Built by</span>
-            <a href={authorHref} target="_blank" rel="noreferrer">
-              {authorName}
-            </a>
-            <nav aria-label="Footer navigation">
-              <Link href="/license">License</Link>
-              <a href={repositoryHref} target="_blank" rel="noreferrer">
-                Repository
-              </a>
-            </nav>
+            <div className="site-footer-inner">
+              <p>
+                Built by{" "}
+                <a href={authorHref} target="_blank" rel="noreferrer">
+                  {authorName}
+                </a>
+                . Licensed under{" "}
+                <Link href="/license">{licenseName}</Link>.
+              </p>
+              <nav aria-label="Footer navigation">
+                <Link href="/license">License</Link>
+                <a href={repositoryHref} target="_blank" rel="noreferrer">
+                  Repository
+                </a>
+              </nav>
+            </div>
           </footer>
         </SearchProvider>
       </body>

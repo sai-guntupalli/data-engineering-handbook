@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
+  ArrowRight,
   BookOpen,
   CheckCircle,
   Copyright,
   GraduationCap,
   Handshake,
-  Lightning,
   PuzzlePiece,
 } from "@phosphor-icons/react/dist/ssr";
 import { Attribution } from "@/components/Attribution";
@@ -64,83 +64,86 @@ export default function LicensePage() {
   return (
     <>
       <SiteHeader index={getSearchIndex()} />
-      <main id="main-content" className="search-page">
-        <div className="content-shell page-top search-shell license-shell">
-          <h1>License</h1>
-          <p className="results-meta search-summary">
-            Written and maintained by{" "}
-            <a href={authorHref} target="_blank" rel="noreferrer">
-              {authorName}
-            </a>
-            .
-          </p>
+      <main id="main-content">
+        <div className="content-shell prose-shell">
+          <header className="page-heading">
+            <p className="eyebrow">License</p>
+            <h1>Free to use, with one condition: credit.</h1>
+            <p className="page-lede">
+              Written and maintained by{" "}
+              <a className="text-link" href={authorHref} target="_blank" rel="noreferrer">
+                {authorName}
+              </a>
+              .
+            </p>
+          </header>
 
-          <section className="license-panel" aria-labelledby="license-terms">
+          <section className="prose-section" aria-labelledby="license-terms">
             <h2 id="license-terms">
-              <Handshake size={20} weight="bold" /> {licenseNameLong} ({licenseName})
+              <Handshake size={20} weight="bold" aria-hidden /> {licenseNameLong} ({licenseName})
             </h2>
             <p>
               Every notebook in this handbook is © {authorName}, released under{" "}
-              <a href={licenseHref} target="_blank" rel="noreferrer">
+              <a className="text-link" href={licenseHref} target="_blank" rel="noreferrer">
                 {licenseName}
               </a>
-              . Reuse is free for everyone — the single rule is that <strong>you must give credit</strong>{" "}
-              when you use, share, teach from, or build on this material.
+              . Reuse is free for everyone. The single rule is that <strong>you must give credit</strong> when you use,
+              share, teach from, or build on this material.
             </p>
           </section>
 
-          <section className="license-section" aria-labelledby="license-freedoms">
+          <section className="prose-section" aria-labelledby="license-freedoms">
             <h2 id="license-freedoms">You are free to</h2>
-            <ul className="license-list">
+            <ul className="check-list">
               {permissions.map(({ icon: Icon, text }) => (
                 <li key={text}>
                   <Icon size={18} weight="bold" aria-hidden />
-                  {text}
+                  <span>{text}</span>
                 </li>
               ))}
             </ul>
           </section>
 
-          <section className="license-section" aria-labelledby="license-attribution">
+          <section className="prose-section" aria-labelledby="license-attribution">
             <h2 id="license-attribution">
-              <CheckCircle size={20} weight="bold" /> The one requirement: credit
+              <CheckCircle size={20} weight="bold" aria-hidden /> The one requirement: credit
             </h2>
             <p>
-              Attribution is the core condition of {licenseName}. Wherever you share or use this
-              handbook, the credit must appear with it — a lesson, a slide deck, a fork, a blog post.
+              Attribution is the core condition of {licenseName}. Wherever you share or use this handbook, the credit
+              must appear with it: a lesson, a slide deck, a fork, a blog post.
             </p>
-            <ul className="license-list">
+            <ul className="check-list">
               {attributionDuties.map((duty, index) => (
                 <li key={index}>
                   <CheckCircle size={18} weight="bold" aria-hidden />
-                  {duty}
+                  <span>{duty}</span>
                 </li>
               ))}
             </ul>
-            <p>Copy-paste credit that satisfies all of the above:</p>
+            <p>Copy this credit, which meets all of the above:</p>
             <Attribution text={ATTRIBUTION_TEXT} />
           </section>
 
-          <section className="license-section" aria-labelledby="license-details">
+          <section className="prose-section" aria-labelledby="license-details">
             <h2 id="license-details">Details</h2>
-            <div className="license-links">
-              <a className="button secondary" href={repositoryHref} target="_blank" rel="noreferrer">
-                Repository <Lightning size={16} weight="bold" />
+            <div className="hero-actions">
+              <a className="button ghost" href={repositoryHref} target="_blank" rel="noreferrer">
+                Repository
               </a>
-              <a className="button secondary" href={licenseFileHref} target="_blank" rel="noreferrer">
+              <a className="button ghost" href={licenseFileHref} target="_blank" rel="noreferrer">
                 Full legal code (LICENSE)
               </a>
-              <a className="button secondary" href={licenseHref} target="_blank" rel="noreferrer">
+              <a className="button ghost" href={licenseHref} target="_blank" rel="noreferrer">
                 {licenseName} at Creative Commons
               </a>
               <Link className="button primary" href="/search?q=">
                 Browse the notebooks
+                <ArrowRight size={16} weight="bold" aria-hidden />
               </Link>
             </div>
-            <p className="results-meta">
-              Each notebook opens with an author credit line, so the credit travels with the file even
-              when it leaves this repository. Provided as-is,
-              without warranty of any kind — see Section 5 of the legal code.
+            <p className="fine-print">
+              Each notebook opens with an author credit line, so the credit travels with the file even when it leaves
+              this repository. Provided as-is, without warranty of any kind. See Section 5 of the legal code.
             </p>
           </section>
         </div>

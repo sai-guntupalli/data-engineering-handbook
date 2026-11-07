@@ -1,11 +1,17 @@
 # Progress
 
-**Current Status**: 68 notebooks are Colab-runnable and executed by CI. PR #28 (Colab restructure) and PR #29 (PySpark
-coding challenges) are merged. The SQL learning path (10 Spark SQL notebooks) is in PR #30, rebased onto master and
-awaiting review and merge.
+**Current Status**: All notebooks are Colab-runnable and executed by CI. The 14-chapter SQL path is on master (PR #34).
+The website has been redesigned as an editorial library (`feat/redesign-site`) and is awaiting review; it no longer shows
+notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: Redesigned the website (`feat/redesign-site`): an editorial look (warm paper, serif display type, one
+  burnt-sienna accent) with dark mode. The home page has a hero with a static notebook preview, a Read / Run / Check
+  strip and a library with a sticky topic index. Notebook rows replace the cards. Removed all counts (notebooks, code
+  cells, checks, reading time) from the UI and the data layer. Header search, starring, /search and the license page
+  keep their behaviour. The topics dropdown is gone; the topic index replaces it. Verified with lint, typecheck, the
+  static build, and visual checks at desktop and phone width in light and dark themes.
 - 2026-11-07: SQL path extended to 14 chapters (`feat/sql-missing-topics`): new `sql-03` types, functions, dates and
   JSON; `sql-07` set operations; `sql-12` views and changing data (INSERT, INSERT OVERWRITE, UPDATE/DELETE/MERGE as
   reference for table formats); `sql-14` interview concepts. Added GROUPING() and CUBE, RIGHT JOIN, LEAD, moving averages,
@@ -71,11 +77,13 @@ awaiting review and merge.
 
 ## In Progress
 
-- SQL learning path: PR #30 rebased onto master for review (https://github.com/sai-guntupalli/data-engineering-handbook/pull/30); CI not yet confirmed.
+- Website redesign: branch `feat/redesign-site`, PR awaiting review. Visual check in a real browser on GitHub Pages
+  after merge.
 
 ## Next Steps
 
-1. Review and merge PR #30 (`feat/sql-notebook-split`), after CI is green.
+1. Review and merge the website redesign PR (`feat/redesign-site`) once CI is green, then confirm the GitHub Pages deploy
+   renders the new home page, search and license pages.
 2. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
    Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
 3. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
