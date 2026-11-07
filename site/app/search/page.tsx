@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SearchResults } from "@/components/SearchResults";
-import { getNotebookGroups, getSearchIndex } from "@/lib/notebooks";
+import { getNotebookList, getSearchIndex } from "@/lib/notebooks";
 
 export const metadata: Metadata = {
   title: "Search",
@@ -9,9 +9,7 @@ export const metadata: Metadata = {
 
 export default function SearchPage() {
   // Build-time data, static export; the ?q= client store filters live.
-  const notebooks = getNotebookGroups().flatMap((group) =>
-    group.notebooks.map((notebook) => ({ ...notebook, groupLabel: group.label })),
-  );
+  const notebooks = getNotebookList();
   const index = getSearchIndex();
 
   return (

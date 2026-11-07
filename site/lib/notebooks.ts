@@ -1,7 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
-import { PRACTICE_GROUP, TOPIC_GROUPS, type NotebookGroup } from "./notebook-groups";
-import { repository } from "./site";
+import { ALL_GROUPS, type NotebookGroup } from "./notebook-groups";
+import type { SearchableNotebook } from "./search";
+import { branch, repository } from "./site";
 
 export type NotebookSummary = {
   /** Repository-relative path, e.g. notebooks/topics/spark.ipynb */
@@ -10,7 +11,6 @@ export type NotebookSummary = {
   slug: string;
   title: string;
   description: string;
-  markdownCells: number;
   codeCells: number;
   assertCount: number;
   /** "### Try it" exercise blocks in the markdown. */
@@ -22,13 +22,14 @@ export type NotebookSummary = {
   colabHref: string;
 };
 
+export type NotebookListItem = NotebookSummary & { groupLabel: string };
+
 export type NotebookGroupView = {
   label: string;
-  notebooks: NotebookSummary[];
+  notebooks: NotebookListItem[];
 };
 
-const BRANCH = "master";
-const GITHUB_BLOB = `https://github.com/${repository}/blob/${BRANCH}`;
+const GITHUB_BLOB = `https://github.com/${repository}/blob/${branch}`;
 // Google Colab can only open notebooks from public repositories. The handbook
 // is public, so every card gets a Colab permalink next to the GitHub link.
 const COLAB_HREF = "https://colab.research.google.com/github";
@@ -61,7 +62,6 @@ function descriptionFromMarkdown(markdown: string): string {
     if (!seenTitle || !line) continue;
     // Skip badges, links, images, lists, quotes, tables, fenced code and HTML.
     if (/^[+\-*[>|`<]/.test(line)) continue;
-    if (line.startsWith("**Notebook:**") || line.startsWith("*Generated") || line.startsWith("*Converted")) continue;
     const plain = inlineToText(line);
     if (plain.length < 25) continue;
     return plain.length > 150 ? `${plain.slice(0, 147).trimEnd()}...` : plain;
@@ -118,26 +118,19 @@ function readSummary(file: string): NotebookSummary {
   const codeCells = cells.filter((cell) => cell.type === "code");
   const tryItBlocks = (markdown.match(/### Try it/g) ?? []).length;
   const markdownWords = markdown.split(/\s+/).filter(Boolean).length;
-  const readingMinutes = Math.max(
-    1,
-    Math.round(markdownWords / 200 + (codeCells.length * 8) / 60),
-  );
+  const readingMinutes = Math.max(1, Math.round(markdownWords / 200 + (codeCells.length * 8) / 60));
 
   return {
     repoPath,
     slug: filename,
     title: titleFromMarkdown(markdown, filename),
     description: descriptionFromMarkdown(markdown),
-    markdownCells: cells.length - codeCells.length,
     codeCells: codeCells.length,
-    assertCount: codeCells.reduce(
-      (total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0),
-      0,
-    ),
+    assertCount: codeCells.reduce((total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0), 0),
     tryItBlocks,
     readingMinutes,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
-    colabHref: `${COLAB_HREF}/${repository}/blob/${BRANCH}/${repoPath}`,
+    colabHref: `${COLAB_HREF}/${repository}/blob/${branch}/${repoPath}`,
   };
 }
 
@@ -149,102 +142,70 @@ function allSummaries(): NotebookSummary[] {
   return cachedSummaries;
 }
 
-function pick(
-  summaries: NotebookSummary[],
-  group: NotebookGroup,
-  folder: "root" | "topics",
-): NotebookSummary[] {
-  const wanted = new Set(group.slugs);
-  return summaries
-    .filter((notebook) => {
-      const inFolder =
-        folder === "root"
-          ? !notebook.repoPath.startsWith("notebooks/topics/")
-          : notebook.repoPath.startsWith("notebooks/topics/");
-      return inFolder && wanted.has(notebook.slug);
-    })
-    .sort((a, b) => group.slugs.indexOf(a.slug) - group.slugs.indexOf(b.slug));
-}
-
 /**
- * Fail the build when lib/notebook-groups.ts references a notebook that does not
- * exist, lives in the wrong folder, or is registered twice. Without this guard a
- * mistyped slug would make the card silently disappear from the gallery.
+ * Fail the build when the registry (lib/notebook-groups.ts) and the notebook files
+ * disagree: a registered slug with no file (a typo would hide its card), a file no
+ * group lists, or a slug listed twice.
  */
-function ensureRegisteredSlugsExist(): void {
-  const bySlug = new Map<string, string[]>();
-  for (const notebook of allSummaries()) {
-    bySlug.set(notebook.slug, [...(bySlug.get(notebook.slug) ?? []), notebook.repoPath]);
-  }
-
-  const problems: string[] = [];
+function assertRegistryMatchesFiles(summaries: NotebookSummary[]): void {
+  const onDisk = new Set(summaries.map((notebook) => notebook.repoPath));
   const registered = new Set<string>();
-  for (const group of [PRACTICE_GROUP, ...TOPIC_GROUPS]) {
-    const folder = group === PRACTICE_GROUP ? "notebooks" : "notebooks/topics";
+  const problems: string[] = [];
+  for (const group of ALL_GROUPS) {
     for (const slug of group.slugs) {
-      if (registered.has(slug)) {
-        problems.push(`"${slug}" is registered in more than one group`);
-        continue;
-      }
-      registered.add(slug);
-      const hits = bySlug.get(slug) ?? [];
-      if (!hits.some((repoPath) => path.dirname(repoPath) === folder)) {
-        problems.push(`${folder}/${slug}.ipynb is missing (group "${group.label}")`);
-      }
+      const repoPath = `${group.folder}/${slug}.ipynb`;
+      if (registered.has(repoPath)) problems.push(`${repoPath} is registered more than once`);
+      registered.add(repoPath);
+      if (!onDisk.has(repoPath)) problems.push(`${repoPath} is missing (group "${group.label}")`);
     }
+  }
+  for (const repoPath of onDisk) {
+    if (!registered.has(repoPath)) problems.push(`${repoPath} is not listed in lib/notebook-groups.ts`);
   }
   if (problems.length > 0) {
     throw new Error(`lib/notebook-groups.ts issues:\n${problems.map((problem) => `  - ${problem}`).join("\n")}`);
   }
 }
 
-/** Grouped notebooks, in the order the groups are declared. */
+function notebooksOf(summaries: NotebookSummary[], group: NotebookGroup): NotebookListItem[] {
+  const byPath = new Map(summaries.map((notebook) => [notebook.repoPath, notebook]));
+  return group.slugs.flatMap((slug) => {
+    const notebook = byPath.get(`${group.folder}/${slug}.ipynb`);
+    return notebook ? [{ ...notebook, groupLabel: group.label }] : [];
+  });
+}
+
 export function getNotebookGroups(): NotebookGroupView[] {
-  ensureRegisteredSlugsExist();
   const summaries = allSummaries();
-  const groups: NotebookGroupView[] = [
-    { label: PRACTICE_GROUP.label, notebooks: pick(summaries, PRACTICE_GROUP, "root") },
-    ...TOPIC_GROUPS.map((group) => ({
-      label: group.label,
-      notebooks: pick(summaries, group, "topics"),
-    })),
-  ];
+  assertRegistryMatchesFiles(summaries);
+  return ALL_GROUPS.map((group) => ({ label: group.label, notebooks: notebooksOf(summaries, group) })).filter(
+    (group) => group.notebooks.length > 0,
+  );
+}
 
-  const placed = new Set(groups.flatMap((group) => group.notebooks.map((notebook) => notebook.repoPath)));
-  const leftovers = summaries.filter((notebook) => !placed.has(notebook.repoPath));
-  if (leftovers.length > 0) {
-    groups.push({ label: "Other notebooks", notebooks: leftovers });
-  }
-
-  return groups.filter((group) => group.notebooks.length > 0);
+/** Every notebook in group order, each carrying the label of its group. */
+export function getNotebookList(): NotebookListItem[] {
+  return getNotebookGroups().flatMap((group) => group.notebooks);
 }
 
 export function getNotebookStats() {
   const summaries = allSummaries();
   return {
     notebooks: summaries.length,
-    codeCells: summaries.reduce(
-      (total, notebook) => total + notebook.codeCells,
-      0,
-    ),
-    checks: summaries.reduce(
-      (total, notebook) => total + notebook.assertCount,
-      0,
-    ),
+    codeCells: summaries.reduce((total, notebook) => total + notebook.codeCells, 0),
+    checks: summaries.reduce((total, notebook) => total + notebook.assertCount, 0),
   };
 }
 
-/** Slim header-search index: one row per notebook in group order, shared by
- *  the home, /search and /license pages' SiteHeader. The ?q= query itself is
+/** Slim header-search index for the suggestions panel. The ?q= query itself is
  *  client state (components/search-context.tsx); this is the build-time data. */
-export function getSearchIndex() {
-  return getNotebookGroups().flatMap((group) =>
-    group.notebooks.map(({ slug, title, repoPath, githubHref }) => ({
-      slug,
-      title,
-      groupLabel: group.label,
-      repoPath,
-      githubHref,
-    })),
-  );
+export function getSearchIndex(): SearchableNotebook[] {
+  return getNotebookList().map(({ repoPath, slug, title, description, groupLabel, githubHref }) => ({
+    repoPath,
+    slug,
+    title,
+    description,
+    groupLabel,
+    githubHref,
+  }));
 }

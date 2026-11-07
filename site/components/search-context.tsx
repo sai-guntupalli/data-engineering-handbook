@@ -65,7 +65,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Press / to jump to the search input from anywhere.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key !== "/" || event.metaKey || event.ctrlKey || event.altKey) return;

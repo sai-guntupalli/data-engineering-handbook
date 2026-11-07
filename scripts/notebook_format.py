@@ -48,7 +48,6 @@ CANONICAL_METADATA = {
 
 # Lines in the opening cell that the formatter owns and regenerates.
 _OWNED_LINE = re.compile(r"^\s*(\*Author: \[|\[!\[Open In Colab\])")
-_HOW_TO_USE = re.compile(r"^\*How to use this notebook\.\*[^\n]*(?:\n|$)", re.M)
 
 
 def colab_url(relpath: str) -> str:
@@ -62,10 +61,6 @@ def colab_badge(relpath: str) -> str:
 def cell_source(cell: dict) -> str:
     source = cell.get("source", "")
     return "".join(source) if isinstance(source, list) else str(source)
-
-
-def _as_source_lines(text: str) -> list[str]:
-    return text.splitlines(keepends=True)
 
 
 def _format_opening_cell(text: str, relpath: str) -> str:
@@ -99,7 +94,7 @@ def format_notebook(notebook: dict, relpath: str) -> dict:
         cell_type = cell.get("cell_type", "markdown")
         text = cell_source(cell)
         if cell_type == "markdown":
-            text = _HOW_TO_USE.sub("", text).strip("\n")
+            text = text.strip("\n")
             if not text.strip():
                 continue
         formatted = {"cell_type": cell_type, "metadata": {}, "source": text}
@@ -124,7 +119,7 @@ def format_notebook(notebook: dict, relpath: str) -> dict:
             cell_id = _stable_id(relpath, index, taken)
         cell["id"] = cell_id
         taken.add(cell_id)
-        cell["source"] = _as_source_lines(cell["source"].rstrip("\n"))
+        cell["source"] = cell["source"].rstrip("\n").splitlines(keepends=True)
 
     return {
         "cells": cells,

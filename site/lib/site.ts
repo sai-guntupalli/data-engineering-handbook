@@ -11,6 +11,7 @@ export const siteUrl = (
 /** GitHub repository the handbook lives in (safe for client components). */
 export const repository = "sai-guntupalli/data-engineering-handbook";
 export const repositoryHref = `https://github.com/${repository}`;
+export const branch = "master";
 
 /** Author of the handbook; matches the credit line in every notebook's first cell. */
 export const authorName = "Sai Guntupalli";
@@ -20,4 +21,4 @@ export const authorHref = `https://github.com/sai-guntupalli`;
 export const licenseName = "CC BY 4.0";
 export const licenseNameLong = "Creative Commons Attribution 4.0 International";
 export const licenseHref = "https://creativecommons.org/licenses/by/4.0/";
-export const licenseFileHref = `${repositoryHref}/blob/master/LICENSE`;
+export const licenseFileHref = `${repositoryHref}/blob/${branch}/LICENSE`;

@@ -66,8 +66,8 @@ make validate    # everything CI runs
 ```
 
 New topic notebooks go in `notebooks/topics/<slug>.ipynb`; register the slug in
-[`site/lib/notebook-groups.ts`](site/lib/notebook-groups.ts) so the gallery shows it (the build fails on a
-mistyped slug).
+[`site/lib/notebook-groups.ts`](site/lib/notebook-groups.ts) so the gallery shows it. The build fails when a
+notebook is not registered or a registered slug has no file.
 
 ## Commit checklist
 

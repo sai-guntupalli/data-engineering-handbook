@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
-import { PRACTICE_GROUP, TOPIC_GROUPS, anchorFor } from "@/lib/notebook-groups";
+import { ALL_GROUPS, anchorFor } from "@/lib/notebook-groups";
 
 /**
- * Header dropdown listing every group (hands-on practice + the topic groups)
- * with real notebook counts. Closes on Escape, outside click, and navigation.
+ * Header dropdown listing every group with its notebook count. The counts are the
+ * registry's slug counts, which the build checks against the notebook files.
+ * Closes on Escape, outside click, and navigation.
  */
 export function TopicsMenu() {
   const [open, setOpen] = useState(false);
@@ -29,8 +30,6 @@ export function TopicsMenu() {
     };
   }, [open]);
 
-  const groups = [PRACTICE_GROUP, ...TOPIC_GROUPS];
-
   return (
     <div className="topics-menu" ref={rootRef}>
       <button
@@ -45,7 +44,7 @@ export function TopicsMenu() {
       </button>
       {open ? (
         <div className="topics-panel" aria-label="All notebook groups">
-          {groups.map((group) => (
+          {ALL_GROUPS.map((group) => (
             <Link
               key={group.label}
               href={`/#${anchorFor(group.label)}`}

@@ -7,16 +7,13 @@ import { repositoryHref } from "@/lib/site";
 // Locale-pinned so the prerendered HTML matches what the client hydrates.
 const count = new Intl.NumberFormat("en-US");
 
-const heroStats = [
-  { icon: Notebook, label: "notebooks" },
-  { icon: Code, label: "code cells" },
-  { icon: CheckCircle, label: "self-checks" },
-];
-
 export default function Home() {
-  const groups = getNotebookGroups();
   const stats = getNotebookStats();
-  const values = [stats.notebooks, stats.codeCells, stats.checks];
+  const heroStats = [
+    { icon: Notebook, label: "notebooks", value: stats.notebooks },
+    { icon: Code, label: "code cells", value: stats.codeCells },
+    { icon: CheckCircle, label: "self-checks", value: stats.checks },
+  ];
   const headerIndex = getSearchIndex();
 
   return (
@@ -42,12 +39,12 @@ export default function Home() {
             </div>
           </div>
           <dl className="hero-panel" aria-label="Notebook statistics">
-            {heroStats.map(({ icon: Icon, label }, index) => (
+            {heroStats.map(({ icon: Icon, label, value }) => (
               <div key={label}>
                 <dt>{label}</dt>
                 <dd>
                   <Icon size={24} weight="bold" />
-                  <strong>{count.format(values[index])}</strong>
+                  <strong>{count.format(value)}</strong>
                 </dd>
               </div>
             ))}
@@ -55,12 +52,7 @@ export default function Home() {
         </section>
 
         <div className="content-shell page-top">
-          <NotebookExplorer
-            groups={groups.map((group) => ({
-              label: group.label,
-              notebooks: group.notebooks.map((notebook) => ({ ...notebook, groupLabel: group.label })),
-            }))}
-          />
+          <NotebookExplorer groups={getNotebookGroups()} />
         </div>
       </main>
     </>

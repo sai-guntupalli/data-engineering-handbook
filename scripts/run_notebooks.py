@@ -21,8 +21,9 @@ import time
 from concurrent.futures import ProcessPoolExecutor
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOKS_DIR = ROOT / "notebooks"
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_format import NOTEBOOKS_DIR, ROOT, notebook_paths  # noqa: E402
+
 DEFAULT_CELL_TIMEOUT_SECONDS = 600
 
 
@@ -64,7 +65,7 @@ def main() -> int:
         print("Notebook tooling is missing: uv sync --extra notebooks", file=sys.stderr)
         return 1
 
-    paths = [Path(f).resolve() for f in args.files] or sorted(NOTEBOOKS_DIR.rglob("*.ipynb"))
+    paths = notebook_paths(args.files)
     if not paths:
         print(f"No notebooks found in {NOTEBOOKS_DIR}", file=sys.stderr)
         return 1
