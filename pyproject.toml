@@ -9,6 +9,7 @@ dependencies = []
 [project.optional-dependencies]
 # Notebook tooling: run `uv sync --extra notebooks`, then `make notebooks`.
 notebooks = [
+    "duckdb>=1.0",
     "jupyterlab>=4.2",
     "nbformat>=5.10",
     "nbclient>=0.10",
