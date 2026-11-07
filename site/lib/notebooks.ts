@@ -11,12 +11,6 @@ export type NotebookSummary = {
   slug: string;
   title: string;
   description: string;
-  codeCells: number;
-  assertCount: number;
-  /** "### Try it" exercise blocks in the markdown. */
-  tryItBlocks: number;
-  /** Coarse reading time: markdown words / 200wpm plus 8s per code cell. */
-  readingMinutes: number;
   githubHref: string;
   /** Opens this notebook in Google Colab (repository must stay public). */
   colabHref: string;
@@ -49,11 +43,31 @@ function titleFromMarkdown(markdown: string, fallback: string): string {
   return fallback.replace(/^\d+_/, "").replaceAll("_", " ").replaceAll("-", " ");
 }
 
+/** Turn inline markdown (code spans, links, images, emphasis) into plain text. */
+function inlineToText(line: string): string {
+  return line
+    .replace(/`([^`]+)`/g, "$1")
+    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
+    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
+    .replace(/\*\*([^*]+)\*\*/g, "$1")
+    .replace(/\*([^*]+)\*/g, "$1")
+    .trim();
+}
+
+const MAX_DESCRIPTION_LENGTH = 160;
+
+/** Cut at the last whole word that fits, then mark the cut with an ellipsis. */
+function truncateAtWord(text: string, limit: number): string {
+  if (text.length <= limit) return text;
+  const cut = text.slice(0, limit);
+  const lastSpace = cut.lastIndexOf(" ");
+  return `${cut.slice(0, lastSpace > 0 ? lastSpace : limit).trimEnd()}…`;
+}
+
 /** First real paragraph after the title, used as a card description. */
 function descriptionFromMarkdown(markdown: string): string {
-  const lines = markdown.split("\n");
   let seenTitle = false;
-  for (const raw of lines) {
+  for (const raw of markdown.split("\n")) {
     const line = raw.trim();
     if (line.startsWith("#")) {
       seenTitle = true;
@@ -64,7 +78,7 @@ function descriptionFromMarkdown(markdown: string): string {
     if (/^[+\-*[>|`<]/.test(line)) continue;
     const plain = inlineToText(line);
     if (plain.length < 25) continue;
-    return plain.length > 150 ? `${plain.slice(0, 147).trimEnd()}...` : plain;
+    return truncateAtWord(plain, MAX_DESCRIPTION_LENGTH);
   }
   return "";
 }
@@ -84,17 +98,6 @@ function listNotebookFiles(dir: string): string[] {
 type RawCell = { cell_type?: string; source?: string | string[] };
 type RawNotebook = { cells?: RawCell[] };
 
-/** Turn inline markdown (code spans, links, images, emphasis) into plain text. */
-function inlineToText(line: string): string {
-  return line
-    .replace(/`([^`]+)`/g, "$1")
-    .replace(/!\[([^\]]*)\]\([^)]*\)/g, "$1")
-    .replace(/\[([^\]]+)\]\([^)]*\)/g, "$1")
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/\*([^*]+)\*/g, "$1")
-    .trim();
-}
-
 function readSummary(file: string): NotebookSummary {
   let notebook: RawNotebook;
   try {
@@ -103,32 +106,18 @@ function readSummary(file: string): NotebookSummary {
     const reason = error instanceof Error ? error.message : String(error);
     throw new Error(`Could not parse notebook ${path.relative(repoRoot, file)}: ${reason}`);
   }
-  const cells: { type: string; source: string }[] = (notebook.cells ?? []).map(
-    (cell: RawCell) => ({
-      type: cell.cell_type ?? "markdown",
-      source: sourceToString(cell.source),
-    }),
-  );
-  const markdown = cells
-    .filter((cell) => cell.type === "markdown")
-    .map((cell) => cell.source)
+  const markdown = (notebook.cells ?? [])
+    .filter((cell) => (cell.cell_type ?? "markdown") === "markdown")
+    .map((cell) => sourceToString(cell.source))
     .join("\n\n");
   const repoPath = path.relative(repoRoot, file).split(path.sep).join("/");
   const filename = path.basename(file, ".ipynb");
-  const codeCells = cells.filter((cell) => cell.type === "code");
-  const tryItBlocks = (markdown.match(/### Try it/g) ?? []).length;
-  const markdownWords = markdown.split(/\s+/).filter(Boolean).length;
-  const readingMinutes = Math.max(1, Math.round(markdownWords / 200 + (codeCells.length * 8) / 60));
 
   return {
     repoPath,
     slug: filename,
     title: titleFromMarkdown(markdown, filename),
     description: descriptionFromMarkdown(markdown),
-    codeCells: codeCells.length,
-    assertCount: codeCells.reduce((total, cell) => total + (cell.source.match(/\bassert\b/g)?.length ?? 0), 0),
-    tryItBlocks,
-    readingMinutes,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
     colabHref: `${COLAB_HREF}/${repository}/blob/${branch}/${repoPath}`,
   };
@@ -186,15 +175,6 @@ export function getNotebookGroups(): NotebookGroupView[] {
 /** Every notebook in group order, each carrying the label of its group. */
 export function getNotebookList(): NotebookListItem[] {
   return getNotebookGroups().flatMap((group) => group.notebooks);
-}
-
-export function getNotebookStats() {
-  const summaries = allSummaries();
-  return {
-    notebooks: summaries.length,
-    codeCells: summaries.reduce((total, notebook) => total + notebook.codeCells, 0),
-    checks: summaries.reduce((total, notebook) => total + notebook.assertCount, 0),
-  };
 }
 
 /** Slim header-search index for the suggestions panel. The ?q= query itself is

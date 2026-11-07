@@ -3,12 +3,12 @@
 import { useMemo } from "react";
 import { anchorFor } from "@/lib/notebook-groups";
 import type { NotebookGroupView } from "@/lib/notebooks";
-import { NotebookCard } from "./NotebookCard";
+import { NotebookRow } from "./NotebookRow";
 import { starredFirst, useStarred } from "./starred";
 
 /**
- * The browse-mode gallery: every group in declared order, always unfiltered.
- * Search lives in the header suggestions panel and the /search page.
+ * The library: a topic index beside every group in declared order. On narrow
+ * screens the index becomes a horizontally scrolling strip above the groups.
  */
 export function NotebookExplorer({ groups }: { groups: NotebookGroupView[] }) {
   const starred = useStarred();
@@ -19,30 +19,32 @@ export function NotebookExplorer({ groups }: { groups: NotebookGroupView[] }) {
   );
 
   return (
-    <div className="explorer">
-      {starred.size > 0 ? (
-        <p className="results-meta">
-          <span className="starred-hint" title="Starred notebooks float to the top of each group">
-            ★ {starred.size} starred
-          </span>{" "}
-          — starred notebooks float to the top of their group
-        </p>
-      ) : null}
-      {sections.map((group) => (
-        <section key={group.label} className="topic-group" id={anchorFor(group.label)}>
-          <div className="section-heading">
-            <h2>{group.label}</h2>
-            <p>
-              {group.notebooks.length} {group.notebooks.length === 1 ? "notebook" : "notebooks"}
-            </p>
-          </div>
-          <div className="topic-grid">
-            {group.notebooks.map((notebook) => (
-              <NotebookCard key={notebook.repoPath} notebook={notebook} />
-            ))}
-          </div>
-        </section>
-      ))}
+    <div className="library">
+      <nav className="library-index" aria-label="Topics">
+        <p className="eyebrow">Topics</p>
+        <ul>
+          {groups.map((group) => (
+            <li key={group.label}>
+              <a href={`#${anchorFor(group.label)}`}>{group.label}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+      <div className="library-groups">
+        {starred.size > 0 ? (
+          <p className="starred-note">Starred notebooks are listed first within their topic.</p>
+        ) : null}
+        {sections.map((group) => (
+          <section key={group.label} id={anchorFor(group.label)} className="topic-section">
+            <h2 className="topic-heading">{group.label}</h2>
+            <ol className="notebook-list">
+              {group.notebooks.map((notebook, index) => (
+                <NotebookRow key={notebook.repoPath} notebook={notebook} position={index + 1} />
+              ))}
+            </ol>
+          </section>
+        ))}
+      </div>
     </div>
   );
 }

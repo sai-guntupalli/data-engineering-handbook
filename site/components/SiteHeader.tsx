@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import { MagnifyingGlass, X } from "@phosphor-icons/react";
-import { TopicsMenu } from "./TopicsMenu";
+import { useEffect, useMemo, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { GithubLogo, MagnifyingGlass, X } from "@phosphor-icons/react";
 import { repositoryHref } from "@/lib/site";
 import { matchNotebooks, type SearchableNotebook } from "@/lib/search";
 import { useSearch } from "./search-context";
@@ -31,9 +30,8 @@ function Highlighted({ text, query }: { text: string; query: string }) {
 }
 
 /**
- * Sticky app header. Typing opens a suggestions panel right under the input
- * (visible above anything else); Enter with a highlighted suggestion opens
- * that notebook, plain Enter commits the search to /search?q=….
+ * Sticky header. Typing opens a suggestions panel under the search field; Enter
+ * on a highlighted suggestion opens that notebook, plain Enter opens /search?q=….
  */
 export function SiteHeader({
   index,
@@ -43,8 +41,7 @@ export function SiteHeader({
   index: SearchableNotebook[];
   autoFocus?: boolean;
   /** Open the suggestions panel when the input gains focus. The /search page
-   * sets this false: its results are already on screen, so the panel should
-   * wait for actual typing. */
+   * sets this false so its results stay the focus until the user types. */
   panelOnFocus?: boolean;
 }) {
   const { query, setQuery } = useSearch();
@@ -52,7 +49,7 @@ export function SiteHeader({
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState(-1);
   const rootRef = useRef<HTMLDivElement>(null);
-  const q = query.trim().toLowerCase();
+  const trimmed = query.trim();
 
   useEffect(() => {
     if (autoFocus) document.getElementById("notebook-search")?.focus();
@@ -63,7 +60,7 @@ export function SiteHeader({
     return { rows: found.slice(0, MAX_SUGGESTIONS), total: found.length };
   }, [index, query]);
 
-  const panelOpen = open && q.length > 0;
+  const panelOpen = open && trimmed.length > 0;
 
   useEffect(() => {
     if (!panelOpen) return;
@@ -77,16 +74,19 @@ export function SiteHeader({
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [panelOpen]);
 
-  function commitSearch() {
-    router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+  function closePanel() {
     setOpen(false);
     setActive(-1);
   }
 
-  function onKeyDown(event: React.KeyboardEvent) {
+  function commitSearch() {
+    router.push(`/search?q=${encodeURIComponent(trimmed)}`);
+    closePanel();
+  }
+
+  function onKeyDown(event: KeyboardEvent<HTMLInputElement>) {
     if (event.key === "Escape" && open) {
-      setOpen(false);
-      setActive(-1);
+      closePanel();
       return;
     }
     if (!panelOpen) return;
@@ -102,8 +102,7 @@ export function SiteHeader({
       const picked = active >= 0 ? matches.rows[active] : null;
       if (picked) {
         window.open(picked.githubHref, "_blank", "noopener");
-        setOpen(false);
-        setActive(-1);
+        closePanel();
       } else {
         commitSearch();
       }
@@ -112,94 +111,84 @@ export function SiteHeader({
 
   return (
     <header className="site-header">
-      <Link className="brand" href="/">
-        <span>DE</span>
-        Handbook
-      </Link>
-      <div className="header-search" ref={rootRef}>
-        <MagnifyingGlass size={15} weight="bold" />
-        <input
-          id="notebook-search"
-          type="search"
-          value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            setOpen(true);
-            setActive(-1);
-          }}
-          onKeyDown={onKeyDown}
-          onFocus={() => {
-            if (panelOnFocus) setOpen(true);
-          }}
-          placeholder="Search notebooks and topics…"
-          aria-label="Search notebooks and topics"
-          title="Press / to focus"
-          autoComplete="off"
-          aria-expanded={panelOpen}
-          aria-controls="search-suggestions"
-          role="combobox"
-        />
-        {query ? (
-          <button
-            type="button"
-            className="search-clear"
-            onClick={() => {
-              setQuery("");
-              setOpen(false);
+      <div className="site-header-inner">
+        <Link className="brand" href="/" aria-label="Data Engineering Handbook, home">
+          <span className="brand-mark" aria-hidden>
+            DE
+          </span>
+          <span className="brand-name">Handbook</span>
+        </Link>
+        <div className="header-search" ref={rootRef}>
+          <MagnifyingGlass size={16} weight="bold" aria-hidden />
+          <input
+            id="notebook-search"
+            type="search"
+            value={query}
+            onChange={(event) => {
+              setQuery(event.target.value);
+              setOpen(true);
               setActive(-1);
             }}
-            aria-label="Clear search"
-          >
-            <X size={12} weight="bold" />
-          </button>
-        ) : null}
-        {panelOpen ? (
-          <div className="suggest-panel" id="search-suggestions" role="listbox">
-            {matches.rows.length > 0 ? (
-              matches.rows.map((row, position) => (
-                <a
-                  key={row.repoPath}
-                  href={row.githubHref}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={position === active ? "suggest-item active" : "suggest-item"}
-                  role="option"
-                  aria-selected={position === active}
-                  onMouseEnter={() => setActive(position)}
-                  onClick={() => {
-                    setOpen(false);
-                    setActive(-1);
-                  }}
-                >
-                  <span className="suggest-title">
-                    <Highlighted text={row.title} query={query.trim()} />
-                  </span>
-                  <span className="suggest-group">{row.groupLabel}</span>
-                </a>
-              ))
-            ) : (
-              <p className="suggest-empty">Nothing matches “{query.trim()}”.</p>
-            )}
-            <Link
-              className="suggest-all"
-              href={`/search?q=${encodeURIComponent(query.trim())}`}
+            onKeyDown={onKeyDown}
+            onFocus={() => {
+              if (panelOnFocus) setOpen(true);
+            }}
+            placeholder="Search notebooks and topics"
+            aria-label="Search notebooks and topics"
+            title="Press / to focus"
+            autoComplete="off"
+            aria-expanded={panelOpen}
+            aria-controls="search-suggestions"
+            role="combobox"
+          />
+          {query ? (
+            <button
+              type="button"
+              className="search-clear"
               onClick={() => {
-                setOpen(false);
-                setActive(-1);
+                setQuery("");
+                closePanel();
               }}
+              aria-label="Clear search"
             >
-              {matches.total > 0
-                ? `See all ${matches.total} ${matches.total === 1 ? "match" : "matches"}`
-                : "Search everything"}{" "}
-              →
-            </Link>
-          </div>
-        ) : null}
-      </div>
-      <div className="header-actions">
-        <TopicsMenu />
-        <a className="header-github" href={repositoryHref} target="_blank" rel="noreferrer">
-          GitHub
+              <X size={12} weight="bold" aria-hidden />
+            </button>
+          ) : null}
+          {panelOpen ? (
+            <div className="suggest-panel" id="search-suggestions" role="listbox">
+              {matches.rows.length > 0 ? (
+                matches.rows.map((row, position) => (
+                  <a
+                    key={row.repoPath}
+                    href={row.githubHref}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={position === active ? "suggest-item is-active" : "suggest-item"}
+                    role="option"
+                    aria-selected={position === active}
+                    onMouseEnter={() => setActive(position)}
+                    onClick={closePanel}
+                  >
+                    <span className="suggest-title">
+                      <Highlighted text={row.title} query={trimmed} />
+                    </span>
+                    <span className="suggest-group">{row.groupLabel}</span>
+                  </a>
+                ))
+              ) : (
+                <p className="suggest-empty">Nothing matches “{trimmed}”.</p>
+              )}
+              <Link className="suggest-all" href={`/search?q=${encodeURIComponent(trimmed)}`} onClick={closePanel}>
+                {matches.total > 0
+                  ? `See all ${matches.total} ${matches.total === 1 ? "match" : "matches"}`
+                  : "Search everything"}
+              </Link>
+            </div>
+          ) : null}
+        </div>
+        <a className="header-github" href={repositoryHref} target="_blank" rel="noreferrer" aria-label="GitHub repository">
+          <GithubLogo size={18} weight="regular" aria-hidden />
+          <span>GitHub</span>
         </a>
       </div>
     </header>
