@@ -12,6 +12,7 @@ export const PRACTICE_GROUP: NotebookGroup = {
     "03_sql_interview_questions",
     "04_pyspark_concepts",
     "05_interview_questions",
+    "06_pyspark_coding_challenges",
   ],
 };
 

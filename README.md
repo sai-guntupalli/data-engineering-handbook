@@ -23,7 +23,7 @@ are shown in markdown code blocks.
 
 | Group | Notebooks |
 |---|---|
-| Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (DuckDB), `04_pyspark_concepts`, `05_interview_questions` |
+| Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (DuckDB), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
 | Core pipeline skills | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
 | Lakehouse and formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
 | Cloud and platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
