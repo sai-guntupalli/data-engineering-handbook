@@ -5,6 +5,9 @@ site lives in `site/`. PR #28 (`chore/colab-runnable-notebooks`) awaits review/m
 
 ## Completed
 
+- 2026-11-07: Added `notebooks/06_pyspark_coding_challenges.ipynb`: five interview-style PySpark problems
+  (latest-record dedupe, grain-aware joins, SCD as-of join, sessionization, salted skew join) with fixtures, reference
+  solutions and 19 asserts; runs locally in 13s. Recovered from the old WIP in `notebooks/04_pyspark_concepts.ipynb`.
 - 2026-11-07: Verified PR #28: GitHub Checks green (all 57 notebooks executed on Linux + Java 17, 2m32s);
   smoke-tested in a real Google Colab runtime with "Run all": `topics/dynamodb` (30/30 cells), `topics/spark`
   (51/51, setup cell installed PySpark), `topics/iceberg` (22/22) — no errors.
