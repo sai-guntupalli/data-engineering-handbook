@@ -36,11 +36,11 @@
 
 ## In Progress
 
-- SQL learning path: PR open for review (see the PR link in the handoff); CI not yet confirmed.
+- SQL learning path: PR #30 open for review (https://github.com/sai-guntupalli/data-engineering-handbook/pull/30); CI not yet confirmed.
 
 ## Next Steps
 
-1. Review and merge the SQL learning-path PR (`feat/sql-notebook-split`), after CI is green.
+1. Review and merge PR #30 (`feat/sql-notebook-split`), after CI is green.
 2. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
    Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
 3. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
