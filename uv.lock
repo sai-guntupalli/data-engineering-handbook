@@ -643,7 +643,7 @@ requires-dist = [
     { name = "polars", marker = "extra == 'notebooks'", specifier = ">=1.0" },
     { name = "pyarrow", marker = "extra == 'notebooks'", specifier = ">=15" },
     { name = "pyiceberg", extras = ["sql-sqlite", "pyarrow", "pyiceberg-core"], marker = "extra == 'notebooks'", specifier = ">=0.9" },
-    { name = "pyspark", marker = "extra == 'notebooks'", specifier = ">=3.5,<4" },
+    { name = "pyspark", marker = "extra == 'notebooks'", specifier = ">=4.0,<4.1" },
     { name = "pytest", marker = "extra == 'notebooks'", specifier = ">=8" },
     { name = "pyyaml", marker = "extra == 'notebooks'", specifier = ">=6.0" },
     { name = "scipy", marker = "extra == 'notebooks'", specifier = ">=1.11" },
@@ -2357,12 +2357,12 @@ wheels = [
 
 [[package]]
 name = "pyspark"
-version = "3.5.9"
+version = "4.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "py4j" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/95/ce/81e53e729790556e3983e95de1a7d5df91a34adfcd34b5a5ab0e0c6e9b33/pyspark-3.5.9.tar.gz", hash = "sha256:ea27adc39ddac9413b8951e45aa748cbed6c785971b81386efc41938f6243d93", size = 317858593, upload-time = "2026-07-16T08:52:04.494Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/3e/ee/2377eee07ee94739e953231558040a5ee671092780a3eed0a9e175f059e7/pyspark-4.0.5.tar.gz", hash = "sha256:a0d44b0e7faf0458ad83b7aa664e7ed8b96beed8a55d66ce3b0dfac2309dfca6", size = 434376598, upload-time = "2026-10-27T18:39:58.059Z" }
 
 [[package]]
 name = "pytest"

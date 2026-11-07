@@ -1,10 +1,19 @@
 # Progress
 
-**Current Status**: All notebooks are Colab-runnable and executed by CI. The 14-chapter SQL path is on master (PR #34).
+**Current Status**: All notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The 14-chapter SQL path is on master (PR #34).
 The website has been redesigned as an editorial library (`feat/redesign-site`) and is awaiting review; it no longer shows
 notebook, cell or check counts.
 
 ## Completed
+
+- 2026-11-07: Fixed the failing notebook run in CI (`fix/pyspark-4-recursive-cte`). The CI extra pinned PySpark below 4,
+  so CI ran Spark 3.5, which has no recursive CTEs and failed `sql-02`. The extra and the six PySpark setup cells now pin
+  `pyspark>=4.0,<4.1`, the version Colab installs. Spark 4.0.x fails to plan a recursive CTE (an internal `UnionLoop`
+  error, seen on 4.0.0 through 4.0.5), so `sql-02` shows that query as reference and walks the hierarchy with a self-join.
+  This corrects the earlier "all pass on 4.0.2" note for that query. `sql-02`'s ROLLUP query now sorts through a subquery.
+  `spark` uses `try_cast` for the malformed cast, because ANSI mode is on by default in 4.0. `spark-tuning` reads Spark 4
+  event logs, which are a directory of files, and writes them uncompressed. All 72 notebooks pass with PySpark 4.0.5 on
+  JDK 17, the CI setup. Recursive CTE execution is verified only on 4.1.0 (in a sandbox probe).
 
 - 2026-11-07: Redesigned the website (`feat/redesign-site`): an editorial look (warm paper, serif display type, one
   burnt-sienna accent) with dark mode. The home page has a hero with a static notebook preview, a Read / Run / Check
