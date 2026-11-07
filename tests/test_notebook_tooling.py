@@ -3,12 +3,15 @@
 from __future__ import annotations
 
 import json
+import re
 import sys
 from pathlib import Path
 
 import pytest
 
-SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
+ROOT = Path(__file__).resolve().parents[1]
+SCRIPTS = ROOT / "scripts"
+SITE_CONFIG = ROOT / "site" / "lib" / "site.ts"
 sys.path.insert(0, str(SCRIPTS))
 
 import audit_notebooks  # noqa: E402
@@ -60,14 +63,9 @@ class TestFormatNotebook:
         result = notebook_format.format_notebook(notebook(md("# T"), dirty), RELPATH)
         cell = result["cells"][1]
         assert cell["outputs"] == [] and cell["execution_count"] is None and cell["metadata"] == {}
-        assert result["metadata"] == notebook_format.CANONICAL_METADATA
+        assert "watermark" not in result["metadata"]
+        assert "kernelspec" in result["metadata"]
         assert result["nbformat_minor"] == 5
-
-    def test_how_to_use_boilerplate_cell_is_removed(self):
-        boiler = md("*How to use this notebook.* Read the cells and run them.")
-        result = notebook_format.format_notebook(notebook(md("# T"), boiler, md("Real content")), RELPATH)
-        sources = ["".join(cell["source"]) for cell in result["cells"]]
-        assert len(sources) == 2 and sources[1] == "Real content"
 
     def test_ids_are_stable_unique_and_existing_ones_kept(self):
         nb = notebook(md("# T"), code("a = 1", id="keepme"), code("b = 2", id="keepme"))
@@ -95,9 +93,6 @@ class TestAuditHelpers:
     def test_third_party_imports_skip_stdlib_and_relative(self):
         source = "import json, duckdb\nfrom pyspark.sql import functions\nfrom . import local\nimport os.path"
         assert audit_notebooks.third_party_imports(source) == {"duckdb", "pyspark"}
-
-    def test_local_modules_written_by_the_notebook_count_as_provided(self):
-        assert audit_notebooks.local_modules(['Path("orders.py").write_text(code)']) == {"orders"}
 
     def test_broken_links_ignore_urls_and_anchors(self, tmp_path):
         (tmp_path / "exists.ipynb").write_text("{}")
@@ -139,11 +134,33 @@ class TestAudit:
         errors, _ = audit_notebooks.audit(path)
         assert any(expected in error for error in errors), errors
 
-    def test_unformatted_notebook_is_reported(self, tmp_path, monkeypatch):
-        path = write_formatted(tmp_path, monkeypatch, md("# T"))
-        path.write_text(path.read_text().replace('"nbformat_minor": 5', '"nbformat_minor": 4'))
+    def test_setup_cell_may_import_the_packages_it_installs(self, tmp_path, monkeypatch):
+        setup = 'import importlib.util\nPACKAGES = {"duckdb": "duckdb>=1.0"}\nimport packaging'
+        path = write_formatted(tmp_path, monkeypatch, md("# T"), code(setup))
+        errors, _ = audit_notebooks.audit(path)
+        assert errors == []
+
+    def test_notebook_with_leftover_outputs_is_reported(self, tmp_path, monkeypatch):
+        path = write_formatted(tmp_path, monkeypatch, md("# T"), code("print(1)"))
+        dirty = notebook_format.format_notebook(notebook(md("# T"), code("print(1)")), RELPATH)
+        dirty["cells"][1]["outputs"] = [{"output_type": "stream", "name": "stdout", "text": ["1\n"]}]
+        path.write_text(json.dumps(dirty, indent=1), encoding="utf-8")
         errors, _ = audit_notebooks.audit(path)
         assert any("make format" in error for error in errors)
+
+
+def site_constant(name: str) -> str:
+    """Value of ``export const <name> = "..."`` in the site's shared config."""
+    match = re.search(rf'export const {name} = "([^"]+)";', SITE_CONFIG.read_text(encoding="utf-8"))
+    assert match, f"{name} is not declared in site/lib/site.ts"
+    return match.group(1)
+
+
+def test_python_and_site_agree_on_repository_branch_and_author():
+    # The formatter writes these into every notebook; the site links to them. Drift breaks Colab links.
+    assert notebook_format.REPOSITORY == site_constant("repository")
+    assert notebook_format.BRANCH == site_constant("branch")
+    assert notebook_format.AUTHOR_NAME == site_constant("authorName")
 
 
 class TestPipInstallLines:

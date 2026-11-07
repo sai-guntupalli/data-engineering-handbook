@@ -1,5 +1,6 @@
-# Mirrors `make validate`: lint + tests, notebook audit, execute every notebook
-# (as Colab's "Run all" would), then build the site. Keep the two in sync.
+# Runs `make validate`, the same target you run locally: lint, unit tests, the
+# notebook audit, execution of every notebook (as Colab's "Run all" would), and
+# the site build.
 
 name: Checks
 
@@ -40,17 +41,5 @@ jobs:
       - name: Install
         run: make install
 
-      - name: Lint
-        run: make lint
-
-      - name: Unit tests
-        run: make test
-
-      - name: Audit notebooks
-        run: make check
-
-      - name: Run every notebook
-        run: make notebooks JOBS=4
-
-      - name: Build site
-        run: make build
+      - name: Validate
+        run: make validate

@@ -28,7 +28,7 @@ export const metadata: Metadata = {
   description: `The Data Engineering Handbook by ${authorName} is licensed under ${licenseNameLong} — reuse is free, crediting the author is required.`,
 };
 
-const ATTRIBUTION_TEXT = `© ${authorName}. The Data Engineering Handbook\n${repositoryHref} · ${licenseName} · https://creativecommons.org/licenses/by/4.0/`;
+const ATTRIBUTION_TEXT = `© ${authorName}. The Data Engineering Handbook\n${repositoryHref} · ${licenseName} · ${licenseHref}`;
 
 const permissions = [
   { icon: Copyright, text: "Use it commercially — in your work, your team, your product" },

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SearchProvider } from "@/components/search-context";
-import { repositoryHref, siteUrl } from "@/lib/site";
+import { authorHref, authorName, repositoryHref, siteUrl } from "@/lib/site";
 
 const geist = Geist({
   variable: "--font-sans",
@@ -26,8 +26,8 @@ export const metadata: Metadata = {
     template: `%s | ${siteName}`,
   },
   description: siteDescription,
-  authors: [{ name: "Sai Guntupalli", url: "https://github.com/sai-guntupalli" }],
-  creator: "Sai Guntupalli",
+  authors: [{ name: authorName, url: authorHref }],
+  creator: authorName,
   openGraph: {
     type: "website",
     siteName,
@@ -52,8 +52,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
           <footer className="site-footer">
             <span>Built by</span>
-            <a href="https://github.com/sai-guntupalli" target="_blank" rel="noreferrer">
-              Sai Guntupalli
+            <a href={authorHref} target="_blank" rel="noreferrer">
+              {authorName}
             </a>
             <nav aria-label="Footer navigation">
               <Link href="/license">License</Link>

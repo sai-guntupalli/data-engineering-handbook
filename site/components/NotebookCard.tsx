@@ -1,25 +1,10 @@
 "use client";
 
 import { Star } from "@phosphor-icons/react";
+import type { NotebookListItem } from "@/lib/notebooks";
 import { toggleStar, useStarred } from "./starred";
 
-/** A notebook as rendered on a gallery card (plus the group it sits in). */
-export type CardNotebook = {
-  repoPath: string;
-  slug: string;
-  title: string;
-  description: string;
-  codeCells: number;
-  assertCount: number;
-  tryItBlocks: number;
-  readingMinutes: number;
-  groupLabel: string;
-  githubHref: string;
-  /** Opens this notebook in Google Colab (repository must stay public). */
-  colabHref: string;
-};
-
-export function NotebookCard({ notebook }: { notebook: CardNotebook }) {
+export function NotebookCard({ notebook }: { notebook: NotebookListItem }) {
   const starred = useStarred();
   const isStarred = starred.has(notebook.repoPath);
 

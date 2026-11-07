@@ -6,6 +6,20 @@ awaiting review and merge.
 
 ## Completed
 
+- 2026-11-07: Untangled the non-notebook code (`chore/untangle-codebase`):
+  - One registry: each group in `site/lib/notebook-groups.ts` declares its folder. The build fails on a missing or
+    unregistered notebook (the "Other notebooks" fallback is gone).
+  - One repository identity: `site/lib/site.ts` holds the branch, author and license URL; a test keeps the Python
+    formatter's copies in step with it.
+  - One notebook list and one search rule: `site/lib/search.ts` defines what matches; header suggestions and /search
+    share it, so they agree on the fields searched.
+  - Removed dead special cases: the "How to use" boilerplate removal, the `.py`-module allowance in the audit, the
+    hard-coded setup-helper list (the setup cell is now exempt from the import check), and the description prefixes.
+  - CI runs `make validate`, the same target as local development.
+  - Comments that restated the code were removed; tests that checked implementation details were rewritten to check
+    behaviour.
+  - Rendered gallery text is unchanged versus master. Intended change: header suggestions also match description text.
+
 - 2026-11-07: SQL path review (feedback round): dropped the filtering-and-grouping notebook. Added `sql-01-basics`, a
   book-style notebook covering tables, SELECT, WHERE, sorting, aggregates, GROUP BY, HAVING, joins, CASE and NULL,
   with ten practice questions and answers. Reworked `sql-05-joins` in the same style. Both install PySpark with
