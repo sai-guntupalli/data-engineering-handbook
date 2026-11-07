@@ -86,7 +86,6 @@ export default function Home() {
       <main id="main-content">
         <section className="hero">
           <div className="hero-copy">
-            <p className="eyebrow">Open handbook for data engineers</p>
             <h1>
               Learn data engineering by <em>running</em> it.
             </h1>
@@ -121,7 +120,6 @@ export default function Home() {
 
         <div className="content-shell" id="library">
           <div className="section-intro">
-            <p className="eyebrow">The library</p>
             <h2>Pick a topic, open a notebook.</h2>
           </div>
           <NotebookExplorer groups={getNotebookGroups()} />

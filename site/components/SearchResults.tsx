@@ -40,7 +40,6 @@ export function SearchResults({ notebooks }: { notebooks: NotebookListItem[] }) 
   return (
     <>
       <header className="page-heading">
-        <p className="eyebrow">{trimmed ? "Search" : "All notebooks"}</p>
         <h1>{trimmed ? `Results for “${trimmed}”` : "Every notebook"}</h1>
         <p className="page-lede">
           {matches.length} {matches.length === 1 ? "notebook" : "notebooks"}

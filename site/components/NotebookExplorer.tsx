@@ -21,7 +21,6 @@ export function NotebookExplorer({ groups }: { groups: NotebookGroupView[] }) {
   return (
     <div className="library">
       <nav className="library-index" aria-label="Topics">
-        <p className="eyebrow">Topics</p>
         <ul>
           {groups.map((group) => (
             <li key={group.label}>
