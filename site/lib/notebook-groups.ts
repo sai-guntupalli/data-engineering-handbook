@@ -32,6 +32,17 @@ const topicGroup = (label: string, slugs: string[]): NotebookGroup => ({
 });
 
 export const TOPIC_GROUPS: NotebookGroup[] = [
+  topicGroup("Python learning path", [
+    "python-01-values-and-types",
+    "python-02-collections",
+    "python-03-control-flow-and-functions",
+    "python-04-iterators-and-generators",
+    "python-05-classes-and-dataclasses",
+    "python-06-files-and-formats",
+    "python-07-errors-logging-and-testing",
+    "python-08-concurrency",
+    "python-09-data-engineering",
+  ]),
   topicGroup("SQL learning path", [
     "sql-01-basics",
     "sql-02-aggregations-and-ctes",
@@ -49,7 +60,6 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "sql-14-interview-concepts",
   ]),
   topicGroup("Data Engineering", [
-    "python",
     "sql",
     "scala",
     "spark",

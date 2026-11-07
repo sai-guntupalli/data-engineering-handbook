@@ -6,6 +6,14 @@ notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: Python learning path (`feat/python-learning-path`): the single `topics/python` notebook is replaced by nine
+  chapters, following the SQL path. Chapters 1-8 cover values and types, collections, control flow and functions,
+  iterators and generators, classes and dataclasses, files and formats, errors, logging and testing, and concurrency.
+  Chapter 9 covers data-engineering patterns with the standard library only: config, validation and quarantine,
+  idempotent upserts, watermarks, retries with backoff, partitioned output, content hashes, deduplication and run
+  summaries. Each chapter runs top to bottom on Python 3.13 and passes the audit. The old notebook's Parquet and pandas
+  content is not carried over; see the Parquet and Data quality notebooks.
+
 - 2026-11-07: Library listing fixes (`fix/library-listing`): the practice group is now "Interview practice" (its six
   notebooks are interview prep kept outside the topic folders); descriptions read whole paragraphs, so they no longer
   stop mid-sentence; leading index numbers are dropped from titles; topic groups renamed to Data Engineering, Lakehouse

@@ -24,8 +24,9 @@ are shown in markdown code blocks.
 | Group | Notebooks |
 |---|---|
 | Interview practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
+| Python learning path | Values and types, collections, control flow and functions, iterators and generators, classes and dataclasses, files and formats, errors, logging and testing, concurrency, and data-engineering patterns (idempotent loads, watermarks, retries) |
 | SQL learning path | SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data, interview drills, interview concepts (Spark SQL) |
-| Data Engineering | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
+| Data Engineering | Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
 | Lakehouse Formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
 | Cloud Platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
 | Streaming and Distributed Systems | Kafka, Flink, Redis, Hadoop, Hive, HBase, Cassandra, Kubernetes |
