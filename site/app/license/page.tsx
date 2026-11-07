@@ -138,8 +138,8 @@ export default function LicensePage() {
               </Link>
             </div>
             <p className="results-meta">
-              Each notebook also carries this license inside its <code>metadata.watermark</code> block,
-              so the credit travels with the file even when it leaves this repository. Provided as-is,
+              Each notebook opens with an author credit line, so the credit travels with the file even
+              when it leaves this repository. Provided as-is,
               without warranty of any kind — see Section 5 of the legal code.
             </p>
           </section>

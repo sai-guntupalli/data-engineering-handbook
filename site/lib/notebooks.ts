@@ -15,14 +15,8 @@ export type NotebookSummary = {
   assertCount: number;
   /** "### Try it" exercise blocks in the markdown. */
   tryItBlocks: number;
-  /** Code cells marked `# ILLUSTRATIVE` (need a platform; will not run locally). */
-  illustrativeCells: number;
-  /** Coarse reading time: markdown words / 200wpm plus 8s per runnable cell. */
+  /** Coarse reading time: markdown words / 200wpm plus 8s per code cell. */
   readingMinutes: number;
-  /** Code cells and asserts that are verbatim copies of a practice notebook
-   *  (merged self-contained regions). Zero except for python/spark/sql topics. */
-  mergedCodeCells: number;
-  mergedAsserts: number;
   githubHref: string;
   /** Opens this notebook in Google Colab (repository must stay public). */
   colabHref: string;
@@ -36,53 +30,12 @@ export type NotebookGroupView = {
 const BRANCH = "master";
 const GITHUB_BLOB = `https://github.com/${repository}/blob/${BRANCH}`;
 // Google Colab can only open notebooks from public repositories. The handbook
-// is public, so every carry gets a Colab permalink next to the GitHub link.
+// is public, so every card gets a Colab permalink next to the GitHub link.
 const COLAB_HREF = "https://colab.research.google.com/github";
 
-const notebooksRoot = path.join(process.cwd(), "notebooks");
-
-/**
- * Marker of a merged self-contained copy of a practice notebook. Must stay in
- * step with MERGE_NOTE in scripts/sync_merged_copies.py, which owns the
- * convention.
- */
-const MERGE_NOTE = "merged here so this notebook is self-contained";
-
-/**
- * Count code cells (and their asserts) that sit inside a merged-copy region,
- * i.e. verbatim copies of a practice notebook. A region starts at the markdown
- * merge-note cell and runs to the next merge note or the end of the notebook.
- * These are subtracted from repository-level stats so the hero does not report
- * every practice notebook twice (it is executed once directly and once merged).
- *
- * Region rules are owned by scripts/sync_merged_copies.py: its --check fails
- * when a merge-note notebook is missing from its CONFIG, or when unmerged code
- * cells trail a region without committed outputs, so these two implementations
- * cannot silently disagree about which cells count as merged.
- */
-function mergedCopyCells(cells: RawCell[]): { codeCells: number; asserts: number } {
-  const regions: Array<[number, number]> = [];
-  let start = -1;
-  for (let index = 0; index < cells.length; index++) {
-    const cell = cells[index];
-    if (cell.cell_type === "markdown" && sourceToString(cell.source).includes(MERGE_NOTE)) {
-      if (start >= 0) regions.push([start, index]);
-      start = index;
-    }
-  }
-  if (start >= 0) regions.push([start, cells.length]);
-
-  let codeCount = 0;
-  let assertCount = 0;
-  for (const [from, to] of regions) {
-    for (const cell of cells.slice(from + 1, to)) {
-      if (cell.cell_type !== "code") continue;
-      codeCount++;
-      assertCount += sourceToString(cell.source).match(/\bassert\b/g)?.length ?? 0;
-    }
-  }
-  return { codeCells: codeCount, asserts: assertCount };
-}
+// The app lives in site/; the notebooks are the repository's top-level content.
+const repoRoot = path.resolve(process.cwd(), "..");
+const notebooksRoot = path.join(repoRoot, "notebooks");
 
 function sourceToString(source: string | string[] | undefined): string {
   if (Array.isArray(source)) return source.join("");
@@ -148,7 +101,7 @@ function readSummary(file: string): NotebookSummary {
     notebook = JSON.parse(fs.readFileSync(file, "utf8")) as RawNotebook;
   } catch (error) {
     const reason = error instanceof Error ? error.message : String(error);
-    throw new Error(`Could not parse notebook ${path.relative(process.cwd(), file)}: ${reason}`);
+    throw new Error(`Could not parse notebook ${path.relative(repoRoot, file)}: ${reason}`);
   }
   const cells: { type: string; source: string }[] = (notebook.cells ?? []).map(
     (cell: RawCell) => ({
@@ -160,17 +113,15 @@ function readSummary(file: string): NotebookSummary {
     .filter((cell) => cell.type === "markdown")
     .map((cell) => cell.source)
     .join("\n\n");
-  const repoPath = path.relative(process.cwd(), file).split(path.sep).join("/");
+  const repoPath = path.relative(repoRoot, file).split(path.sep).join("/");
   const filename = path.basename(file, ".ipynb");
   const codeCells = cells.filter((cell) => cell.type === "code");
-  const illustrativeCells = codeCells.filter((cell) => cell.source.includes("# ILLUSTRATIVE")).length;
   const tryItBlocks = (markdown.match(/### Try it/g) ?? []).length;
   const markdownWords = markdown.split(/\s+/).filter(Boolean).length;
   const readingMinutes = Math.max(
     1,
-    Math.round(markdownWords / 200 + ((codeCells.length - illustrativeCells) * 8) / 60),
+    Math.round(markdownWords / 200 + (codeCells.length * 8) / 60),
   );
-  const merged = mergedCopyCells(notebook.cells ?? []);
 
   return {
     repoPath,
@@ -184,10 +135,7 @@ function readSummary(file: string): NotebookSummary {
       0,
     ),
     tryItBlocks,
-    illustrativeCells,
     readingMinutes,
-    mergedCodeCells: merged.codeCells,
-    mergedAsserts: merged.asserts,
     githubHref: `${GITHUB_BLOB}/${repoPath}`,
     colabHref: `${COLAB_HREF}/${repository}/blob/${BRANCH}/${repoPath}`,
   };
@@ -273,16 +221,14 @@ export function getNotebookGroups(): NotebookGroupView[] {
 
 export function getNotebookStats() {
   const summaries = allSummaries();
-  // Exclude merged copies of the practice notebooks so self-contained topics
-  // (python, spark, sql) do not report the same cells and self-checks twice.
   return {
     notebooks: summaries.length,
     codeCells: summaries.reduce(
-      (total, notebook) => total + notebook.codeCells - notebook.mergedCodeCells,
+      (total, notebook) => total + notebook.codeCells,
       0,
     ),
     checks: summaries.reduce(
-      (total, notebook) => total + notebook.assertCount - notebook.mergedAsserts,
+      (total, notebook) => total + notebook.assertCount,
       0,
     ),
   };

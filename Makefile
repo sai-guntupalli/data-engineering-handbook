@@ -1,71 +1,61 @@
-# Data Engineering Interview Notebooks - common tasks.
+# Data Engineering Handbook - common tasks.
 #
 #   make            # list targets
-#   make validate   # notebook audit + execution + app build
+#   make validate   # everything CI runs
 
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
-# Prefer the repository virtualenv, then uv's pinned interpreter; bare `python3`
-# is a last resort that may predate the notebooks' 3.12 requirement.
-PY  ?= $(shell if [ -x .venv/bin/python ]; then echo .venv/bin/python; elif command -v uv >/dev/null 2>&1; then echo "uv run python"; else echo python3; fi)
-NPM ?= npm
-
+PY   := uv run --extra notebooks python
+# The formatter and audit are stdlib-only: no need to install notebook packages.
+TOOL := uv run --no-project python
+SITE := site
 PORT ?= 3000
+JOBS ?= 4
 
-.PHONY: help setup setup-notebooks setup-spark check watermark notebooks notebooks-check notebook-audit sync-check site lint serve validate stats clean
+.PHONY: help install dev test lint format check notebooks build validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
-		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-17s\033[0m %s\n", $$1, $$2}'
+		| awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-14s\033[0m %s\n", $$1, $$2}'
 
-setup: ## Install Python tooling and app dependencies
-	uv sync
-	$(NPM) install
-
-setup-notebooks: ## Install notebook tooling (nbformat, nbclient, ipykernel)
+install: ## Install notebook packages, Python dev tools and site dependencies
 	uv sync --extra notebooks
+	npm --prefix $(SITE) ci
 
-setup-spark: ## Install notebook tooling plus PySpark and pandas (requires Java 17+)
-	uv sync --extra notebooks --extra notebooks-spark
+dev: ## Serve the gallery site locally (PORT=3000)
+	npm --prefix $(SITE) run dev -- --port $(PORT)
 
-check: ## Validate every notebook (format, metadata, non-empty cells)
-	$(PY) scripts/audit_notebooks.py --quiet
+test: ## Unit tests for the notebook tooling
+	uv run pytest
 
-watermark: ## Stamp the author watermark (metadata + credit line) into all notebooks
-	$(PY) scripts/watermark_notebooks.py
+lint: ## Lint Python tooling and the site
+	uv run ruff check scripts tests
+	uv run ruff format --check scripts tests
+	npm --prefix $(SITE) run lint
 
-notebooks: ## Execute the practice notebooks and save their outputs
-	$(PY) scripts/run_notebooks.py
+format: ## Format notebooks (credit, Colab badge, no outputs) and Python tooling
+	$(TOOL) scripts/notebook_format.py
+	uv run ruff format scripts tests
+	uv run ruff check --fix scripts tests
 
-notebooks-check: ## Execute the practice notebooks without writing outputs (CI-safe)
-	$(PY) scripts/run_notebooks.py --check
+check: ## Audit every notebook for Colab-runnability rules
+	$(TOOL) scripts/notebook_format.py --check
+	$(TOOL) scripts/audit_notebooks.py --quiet
 
-notebook-audit: ## Print a notebook inventory with cell counts
-	$(PY) scripts/audit_notebooks.py
+notebooks: ## Execute every notebook top to bottom (JOBS=4); Spark ones need Java
+	$(PY) scripts/run_notebooks.py --jobs $(JOBS)
 
-sync-check: ## Verify merged copies match their practice notebooks
-	$(PY) scripts/sync_merged_copies.py --check
+build: ## Build the static gallery site into site/out
+	npm --prefix $(SITE) run build
 
-site: ## Build the notebook gallery app
-	$(NPM) run build
-
-lint: ## Lint the gallery app
-	$(NPM) run lint
-
-serve: ## Serve the gallery locally (PORT=3000 by default)
-	$(NPM) run dev -- --port $(PORT)
-
-validate: check sync-check notebooks-check lint site ## Full pipeline: notebook audit + sync + execution + app lint + build
+validate: lint test check notebooks build ## Everything CI runs
 	@echo "validate: all checks passed"
 
-stats: ## Show notebook counts and size
+stats: ## Notebook counts and size
 	@printf 'notebooks: %s\n' "$$(find notebooks -name '*.ipynb' | wc -l | tr -d ' ')"
-	@printf 'practice:  %s\n' "$$(ls notebooks/*.ipynb | wc -l | tr -d ' ')"
-	@printf 'topics:    %s\n' "$$(ls notebooks/topics/*.ipynb | wc -l | tr -d ' ')"
 	@printf 'size:      %s\n' "$$(du -sh notebooks | cut -f1)"
 
-clean: ## Remove app build output and Python caches
-	rm -rf .next out
-	find . -name '__pycache__' -type d -prune -exec rm -rf {} +
-	@echo "cleaned build output and __pycache__ directories"
+clean: ## Remove site build output and Python caches
+	rm -rf $(SITE)/.next $(SITE)/out .pytest_cache .ruff_cache
+	find . -name '__pycache__' -type d -prune -not -path './.venv/*' -exec rm -rf {} +

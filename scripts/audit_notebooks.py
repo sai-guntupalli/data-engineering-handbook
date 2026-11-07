@@ -1,18 +1,22 @@
 #!/usr/bin/env python3
 """
-Audit notebook structure and print a compact inventory.
+Structural gate for the notebooks: every one must open and run in Google Colab.
 
-Notebooks are the source of truth in this repository, so this script is the
-structural gate: valid JSON, Jupyter metadata, an author watermark (stamped by
-scripts/watermark_notebooks.py), non-empty cells, valid Python in every code
-cell, no IPython magics or shell escapes, no committed error outputs, and no
-leftovers from the old markdown pipeline.
+Checks per notebook:
+- valid nbformat 4 JSON already in canonical form (``make format``)
+- exactly one ``# Title`` heading, no skipped heading levels, balanced code fences
+- no empty cells; relative links point at files that exist
+- code cells are valid Python with no IPython magics, shell escapes or
+  ``# ILLUSTRATIVE`` placeholders (illustrative code belongs in a markdown fence)
+- code never talks to a local server (``localhost:<port>``): use a stand-in
+- every third-party import is installed by the notebook's setup cell, a code
+  cell that assigns ``PACKAGES = {"import_name": "pip-spec", ...}``
 
-Execution is handled separately by `scripts/run_notebooks.py`.
+Execution is handled separately by ``scripts/run_notebooks.py``.
 
 Usage:
-  python3 scripts/audit_notebooks.py
-  python3 scripts/audit_notebooks.py --quiet
+  python scripts/audit_notebooks.py           # inventory + failures
+  python scripts/audit_notebooks.py --quiet   # failures and summary only
 """
 
 from __future__ import annotations
@@ -23,159 +27,181 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote, urlparse
 
-from watermark_notebooks import CREDIT_LINE, expected_watermark
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from notebook_format import NOTEBOOKS_DIR, ROOT, cell_source, format_notebook, serialize  # noqa: E402
 
-
-ROOT = Path(__file__).resolve().parents[1]
-NOTEBOOKS_DIR = ROOT / "notebooks"
-
-# Lines that begin with an IPython cell/line magic or a shell escape: %%cell, %line,
-# !shell. A bare "%%" or "!" followed by a word character is required so that modulo
-# expressions and negations that start a line are not flagged.
 MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
-PIPELINE_MARKERS = (
-    "Generated from `content/",
-    "Notebook inventory:",
-    "# Colab setup:",
-)
+LOCALHOST_RE = re.compile(r"(?:localhost|127\.0\.0\.1):\d+")
+FENCE_RE = re.compile(r"^\s*```")
+HEADING_RE = re.compile(r"^(#{1,6})\s+\S")
+LINK_RE = re.compile(r"\]\(([^)\s]+)(?:\s+\"[^\"]*\")?\)")
+SETUP_NAME = "PACKAGES"
+# Imported by the setup cell itself behind an ImportError guard (preinstalled in Colab).
+SETUP_HELPER_MODULES = {"packaging"}
 
 
-def python_version_gate() -> int:
-    """Refuse interpreters older than pyproject.toml requires-python (>=3.12).
-
-    Notebooks use 3.10+ syntax (match/case), so an old system python3 would
-    otherwise fail with misleading per-cell "syntax errors" instead of this
-    clear setup message.
-    """
-    if sys.version_info >= (3, 12):
-        return 0
-    print(
-        f"This repository requires Python 3.12+; found "
-        f"{sys.version_info.major}.{sys.version_info.minor}.\n"
-        "Install the pinned interpreter first: make setup",
-        file=sys.stderr,
-    )
-    return 1
+def markdown_headings(text: str) -> list[int]:
+    """Heading levels in a markdown cell, ignoring lines inside code fences."""
+    levels: list[int] = []
+    in_fence = False
+    for line in text.splitlines():
+        if FENCE_RE.match(line):
+            in_fence = not in_fence
+            continue
+        match = None if in_fence else HEADING_RE.match(line)
+        if match:
+            levels.append(len(match.group(1)))
+    return levels
 
 
-def cell_source(cell: dict) -> str:
-    source = cell.get("source", "")
-    if isinstance(source, list):
-        return "".join(str(part) for part in source)
-    return str(source)
+def setup_packages(code_cells: list[str]) -> dict[str, str] | None:
+    """The ``PACKAGES`` mapping from the setup cell, or None when there is none."""
+    for source in code_cells:
+        try:
+            tree = ast.parse(source)
+        except SyntaxError:
+            continue
+        for node in tree.body:
+            if isinstance(node, ast.Assign) and any(
+                isinstance(target, ast.Name) and target.id == SETUP_NAME for target in node.targets
+            ):
+                value = ast.literal_eval(node.value)
+                if isinstance(value, dict):
+                    return {str(key): str(spec) for key, spec in value.items()}
+    return None
+
+
+def third_party_imports(source: str) -> set[str]:
+    """Top-level module names imported by ``source`` that are not stdlib."""
+    try:
+        tree = ast.parse(source)
+    except SyntaxError:
+        return set()
+    modules: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            modules.update(alias.name.split(".")[0] for alias in node.names)
+        elif isinstance(node, ast.ImportFrom) and node.module and node.level == 0:
+            modules.add(node.module.split(".")[0])
+    return {name for name in modules if name not in sys.stdlib_module_names}
+
+
+def local_modules(code_cells: list[str]) -> set[str]:
+    """Module names a notebook writes itself (``Path("x.py").write_text`` and friends)."""
+    names: set[str] = set()
+    for source in code_cells:
+        names.update(re.findall(r"""["']([A-Za-z_][A-Za-z0-9_]*)\.py["']""", source))
+    return names
+
+
+def broken_links(text: str, notebook_path: Path) -> list[str]:
+    broken = []
+    for target in LINK_RE.findall(text):
+        parsed = urlparse(target)
+        if parsed.scheme or target.startswith("#") or not parsed.path:
+            continue
+        if not (notebook_path.parent / unquote(parsed.path)).exists():
+            broken.append(target)
+    return broken
 
 
 def audit(path: Path) -> tuple[list[str], dict[str, int]]:
-    errors: list[str] = []
+    relpath = path.relative_to(ROOT).as_posix()
     try:
-        notebook = json.loads(path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
-        return [f"invalid JSON: {exc}"], {}
+        raw = path.read_text(encoding="utf-8")
+        notebook = json.loads(raw)
+    except (OSError, json.JSONDecodeError) as exc:
+        return [f"unreadable notebook: {exc}"], {}
 
-    if notebook.get("nbformat") != 4:
-        errors.append("expected nbformat 4")
-    if "kernelspec" not in notebook.get("metadata", {}):
-        errors.append("missing kernelspec metadata")
+    errors: list[str] = []
+    if serialize(format_notebook(notebook, relpath)) != raw:
+        errors.append("not in canonical form (run: make format)")
 
-    author_watermark = expected_watermark(path.relative_to(ROOT).as_posix())
-    watermark = notebook.get("metadata", {}).get("watermark")
-    if watermark is None:
-        errors.append("missing author watermark metadata (run: make watermark)")
-    else:
-        for key in ("author", "repository", "source", "license"):
-            if watermark.get(key) != author_watermark[key]:
-                errors.append(f"watermark.{key} is stale (run: make watermark)")
-        extra = sorted(set(watermark) - set(author_watermark))
-        if extra:
-            errors.append(f"watermark has unexpected keys: {extra}")
-
-    cells = notebook.get("cells")
-    if not isinstance(cells, list) or not cells:
-        errors.append("missing notebook cells")
-        cells = []
-    if cells and CREDIT_LINE not in cell_source(cells[0]):
-        errors.append("first cell lacks the author credit line (run: make watermark)")
+    cells = notebook.get("cells") or []
+    code_sources = [cell_source(cell) for cell in cells if cell.get("cell_type") == "code"]
+    packages = setup_packages(code_sources)
+    provided = {name.split(".")[0] for name in packages or {}} | local_modules(code_sources) | SETUP_HELPER_MODULES
 
     counts = {"markdown": 0, "code": 0, "asserts": 0}
+    h1_count = 0
+    previous_level = 0
+    missing_imports: set[str] = set()
+
     for index, cell in enumerate(cells):
         cell_type = cell.get("cell_type")
         source = cell_source(cell)
         if not source.strip():
-            errors.append(f"cell {index} has empty source")
-        if any(marker in source for marker in PIPELINE_MARKERS):
-            errors.append(f"cell {index} still contains an old markdown-pipeline note")
+            errors.append(f"cell {index} is empty")
         if cell_type == "markdown":
             counts["markdown"] += 1
-            if source.count("```") % 2:
+            if sum(1 for line in source.splitlines() if FENCE_RE.match(line)) % 2:
                 errors.append(f"cell {index} has unbalanced code fences")
+            for level in markdown_headings(source):
+                h1_count += level == 1
+                if previous_level and level > previous_level + 1:
+                    errors.append(f"cell {index} skips from heading level {previous_level} to {level}")
+                previous_level = level
+            for target in broken_links(source, path):
+                errors.append(f"cell {index} links to a missing file: {target}")
         elif cell_type == "code":
             counts["code"] += 1
             counts["asserts"] += len(re.findall(r"\bassert\b", source))
             if MAGIC_RE.search(source):
                 errors.append(f"cell {index} uses an IPython magic or shell escape")
                 continue
+            if "# ILLUSTRATIVE" in source:
+                errors.append(f"cell {index} is marked ILLUSTRATIVE: move it into a markdown code fence")
+            if LOCALHOST_RE.search(source):
+                errors.append(f"cell {index} connects to a local server: use an in-process stand-in")
             try:
                 ast.parse(source)
             except SyntaxError as exc:
                 errors.append(f"cell {index} has a Python syntax error: {exc.msg} (line {exc.lineno})")
-            error_outputs = [
-                output
-                for output in cell.get("outputs") or []
-                if isinstance(output, dict) and output.get("output_type") == "error"
-            ]
-            if error_outputs:
-                first = error_outputs[0]
-                evalue = str(first.get("evalue", "")).splitlines()
-                detail = evalue[0][:140] if evalue else "traceback omitted"
-                errors.append(
-                    f"cell {index} has a committed error output: "
-                    f"{first.get('ename', 'Exception')}: {detail}"
-                )
+                continue
+            missing_imports |= third_party_imports(source) - provided
         else:
             errors.append(f"cell {index} has unexpected type {cell_type!r}")
 
+    if h1_count != 1:
+        errors.append(f"expected exactly one '# Title' heading, found {h1_count}")
+    if missing_imports:
+        errors.append(
+            f"third-party imports missing from the setup cell's {SETUP_NAME}: {', '.join(sorted(missing_imports))}"
+        )
     return errors, counts
 
 
 def main() -> int:
-    gate = python_version_gate()
-    if gate:
-        return gate
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("files", nargs="*", help="notebooks to audit (default: all)")
     parser.add_argument("--quiet", action="store_true", help="only print failures and the summary")
     args = parser.parse_args()
 
+    paths = [Path(f).resolve() for f in args.files] or sorted(NOTEBOOKS_DIR.rglob("*.ipynb"))
     failures = 0
-    total_cells = total_code = total_asserts = 0
-    notebooks = sorted(NOTEBOOKS_DIR.rglob("*.ipynb"))
-    for path in notebooks:
+    totals = {"markdown": 0, "code": 0, "asserts": 0}
+    for path in paths:
         errors, counts = audit(path)
-        rel = path.relative_to(ROOT)
+        relpath = path.relative_to(ROOT)
         if errors:
             failures += 1
-            print(f"FAIL {rel}", file=sys.stderr)
+            print(f"FAIL {relpath}", file=sys.stderr)
             for error in errors:
                 print(f"  - {error}", file=sys.stderr)
             continue
-        if counts:
-            total_cells += counts["markdown"] + counts["code"]
-            total_code += counts["code"]
-            total_asserts += counts["asserts"]
+        for key in totals:
+            totals[key] += counts[key]
         if not args.quiet:
-            print(
-                f"OK   {rel} "
-                f"markdown={counts.get('markdown', 0)} code={counts.get('code', 0)} "
-                f"asserts={counts.get('asserts', 0)}"
-            )
+            print(f"OK   {relpath} markdown={counts['markdown']} code={counts['code']} asserts={counts['asserts']}")
 
     if failures:
-        print(f"\n{failures} notebook(s) failed audit.", file=sys.stderr)
+        print(f"\n{failures} of {len(paths)} notebook(s) failed audit.", file=sys.stderr)
         return 1
-
     print(
-        f"Audited {len(notebooks)} notebook(s): {total_cells} cells, "
-        f"{total_code} code cells, {total_asserts} asserts."
+        f"Audited {len(paths)} notebook(s): {totals['markdown'] + totals['code']} cells, "
+        f"{totals['code']} code cells, {totals['asserts']} asserts."
     )
     return 0
 

@@ -12,7 +12,7 @@ export const siteUrl = (
 export const repository = "sai-guntupalli/data-engineering-handbook";
 export const repositoryHref = `https://github.com/${repository}`;
 
-/** Author of the handbook; matches AUTHOR in scripts/watermark_notebooks.py. */
+/** Author of the handbook; matches the credit line in every notebook's first cell. */
 export const authorName = "Sai Guntupalli";
 export const authorHref = `https://github.com/sai-guntupalli`;
 
