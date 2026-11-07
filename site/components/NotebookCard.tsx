@@ -14,11 +14,6 @@ export type CardNotebook = {
   tryItBlocks: number;
   illustrativeCells: number;
   readingMinutes: number;
-  /** Cells/asserts that sit inside merged copies of practice notebooks within
-   *  this file; the card subtracts them (zero for practice notebooks) so the
-   *  numbers match the hero stats and no notebook is counted twice. */
-  mergedCodeCells: number;
-  mergedAsserts: number;
   groupLabel: string;
   githubHref: string;
   /** Opens this notebook in Google Colab (repository must stay public). */
@@ -28,12 +23,6 @@ export type CardNotebook = {
 export function NotebookCard({ notebook }: { notebook: CardNotebook }) {
   const starred = useStarred();
   const isStarred = starred.has(notebook.repoPath);
-  const runCells = notebook.codeCells - notebook.mergedCodeCells;
-  const runChecks = notebook.assertCount - notebook.mergedAsserts;
-  const mergedTitle =
-    notebook.mergedCodeCells > 0 || notebook.mergedAsserts > 0
-      ? `Excludes the practice copies merged into this topic (${notebook.mergedCodeCells} code cells, ${notebook.mergedAsserts} checks).`
-      : undefined;
 
   return (
     <article className="topic-card">
@@ -49,8 +38,8 @@ export function NotebookCard({ notebook }: { notebook: CardNotebook }) {
       </button>
       <strong>{notebook.title}</strong>
       {notebook.description ? <p>{notebook.description}</p> : null}
-      <p className="notebook-meta" title={mergedTitle}>
-        {runCells} code cells · {runChecks} checks ·{" "}
+      <p className="notebook-meta">
+        {notebook.codeCells} code cells · {notebook.assertCount} checks ·{" "}
         {notebook.tryItBlocks > 0
           ? `${notebook.tryItBlocks} ${notebook.tryItBlocks === 1 ? "exercise" : "exercises"} · `
           : ""}

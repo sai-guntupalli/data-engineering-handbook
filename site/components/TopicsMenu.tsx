@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { CaretDown } from "@phosphor-icons/react";
 import { PRACTICE_GROUP, TOPIC_GROUPS, anchorFor } from "@/lib/notebook-groups";
@@ -45,14 +46,14 @@ export function TopicsMenu() {
       {open ? (
         <div className="topics-panel" aria-label="All notebook groups">
           {groups.map((group) => (
-            <a
+            <Link
               key={group.label}
               href={`/#${anchorFor(group.label)}`}
               onClick={() => setOpen(false)}
             >
               <span>{group.label}</span>
               <span className="topics-count">{group.slugs.length}</span>
-            </a>
+            </Link>
           ))}
         </div>
       ) : null}
