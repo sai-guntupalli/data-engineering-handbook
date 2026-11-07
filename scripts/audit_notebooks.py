@@ -33,6 +33,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from notebook_format import ROOT, cell_source, format_notebook, notebook_paths, serialize  # noqa: E402
 
 MAGIC_RE = re.compile(r"^\s*(?:%%|%[A-Za-z]|![A-Za-z])", re.M)
+# `!pip install <pkg>` is the one shell escape allowed: it is how a notebook installs PySpark in Colab.
+PIP_INSTALL_RE = re.compile(r"^!pip install\b[^\n]*$", re.M)
 LOCALHOST_RE = re.compile(r"(?:localhost|127\.0\.0\.1):\d+")
 FENCE_RE = re.compile(r"^\s*```")
 HEADING_RE = re.compile(r"^(#{1,6})\s+\S")
@@ -86,6 +88,21 @@ def third_party_imports(source: str) -> set[str]:
     return {name for name in modules if name not in sys.stdlib_module_names}
 
 
+def pip_installed_imports(code_cells: list[str]) -> set[str]:
+    """Import names of packages named in ``!pip install`` lines (``!pip install -q pyspark`` -> pyspark)."""
+    names: set[str] = set()
+    for source in code_cells:
+        for line in PIP_INSTALL_RE.findall(source):
+            for token in line.split()[2:]:
+                if not token.startswith("-"):
+                    names.add(re.split(r"[<>=!~\[]", token)[0].replace("-", "_"))
+    return names
+
+
+def without_pip_lines(source: str) -> str:
+    return PIP_INSTALL_RE.sub("", source)
+
+
 def setup_cell_index(cells: list[dict]) -> int | None:
     """Index of the code cell that declares ``PACKAGES``, or None."""
     for index, cell in enumerate(cells):
@@ -119,7 +136,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
 
     cells = notebook.get("cells") or []
     code_sources = [cell_source(cell) for cell in cells if cell.get("cell_type") == "code"]
-    declared = {name.split(".")[0] for name in setup_packages(code_sources) or {}}
+    declared = {name.split(".")[0] for name in setup_packages(code_sources) or {}} | pip_installed_imports(code_sources)
     setup_index = setup_cell_index(cells)
 
     counts = {"markdown": 0, "code": 0, "asserts": 0}
@@ -146,6 +163,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
         elif cell_type == "code":
             counts["code"] += 1
             counts["asserts"] += len(re.findall(r"\bassert\b", source))
+            source = without_pip_lines(source)
             if MAGIC_RE.search(source):
                 errors.append(f"cell {index} uses an IPython magic or shell escape")
                 continue

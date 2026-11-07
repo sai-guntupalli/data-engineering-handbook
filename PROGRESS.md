@@ -20,6 +20,13 @@ awaiting review and merge.
     behaviour.
   - Rendered gallery text is unchanged versus master. Intended change: header suggestions also match description text.
 
+- 2026-11-07: SQL path review (feedback round): dropped the filtering-and-grouping notebook. Added `sql-01-basics`, a
+  book-style notebook covering tables, SELECT, WHERE, sorting, aggregates, GROUP BY, HAVING, joins, CASE and NULL,
+  with ten practice questions and answers. Reworked `sql-05-joins` in the same style. Both install PySpark with
+  `!pip install -q pyspark` and run on Spark 4.0.2 (Colab's version) and locally. The audit now accepts
+  `!pip install` lines. The approved style is then applied to every SQL notebook: plain Spark SQL cells, no setup
+  helpers, each chapter ends with practice questions and answers. Drills keep their 22 checked answers. All SQL
+  notebooks pass on Spark 4.0.2 from a clean install.
 - 2026-11-07: Added `notebooks/06_pyspark_coding_challenges.ipynb`: five interview-style PySpark problems
   (latest-record dedupe, grain-aware joins, SCD as-of join, sessionization, salted skew join) with fixtures, reference
   solutions and 19 asserts; runs locally in 13s. Recovered from the old WIP in `notebooks/04_pyspark_concepts.ipynb`.

@@ -161,3 +161,17 @@ def test_python_and_site_agree_on_repository_branch_and_author():
     assert notebook_format.REPOSITORY == site_constant("repository")
     assert notebook_format.BRANCH == site_constant("branch")
     assert notebook_format.AUTHOR_NAME == site_constant("authorName")
+
+
+class TestPipInstallLines:
+    def test_pip_install_declares_the_package_it_names(self, tmp_path, monkeypatch):
+        path = write_formatted(
+            tmp_path, monkeypatch, md("# T"), code("!pip install -q pyspark"), code("import pyspark")
+        )
+        errors, _ = audit_notebooks.audit(path)
+        assert errors == []
+
+    def test_other_imports_are_still_reported_next_to_a_pip_line(self, tmp_path, monkeypatch):
+        path = write_formatted(tmp_path, monkeypatch, md("# T"), code("!pip install -q pyspark"), code("import duckdb"))
+        errors, _ = audit_notebooks.audit(path)
+        assert any("duckdb" in error for error in errors), errors
