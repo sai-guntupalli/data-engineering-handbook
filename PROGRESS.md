@@ -6,6 +6,13 @@ awaiting review and merge.
 
 ## Completed
 
+- 2026-11-07: SQL path extended to 14 chapters (`feat/sql-missing-topics`): new `sql-03` types, functions, dates and
+  JSON; `sql-07` set operations; `sql-12` views and changing data (INSERT, INSERT OVERWRITE, UPDATE/DELETE/MERGE as
+  reference for table formats); `sql-14` interview concepts. Added GROUPING() and CUBE, RIGHT JOIN, LEAD, moving averages,
+  FIRST_VALUE, LAST_VALUE, NTILE, WINDOW, time-zone setting, and an interview-notes section per chapter. Fixed the
+  drills' DuckDB demos and stale Part 7 references. All 15 notebooks pass on Spark 4.0.2. Delta Lake could not be
+  verified here (Maven is unreachable from the sandbox), so UPDATE, DELETE and MERGE are shown as reference SQL.
+
 - 2026-11-07: Merged the WHERE vs HAVING notebook into `sql-01-basics` (new section 7). Replaced it with
   `sql-02-aggregations-and-ctes`: more aggregates, `ROLLUP`, subqueries, CTEs and a recursive CTE, with five practice
   questions and answers. Both run on Spark 4.0.2.
