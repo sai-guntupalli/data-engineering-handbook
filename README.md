@@ -14,7 +14,7 @@ explanation, a small example right below it, and `assert`s that prove the point.
 | **Locally** | `make install`, then `uv run --extra notebooks jupyter lab notebooks/` |
 
 No notebook talks to a real server or cloud account. External systems are replaced with in-process stand-ins:
-DuckDB for warehouse SQL (BigQuery, Snowflake, Redshift, Trino, Hive...), PySpark local mode, `deltalake`,
+DuckDB for warehouse SQL (BigQuery, Snowflake, Redshift, Trino, Hive...), PySpark SQL and local mode (the SQL learning path), `deltalake`,
 `pyiceberg` with a SQLite catalog, `fakeredis`, `mongomock`, `moto` for AWS, and small pure-Python simulations
 for Kafka, Flink, Airflow, Cassandra, HBase and friends. Platform-only snippets (YAML, Scala, cloud SDK calls)
 are shown in markdown code blocks.
@@ -23,7 +23,8 @@ are shown in markdown code blocks.
 
 | Group | Notebooks |
 |---|---|
-| Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (DuckDB), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
+| Hands-on practice | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
+| SQL learning path | Filtering and grouping, WHERE vs HAVING, NULL handling, CASE, Joins, Window functions, Deduplication, Time-series, Modeling and optimization, Interview drills (Spark SQL) |
 | Core pipeline skills | Python, SQL, Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
 | Lakehouse and formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
 | Cloud and platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
@@ -35,7 +36,7 @@ are shown in markdown code blocks.
 ## Layout
 
 ```text
-notebooks/                 the product: 5 practice notebooks + topics/<topic>.ipynb (57 total)
+notebooks/                 the product: 6 practice notebooks + topics/<topic>.ipynb (68 total)
 scripts/
   notebook_format.py       canonical form: credit line, Open in Colab badge, no outputs, stable cell ids
   audit_notebooks.py       Colab-runnability rules (setup cell, no live servers, one title, links...)

@@ -19,6 +19,21 @@ export const PRACTICE_GROUP: NotebookGroup = {
 /** Topic notebooks that live at notebooks/topics/<slug>.ipynb. */
 export const TOPIC_GROUPS: NotebookGroup[] = [
   {
+    label: "SQL learning path",
+    slugs: [
+      "sql-01-filtering-and-grouping",
+      "sql-02-where-vs-having",
+      "sql-03-null-handling",
+      "sql-04-case-expressions",
+      "sql-05-joins",
+      "sql-06-window-functions",
+      "sql-07-deduplication",
+      "sql-08-time-series",
+      "sql-09-modeling-and-optimization",
+      "sql-10-interview-drills",
+    ],
+  },
+  {
     label: "Core pipeline skills",
     slugs: [
       "python",

@@ -1,17 +1,28 @@
 # Progress
 
-**Current Status**: All 57 notebooks are Colab-runnable, lean, and executed by CI (green on PR #28); the gallery
-site lives in `site/`. PR #28 (`chore/colab-runnable-notebooks`) awaits review/merge.
+**Current Status**: 68 notebooks are Colab-runnable and executed by CI. PR #28 (Colab restructure) and PR #29 (PySpark
+coding challenges) are merged. The SQL learning path (10 Spark SQL notebooks) is in PR #30, rebased onto master and
+awaiting review and merge.
 
 ## Completed
 
 - 2026-11-07: Added `notebooks/06_pyspark_coding_challenges.ipynb`: five interview-style PySpark problems
   (latest-record dedupe, grain-aware joins, SCD as-of join, sessionization, salted skew join) with fixtures, reference
   solutions and 19 asserts; runs locally in 13s. Recovered from the old WIP in `notebooks/04_pyspark_concepts.ipynb`.
+- 2026-11-07: SQL learning path split (`feat/sql-notebook-split`):
+  - `03_sql_interview_questions` is now the index/navigation page; its DuckDB content moved into ten notebooks in
+    `topics/sql-01…sql-10`: filtering and grouping, WHERE vs HAVING, NULL handling, CASE, joins, window functions,
+    deduplication, time-series, modeling and optimization, and interview drills.
+  - Every teaching notebook explains its topic first, then runs examples with asserted expected results. The drills
+    port all 22 coding problems and 14 concept questions to Spark SQL, after the teaching material.
+  - Execution backend is PySpark SQL on temporary views. The setup cell installs PySpark when it is missing, and a
+    bootstrap cell detects PySpark and Java (`SPARK_AVAILABLE`). Without Java, every example prints `SKIPPED`.
+  - Verified: audit passes on 67 notebooks; the 10 new notebooks execute end to end with Spark 3.5 on JDK 21; all 10
+    run to completion with Spark unavailable; `make lint` and the Next.js build pass with the new gallery group.
 - 2026-11-07: Verified PR #28: GitHub Checks green (all 57 notebooks executed on Linux + Java 17, 2m32s);
   smoke-tested in a real Google Colab runtime with "Run all": `topics/dynamodb` (30/30 cells), `topics/spark`
   (51/51, setup cell installed PySpark), `topics/iceberg` (22/22) — no errors.
-- 2026-11-07: Colab-runnable restructure (`chore/colab-runnable-notebooks`):
+- 2026-11-07: Colab-runnable restructure (PR #28, merged):
   - Merged the open per-notebook cleanup PRs (#1–#22) and the notebook parts of #26 (DuckDB SQL) and #27
     (PySpark story); the interactive viewer (#24/#25) was intentionally dropped.
   - Moved the Next.js gallery into `site/`; upgraded Next.js to 16.4.5 (critical advisory on ≤16.4.0); fixed the
@@ -29,17 +40,21 @@ site lives in `site/`. PR #28 (`chore/colab-runnable-notebooks`) awaits review/m
 
 ## In Progress
 
-- Nothing.
+- SQL learning path: PR #30 rebased onto master for review (https://github.com/sai-guntupalli/data-engineering-handbook/pull/30); CI not yet confirmed.
 
 ## Next Steps
 
-1. Review and merge PR #28 (https://github.com/sai-guntupalli/data-engineering-handbook/pull/28).
-2. Close the superseded PRs #1–#27 (their content is in #28; #24/#25 viewer dropped by decision).
-3. Reconcile the uncommitted exercise edits to `notebooks/04_pyspark_concepts.ipynb` in the main checkout
-   (made against the old version) with the restructured notebook from #28.
-4. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
+1. Review and merge PR #30 (`feat/sql-notebook-split`), after CI is green.
+2. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
+   Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
+3. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
+   a candidate to trim or to link from the index.
+4. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
+   split), `notebooks/04_pyspark_concepts.ipynb` (exercise edits), and untracked `scripts/split_sql_notebooks.py`,
+   `scripts/add_core_sql_topics.py` and `topics/sql-*` drafts. None of them are on master.
+5. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
+6. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
-5. Delete the stale local branches once #28 merges.
 
 ## Blockers
 
