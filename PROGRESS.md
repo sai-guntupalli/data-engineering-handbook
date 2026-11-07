@@ -6,6 +6,12 @@ notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: Library listing fixes (`fix/library-listing`): the practice group is now "Interview practice" (its six
+  notebooks are interview prep kept outside the topic folders); descriptions read whole paragraphs, so they no longer
+  stop mid-sentence; leading index numbers are dropped from titles; topic groups renamed to Data Engineering, Lakehouse
+  Formats, Cloud Platforms, Streaming and Distributed Systems, Warehousing and BI, AI Foundations and Other Tools; the SQL
+  index says fourteen chapters. Site builds, lint passes.
+
 - 2026-11-07: Fixed the failing notebook run in CI (`fix/pyspark-4-recursive-cte`). The CI extra pinned PySpark below 4,
   so CI ran Spark 3.5, which has no recursive CTEs and failed `sql-02`. The extra and the six PySpark setup cells now pin
   `pyspark>=4.0,<4.1`, the version Colab installs. Spark 4.0.x fails to plan a recursive CTE (an internal `UnionLoop`

@@ -77,7 +77,7 @@ FROM orders`}</pre>
 }
 
 export default function Home() {
-  const practiceAnchor = anchorFor("Hands-on practice");
+  const practiceAnchor = anchorFor("Interview practice");
   const sqlAnchor = anchorFor("SQL learning path");
 
   return (
@@ -96,7 +96,7 @@ export default function Home() {
             </p>
             <div className="hero-actions">
               <a className="button primary" href={`#${practiceAnchor}`}>
-                Start with practice
+                Start with interview practice
                 <ArrowRight size={16} weight="bold" aria-hidden />
               </a>
               <a className="button ghost" href={`#${sqlAnchor}`}>
