@@ -43,6 +43,8 @@
   --tone-warehouse: #c2255c;
   --tone-ai: #a21caf;
   --tone-other: #64748b;
+  /* Page width with the sidebar collapsed; caps line length on very wide screens. */
+  --content-wide: 1480px;
   --radius-xs: 6px;
   --radius-sm: 8px;
   --radius: 10px;
@@ -2326,6 +2328,23 @@ details.setup-cell .cell-body {
   :root[data-toc="collapsed"] .reader {
     grid-template-columns: minmax(0, 1fr) 28px;
     gap: 32px;
+  }
+
+  /* Collapsing a panel hands its width to the content. The page grows by more
+     than the sidebar gave up, and the article fills its column instead of
+     keeping its reading width. */
+  :root[data-sidebar="collapsed"] .content {
+    max-width: var(--content-wide);
+  }
+
+  :root[data-sidebar="collapsed"] .reader,
+  :root[data-toc="collapsed"] .reader {
+    max-width: none;
+  }
+
+  :root[data-sidebar="collapsed"] .article,
+  :root[data-toc="collapsed"] .article {
+    max-width: none;
   }
 
   :root[data-toc="collapsed"] .toc-title,
