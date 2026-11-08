@@ -47,6 +47,12 @@ Every notebook carries an author watermark — `metadata.watermark` (author, rep
 to the file) plus a visible credit line under the title — stamped by
 `scripts/watermark_notebooks.py` and enforced by `make check`.
 
+## Design mockups
+
+Static HTML mockups of the gallery and notebook reader live in [`docs/mockups/`](docs/mockups). They use no
+build step: open `docs/mockups/index.html` directly, or serve the folder with `python3 -m http.server` from
+`docs/mockups` and browse to <http://localhost:8000>. Screens: library, notebook reader, search palette.
+
 ## Checks
 
 ```bash

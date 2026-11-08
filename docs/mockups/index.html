@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Mockups · Data Engineering Handbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .wrap { max-width: 960px; margin: 0 auto; padding: 64px 24px 96px; }
+    .screens { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 32px; }
+    .screen { display: flex; flex-direction: column; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); overflow: hidden; box-shadow: var(--shadow); transition: transform .18s, border-color .18s; }
+    .screen:hover { transform: translateY(-2px); border-color: var(--border-strong); }
+    .thumb { height: 170px; padding: 14px; background: var(--surface-2); border-bottom: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+    .thumb i { display: block; border-radius: 6px; background: var(--border-strong); opacity: .7; }
+    .screen-body { padding: 18px 20px 20px; }
+    .screen-body h2 { margin: 6px 0 4px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+    .screen-body p { margin: 0; font-size: 13.5px; color: var(--text-2); }
+    .tokens { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+    .swatch { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+    .swatch div { height: 56px; }
+    .swatch span { display: block; padding: 8px 10px; font-size: 12px; color: var(--text-2); font-family: var(--mono); }
+    h1 { font-size: 36px; }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <p class="eyebrow">Design mockups</p>
+    <h1>Data Engineering Handbook</h1>
+    <p class="lead">Three static screens in one modern, minimal SaaS system: neutral surfaces, a single indigo accent, Inter type, 12px radii, hairline borders. Open any screen directly; each works in light and dark mode and collapses to a single column on phones.</p>
+
+    <section class="screens">
+      <a class="screen" href="01-library.html">
+        <div class="thumb">
+          <i style="height:14px;width:40%"></i>
+          <i style="height:34px;width:70%;opacity:.4"></i>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;flex:1"><i></i><i></i><i></i></div>
+        </div>
+        <div class="screen-body">
+          <span class="tag is-accent">Screen 01</span>
+          <h2>Library</h2>
+          <p>Stats, topic filters and grouped notebook cards with starring and quick-open actions.</p>
+        </div>
+      </a>
+
+      <a class="screen" href="02-notebook.html">
+        <div class="thumb">
+          <i style="height:14px;width:30%"></i>
+          <i style="height:10px;width:90%;opacity:.4"></i>
+          <i style="height:10px;width:80%;opacity:.4"></i>
+          <i style="height:54px;width:100%;background:var(--code-bg);opacity:1"></i>
+        </div>
+        <div class="screen-body">
+          <span class="tag is-accent">Screen 02</span>
+          <h2>Notebook reader</h2>
+          <p>Long-form reading column, runnable code cells with outputs, sticky table of contents and reading progress.</p>
+        </div>
+      </a>
+
+      <a class="screen" href="03-search.html">
+        <div class="thumb" style="position:relative">
+          <i style="height:14px;width:40%"></i>
+          <div style="position:absolute;left:22%;right:22%;top:40px;bottom:14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px;display:flex;flex-direction:column;gap:6px;box-shadow:var(--shadow)">
+            <i style="height:10px;width:70%"></i>
+            <i style="height:20px;width:100%;opacity:.3"></i>
+            <i style="height:20px;width:100%;opacity:.3"></i>
+            <i style="height:20px;width:100%;opacity:.3"></i>
+          </div>
+        </div>
+        <div class="screen-body">
+          <span class="tag is-accent">Screen 03</span>
+          <h2>Search palette</h2>
+          <p>⌘K search across notebooks and sections, grouped results with highlighted matches and keyboard hints.</p>
+        </div>
+      </a>
+    </section>
+
+    <section style="margin-top:56px">
+      <h2 style="font-size:16px;font-weight:600;margin:0 0 4px">Colour tokens</h2>
+      <p style="margin:0;color:var(--text-2);font-size:13.5px">Defined once on <code>:root</code> in <code>styles.css</code>, redefined for dark mode.</p>
+      <div class="tokens">
+        <div class="swatch"><div style="background:#4f46e5"></div><span>accent #4F46E5</span></div>
+        <div class="swatch"><div style="background:#eef2ff"></div><span>accent-soft #EEF2FF</span></div>
+        <div class="swatch"><div style="background:#18181b"></div><span>text #18181B</span></div>
+        <div class="swatch"><div style="background:#71717a"></div><span>text-3 #71717A</span></div>
+        <div class="swatch"><div style="background:#fafafa;box-shadow:inset 0 0 0 1px #e4e4e7"></div><span>bg #FAFAFA</span></div>
+        <div class="swatch"><div style="background:#059669"></div><span>success #059669</span></div>
+        <div class="swatch"><div style="background:#b45309"></div><span>warn #B45309</span></div>
+        <div class="swatch"><div style="background:#0f172a"></div><span>code-bg #0F172A</span></div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

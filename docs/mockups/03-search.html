@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Search · Command palette</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+      <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.6-.9 3.2 14.5-3.6.9z"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/><path d="m3 17.5 9 5 9-5"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.6 18.2A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+      <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
+      <symbol id="i-enter" viewBox="0 0 24 24"><path d="M20 4v7a3 3 0 0 1-3 3H5"/><path d="m9 10-4 4 4 4"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app" aria-hidden="true">
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><svg class="icon icon-lg" style="stroke:#fff"><use href="#i-book"/></svg></span>
+        <div>Handbook<small>Data engineering</small></div>
+      </div>
+      <a class="nav-link is-active" href="#"><svg class="icon"><use href="#i-grid"/></svg>Library<span class="count">59</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-star"/></svg>Starred<span class="count">4</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-flask"/></svg>Practice sets<span class="count">5</span></a>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <nav class="crumbs">Handbook</nav>
+        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input placeholder="Search…" /><kbd>⌘K</kbd></label>
+      </header>
+      <div class="content" style="opacity:.5">
+        <div class="page-head"><div><h1>Library</h1><p class="lead">59 notebooks</p></div></div>
+        <div class="grid">
+          <article class="card"><div class="tile">Sp</div><h3>Apache Spark</h3><p>RDDs, DataFrames, shuffles.</p></article>
+          <article class="card"><div class="tile">Dl</div><h3>Delta Lake</h3><p>ACID on object storage.</p></article>
+          <article class="card"><div class="tile">Af</div><h3>Airflow</h3><p>DAGs and scheduling.</p></article>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ============ Command palette ============ -->
+  <div class="scrim" role="dialog" aria-modal="true" aria-label="Search the handbook">
+    <div class="palette">
+      <div class="palette-input">
+        <svg class="icon icon-lg"><use href="#i-search"/></svg>
+        <input type="text" value="partition pruning" aria-label="Search query" />
+        <kbd>esc</kbd>
+      </div>
+
+      <div class="chips" style="padding:10px 14px;border-bottom:1px solid var(--border);gap:6px">
+        <button class="chip is-active">All <span class="count">12</span></button>
+        <button class="chip">Notebooks <span class="count">4</span></button>
+        <button class="chip">Sections <span class="count">7</span></button>
+        <button class="chip">Practice <span class="count">1</span></button>
+      </div>
+
+      <div class="palette-body">
+        <div class="palette-section">Best match</div>
+        <div class="result is-selected">
+          <span class="tile">Ic</span>
+          <div class="meta">
+            <strong>Apache Iceberg <span class="tag" style="margin-left:6px">Notebook</span></strong>
+            <small>Hidden partitioning removes the need to <mark>partition pruning</mark> by hand, via transforms…</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+
+        <div class="palette-section">Sections</div>
+        <div class="result">
+          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
+          <div class="meta">
+            <strong>Partition pruning in Spark SQL</strong>
+            <small>Apache Spark · Shuffles and stages — filters on partition columns skip whole directories</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+        <div class="result">
+          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
+          <div class="meta">
+            <strong>Pruning with Parquet row-group statistics</strong>
+            <small>Parquet · Predicate pushdown — min/max stats let readers skip row groups</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+        <div class="result">
+          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
+          <div class="meta">
+            <strong>BigQuery partition filters</strong>
+            <small>BigQuery · Cost optimization — always filter on the partition column to limit bytes scanned</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+
+        <div class="palette-section">Notebooks</div>
+        <div class="result">
+          <span class="tile">Sp</span>
+          <div class="meta">
+            <strong>Spark tuning</strong>
+            <small>Core pipeline skills · AQE, skew, broadcast and partition sizing</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+        <div class="result">
+          <span class="tile">Tr</span>
+          <div class="meta">
+            <strong>Trino and Presto</strong>
+            <small>Cloud platforms · Dynamic filtering and partition elimination</small>
+          </div>
+          <svg class="icon enter"><use href="#i-enter"/></svg>
+        </div>
+      </div>
+
+      <div class="palette-foot">
+        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
+        <span><kbd>↵</kbd> open</span>
+        <span><kbd>⌘</kbd><kbd>↵</kbd> open in Colab</span>
+        <span style="margin-left:auto">12 results</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

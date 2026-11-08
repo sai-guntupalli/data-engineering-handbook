@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Library · Data Engineering Handbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Icon sprite (Lucide-style, 24px grid, 1.8 stroke) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+      <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
+      <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.6-.9 3.2 14.5-3.6.9z"/></symbol>
+      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/><path d="m3 17.5 9 5 9-5"/></symbol>
+      <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.6 18.2A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
+      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+      <symbol id="i-command" viewBox="0 0 24 24"><path d="M9 6H6a3 3 0 1 0 3 3v6a3 3 0 1 0 3-3H9V9h6v6a3 3 0 1 0 3-3h-3V6a3 3 0 1 0-3 3v9a3 3 0 1 0 3 3"/></symbol>
+      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
+      <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/><path d="M19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+      <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+    </defs>
+  </svg>
+
+  <div class="app">
+    <!-- ============ Sidebar ============ -->
+    <aside class="sidebar">
+      <div class="brand">
+        <span class="brand-mark"><svg class="icon icon-lg" style="stroke:#fff"><use href="#i-book"/></svg></span>
+        <div>Handbook<small>Data engineering</small></div>
+      </div>
+
+      <a class="nav-link is-active" href="#"><svg class="icon"><use href="#i-grid"/></svg>Library<span class="count">59</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-star"/></svg>Starred<span class="count">4</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-flask"/></svg>Practice sets<span class="count">5</span></a>
+
+      <div class="nav-label">Topics</div>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Core pipeline<span class="count">11</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Lakehouse<span class="count">7</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Cloud platforms<span class="count">11</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Streaming<span class="count">8</span></a>
+      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Warehousing &amp; BI<span class="count">9</span></a>
+
+      <div class="sidebar-foot">
+        <span class="avatar">SG</span>
+        <div>
+          <div style="font-weight:550">Sai Guntupalli</div>
+          <div style="font-size:12px;color:var(--text-3)">Owner</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ============ Main ============ -->
+    <main class="main">
+      <header class="topbar">
+        <nav class="crumbs">Handbook <svg class="icon"><use href="#i-chevron"/></svg> <strong>Library</strong></nav>
+        <label class="search">
+          <svg class="icon"><use href="#i-search"/></svg>
+          <input type="search" placeholder="Search notebooks, sections, concepts…" aria-label="Search" />
+          <kbd>⌘K</kbd>
+        </label>
+        <button class="btn btn-ghost btn-icon" aria-label="Toggle theme"><svg class="icon"><use href="#i-settings"/></svg></button>
+      </header>
+
+      <div class="content">
+        <section class="page-head">
+          <div>
+            <p class="eyebrow">Notebook library</p>
+            <h1>Learn data engineering by running it</h1>
+            <p class="lead">Every topic is one runnable notebook: the explanation, the code, and the assertions that prove it — in the same place.</p>
+          </div>
+          <div class="actions">
+            <button class="btn"><svg class="icon"><use href="#i-clock"/></svg>Continue last</button>
+            <button class="btn btn-primary"><svg class="icon"><use href="#i-sparkles"/></svg>Random practice</button>
+          </div>
+        </section>
+
+        <section class="stats" aria-label="Library stats">
+          <div class="stat">
+            <div class="stat-label"><svg class="icon"><use href="#i-library"/></svg>Notebooks</div>
+            <div class="stat-value">59</div>
+            <div class="stat-delta">+6 this month</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><svg class="icon"><use href="#i-flask"/></svg>Practice sets</div>
+            <div class="stat-value">5</div>
+            <div class="stat-delta">Assertions verified</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><svg class="icon"><use href="#i-star"/></svg>Starred</div>
+            <div class="stat-value">4</div>
+            <div class="stat-delta" style="color:var(--text-3)">Saved on this device</div>
+          </div>
+          <div class="stat">
+            <div class="stat-label"><svg class="icon"><use href="#i-clock"/></svg>Last sync</div>
+            <div class="stat-value" style="font-size:20px">2h ago</div>
+            <div class="stat-delta" style="color:var(--text-3)">From master</div>
+          </div>
+        </section>
+
+        <div class="toolbar">
+          <div class="chips" role="tablist" aria-label="Filter by topic">
+            <button class="chip is-active" role="tab">All <span class="count">59</span></button>
+            <button class="chip" role="tab">Practice <span class="count">5</span></button>
+            <button class="chip" role="tab">Core <span class="count">11</span></button>
+            <button class="chip" role="tab">Lakehouse <span class="count">7</span></button>
+            <button class="chip" role="tab">Cloud <span class="count">11</span></button>
+            <button class="chip" role="tab">Streaming <span class="count">8</span></button>
+          </div>
+          <div class="chips">
+            <button class="chip"><svg class="icon"><use href="#i-download"/></svg>Export</button>
+          </div>
+        </div>
+
+        <!-- Starred -->
+        <section class="group">
+          <div class="group-head">
+            <h2>Starred</h2>
+            <span>4 notebooks</span>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">Sp</div>
+                <button class="star-btn is-on" aria-label="Unstar"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Apache Spark</h3>
+                <p>RDDs, DataFrames, lazy evaluation, shuffles and the Catalyst optimiser.</p>
+              </div>
+              <div class="card-tags"><span class="tag is-accent">PySpark</span><span class="tag">Practice</span></div>
+              <div class="card-foot">
+                <span>14 sections · 35 min</span>
+                <div class="links">
+                  <button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button>
+                </div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">Dl</div>
+                <button class="star-btn is-on" aria-label="Unstar"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Delta Lake</h3>
+                <p>ACID transactions on object storage, time travel, MERGE and vacuum.</p>
+              </div>
+              <div class="card-tags"><span class="tag is-accent">Lakehouse</span><span class="tag">Spark</span></div>
+              <div class="card-foot">
+                <span>9 sections · 22 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Core -->
+        <section class="group">
+          <div class="group-head">
+            <h2>Core pipeline skills</h2>
+            <span>11 notebooks</span>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">Af</div>
+                <button class="star-btn" aria-label="Star"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Airflow</h3>
+                <p>DAGs, operators, sensors, scheduling semantics and backfills done right.</p>
+              </div>
+              <div class="card-tags"><span class="tag">Orchestration</span><span class="tag">Python</span></div>
+              <div class="card-foot">
+                <span>12 sections · 28 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">dbt</div>
+                <button class="star-btn" aria-label="Star"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>dbt</h3>
+                <p>Models, refs, incremental strategies, tests and documentation as code.</p>
+              </div>
+              <div class="card-tags"><span class="tag">Transform</span><span class="tag">SQL</span></div>
+              <div class="card-foot">
+                <span>10 sections · 24 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">DQ</div>
+                <button class="star-btn" aria-label="Star"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Data quality</h3>
+                <p>Expectations, freshness and volume checks that catch bad data before dashboards do.</p>
+              </div>
+              <div class="card-tags"><span class="tag">Testing</span><span class="tag is-warn">Updated</span></div>
+              <div class="card-foot">
+                <span>8 sections · 18 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- Lakehouse -->
+        <section class="group">
+          <div class="group-head">
+            <h2>Lakehouse and formats</h2>
+            <span>7 notebooks</span>
+          </div>
+          <div class="grid">
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">Ic</div>
+                <button class="star-btn" aria-label="Star"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Apache Iceberg</h3>
+                <p>Snapshots, hidden partitioning, schema evolution and manifest pruning.</p>
+              </div>
+              <div class="card-tags"><span class="tag is-accent">Table format</span></div>
+              <div class="card-foot">
+                <span>11 sections · 26 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+            <article class="card">
+              <div class="card-top">
+                <div class="tile">Pq</div>
+                <button class="star-btn" aria-label="Star"><svg class="icon"><use href="#i-star"/></svg></button>
+              </div>
+              <div>
+                <h3>Parquet</h3>
+                <p>Row groups, column chunks, encodings and predicate pushdown explained.</p>
+              </div>
+              <div class="card-tags"><span class="tag">File format</span></div>
+              <div class="card-foot">
+                <span>7 sections · 16 min</span>
+                <div class="links"><button class="btn btn-ghost">Open <svg class="icon"><use href="#i-arrow"/></svg></button></div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
