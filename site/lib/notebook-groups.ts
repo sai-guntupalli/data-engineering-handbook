@@ -75,6 +75,17 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "python-08-practice-concurrency",
     "python-09-practice-data-engineering",
   ]),
+  topicGroup("Coding interviews", "Interviews", "practice", [
+    "leetcode-01-arrays-and-hashing",
+    "leetcode-02-two-pointers-and-sliding-window",
+    "leetcode-03-stacks-and-monotonic-stacks",
+    "leetcode-04-binary-search",
+    "leetcode-05-linked-lists",
+    "leetcode-06-binary-trees",
+    "leetcode-07-graphs-and-grids",
+    "leetcode-08-dynamic-programming",
+    "leetcode-09-backtracking-heaps-intervals-design",
+  ]),
   topicGroup("SQL learning path", "SQL", "sql", [
     "sql-01-basics",
     "sql-02-aggregations-and-ctes",
