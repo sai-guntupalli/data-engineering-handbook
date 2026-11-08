@@ -6,6 +6,11 @@ notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: Collections grouping and counting explained (`fix/python-collections-explained`): the section in
+  `python-02-collections` now has one subsection per method with a worked example and assertions: the manual `if`
+  check, `dict.setdefault`, `defaultdict(list)` and `defaultdict(int)`, `Counter`, `most_common`, `update`, `+`/`-`,
+  `subtract`, `elements` and `total`. Interview notes cover setdefault's per-call default and defaultdict's read-inserts.
+
 - 2026-11-07: SQL topic engine labels and site configuration docs (`fix/sql-topic-engine-labels`): six engine-specific
   SQL sections are marked *(engine-specific)* with a legend in the intro, and the Dialect differences table is named as
   the syntax reference. README has a Site URLs section on `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL`, and the
