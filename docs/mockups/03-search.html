@@ -3,133 +3,219 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Search · Command palette</title>
+  <title>Search · Data Engineering Handbook</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
       <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
-      <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.6-.9 3.2 14.5-3.6.9z"/></symbol>
-      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/><path d="m3 17.5 9 5 9-5"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
       <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.6 18.2A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
-      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
-      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
       <symbol id="i-hash" viewBox="0 0 24 24"><path d="M4 9h16M4 15h16M10 3 8 21M16 3l-2 18"/></symbol>
       <symbol id="i-enter" viewBox="0 0 24 24"><path d="M20 4v7a3 3 0 0 1-3 3H5"/><path d="m9 10-4 4 4 4"/></symbol>
-      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+      <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
     </defs>
   </svg>
 
-  <div class="app" aria-hidden="true">
+  <!-- Page behind the palette -->
+  <div class="app" aria-hidden="true" inert>
     <aside class="sidebar">
-      <div class="brand">
-        <span class="brand-mark"><svg class="icon icon-lg" style="stroke:#fff"><use href="#i-book"/></svg></span>
-        <div>Handbook<small>Data engineering</small></div>
-      </div>
+      <a class="brand" href="index.html">
+        <span class="brand-mark">
+          <svg viewBox="0 0 20 20"><path class="edge-line" d="M5 5.5C10 5.5 10 10 15 10M5 14.5C10 14.5 10 10 15 10"/><circle class="node-a" cx="5" cy="5.5" r="2.4"/><circle class="node-a" cx="5" cy="14.5" r="2.4"/><circle class="node-b" cx="15" cy="10" r="2.8"/></svg>
+        </span>
+        <span>Handbook<small>Data engineering</small></span>
+      </a>
       <a class="nav-link is-active" href="#"><svg class="icon"><use href="#i-grid"/></svg>Library<span class="count">59</span></a>
       <a class="nav-link" href="#"><svg class="icon"><use href="#i-star"/></svg>Starred<span class="count">4</span></a>
       <a class="nav-link" href="#"><svg class="icon"><use href="#i-flask"/></svg>Practice sets<span class="count">5</span></a>
     </aside>
     <main class="main">
       <header class="topbar">
-        <nav class="crumbs">Handbook</nav>
-        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input placeholder="Search…" /><kbd>⌘K</kbd></label>
+        <nav class="crumbs"><strong>Library</strong></nav>
+        <label class="search"><svg class="icon"><use href="#i-search"/></svg><input placeholder="Search notebooks and sections" /><kbd>⌘</kbd><kbd>K</kbd></label>
+        <button class="btn btn-ghost btn-icon"><svg class="icon i-moon"><use href="#i-moon"/></svg><svg class="icon i-sun"><use href="#i-sun"/></svg></button>
       </header>
-      <div class="content" style="opacity:.5">
-        <div class="page-head"><div><h1>Library</h1><p class="lead">59 notebooks</p></div></div>
-        <div class="grid">
-          <article class="card"><div class="tile">Sp</div><h3>Apache Spark</h3><p>RDDs, DataFrames, shuffles.</p></article>
-          <article class="card"><div class="tile">Dl</div><h3>Delta Lake</h3><p>ACID on object storage.</p></article>
-          <article class="card"><div class="tile">Af</div><h3>Airflow</h3><p>DAGs and scheduling.</p></article>
-        </div>
+      <div class="content">
+        <div class="page-head"><div><h1>Pick up where you left off</h1><p class="lead">Six notebooks passed on the batch track.</p></div></div>
+        <div class="panel" style="height:260px"></div>
       </div>
     </main>
   </div>
 
-  <!-- ============ Command palette ============ -->
-  <div class="scrim" role="dialog" aria-modal="true" aria-label="Search the handbook">
-    <div class="palette">
+  <!-- Command palette -->
+  <div class="scrim">
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Search the handbook">
       <div class="palette-input">
         <svg class="icon icon-lg"><use href="#i-search"/></svg>
-        <input type="text" value="partition pruning" aria-label="Search query" />
+        <input type="text" value="partition pruning" aria-label="Search query" aria-controls="results" />
         <kbd>esc</kbd>
       </div>
 
-      <div class="chips" style="padding:10px 14px;border-bottom:1px solid var(--border);gap:6px">
-        <button class="chip is-active">All <span class="count">12</span></button>
-        <button class="chip">Notebooks <span class="count">4</span></button>
-        <button class="chip">Sections <span class="count">7</span></button>
-        <button class="chip">Practice <span class="count">1</span></button>
+      <div class="palette-scope" role="tablist" aria-label="Result type">
+        <button class="scope is-active" role="tab" aria-selected="true">All <span class="count">9</span></button>
+        <button class="scope" role="tab" aria-selected="false">Notebooks <span class="count">3</span></button>
+        <button class="scope" role="tab" aria-selected="false">Sections <span class="count">5</span></button>
+        <button class="scope" role="tab" aria-selected="false">Practice <span class="count">1</span></button>
       </div>
 
-      <div class="palette-body">
-        <div class="palette-section">Best match</div>
-        <div class="result is-selected">
-          <span class="tile">Ic</span>
-          <div class="meta">
-            <strong>Apache Iceberg <span class="tag" style="margin-left:6px">Notebook</span></strong>
-            <small>Hidden partitioning removes the need to <mark>partition pruning</mark> by hand, via transforms…</small>
-          </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
+      <div class="palette-split">
+        <div class="palette-list" id="results" role="listbox" aria-label="Results">
+          <div class="palette-section">Sections</div>
+          <button class="result is-selected" role="option" aria-selected="true" data-preview="p-spark">
+            <span class="mono-tile" style="--tile:var(--c-core)"><svg class="icon icon-sm"><use href="#i-hash"/></svg></span>
+            <span class="meta"><strong><mark>Partition pruning</mark> in Spark SQL</strong><small>Apache Spark, Spark tuning</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
+          <button class="result" role="option" aria-selected="false" data-preview="p-iceberg">
+            <span class="mono-tile" style="--tile:var(--c-lake)"><svg class="icon icon-sm"><use href="#i-hash"/></svg></span>
+            <span class="meta"><strong>Hidden partitioning</strong><small>Apache Iceberg, Partitioning</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
+          <button class="result" role="option" aria-selected="false" data-preview="p-parquet">
+            <span class="mono-tile" style="--tile:var(--c-lake)"><svg class="icon icon-sm"><use href="#i-hash"/></svg></span>
+            <span class="meta"><strong>Row-group <mark>pruning</mark> with statistics</strong><small>Parquet, Predicate pushdown</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
+          <button class="result" role="option" aria-selected="false" data-preview="p-bigquery">
+            <span class="mono-tile" style="--tile:var(--c-cloud)"><svg class="icon icon-sm"><use href="#i-hash"/></svg></span>
+            <span class="meta"><strong>Require a <mark>partition</mark> filter</strong><small>BigQuery, Cost control</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
+
+          <div class="palette-section">Notebooks</div>
+          <button class="result" role="option" aria-selected="false" data-preview="p-tuning">
+            <span class="mono-tile" style="--tile:var(--c-core)">St</span>
+            <span class="meta"><strong>Spark tuning</strong><small>AQE, skew, broadcast and <mark>partition</mark> sizing</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
+          <button class="result" role="option" aria-selected="false" data-preview="p-trino">
+            <span class="mono-tile" style="--tile:var(--c-cloud)">Tr</span>
+            <span class="meta"><strong>Trino and Presto</strong><small>Dynamic filtering and <mark>partition</mark> elimination</small></span>
+            <svg class="icon enter"><use href="#i-enter"/></svg>
+          </button>
         </div>
 
-        <div class="palette-section">Sections</div>
-        <div class="result">
-          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
-          <div class="meta">
-            <strong>Partition pruning in Spark SQL</strong>
-            <small>Apache Spark · Shuffles and stages — filters on partition columns skip whole directories</small>
+        <div class="preview" id="p-spark">
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-core)"></span>Apache Spark<svg class="icon icon-sm"><use href="#i-chevron"/></svg>Spark tuning</div>
+          <h3>Partition pruning in Spark SQL</h3>
+          <p>When a table is partitioned by a column and your query filters on it, Spark skips the directories that cannot match. <mark>Partition pruning</mark> turns a full scan into a read of only the folders you need.</p>
+          <pre>spark.read.parquet("data/orders/")
+  .filter("order_date = '2026-11-01'")
+  .explain()
+# PartitionFilters: [order_date = 2026-11-01]</pre>
+          <div class="meta-row">
+            <span class="pill is-running"><span class="dot"></span>Notebook in progress</span>
+            <span class="tag">Section 9 of 14</span>
+            <span class="tag">4 min read</span>
           </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
-        </div>
-        <div class="result">
-          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
-          <div class="meta">
-            <strong>Pruning with Parquet row-group statistics</strong>
-            <small>Parquet · Predicate pushdown — min/max stats let readers skip row groups</small>
+          <div class="actions">
+            <a class="btn btn-primary" href="02-notebook.html">Open section</a>
+            <a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a>
           </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
-        </div>
-        <div class="result">
-          <span class="tile" style="background:var(--surface-2);color:var(--text-2)"><svg class="icon"><use href="#i-hash"/></svg></span>
-          <div class="meta">
-            <strong>BigQuery partition filters</strong>
-            <small>BigQuery · Cost optimization — always filter on the partition column to limit bytes scanned</small>
-          </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
         </div>
 
-        <div class="palette-section">Notebooks</div>
-        <div class="result">
-          <span class="tile">Sp</span>
-          <div class="meta">
-            <strong>Spark tuning</strong>
-            <small>Core pipeline skills · AQE, skew, broadcast and partition sizing</small>
-          </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
+        <div class="preview" id="p-iceberg" hidden>
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-lake)"></span>Apache Iceberg<svg class="icon icon-sm"><use href="#i-chevron"/></svg>Partitioning</div>
+          <h3>Hidden partitioning</h3>
+          <p>Iceberg records partition transforms such as <code>days(ts)</code> in table metadata, so readers get <mark>partition pruning</mark> without having to filter on a separate partition column.</p>
+          <pre>CREATE TABLE lake.orders (id bigint, ts timestamp)
+USING iceberg
+PARTITIONED BY (days(ts))</pre>
+          <div class="meta-row"><span class="pill is-idle"><span class="dot"></span>Not started</span><span class="tag">Section 4 of 11</span><span class="tag">5 min read</span></div>
+          <div class="actions"><a class="btn btn-primary" href="#">Open section</a><a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a></div>
         </div>
-        <div class="result">
-          <span class="tile">Tr</span>
-          <div class="meta">
-            <strong>Trino and Presto</strong>
-            <small>Cloud platforms · Dynamic filtering and partition elimination</small>
-          </div>
-          <svg class="icon enter"><use href="#i-enter"/></svg>
+
+        <div class="preview" id="p-parquet" hidden>
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-lake)"></span>Parquet<svg class="icon icon-sm"><use href="#i-chevron"/></svg>Predicate pushdown</div>
+          <h3>Row-group pruning with statistics</h3>
+          <p>Each row group stores min and max values per column. A reader compares your filter against them and skips row groups that cannot match, which is <mark>pruning</mark> one level below partitions.</p>
+          <pre>pq.ParquetFile("orders.parquet").metadata.row_group(0)
+  .column(3).statistics   # min, max, null_count</pre>
+          <div class="meta-row"><span class="pill is-passed"><span class="dot"></span>Passed</span><span class="tag">Section 5 of 7</span><span class="tag">3 min read</span></div>
+          <div class="actions"><a class="btn btn-primary" href="#">Open section</a><a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a></div>
+        </div>
+
+        <div class="preview" id="p-bigquery" hidden>
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-cloud)"></span>BigQuery<svg class="icon icon-sm"><use href="#i-chevron"/></svg>Cost control</div>
+          <h3>Require a partition filter</h3>
+          <p>Setting <code>require_partition_filter</code> makes BigQuery reject queries that would scan every <mark>partition</mark>, so an unfiltered query fails fast instead of billing a full scan.</p>
+          <pre>ALTER TABLE shop.orders
+SET OPTIONS (require_partition_filter = TRUE);</pre>
+          <div class="meta-row"><span class="pill is-idle"><span class="dot"></span>Not started</span><span class="tag">Section 7 of 12</span><span class="tag">2 min read</span></div>
+          <div class="actions"><a class="btn btn-primary" href="#">Open section</a><a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a></div>
+        </div>
+
+        <div class="preview" id="p-tuning" hidden>
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-core)"></span>Core pipeline</div>
+          <h3>Spark tuning</h3>
+          <p>Adaptive query execution, skew handling, broadcast thresholds and choosing <mark>partition</mark> counts, each with a before-and-after plan you can run.</p>
+          <div class="meta-row"><span class="pill is-idle"><span class="dot"></span>Not started</span><span class="tag">12 sections</span><span class="tag">30 min</span></div>
+          <div class="actions"><a class="btn btn-primary" href="#">Open notebook</a><a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a></div>
+        </div>
+
+        <div class="preview" id="p-trino" hidden>
+          <div class="preview-path"><span class="dot" style="--dot:var(--c-cloud)"></span>Cloud and platforms</div>
+          <h3>Trino and Presto</h3>
+          <p>Federated SQL over the lake: connectors, dynamic filtering, and how <mark>partition</mark> elimination keeps interactive queries interactive.</p>
+          <div class="meta-row"><span class="pill is-idle"><span class="dot"></span>Not started</span><span class="tag">10 sections</span><span class="tag">25 min</span></div>
+          <div class="actions"><a class="btn btn-primary" href="#">Open notebook</a><a class="btn" href="#"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</a></div>
         </div>
       </div>
 
       <div class="palette-foot">
-        <span><kbd>↑</kbd><kbd>↓</kbd> navigate</span>
-        <span><kbd>↵</kbd> open</span>
-        <span><kbd>⌘</kbd><kbd>↵</kbd> open in Colab</span>
-        <span style="margin-left:auto">12 results</span>
+        <span><kbd>↑</kbd><kbd>↓</kbd> Move</span>
+        <span><kbd>↵</kbd> Open</span>
+        <span><kbd>⌘</kbd><kbd>↵</kbd> Open in Colab</span>
+        <span style="margin-left:auto">6 of 9 results shown</span>
       </div>
     </div>
   </div>
+
+  <script>
+    // Mockup behaviour only: arrow keys and hover move the selection and swap the preview.
+    (function () {
+      var results = Array.prototype.slice.call(document.querySelectorAll(".result"));
+
+      function select(index) {
+        results.forEach(function (result, i) {
+          var isSelected = i === index;
+          result.classList.toggle("is-selected", isSelected);
+          result.setAttribute("aria-selected", String(isSelected));
+          document.getElementById(result.dataset.preview).hidden = !isSelected;
+        });
+        results[index].scrollIntoView({ block: "nearest" });
+      }
+
+      function currentIndex() {
+        return results.findIndex(function (result) {
+          return result.classList.contains("is-selected");
+        });
+      }
+
+      results.forEach(function (result, i) {
+        result.addEventListener("mouseenter", function () { select(i); });
+        result.addEventListener("focus", function () { select(i); });
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key !== "ArrowDown" && event.key !== "ArrowUp") {
+          return;
+        }
+        event.preventDefault();
+        var step = event.key === "ArrowDown" ? 1 : -1;
+        select((currentIndex() + step + results.length) % results.length);
+      });
+    })();
+  </script>
 </body>
 </html>

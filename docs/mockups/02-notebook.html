@@ -3,187 +3,256 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Apache Spark · Notebook reader</title>
+  <title>Apache Spark · Data Engineering Handbook</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;550;600;650&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
 </head>
 <body>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
       <symbol id="i-star" viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1-4.4-4.3 6.1-.9z"/></symbol>
-      <symbol id="i-library" viewBox="0 0 24 24"><path d="M4 4h4v16H4z"/><path d="M10 4h4v16h-4z"/><path d="m16 5 3.6-.9 3.2 14.5-3.6.9z"/></symbol>
-      <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5z"/><path d="m3 13 9 5 9-5"/><path d="m3 17.5 9 5 9-5"/></symbol>
+      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
       <symbol id="i-flask" viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6L4.6 18.2A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.7-2.8L14 9V3"/><path d="M7.5 15h9"/></symbol>
-      <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
-      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></symbol>
-      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
-      <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2z"/><path d="M4 19V5"/></symbol>
       <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+      <symbol id="i-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5"/><path d="m11 6-6 6 6 6"/></symbol>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></symbol>
+      <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
       <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></symbol>
-      <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
-      <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></symbol>
-      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
       <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
-      <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5"/></symbol>
+      <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.8 2.8L16.5 9.5"/></symbol>
+      <symbol id="i-bulb" viewBox="0 0 24 24"><path d="M9 18h6M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.7.5 1.1 1.3 1.1 2.2h5c0-.9.4-1.7 1.1-2.2A6 6 0 0 0 12 3z"/></symbol>
+      <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.5 20h19z"/><path d="M12 10v4M12 17h.01"/></symbol>
+      <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5v15l12-7.5z"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
     </defs>
   </svg>
 
+  <div class="read-progress" aria-hidden="true"><span></span></div>
+
   <div class="app">
     <aside class="sidebar">
-      <div class="brand">
-        <span class="brand-mark"><svg class="icon icon-lg" style="stroke:#fff"><use href="#i-book"/></svg></span>
-        <div>Handbook<small>Data engineering</small></div>
-      </div>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-grid"/></svg>Library</a>
+      <a class="brand" href="index.html">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20"><path class="edge-line" d="M5 5.5C10 5.5 10 10 15 10M5 14.5C10 14.5 10 10 15 10"/><circle class="node-a" cx="5" cy="5.5" r="2.4"/><circle class="node-a" cx="5" cy="14.5" r="2.4"/><circle class="node-b" cx="15" cy="10" r="2.8"/></svg>
+        </span>
+        <span>Handbook<small>Data engineering</small></span>
+      </a>
+      <a class="nav-link" href="01-library.html"><svg class="icon"><use href="#i-grid"/></svg>Library<span class="count">59</span></a>
       <a class="nav-link" href="#"><svg class="icon"><use href="#i-star"/></svg>Starred<span class="count">4</span></a>
       <a class="nav-link" href="#"><svg class="icon"><use href="#i-flask"/></svg>Practice sets<span class="count">5</span></a>
 
       <div class="nav-label">Core pipeline</div>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Python</a>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>SQL</a>
-      <a class="nav-link is-active" href="#"><svg class="icon"><use href="#i-layers"/></svg>Apache Spark</a>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Spark tuning</a>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>Airflow</a>
-      <a class="nav-link" href="#"><svg class="icon"><use href="#i-layers"/></svg>dbt</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--accent)"></span>Python</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--accent)"></span>SQL</a>
+      <a class="nav-link nav-topic is-active" href="#" aria-current="page"><span class="dot" style="--dot:var(--amber)"></span>Apache Spark</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--border-strong)"></span>Spark tuning</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--border-strong)"></span>Airflow</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--accent)"></span>dbt</a>
+      <a class="nav-link nav-topic" href="#"><span class="dot" style="--dot:var(--border-strong)"></span>Data quality</a>
 
       <div class="sidebar-foot">
         <span class="avatar">SG</span>
-        <div>
-          <div style="font-weight:550">Sai Guntupalli</div>
-          <div style="font-size:12px;color:var(--text-3)">Owner</div>
-        </div>
+        <div class="who">Sai Guntupalli<span>Owner</span></div>
       </div>
     </aside>
 
     <main class="main">
       <header class="topbar">
-        <nav class="crumbs">Library <svg class="icon"><use href="#i-chevron"/></svg> Core pipeline skills <svg class="icon"><use href="#i-chevron"/></svg> <strong>Apache Spark</strong></nav>
+        <nav class="crumbs" aria-label="Breadcrumb">
+          <a href="01-library.html">Library</a><svg class="icon"><use href="#i-chevron"/></svg>
+          <a href="#">Core pipeline</a><svg class="icon"><use href="#i-chevron"/></svg>
+          <strong>Apache Spark</strong>
+        </nav>
         <label class="search">
           <svg class="icon"><use href="#i-search"/></svg>
-          <input type="search" placeholder="Find in this notebook" aria-label="Find in notebook" />
+          <input type="search" placeholder="Find in this notebook" aria-label="Find in this notebook" />
           <kbd>/</kbd>
         </label>
-        <button class="btn btn-icon btn-ghost" aria-label="Preferences"><svg class="icon"><use href="#i-settings"/></svg></button>
+        <button class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Switch colour theme">
+          <svg class="icon i-moon"><use href="#i-moon"/></svg>
+          <svg class="icon i-sun"><use href="#i-sun"/></svg>
+        </button>
       </header>
 
       <div class="content">
         <div class="reader">
           <article class="article">
-            <header style="margin-bottom:8px">
-              <p class="eyebrow">Core pipeline skills</p>
+            <header>
+              <span class="kicker"><span class="dot" style="--dot:var(--c-core)"></span>Core pipeline</span>
               <h1>Apache Spark</h1>
-              <p class="lead" style="margin-top:12px">How Spark turns your code into a distributed plan — lazy evaluation, stages, shuffles and the DataFrame API — with runnable examples.</p>
+              <p class="lead">How Spark turns your code into a distributed plan: lazy evaluation, stages, shuffles and the DataFrame API, with examples that check themselves.</p>
+              <div class="meta-row">
+                <button class="btn is-starred"><svg class="icon"><use href="#i-star"/></svg>Starred</button>
+                <button class="btn"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</button>
+                <button class="btn"><svg class="icon"><use href="#i-download"/></svg>Download notebook</button>
+                <button class="btn btn-ghost"><svg class="icon"><use href="#i-copy"/></svg>Copy link</button>
+              </div>
             </header>
 
-            <div class="actions" style="margin:20px 0 4px;flex-wrap:wrap">
-              <button class="btn is-starred"><svg class="icon"><use href="#i-star"/></svg>Starred</button>
-              <button class="btn"><svg class="icon"><use href="#i-external"/></svg>Open in Colab</button>
-              <button class="btn"><svg class="icon"><use href="#i-download"/></svg>Download .ipynb</button>
-              <button class="btn btn-ghost"><svg class="icon"><use href="#i-copy"/></svg>Copy link</button>
-            </div>
-
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:14px">
-              <span class="tag is-accent">PySpark</span>
-              <span class="tag">Runnable</span>
-              <span class="tag is-success">Assertions pass</span>
-              <span class="tag">~35 min</span>
-              <span class="tag">Updated Nov 2026</span>
-            </div>
+            <!-- Cell map -->
+            <section class="panel cellmap" aria-label="Notebook cells">
+              <div class="cellmap-head">
+                <strong>36 cells, 12 assertions passing</strong>
+                <span>Last run on master, 7 Nov 2026</span>
+              </div>
+              <div class="ticks">
+                <a href="#" aria-label="Cell 1, text"></a><a href="#" class="t-pass" aria-label="Cell 2, code passed"></a><a href="#" aria-label="Cell 3, text"></a><a href="#" class="t-pass" aria-label="Cell 4, code passed"></a><a href="#" class="t-pass" aria-label="Cell 5"></a><a href="#" aria-label="Cell 6"></a><a href="#" class="t-pass" aria-label="Cell 7"></a><a href="#" aria-label="Cell 8"></a><a href="#" class="t-ill" aria-label="Cell 9, illustrative"></a><a href="#" aria-label="Cell 10"></a><a href="#" class="t-pass" aria-label="Cell 11"></a><a href="#" class="t-pass" aria-label="Cell 12"></a>
+                <a href="#" aria-label="Cell 13"></a><a href="#" class="t-pass t-here" aria-label="Cell 14, you are here"></a><a href="#" aria-label="Cell 15"></a><a href="#" class="t-pass" aria-label="Cell 16"></a><a href="#" aria-label="Cell 17"></a><a href="#" class="t-ill" aria-label="Cell 18, illustrative"></a><a href="#" aria-label="Cell 19"></a><a href="#" class="t-pass" aria-label="Cell 20"></a><a href="#" aria-label="Cell 21"></a><a href="#" aria-label="Cell 22"></a><a href="#" class="t-pass" aria-label="Cell 23"></a><a href="#" aria-label="Cell 24"></a>
+                <a href="#" aria-label="Cell 25"></a><a href="#" class="t-pass" aria-label="Cell 26"></a><a href="#" aria-label="Cell 27"></a><a href="#" aria-label="Cell 28"></a><a href="#" class="t-pass" aria-label="Cell 29"></a><a href="#" aria-label="Cell 30"></a><a href="#" aria-label="Cell 31"></a><a href="#" aria-label="Cell 32"></a><a href="#" aria-label="Cell 33"></a><a href="#" aria-label="Cell 34"></a><a href="#" aria-label="Cell 35"></a><a href="#" aria-label="Cell 36"></a>
+              </div>
+              <div class="legend">
+                <span><i class="l-code"></i>Code, assertion passed</span>
+                <span><i class="l-ill"></i>Illustrative, needs a platform</span>
+                <span><i class="l-md"></i>Explanation</span>
+              </div>
+            </section>
 
             <h2 id="why-lazy">Why Spark is lazy</h2>
-            <p>Transformations such as <code>filter</code>, <code>select</code> and <code>join</code> do not run when you call them. Spark records each step in a logical plan and only executes when an <em>action</em> — <code>count()</code>, <code>collect()</code>, a write — forces it. That lets the optimiser reorder and prune work before a single byte moves.</p>
+            <p>Transformations such as <code>filter</code>, <code>select</code> and <code>join</code> do not run when you call them. Spark records each step in a logical plan and only executes when an action, such as <code>count()</code>, <code>collect()</code> or a write, forces it. That gives the optimiser the whole plan to reorder and prune before a single byte moves.</p>
 
-            <div class="callout is-tip">
-              <svg class="icon"><use href="#i-info"/></svg>
+            <div class="callout is-model">
+              <svg class="icon"><use href="#i-bulb"/></svg>
               <div>
                 <strong>Mental model</strong>
-                <p>Transformations build a plan. Actions execute it. If nothing is an action, nothing runs.</p>
+                <p>Transformations build a plan. Actions run it. If no action is called, nothing runs.</p>
               </div>
             </div>
 
             <div class="cell">
               <div class="cell-bar">
-                <span class="lang">In [3]</span>
-                <span style="display:flex;gap:6px">
-                  <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:12px"><svg class="icon"><use href="#i-copy"/></svg>Copy</button>
-                  <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:12px"><svg class="icon"><use href="#i-play"/></svg>Run in Colab</button>
+                <span class="left"><span class="exec">In [3]</span><span>PySpark</span></span>
+                <span class="right">
+                  <button class="btn btn-ghost btn-sm"><svg class="icon icon-sm"><use href="#i-copy"/></svg>Copy</button>
+                  <button class="btn btn-ghost btn-sm"><svg class="icon icon-sm"><use href="#i-play"/></svg>Run in Colab</button>
                 </span>
               </div>
-<pre class="cell-code"><span class="tok-c"># Build a lazy pipeline — nothing has executed yet</span>
-<span class="tok-f">orders</span> = spark.read.parquet(<span class="tok-s">"s3://lake/orders/"</span>)
-<span class="tok-f">paid</span>   = orders.<span class="tok-f">filter</span>(orders.status == <span class="tok-s">"paid"</span>)
-<span class="tok-f">daily</span>  = paid.groupBy(<span class="tok-s">"order_date"</span>).agg({<span class="tok-s">"amount"</span>: <span class="tok-s">"sum"</span>})
-
-<span class="tok-c"># The action is what triggers the job</span>
-daily.<span class="tok-f">explain</span>(<span class="tok-k">True</span>)
-<span class="tok-n">assert</span> daily.<span class="tok-f">count</span>() &gt; <span class="tok-k">0</span></pre>
-              <pre class="cell-out"><span class="ok">✓</span> Parsed Logical Plan · Optimized Logical Plan · Physical Plan
-<span class="ok">✓</span> Assertion passed — 365 rows</pre>
+<pre class="cell-code"><span class="ln"><span class="tok-k">from</span> pyspark.sql <span class="tok-k">import</span> functions <span class="tok-k">as</span> F</span><span class="ln"></span><span class="ln"><span class="tok-c"># Build a lazy pipeline. Nothing has executed yet.</span></span><span class="ln">orders = spark.read.parquet(<span class="tok-s">"data/orders/"</span>)</span><span class="ln">paid   = orders.<span class="tok-f">filter</span>(orders.status == <span class="tok-s">"paid"</span>)</span><span class="ln">daily  = paid.<span class="tok-f">groupBy</span>(<span class="tok-s">"order_date"</span>).<span class="tok-f">agg</span>(F.<span class="tok-f">sum</span>(<span class="tok-s">"amount"</span>).<span class="tok-f">alias</span>(<span class="tok-s">"revenue"</span>))</span><span class="ln"></span><span class="ln"><span class="tok-c"># show() is the action that triggers the job</span></span><span class="ln">daily.<span class="tok-f">orderBy</span>(<span class="tok-s">"order_date"</span>).<span class="tok-f">show</span>(<span class="tok-n">5</span>)</span><span class="ln"><span class="tok-k">assert</span> daily.<span class="tok-f">count</span>() == <span class="tok-n">365</span></span></pre>
+              <div class="cell-out">
+                <div class="out-status"><svg class="icon"><use href="#i-check-circle"/></svg>Assertion passed<span class="muted">1.8 s, 2 stages</span></div>
+                <table class="df">
+                  <thead><tr><th>order_date <span class="type">date</span></th><th class="num">revenue <span class="type">double</span></th></tr></thead>
+                  <tbody>
+                    <tr><td>2026-01-01</td><td class="num">48,210.50</td></tr>
+                    <tr><td>2026-01-02</td><td class="num">51,904.25</td></tr>
+                    <tr><td>2026-01-03</td><td class="num">39,877.00</td></tr>
+                    <tr><td>2026-01-04</td><td class="num">44,130.75</td></tr>
+                    <tr><td>2026-01-05</td><td class="num">57,662.10</td></tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <h2 id="shuffles">Shuffles and stages</h2>
-            <p>A shuffle happens whenever rows must move between executors so that equal keys meet — a <code>groupBy</code>, a <code>join</code> on unsorted partitions, a <code>distinct</code>. Each shuffle splits the job into a new stage. Fewer shuffles almost always means a faster job.</p>
+            <p>A shuffle happens whenever rows must move between executors so that equal keys meet: a <code>groupBy</code>, a <code>join</code> on unsorted data, a <code>distinct</code>. Every shuffle ends one stage and starts the next. Fewer shuffles almost always means a faster job.</p>
+
+            <figure class="figure">
+              <svg viewBox="0 0 680 150" role="img" aria-label="The job above runs as two stages. Stage 1 reads and filters orders. A shuffle moves rows by order date. Stage 2 aggregates and shows the result.">
+                <defs>
+                  <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M0 0 10 5 0 10z"/></marker>
+                  <marker id="arr-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead-amber" d="M0 0 10 5 0 10z"/></marker>
+                </defs>
+                <rect class="stage" x="0" y="0" width="290" height="150" rx="12"/>
+                <text class="stage-label" x="16" y="24">Stage 1</text>
+                <rect class="stage" x="390" y="0" width="290" height="150" rx="12"/>
+                <text class="stage-label" x="406" y="24">Stage 2</text>
+
+                <rect class="box" x="16" y="52" width="116" height="62" rx="9"/>
+                <text class="op" x="30" y="78">read.parquet</text>
+                <text class="op-sub" x="30" y="96">orders, 8 files</text>
+                <path class="flow" d="M132 83 H156" marker-end="url(#arr)"/>
+                <rect class="box" x="158" y="52" width="116" height="62" rx="9"/>
+                <text class="op" x="172" y="78">filter</text>
+                <text class="op-sub" x="172" y="96">status = paid</text>
+
+                <path class="shuffle" d="M274 83 C 330 83, 334 83, 404 83" marker-end="url(#arr-amber)"/>
+                <text class="shuffle-label" x="306" y="70">Shuffle</text>
+                <text class="op-sub" x="296" y="106">by order_date</text>
+
+                <rect class="box" x="406" y="52" width="116" height="62" rx="9"/>
+                <text class="op" x="420" y="78">groupBy, agg</text>
+                <text class="op-sub" x="420" y="96">sum(amount)</text>
+                <path class="flow" d="M522 83 H546" marker-end="url(#arr)"/>
+                <rect class="box" x="548" y="52" width="116" height="62" rx="9"/>
+                <text class="op" x="562" y="78">show(5)</text>
+                <text class="op-sub" x="562" y="96">the action</text>
+              </svg>
+              <figcaption>The cell above runs as two stages. The groupBy forces a shuffle, so the job splits there.</figcaption>
+            </figure>
+
             <ul>
-              <li>Narrow transformations (<code>map</code>, <code>filter</code>) stay inside a stage.</li>
-              <li>Wide transformations (<code>groupBy</code>, <code>join</code>) force a shuffle.</li>
-              <li>Broadcast small tables to avoid shuffling the large side.</li>
+              <li>Narrow transformations, like <code>select</code> and <code>filter</code>, stay inside a stage.</li>
+              <li>Wide transformations, like <code>groupBy</code> and <code>join</code>, force a shuffle.</li>
+              <li>Broadcasting a small table avoids shuffling the large side of a join.</li>
             </ul>
 
-            <div class="callout">
-              <svg class="icon" style="color:var(--warn)"><use href="#i-info"/></svg>
+            <div class="callout is-warn">
+              <svg class="icon"><use href="#i-alert"/></svg>
               <div>
-                <strong>Platform only</strong>
-                <p>This cell uses an S3 path. It is marked <code>ILLUSTRATIVE</code> in the notebook and will not run in Colab without credentials.</p>
+                <strong>Needs a cluster</strong>
+                <p>The next cell reads from S3. It is marked <code># ILLUSTRATIVE</code> and is skipped in Colab and in CI.</p>
               </div>
             </div>
 
             <h2 id="broadcast-join">Broadcast joins</h2>
-            <p>When one side of a join fits in executor memory, Spark can ship it to every executor and skip the shuffle entirely.</p>
+            <p>When one side of a join fits in executor memory, Spark can send a copy to every executor and skip the shuffle entirely.</p>
 
             <div class="cell">
               <div class="cell-bar">
-                <span class="lang">In [7]</span>
-                <span style="display:flex;gap:6px">
-                  <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:12px"><svg class="icon"><use href="#i-copy"/></svg>Copy</button>
-                  <button class="btn btn-ghost" style="height:26px;padding:0 8px;font-size:12px"><svg class="icon"><use href="#i-play"/></svg>Run in Colab</button>
+                <span class="left"><span class="exec">In [7]</span><span>PySpark</span></span>
+                <span class="right">
+                  <button class="btn btn-ghost btn-sm"><svg class="icon icon-sm"><use href="#i-copy"/></svg>Copy</button>
+                  <button class="btn btn-ghost btn-sm"><svg class="icon icon-sm"><use href="#i-play"/></svg>Run in Colab</button>
                 </span>
               </div>
-<pre class="cell-code"><span class="tok-k">from</span> pyspark.sql.functions <span class="tok-k">import</span> broadcast
-
-<span class="tok-f">countries</span> = spark.createDataFrame([(<span class="tok-s">"IN"</span>, <span class="tok-s">"India"</span>), (<span class="tok-s">"US"</span>, <span class="tok-s">"United States"</span>)], [<span class="tok-s">"code"</span>, <span class="tok-s">"name"</span>])
-<span class="tok-f">joined</span> = orders.join(broadcast(countries), <span class="tok-s">"code"</span>)
-<span class="tok-n">assert</span> <span class="tok-s">"BroadcastHashJoin"</span> <span class="tok-k">in</span> joined._jdf.queryExecution().executedPlan().toString()</pre>
-              <pre class="cell-out"><span class="ok">✓</span> Assertion passed — plan uses BroadcastHashJoin, no Exchange</pre>
+<pre class="cell-code"><span class="ln"><span class="tok-k">from</span> pyspark.sql.functions <span class="tok-k">import</span> broadcast</span><span class="ln"></span><span class="ln">countries = spark.<span class="tok-f">createDataFrame</span>([(<span class="tok-s">"IN"</span>, <span class="tok-s">"India"</span>), (<span class="tok-s">"US"</span>, <span class="tok-s">"United States"</span>)], [<span class="tok-s">"code"</span>, <span class="tok-s">"name"</span>])</span><span class="ln">joined = orders.<span class="tok-f">join</span>(<span class="tok-f">broadcast</span>(countries), <span class="tok-s">"code"</span>)</span><span class="ln">plan = joined._jdf.<span class="tok-f">queryExecution</span>().<span class="tok-f">executedPlan</span>().<span class="tok-f">toString</span>()</span><span class="ln"><span class="tok-k">assert</span> <span class="tok-s">"BroadcastHashJoin"</span> <span class="tok-k">in</span> plan</span></pre>
+              <div class="cell-out">
+                <div class="out-status"><svg class="icon"><use href="#i-check-circle"/></svg>Assertion passed: the plan uses BroadcastHashJoin with no Exchange<span class="muted">0.6 s, 1 stage</span></div>
+              </div>
             </div>
 
-            <h2 id="checkpoint">Check your understanding</h2>
-            <p>Before moving on, you should be able to answer these without looking:</p>
-            <ul>
-              <li>Which of <code>select</code>, <code>collect</code>, <code>groupBy</code> triggers execution?</li>
-              <li>Why does a broadcast join avoid a shuffle on the large table?</li>
-            </ul>
+            <section class="panel takeaways" aria-labelledby="takeaways-title">
+              <h3 id="takeaways-title">What to remember</h3>
+              <ul>
+                <li><svg class="icon"><use href="#i-check"/></svg>Nothing runs until an action. Read the plan with <code>explain()</code> before tuning.</li>
+                <li><svg class="icon"><use href="#i-check"/></svg>Each shuffle is a stage boundary, and usually the slowest part of a job.</li>
+                <li><svg class="icon"><use href="#i-check"/></svg>Broadcast the small side of a join to keep the large side in place.</li>
+              </ul>
+            </section>
 
-            <nav class="pager" aria-label="Notebook pagination">
-              <a href="#"><small><svg class="icon" style="vertical-align:-3px"><use href="#i-arrow-left"/></svg> Previous</small><strong>Python coding problems</strong></a>
-              <a href="#" class="next"><small>Next <svg class="icon" style="vertical-align:-3px"><use href="#i-arrow"/></svg></small><strong>Spark tuning</strong></a>
+            <h2 id="check">Check your understanding</h2>
+            <details class="quiz">
+              <summary>Which of select, groupBy and collect starts a Spark job?<svg class="icon"><use href="#i-chevron"/></svg></summary>
+              <div class="answer"><p>Only <code>collect</code>. It is an action. <code>select</code> and <code>groupBy</code> are transformations that add to the plan.</p></div>
+            </details>
+            <details class="quiz">
+              <summary>Why does a broadcast join avoid shuffling the large table?<svg class="icon"><use href="#i-chevron"/></svg></summary>
+              <div class="answer"><p>Every executor already has a full copy of the small table, so each partition of the large table can be joined where it sits.</p></div>
+            </details>
+
+            <nav class="pager" aria-label="Previous and next notebook">
+              <a href="#"><small><svg class="icon icon-sm"><use href="#i-arrow-left"/></svg>Previous</small><strong>SQL</strong></a>
+              <a href="#" class="next"><small>Next on your path<svg class="icon icon-sm"><use href="#i-arrow-right"/></svg></small><strong>Spark tuning</strong></a>
             </nav>
           </article>
 
           <aside class="toc" aria-label="On this page">
             <p class="toc-title">On this page</p>
             <ol>
-              <li><a class="is-active" href="#why-lazy">Why Spark is lazy</a></li>
-              <li><a href="#shuffles">Shuffles and stages</a></li>
-              <li><a href="#broadcast-join">Broadcast joins</a></li>
-              <li><a href="#checkpoint">Check your understanding</a></li>
+              <li><a class="is-read" href="#why-lazy"><span class="state"><svg class="icon"><use href="#i-check"/></svg></span>Why Spark is lazy</a></li>
+              <li><a class="is-active" href="#shuffles"><span class="state"></span>Shuffles and stages</a></li>
+              <li><a href="#broadcast-join"><span class="state"></span>Broadcast joins</a></li>
+              <li><a href="#check"><span class="state"></span>Check your understanding</a></li>
             </ol>
-            <div class="progress">
-              <div style="font-size:12.5px;font-weight:550">Reading progress</div>
-              <div class="progress-bar"><span></span></div>
-              <div style="margin-top:8px;font-size:12px;color:var(--text-3)">6 of 14 sections · about 21 min left</div>
+            <div class="toc-card">
+              <strong>6 of 14 sections read</strong>
+              <div class="bar"><span style="width:43%"></span></div>
+              <small>About 21 minutes left</small>
             </div>
           </aside>
         </div>
