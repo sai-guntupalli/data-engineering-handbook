@@ -184,9 +184,7 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Next Steps
 
-1. Review and merge the SQL path explanations PR (`feat/sql-path-explanations`). Decide whether to fix
-   the stale "fourteen concept questions" sentence in the intro cell of `sql-13-interview-drills` (those questions
-   now live in `sql-14`); it was left alone because intro cells were out of scope.
+1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
 2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
    mode.
 3. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
