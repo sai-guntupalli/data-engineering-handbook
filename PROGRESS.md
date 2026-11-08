@@ -1,13 +1,17 @@
 # Progress
 
 **Current Status**: All notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The 14-chapter SQL path is on master (PR #34).
-The design mockups (PR #43) are merged and live at `/mockups/`. The site has been rebuilt to match them on
-`feat/app-pipeline-redesign` (PR awaiting review): learning map, in-site notebook reader, ⌘K search, reading progress.
-It replaces the editorial design from PRs #35 and #39.
+The design mockups (PR #43) are live at `/mockups/`, and the site has been rebuilt to match them (PR #44, merged):
+learning map, in-site notebook reader, ⌘K search, reading progress. It replaces the editorial design from PRs #35 and #39.
 
 ## Completed
 
-- 2026-11-07: Site rebuilt from the mockups (`feat/app-pipeline-redesign`). Design tokens, Instrument Sans and a
+- 2026-11-07: Collections grouping and counting explained (`fix/python-collections-explained`): the section in
+  `python-02-collections` now has one subsection per method with a worked example and assertions: the manual `if`
+  check, `dict.setdefault`, `defaultdict(list)` and `defaultdict(int)`, `Counter`, `most_common`, `update`, `+`/`-`,
+  `subtract`, `elements` and `total`. Interview notes cover setdefault's per-call default and defaultdict's read-inserts.
+
+- 2026-11-07: Site rebuilt from the mockups (`feat/app-pipeline-redesign`, PR #44). Design tokens, Instrument Sans and a
   light/dark toggle in `site/app/globals.css` and `components/theme.tsx`; app shell with a group sidebar
   (`components/AppShell.tsx`). Home: learning map drawn from `lib/learning-map.ts` (validated against the registry),
   resume cards and weekly activity, and a catalog table filtered by `?group=` (sidebar links set it). New reader at
@@ -155,12 +159,12 @@ It replaces the editorial design from PRs #35 and #39.
 
 ## In Progress
 
-- Site redesign from the mockups: branch `feat/app-pipeline-redesign`, PR awaiting review.
+- None.
 
 ## Next Steps
 
-1. Review and merge the `feat/app-pipeline-redesign` PR, then check the deployed site: home learning map, a notebook
-   page, ⌘K search, the download link and dark mode.
+1. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
+   mode.
 2. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
    decide whether CI should execute notebooks into a build-only copy with outputs for the reader to render.
 3. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
