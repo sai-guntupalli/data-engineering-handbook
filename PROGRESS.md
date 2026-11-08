@@ -10,7 +10,7 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
   `python-01-practice-values-and-types` through `python-09-practice-data-engineering`. Each has six exercises with
   a question, a code cell to fill in, and a check cell. Checks print `pass` or `todo` and never stop the run, so every
   notebook still runs top to bottom in CI. The last cell prints the score. The notebooks are registered in the site
-  as a "Python practice" group. Each exercise was checked against a worked solution, which is not committed.
+  as a "Python practice" group. Each solution sits in a collapsed "Show solution" block under its check cell (a `<details>` element), so the answer is one click away. Each solution was checked against its exercise.
 
 - 2026-11-08: All Python chapters rewritten in the collections style (`feat/python-collections-deep-dive`):
   `python-01` to `python-09` each define a rule before using it, show it in an assert-checked example, and name where
