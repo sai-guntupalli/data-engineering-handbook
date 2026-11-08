@@ -2,9 +2,24 @@
 
 **Current Status**: All notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The 14-chapter SQL path is on master (PR #34).
 The website has been redesigned as an editorial library (`feat/redesign-site`) and is awaiting review; it no longer shows
-notebook, cell or check counts.
+notebook, cell or check counts. Static design mockups for a pipeline-themed site (`feat/handbook-mockups`, PR #43) are
+awaiting review.
 
 ## Completed
+
+- 2026-11-07: Design mockups (`feat/handbook-mockups`, PR #43): static HTML in `docs/mockups/` with no build step.
+  Library with a learning map drawn as a DAG (green passed, amber in progress, hollow not started), resume cards and a
+  catalog table; notebook reader with a cell map, stage diagram, rendered DataFrame output, takeaways and self-checks;
+  a search palette with a live preview and arrow-key navigation; an index with live thumbnails. Shared tokens in
+  `styles.css` (Instrument Sans, lagoon accent), light/dark toggle in `theme.js`, focus styles and reduced motion.
+  Checked at 1360px and 375px in light and dark. The mockups assume per-reader progress tracking and show section
+  counts and reading time, which the `feat/redesign-site` direction removed; that needs a product decision.
+- 2026-11-07: Mockups ship to GitHub Pages at `/data-engineering-handbook/mockups/` (`feat/handbook-mockups`, PR #43).
+  New Makefile targets `mockups` (serve locally) and `mockups-bundle` (copy into `site/out/mockups`); `make build` and
+  the Pages workflow both bundle them. Pages are `noindex`. `tests/test_mockups.py` checks that local links are relative
+  and resolve. Verified with a Pages-style build (`NEXT_PUBLIC_BASE_PATH=/data-engineering-handbook make build`) served
+  under the prefix: the site and all mockup routes return 200 and render. Goes live once PR #43 merges, because only
+  `master` may deploy to the `github-pages` environment.
 
 - 2026-11-07: SQL topic engine labels and site configuration docs (`fix/sql-topic-engine-labels`): six engine-specific
   SQL sections are marked *(engine-specific)* with a legend in the intro, and the Dialect differences table is named as
@@ -145,6 +160,10 @@ notebook, cell or check counts.
 5. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
 6. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
+7. Review the design mockups in PR #43 (`docs/mockups/index.html`). Decide whether the site should track reading
+   progress per visitor (stored in the browser, like stars) and show section counts; the learning map, resume cards and
+   cell map depend on it. If yes, port the tokens from `docs/mockups/styles.css` into `site/app/globals.css` and build
+   the library screen first. If no, rework the mockups without progress state for first-time visitors.
 
 ## Blockers
 

@@ -74,6 +74,21 @@ The gallery is served from a path on GitHub Pages (`/data-engineering-handbook`)
 
 Deploying to another host or repository means changing both; the sitemap is built from `NEXT_PUBLIC_SITE_URL`, so a stale value there produces wrong sitemap URLs.
 
+## Design mockups
+
+Static HTML mockups for a future site design live in [`docs/mockups/`](docs/mockups): a library with a learning map,
+a notebook reader, and a search palette. They need no build step.
+
+| Where | How |
+| --- | --- |
+| **Live** | <https://sai-guntupalli.github.io/data-engineering-handbook/mockups/>, published with the site on every push to `master` |
+| Locally | `make mockups`, then <http://localhost:8000> |
+
+`make build` copies them into `site/out/mockups`, and the Pages workflow runs `make mockups-bundle` after the site build.
+The pages are marked `noindex`, so search engines skip them. Each screen has a light/dark toggle and works at phone
+width. `tests/test_mockups.py` checks that every link between them is relative and resolves. The mockups are a proposal
+only; the Next.js site in `site/` does not use them.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md): the setup-cell shape, the stand-in rules, and the commit checklist.
