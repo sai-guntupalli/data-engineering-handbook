@@ -9,7 +9,7 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 - 2026-11-08: Coding interview practice (`feat/leetcode-practice-notebooks`): nine notebooks,
   `leetcode-01-arrays-and-hashing` through `leetcode-09-backtracking-heaps-intervals-design`, 46 problems in all.
   Problem choice follows common interview lists and the numbering in `cnkyrpsgl/leetcode`. Statements are
-  paraphrased and solutions were written fresh. Each exercise has a check cell and a collapsed solution. Registered
+  paraphrased and solutions were written fresh. Each solution is annotated with its approach, complexity, inline comments and a tip. Each exercise has a check cell and a collapsed solution. Registered
   as a "Coding interviews" group.
 
 - 2026-11-08: Hands-on Python practice notebooks (`feat/python-collections-deep-dive`): one per chapter,
