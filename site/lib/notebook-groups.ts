@@ -3,8 +3,25 @@
  * A group's `folder` is where its notebooks live; `slugs` are file names without
  * the extension. The build fails on a missing or unregistered notebook.
  */
+
+/** Colour family of a group; each maps to a `--tone-*` token in globals.css. */
+export type GroupTone =
+  | "practice"
+  | "python"
+  | "sql"
+  | "core"
+  | "lake"
+  | "cloud"
+  | "stream"
+  | "warehouse"
+  | "ai"
+  | "other";
+
 export type NotebookGroup = {
   label: string;
+  /** Short name for filters and the sidebar on narrow screens. */
+  shortLabel: string;
+  tone: GroupTone;
   folder: string;
   slugs: string[];
 };
@@ -14,6 +31,8 @@ const TOPIC_FOLDER = "notebooks/topics";
 
 export const INTERVIEW_GROUP: NotebookGroup = {
   label: "Interview practice",
+  shortLabel: "Practice",
+  tone: "practice",
   folder: PRACTICE_FOLDER,
   slugs: [
     "01_python_basics",
@@ -25,14 +44,16 @@ export const INTERVIEW_GROUP: NotebookGroup = {
   ],
 };
 
-const topicGroup = (label: string, slugs: string[]): NotebookGroup => ({
+const topicGroup = (label: string, shortLabel: string, tone: GroupTone, slugs: string[]): NotebookGroup => ({
   label,
+  shortLabel,
+  tone,
   folder: TOPIC_FOLDER,
   slugs,
 });
 
 export const TOPIC_GROUPS: NotebookGroup[] = [
-  topicGroup("Python learning path", [
+  topicGroup("Python learning path", "Python", "python", [
     "python-01-values-and-types",
     "python-02-collections",
     "python-03-control-flow-and-functions",
@@ -43,7 +64,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "python-08-concurrency",
     "python-09-data-engineering",
   ]),
-  topicGroup("SQL learning path", [
+  topicGroup("SQL learning path", "SQL", "sql", [
     "sql-01-basics",
     "sql-02-aggregations-and-ctes",
     "sql-03-types-functions-and-json",
@@ -59,7 +80,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "sql-13-interview-drills",
     "sql-14-interview-concepts",
   ]),
-  topicGroup("Data Engineering", [
+  topicGroup("Data Engineering", "Core", "core", [
     "sql",
     "scala",
     "spark",
@@ -69,8 +90,16 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "data-quality",
     "observability",
   ]),
-  topicGroup("Lakehouse Formats", ["parquet", "delta", "iceberg", "hudi", "avro", "cdc", "data-modeling"]),
-  topicGroup("Cloud Platforms", [
+  topicGroup("Lakehouse Formats", "Lakehouse", "lake", [
+    "parquet",
+    "delta",
+    "iceberg",
+    "hudi",
+    "avro",
+    "cdc",
+    "data-modeling",
+  ]),
+  topicGroup("Cloud Platforms", "Cloud", "cloud", [
     "aws",
     "azure",
     "gcp",
@@ -83,7 +112,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "dynamodb",
     "bigtable",
   ]),
-  topicGroup("Streaming and Distributed Systems", [
+  topicGroup("Streaming and Distributed Systems", "Streaming", "stream", [
     "kafka",
     "flink",
     "redis",
@@ -93,7 +122,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "cassandra",
     "kubernetes",
   ]),
-  topicGroup("Warehousing and BI", [
+  topicGroup("Warehousing and BI", "Warehousing", "warehouse", [
     "dwha",
     "system-design",
     "statistics",
@@ -103,8 +132,8 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "looker",
     "superset",
   ]),
-  topicGroup("AI Foundations", ["llm"]),
-  topicGroup("Other Tools", [
+  topicGroup("AI Foundations", "AI", "ai", ["llm"]),
+  topicGroup("Other Tools", "Other", "other", [
     "mongo",
     "nifi",
     "flume",
@@ -118,7 +147,7 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
 
 export const ALL_GROUPS: NotebookGroup[] = [INTERVIEW_GROUP, ...TOPIC_GROUPS];
 
-/** URL anchor id for a group label, e.g. "Data Engineering" -> "core-pipeline-skills". */
+/** URL-safe id for a label or heading, e.g. "Data Engineering" -> "data-engineering". */
 export function anchorFor(label: string) {
   return label.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
