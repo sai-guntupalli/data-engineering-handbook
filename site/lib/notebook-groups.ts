@@ -64,6 +64,17 @@ export const TOPIC_GROUPS: NotebookGroup[] = [
     "python-08-concurrency",
     "python-09-data-engineering",
   ]),
+  topicGroup("Python practice", "Py drills", "practice", [
+    "python-01-practice-values-and-types",
+    "python-02-practice-collections",
+    "python-03-practice-control-flow-and-functions",
+    "python-04-practice-iterators-and-generators",
+    "python-05-practice-classes-and-dataclasses",
+    "python-06-practice-files-and-formats",
+    "python-07-practice-errors-logging-and-testing",
+    "python-08-practice-concurrency",
+    "python-09-practice-data-engineering",
+  ]),
   topicGroup("SQL learning path", "SQL", "sql", [
     "sql-01-basics",
     "sql-02-aggregations-and-ctes",
