@@ -6,6 +6,14 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-08: Python collections explained from first principles (`feat/python-collections-deep-dive`):
+  `python-02-collections` now defines each rule before using it and shows it in an assert-checked example. Sorting
+  explains `key=` and stability with a worked tie (equal keys keep input order), multi-field sorts, and `None` in sorts.
+  New sections cover list slices and copies, removing items during iteration, `enumerate` and `zip(strict=True)`,
+  tuple unpacking and `namedtuple`, set algebra and `frozenset`, dict views and merges, comprehensions (filter versus
+  choose, nested `for`), safe nested lookups, mutable default arguments, `deque` with `maxlen`, and `ChainMap`. Practice
+  has four questions with answers. All 27 code cells run on Python 3.13.
+
 - 2026-11-07: SQL path explained from first principles (`feat/sql-path-explanations`): all 14 chapters `sql-01` to
   `sql-14` reviewed. Terms are defined before use, rules that were only stated now have hand-worked examples and
   asserts (SQL path asserts rose from about 100 to about 490), every concept section has a "Where you'll use it" note,
