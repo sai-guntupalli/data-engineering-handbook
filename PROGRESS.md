@@ -6,6 +6,14 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-07: SQL path explained from first principles (`feat/sql-path-explanations`): all 14 chapters `sql-01` to
+  `sql-14` reviewed. Terms are defined before use, rules that were only stated now have hand-worked examples and
+  asserts (SQL path asserts rose from about 100 to about 490), every concept section has a "Where you'll use it" note,
+  and practice questions that copied the worked examples were replaced. Factual fixes: `INSERT OVERWRITE` on a
+  partitioned table replaces the whole table in Spark's default static mode (sql-12); Spark prunes partition columns
+  even through a function (sql-11, sql-14); the SCD2 overlap check missed equal start dates (sql-11); the "strictly
+  newer" dedup wording contradicted its query (sql-09). No `##` heading was renamed, so saved reading progress is kept.
+
 - 2026-11-07: Content widens when panels collapse (`feat/wide-content-collapsed`): with the sidebar collapsed the page
   grows to `--content-wide` (1480px), and with either panel collapsed the reader's article fills its column instead
   of keeping its 740px reading width. Measured at 1600px: article 740 (both open), 984 (sidebar collapsed), 1056
@@ -176,20 +184,21 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Next Steps
 
-1. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
+1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
+2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
    mode.
-2. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
+3. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
    decide whether CI should execute notebooks into a build-only copy with outputs for the reader to render.
-3. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
-4. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
+4. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
+5. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
    Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
-5. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
+6. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
    a candidate to trim or to link from the index.
-6. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
+7. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
    split), `notebooks/04_pyspark_concepts.ipynb` (exercise edits), and untracked `scripts/split_sql_notebooks.py`,
    `scripts/add_core_sql_topics.py` and `topics/sql-*` drafts. None of them are on master.
-7. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
-8. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
+8. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
+9. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
 
 ## Blockers
