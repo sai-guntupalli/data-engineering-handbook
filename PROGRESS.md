@@ -7,6 +7,14 @@ It replaces the editorial design from PRs #35 and #39.
 
 ## Completed
 
+- 2026-11-07: Collapsible sidebars (`feat/collapsible-sidebars`): the sidebar folds into a 68px icon rail with hover and
+  focus labels (top-bar button or <kbd>[</kbd>), and the reader's table of contents folds into a button (<kbd>]</kbd>).
+  Both states are saved in localStorage and applied before first paint; phones keep their existing layout. Fixed a
+  bug on master: the theme boot script was exported from a `"use client"` module, so the layout inlined a client
+  reference instead of the script, which threw a syntax error and never restored a saved theme. The script now lives
+  in `site/lib/boot.ts` with a vitest that runs it in a sandbox. Verified in the browser at 1360px (collapse, expand,
+  reload persistence, labels, clean console) and 375px.
+
 - 2026-11-07: Site rebuilt from the mockups (`feat/app-pipeline-redesign`). Design tokens, Instrument Sans and a
   light/dark toggle in `site/app/globals.css` and `components/theme.tsx`; app shell with a group sidebar
   (`components/AppShell.tsx`). Home: learning map drawn from `lib/learning-map.ts` (validated against the registry),

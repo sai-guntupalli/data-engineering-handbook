@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { PaletteProvider } from "@/components/palette";
-import { THEME_BOOT_SCRIPT } from "@/components/theme";
+import { PanelShortcuts } from "@/components/panels";
+import { BOOT_SCRIPT } from "@/lib/boot";
 import { authorHref, authorName, siteUrl } from "@/lib/site";
 
 const instrumentSans = Instrument_Sans({
@@ -43,16 +44,17 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    // The boot script may set data-theme before React hydrates.
+    // The boot scripts may set data-theme, data-sidebar and data-toc before React hydrates.
     <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+        <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
       </head>
       <body>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
         <PaletteProvider>{children}</PaletteProvider>
+        <PanelShortcuts />
       </body>
     </html>
   );

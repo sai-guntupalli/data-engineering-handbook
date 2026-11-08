@@ -292,6 +292,7 @@ kbd {
   display: grid;
   grid-template-columns: 256px minmax(0, 1fr);
   min-height: 100vh;
+  transition: grid-template-columns 0.2s ease;
 }
 
 .sidebar {
@@ -441,6 +442,11 @@ kbd {
   border-bottom: 1px solid var(--border);
   background: color-mix(in srgb, var(--bg) 84%, transparent);
   backdrop-filter: saturate(160%) blur(14px);
+}
+
+.sidebar-toggle {
+  margin-left: -8px;
+  color: var(--text-3);
 }
 
 .crumbs {
@@ -1763,10 +1769,23 @@ details.setup-cell .cell-body {
   font-size: 13px;
 }
 
+.toc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
 .toc-title {
-  margin-bottom: 10px;
   font-size: 12px;
   font-weight: 600;
+  color: var(--text-3);
+}
+
+.toc-toggle {
+  width: 28px;
+  margin-right: -6px;
   color: var(--text-3);
 }
 
@@ -2228,6 +2247,103 @@ details.setup-cell .cell-body {
   font-size: 13px;
 }
 
+/* ---------- Collapsible panels ----------
+ * <html data-sidebar="collapsed"> folds the sidebar into an icon rail and
+ * <html data-toc="collapsed"> folds the table of contents into a button.
+ * Both apply on wide screens only; narrow screens already reflow them. */
+
+@media (min-width: 901px) {
+  :root[data-sidebar="collapsed"] .app {
+    grid-template-columns: 68px minmax(0, 1fr);
+  }
+
+  :root[data-sidebar="collapsed"] .sidebar {
+    align-items: center;
+    padding: 18px 10px;
+    overflow: visible;
+  }
+
+  :root[data-sidebar="collapsed"] .brand {
+    padding: 2px 0 20px;
+  }
+
+  :root[data-sidebar="collapsed"] .brand > span:last-child,
+  :root[data-sidebar="collapsed"] .nav-count,
+  :root[data-sidebar="collapsed"] .sidebar-foot {
+    display: none;
+  }
+
+  /* Hidden visually but kept for screen readers, so every link keeps its name. */
+  :root[data-sidebar="collapsed"] .nav-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  :root[data-sidebar="collapsed"] .nav-link {
+    position: relative;
+    width: 44px;
+    justify-content: center;
+    padding: 0;
+  }
+
+  :root[data-sidebar="collapsed"] .nav-link .dot {
+    margin: 0;
+  }
+
+  :root[data-sidebar="collapsed"] .nav-label {
+    width: 28px;
+    height: 1px;
+    margin: 14px 0;
+    overflow: hidden;
+    background: var(--border);
+    color: transparent;
+  }
+
+  /* Labels for the icon rail, on hover and keyboard focus. */
+  :root[data-sidebar="collapsed"] .nav-link[data-tip]:hover::after,
+  :root[data-sidebar="collapsed"] .nav-link[data-tip]:focus-visible::after {
+    content: attr(data-tip);
+    position: absolute;
+    left: calc(100% + 10px);
+    top: 50%;
+    z-index: 30;
+    transform: translateY(-50%);
+    padding: 5px 9px;
+    border-radius: var(--radius-sm);
+    background: var(--text);
+    color: var(--bg);
+    font-size: 12.5px;
+    font-weight: 550;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: var(--shadow);
+  }
+
+  :root[data-toc="collapsed"] .reader {
+    grid-template-columns: minmax(0, 1fr) 28px;
+    gap: 32px;
+  }
+
+  :root[data-toc="collapsed"] .toc-title,
+  :root[data-toc="collapsed"] .toc-body {
+    display: none;
+  }
+
+  :root[data-toc="collapsed"] .toc-head {
+    justify-content: center;
+  }
+
+  :root[data-toc="collapsed"] .toc-toggle {
+    margin-right: 0;
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+}
+
 /* ---------- Motion & responsive ---------- */
 
 @media (prefers-reduced-motion: reduce) {
@@ -2275,7 +2391,8 @@ details.setup-cell .cell-body {
   }
   .brand small,
   .nav-label,
-  .sidebar-foot {
+  .sidebar-foot,
+  .sidebar-toggle {
     display: none;
   }
   .nav-link {

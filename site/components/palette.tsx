@@ -81,7 +81,7 @@ export function SearchTrigger() {
 export function SidebarSearchButton() {
   const { open } = usePalette();
   return (
-    <button type="button" className="nav-link" onClick={open}>
+    <button type="button" className="nav-link" data-tip="Search" onClick={open}>
       <MagnifyingGlass size={16} aria-hidden />
       <span className="nav-text">Search</span>
       <span className="nav-count">/</span>

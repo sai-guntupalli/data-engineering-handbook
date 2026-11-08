@@ -16,8 +16,10 @@ in Colab to run it.
   buttons to open it in Colab or download the `.ipynb`.
 - **Search**: press <kbd>⌘K</kbd>, <kbd>Ctrl+K</kbd> or <kbd>/</kbd> anywhere to search every notebook title and
   section heading, with a preview of the match. `/search?q=…` lists all results.
-- **Progress and stars** stay in your browser (localStorage); there are no accounts. Light and dark themes follow
-  your system, with a toggle in the top bar.
+- **Collapsible panels**: fold the sidebar into an icon rail with the button at the left of the top bar (or press
+  <kbd>[</kbd>), and fold a notebook's table of contents with the button above it (or press <kbd>]</kbd>).
+- **Progress, stars and display choices** (theme, collapsed panels) stay in your browser (localStorage) and apply
+  before the page paints; there are no accounts. Light and dark themes follow your system, with a toggle in the top bar.
 
 ## Run a notebook
 

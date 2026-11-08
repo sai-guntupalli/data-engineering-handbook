@@ -6,6 +6,7 @@ import { getNotebookGroups } from "@/lib/notebooks";
 import { authorHref, authorName, licenseName, repositoryHref } from "@/lib/site";
 import { toneStyle } from "@/lib/tone";
 import { SearchTrigger, SidebarSearchButton } from "./palette";
+import { SidebarToggle } from "./panels";
 import { ThemeToggle } from "./theme";
 
 export type Crumb = { label: string; href?: string };
@@ -48,7 +49,7 @@ export function AppShell({
 
   return (
     <div className="app">
-      <aside className="sidebar" aria-label="Handbook navigation">
+      <aside className="sidebar" id="app-sidebar" aria-label="Handbook navigation">
         <Link className="brand" href="/" aria-label="Data Engineering Handbook, home">
           <BrandMark />
           <span>
@@ -56,12 +57,17 @@ export function AppShell({
           </span>
         </Link>
 
-        <Link className="nav-link" href="/" aria-current={current === "library" ? "page" : undefined}>
+        <Link
+          className="nav-link"
+          data-tip="Library"
+          href="/"
+          aria-current={current === "library" ? "page" : undefined}
+        >
           <SquaresFour size={16} aria-hidden />
           <span className="nav-text">Library</span>
           <span className="nav-count">{total}</span>
         </Link>
-        <Link className="nav-link" href={catalogHref("starred")}>
+        <Link className="nav-link" data-tip="Starred" href={catalogHref("starred")}>
           <Star size={16} aria-hidden />
           <span className="nav-text">Starred</span>
         </Link>
@@ -69,7 +75,12 @@ export function AppShell({
 
         <div className="nav-label">Topics</div>
         {groups.map((group) => (
-          <Link key={group.label} className="nav-link" href={catalogHref(anchorFor(group.label))}>
+          <Link
+            key={group.label}
+            className="nav-link"
+            data-tip={group.label}
+            href={catalogHref(anchorFor(group.label))}
+          >
             <span className="dot" style={toneStyle(group.tone, "--dot")} aria-hidden />
             <span className="nav-text">{group.label}</span>
             <span className="nav-count">{group.notebooks.length}</span>
@@ -87,6 +98,7 @@ export function AppShell({
 
       <div className="main">
         <header className="topbar">
+          <SidebarToggle />
           <nav className="crumbs" aria-label="Breadcrumb">
             {crumbs.map((crumb, index) => {
               const last = index === crumbs.length - 1;
@@ -104,7 +116,13 @@ export function AppShell({
           </nav>
           <SearchTrigger />
           <ThemeToggle />
-          <a className="btn btn-ghost btn-icon" href={repositoryHref} target="_blank" rel="noreferrer" aria-label="GitHub repository">
+          <a
+            className="btn btn-ghost btn-icon"
+            href={repositoryHref}
+            target="_blank"
+            rel="noreferrer"
+            aria-label="GitHub repository"
+          >
             <GithubLogo size={18} aria-hidden />
           </a>
         </header>
