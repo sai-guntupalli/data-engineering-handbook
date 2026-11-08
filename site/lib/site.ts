@@ -1,8 +1,11 @@
 /**
- * Canonical site origin used for metadata, sitemap and robots.
+ * Canonical site URL, including any base path, used for metadata, sitemap and robots.
  *
- * The handbook is public and served by GitHub Pages at the default origin
- * below. Deploying elsewhere? Set `NEXT_PUBLIC_SITE_URL` at build time.
+ * The default is the GitHub Pages project URL, which includes the repository path.
+ * Deploying elsewhere means setting two build-time variables together:
+ * - `NEXT_PUBLIC_SITE_URL`: the full public URL including the path, with no trailing slash.
+ * - `NEXT_PUBLIC_BASE_PATH` (see next.config.ts): the same path without the origin,
+ *   e.g. `/data-engineering-handbook`, or unset when the site is served from the root.
  */
 export const siteUrl = (
   process.env.NEXT_PUBLIC_SITE_URL ?? "https://sai-guntupalli.github.io/data-engineering-handbook"

@@ -6,18 +6,22 @@ notebook, cell or check counts.
 
 ## Completed
 
+- 2026-11-07: SQL topic engine labels and site configuration docs (`fix/sql-topic-engine-labels`): six engine-specific
+  SQL sections are marked *(engine-specific)* with a legend in the intro, and the Dialect differences table is named as
+  the syntax reference. README has a Site URLs section on `NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_SITE_URL`, and the
+  `site.ts` comment says when both must be set. Removed leftover merge-conflict markers from PROGRESS.md.
+
 - 2026-11-07: Notebook depth and real-world coverage (`feat/real-world-sections`): the classes chapter starts from
   what a class is and how to create one; chapters 3, 6 and 8 define decorators, context managers and threads or
   coroutines; every Python and SQL concept section has a "Where you'll use it" section. Seven topic notebooks (docker,
   kubernetes, llm, looker, scala, superset, tableau) gained one per main part. Airflow, Kafka and dbt have one per
   question. Spark, Delta and Iceberg are in progress.
 
-<<<<<<< HEAD
 - 2026-11-07: Restyled the site (`feat/site-cool-palette`): a cool, light-first palette with one blue accent, Geist for
   headings instead of the serif, drawn-out kicker labels removed, primary buttons in the accent, and matching dark theme.
   Layout, content and behaviour are unchanged. The design detector reports no findings. `PRODUCT.md` records the product
   context for future design work.
-=======
+
 - 2026-11-07: Real-world coverage (`feat/python-learning-path`): seven topic notebooks that had no use-case section
   (docker, kubernetes, llm, looker, scala, superset, tableau) gained a "Where you'll use it" section for each main
   part. Every SQL chapter 14 question now has one, and chapter 13 has one for its concept block. The other topic
@@ -29,7 +33,6 @@ notebook, cell or check counts.
   inheritance, dataclasses by hand and with `@dataclass`, and enums. Chapters 3, 6 and 8 gained short definitions of
   decorators, context managers and threads or coroutines. Every Python and SQL concept section now has a
   "Where you'll use it" section with real-world uses. The other topic notebooks have not been done yet.
->>>>>>> 7937c35 (Add real-world sections to the remaining notebooks)
 
 - 2026-11-07: Python learning path (`feat/python-learning-path`): the single `topics/python` notebook is replaced by nine
   chapters, following the SQL path. Chapters 1-8 cover values and types, collections, control flow and functions,
