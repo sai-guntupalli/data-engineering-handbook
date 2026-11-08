@@ -6,6 +6,17 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-08: All Python chapters rewritten in the collections style (`feat/python-collections-deep-dive`):
+  `python-01` to `python-09` each define a rule before using it, show it in an assert-checked example, and name where
+  it shows up in data work. Assert count across the eight chapters other than collections rose from 213 to 343. New coverage includes:
+  Decimal quantize and integer cents, bytes versus text and encodings, truthiness and `None`, `match`, the LEGB scope
+  rule and late-binding closures, `functools.wraps` and decorators with arguments, `itertools` (`accumulate`,
+  `zip_longest`, `product`), generator `yield from`, custom iterables, class `__eq__` and `__hash__`, composition, ABCs,
+  `__post_init__`, `order=True`, `enum.auto`, BOM handling with `utf-8-sig`, JSON `default=`, exception hierarchy and
+  `finally` after `return`, logging with lazy `%s` formatting, table-driven tests, `queue.Queue`, `as_completed`,
+  `asyncio.wait_for`, and `gather(return_exceptions=True)`. The data-engineering chapter drops the `__import__` hack
+  and names its constants. Every code cell runs on Python 3.13 with no failures.
+
 - 2026-11-08: Python collections explained from first principles (`feat/python-collections-deep-dive`):
   `python-02-collections` now defines each rule before using it and shows it in an assert-checked example. Sorting
   explains `key=` and stability with a worked tie (equal keys keep input order), multi-field sorts, and `None` in sorts.
