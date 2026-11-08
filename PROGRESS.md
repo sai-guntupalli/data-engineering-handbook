@@ -6,6 +6,11 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-07: Content widens when panels collapse (`feat/wide-content-collapsed`): with the sidebar collapsed the page
+  grows to `--content-wide` (1480px), and with either panel collapsed the reader's article fills its column instead
+  of keeping its 740px reading width. Measured at 1600px: article 740 (both open), 984 (sidebar collapsed), 1056
+  (contents collapsed), 1220 (both collapsed).
+
 - 2026-11-07: Collapsible sidebars (`feat/collapsible-sidebars`, PR #45): the sidebar folds into a 68px icon rail with hover and
   focus labels (top-bar button or <kbd>[</kbd>), and the reader's table of contents folds into a button (<kbd>]</kbd>).
   Both states are saved in localStorage and applied before first paint; phones keep their existing layout. Fixed a
