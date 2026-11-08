@@ -6,6 +6,14 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-07: Collapsible sidebars (`feat/collapsible-sidebars`, PR #45): the sidebar folds into a 68px icon rail with hover and
+  focus labels (top-bar button or <kbd>[</kbd>), and the reader's table of contents folds into a button (<kbd>]</kbd>).
+  Both states are saved in localStorage and applied before first paint; phones keep their existing layout. Fixed a
+  bug on master: the theme boot script was exported from a `"use client"` module, so the layout inlined a client
+  reference instead of the script, which threw a syntax error and never restored a saved theme. The script now lives
+  in `site/lib/boot.ts` with a vitest that runs it in a sandbox. Verified in the browser at 1360px (collapse, expand,
+  reload persistence, labels, clean console) and 375px.
+
 - 2026-11-07: Collections grouping and counting explained (`fix/python-collections-explained`): the section in
   `python-02-collections` now has one subsection per method with a worked example and assertions: the manual `if`
   check, `dict.setdefault`, `defaultdict(list)` and `defaultdict(int)`, `Counter`, `most_common`, `update`, `+`/`-`,

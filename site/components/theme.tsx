@@ -1,11 +1,8 @@
 "use client";
 
 import { Moon, Sun } from "@phosphor-icons/react";
+import { THEME_KEY } from "@/lib/boot";
 
-const THEME_KEY = "de-handbook:theme";
-
-/** Runs in <head> before first paint so a saved theme never flashes the other one. */
-export const THEME_BOOT_SCRIPT = `(function(){try{var t=localStorage.getItem("${THEME_KEY}");if(t==="light"||t==="dark")document.documentElement.dataset.theme=t}catch(e){}})();`;
 
 function isDark(): boolean {
   const chosen = document.documentElement.dataset.theme;

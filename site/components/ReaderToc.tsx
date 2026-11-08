@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Check } from "@phosphor-icons/react";
 import type { Section } from "@/lib/notebook-parse";
 import { fractionOf } from "@/lib/progress";
+import { TocToggle } from "./panels";
 import { recordSectionRead, useProgress } from "./progress-store";
 import { useUrlHash } from "./url-state";
 
@@ -93,31 +94,36 @@ export function ReaderToc({
         <span style={{ width: `${fraction * 100}%` }} />
       </div>
       <aside className="toc" aria-label="On this page">
-        <p className="toc-title">On this page</p>
-        <ol>
-          {sections.map((section, index) => (
-            <li key={section.id}>
-              <a
-                href={`#${section.id}`}
-                className={read.has(section.id) ? "is-read" : undefined}
-                aria-current={index === current ? "true" : undefined}
-              >
-                <span className="state" aria-hidden>
-                  {read.has(section.id) ? <Check size={9} weight="bold" /> : null}
-                </span>
-                {section.title}
-              </a>
-            </li>
-          ))}
-        </ol>
-        <div className="toc-card">
-          <strong>
-            {read.size} of {sections.length} sections read
-          </strong>
-          <div className={fraction >= 1 ? "bar is-done" : "bar"}>
-            <span style={{ width: `${fraction * 100}%` }} />
+        <div className="toc-head">
+          <p className="toc-title">On this page</p>
+          <TocToggle />
+        </div>
+        <div className="toc-body" id="toc-body">
+          <ol>
+            {sections.map((section, index) => (
+              <li key={section.id}>
+                <a
+                  href={`#${section.id}`}
+                  className={read.has(section.id) ? "is-read" : undefined}
+                  aria-current={index === current ? "true" : undefined}
+                >
+                  <span className="state" aria-hidden>
+                    {read.has(section.id) ? <Check size={9} weight="bold" /> : null}
+                  </span>
+                  {section.title}
+                </a>
+              </li>
+            ))}
+          </ol>
+          <div className="toc-card">
+            <strong>
+              {read.size} of {sections.length} sections read
+            </strong>
+            <div className={fraction >= 1 ? "bar is-done" : "bar"}>
+              <span style={{ width: `${fraction * 100}%` }} />
+            </div>
+            <small>{fraction >= 1 ? "Finished" : `About ${left} minutes left`}</small>
           </div>
-          <small>{fraction >= 1 ? "Finished" : `About ${left} minutes left`}</small>
         </div>
       </aside>
     </>
