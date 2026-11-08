@@ -12,8 +12,10 @@ TOOL := uv run --no-project python
 SITE := site
 PORT ?= 3000
 JOBS ?= 4
+MOCKUPS := docs/mockups
+MOCKUPS_PORT ?= 8000
 
-.PHONY: help install dev test lint format check notebooks build validate stats clean
+.PHONY: help install dev test lint format check notebooks build mockups mockups-bundle validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -46,8 +48,16 @@ check: ## Audit every notebook for Colab-runnability rules
 notebooks: ## Execute every notebook top to bottom (JOBS=4); Spark ones need Java
 	$(PY) scripts/run_notebooks.py --jobs $(JOBS)
 
-build: ## Build the static gallery site into site/out
+build: ## Build the static gallery site (with the design mockups) into site/out
 	npm --prefix $(SITE) run build
+	$(MAKE) mockups-bundle
+
+mockups: ## Serve the static design mockups locally (MOCKUPS_PORT=8000)
+	python3 -m http.server $(MOCKUPS_PORT) --bind 127.0.0.1 --directory $(MOCKUPS)
+
+mockups-bundle: ## Copy the design mockups into site/out/mockups for GitHub Pages
+	rm -rf $(SITE)/out/mockups
+	cp -R $(MOCKUPS) $(SITE)/out/mockups
 
 validate: lint test check notebooks build ## Everything CI runs
 	@echo "validate: all checks passed"

@@ -14,6 +14,12 @@ awaiting review.
   `styles.css` (Instrument Sans, lagoon accent), light/dark toggle in `theme.js`, focus styles and reduced motion.
   Checked at 1360px and 375px in light and dark. The mockups assume per-reader progress tracking and show section
   counts and reading time, which the `feat/redesign-site` direction removed; that needs a product decision.
+- 2026-11-07: Mockups ship to GitHub Pages at `/data-engineering-handbook/mockups/` (`feat/handbook-mockups`, PR #43).
+  New Makefile targets `mockups` (serve locally) and `mockups-bundle` (copy into `site/out/mockups`); `make build` and
+  the Pages workflow both bundle them. Pages are `noindex`. `tests/test_mockups.py` checks that local links are relative
+  and resolve. Verified with a Pages-style build (`NEXT_PUBLIC_BASE_PATH=/data-engineering-handbook make build`) served
+  under the prefix: the site and all mockup routes return 200 and render. Goes live once PR #43 merges, because only
+  `master` may deploy to the `github-pages` environment.
 
 - 2026-11-07: SQL topic engine labels and site configuration docs (`fix/sql-topic-engine-labels`): six engine-specific
   SQL sections are marked *(engine-specific)* with a legend in the intro, and the Dialect differences table is named as

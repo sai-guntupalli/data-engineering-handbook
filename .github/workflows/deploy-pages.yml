@@ -58,6 +58,10 @@ jobs:
           # GitHub Pages project pages serve under /data-engineering-handbook.
           NEXT_PUBLIC_BASE_PATH: /data-engineering-handbook
 
+      # Static design mockups, served at /data-engineering-handbook/mockups/.
+      - name: Add design mockups
+        run: make mockups-bundle
+
       # Without this, GitHub Pages' implicit Jekyll build drops the `_next/`
       # asset directory (it treats underscore-prefixed paths as Jekyll internals).
       - name: Disable Jekyll processing
