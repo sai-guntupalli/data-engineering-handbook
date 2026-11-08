@@ -63,6 +63,17 @@ make validate    # everything CI runs
 CI: [Checks](.github/workflows/repo-checks.yml) runs `make validate` (with Java 17) on every PR and on `master`.
 [Deploy](.github/workflows/deploy-pages.yml) publishes `site/out` to GitHub Pages on every push to `master`.
 
+## Site URLs
+
+The gallery is served from a path on GitHub Pages (`/data-engineering-handbook`). Two build-time variables must agree:
+
+| Variable | Set to | Used for |
+| --- | --- | --- |
+| `NEXT_PUBLIC_BASE_PATH` | `/data-engineering-handbook` (the Pages build sets it; leave unset locally) | Asset and route paths (`site/next.config.ts`) |
+| `NEXT_PUBLIC_SITE_URL` | `https://sai-guntupalli.github.io/data-engineering-handbook` (the default) | Canonical URLs, sitemap and robots (`site/lib/site.ts`) |
+
+Deploying to another host or repository means changing both; the sitemap is built from `NEXT_PUBLIC_SITE_URL`, so a stale value there produces wrong sitemap URLs.
+
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md): the setup-cell shape, the stand-in rules, and the commit checklist.
