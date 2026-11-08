@@ -4,7 +4,20 @@ An open handbook of **runnable Jupyter notebooks** for data engineering. Every t
 explanation, a small example right below it, and `assert`s that prove the point. Every notebook opens in
 **Google Colab** and runs top to bottom with no local setup — CI executes all of them on every change.
 
-**Browse:** <https://sai-guntupalli.github.io/data-engineering-handbook/> — every card has an *Open in Colab* button.
+**Browse:** <https://sai-guntupalli.github.io/data-engineering-handbook/> — read any notebook on the site, or open it
+in Colab to run it.
+
+## The site
+
+- **Library**: a learning map that draws the core notebooks as a pipeline DAG, resume cards for what you were
+  reading, and a catalog of every notebook you can filter by group or by your stars.
+- **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
+  explanations, code and self-checks, a table of contents that ticks off sections as you scroll past them, and
+  buttons to open it in Colab or download the `.ipynb`.
+- **Search**: press <kbd>⌘K</kbd>, <kbd>Ctrl+K</kbd> or <kbd>/</kbd> anywhere to search every notebook title and
+  section heading, with a preview of the match. `/search?q=…` lists all results.
+- **Progress and stars** stay in your browser (localStorage); there are no accounts. Light and dark themes follow
+  your system, with a toggle in the top bar.
 
 ## Run a notebook
 
@@ -42,8 +55,16 @@ scripts/
   notebook_format.py       canonical form: credit line, Open in Colab badge, no outputs, stable cell ids
   audit_notebooks.py       Colab-runnability rules (setup cell, no live servers, one title, links...)
   run_notebooks.py         executes notebooks like Colab's "Run all" (--jobs N for parallel)
-tests/                     unit tests for the tooling
-site/                      Next.js static gallery (GitHub Pages); reads ../notebooks at build time
+tests/                     unit tests for the tooling (pytest)
+site/                      Next.js static site (GitHub Pages); reads ../notebooks at build time
+  lib/notebook-parse.ts    notebook JSON -> title, sections, cells, reading time (pure, unit-tested)
+  lib/notebooks.ts         reads the files, checks the registry, builds summaries and the search index
+  lib/notebook-groups.ts   the registry: which notebook belongs to which group, and each group's colour
+  lib/learning-map.ts      the curated DAG on the home page, validated against the registry
+  lib/progress.ts          reading-progress rules (stored in the browser)
+  app/notebooks/[slug]/    the reader; app/files/ serves each .ipynb; app/search-index.json feeds search
+  tests/                   vitest unit tests for lib/
+docs/mockups/              static design mockups the site is built from
 ```
 
 ## Commands
@@ -53,7 +74,7 @@ make install     # notebook packages + dev tools (uv) and site dependencies (npm
 make format      # format notebooks and Python tooling
 make check       # audit every notebook
 make notebooks   # execute every notebook (PySpark ones need Java 8-21; JOBS=4 by default)
-make test        # tooling unit tests
+make test        # unit tests: tooling (pytest) and site data layer (vitest)
 make lint        # ruff + eslint
 make dev         # serve the gallery at http://localhost:3000
 make build       # static site into site/out
@@ -76,8 +97,8 @@ Deploying to another host or repository means changing both; the sitemap is buil
 
 ## Design mockups
 
-Static HTML mockups for a future site design live in [`docs/mockups/`](docs/mockups): a library with a learning map,
-a notebook reader, and a search palette. They need no build step.
+The site's design started as static HTML mockups in [`docs/mockups/`](docs/mockups): a library with a learning map,
+a notebook reader, and a search palette. They need no build step and are kept as the design reference.
 
 | Where | How |
 | --- | --- |
@@ -86,8 +107,8 @@ a notebook reader, and a search palette. They need no build step.
 
 `make build` copies them into `site/out/mockups`, and the Pages workflow runs `make mockups-bundle` after the site build.
 The pages are marked `noindex`, so search engines skip them. Each screen has a light/dark toggle and works at phone
-width. `tests/test_mockups.py` checks that every link between them is relative and resolves. The mockups are a proposal
-only; the Next.js site in `site/` does not use them.
+width. `tests/test_mockups.py` checks that every link between them is relative and resolves. The live site in `site/`
+implements them with real notebook data; the mockups' sample progress and output tables are illustrations only.
 
 ## Contributing
 

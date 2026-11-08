@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Instrument_Sans, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
-import { SearchProvider } from "@/components/search-context";
-import { authorHref, authorName, licenseName, repositoryHref, siteUrl } from "@/lib/site";
+import { PaletteProvider } from "@/components/palette";
+import { THEME_BOOT_SCRIPT } from "@/components/theme";
+import { authorHref, authorName, siteUrl } from "@/lib/site";
 
-const geist = Geist({
+const instrumentSans = Instrument_Sans({
   variable: "--font-sans",
   subsets: ["latin"],
 });
 
-const geistMono = Geist_Mono({
+const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
 });
-
 
 const siteName = "Data Engineering Handbook";
 const siteDescription =
@@ -44,32 +43,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable} ${geistMono.variable}`}>
+    // The boot script may set data-theme before React hydrates.
+    <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: THEME_BOOT_SCRIPT }} />
+      </head>
       <body>
         <a href="#main-content" className="skip-link">
           Skip to content
         </a>
-        <SearchProvider>
-          {children}
-          <footer className="site-footer">
-            <div className="site-footer-inner">
-              <p>
-                Built by{" "}
-                <a href={authorHref} target="_blank" rel="noreferrer">
-                  {authorName}
-                </a>
-                . Licensed under{" "}
-                <Link href="/license">{licenseName}</Link>.
-              </p>
-              <nav aria-label="Footer navigation">
-                <Link href="/license">License</Link>
-                <a href={repositoryHref} target="_blank" rel="noreferrer">
-                  Repository
-                </a>
-              </nav>
-            </div>
-          </footer>
-        </SearchProvider>
+        <PaletteProvider>{children}</PaletteProvider>
       </body>
     </html>
   );

@@ -28,8 +28,9 @@ install: ## Install notebook packages, Python dev tools and site dependencies
 dev: ## Serve the gallery site locally (PORT=3000)
 	npm --prefix $(SITE) run dev -- --port $(PORT)
 
-test: ## Unit tests for the notebook tooling
+test: ## Unit tests: notebook tooling (pytest) and the site's data layer (vitest)
 	uv run pytest
+	npm --prefix $(SITE) test
 
 lint: ## Lint Python tooling and the site
 	uv run ruff check scripts tests
