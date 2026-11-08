@@ -1,8 +1,8 @@
 # Progress
 
 **Current Status**: All notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The 14-chapter SQL path is on master (PR #34).
-The website has been redesigned as an editorial library (`feat/redesign-site`) and is awaiting review; it no longer shows
-notebook, cell or check counts.
+The design mockups (PR #43) are live at `/mockups/`, and the site has been rebuilt to match them (PR #44, merged):
+learning map, in-site notebook reader, ⌘K search, reading progress. It replaces the editorial design from PRs #35 and #39.
 
 ## Completed
 
@@ -10,6 +10,32 @@ notebook, cell or check counts.
   `python-02-collections` now has one subsection per method with a worked example and assertions: the manual `if`
   check, `dict.setdefault`, `defaultdict(list)` and `defaultdict(int)`, `Counter`, `most_common`, `update`, `+`/`-`,
   `subtract`, `elements` and `total`. Interview notes cover setdefault's per-call default and defaultdict's read-inserts.
+
+- 2026-11-07: Site rebuilt from the mockups (`feat/app-pipeline-redesign`, PR #44). Design tokens, Instrument Sans and a
+  light/dark toggle in `site/app/globals.css` and `components/theme.tsx`; app shell with a group sidebar
+  (`components/AppShell.tsx`). Home: learning map drawn from `lib/learning-map.ts` (validated against the registry),
+  resume cards and weekly activity, and a catalog table filtered by `?group=` (sidebar links set it). New reader at
+  `/notebooks/<slug>/`: markdown via `marked`, code highlighted at build time with highlight.js, a cell map
+  (explanation, code, self-check), a table of contents that marks a section read when you scroll from it into the next
+  heading (jumps do not count), mark-as-done, previous/next. Each `.ipynb` is served at `/files/<slug>.ipynb` for
+  downloading. ⌘K / Ctrl+K / `/` open a search palette over notebooks and section headings, loaded from
+  `/search-index.json`; `/search?q=` lists everything. Progress lives in localStorage like stars. Tailwind removed (it
+  was unused). 43 vitest tests for the pure data layer in `site/tests/`, run by `make test`. Verified with lint,
+  typecheck, a Pages-style build (80 notebook pages) and browser checks at 1360px and 375px in light and dark.
+
+- 2026-11-07: Design mockups (`feat/handbook-mockups`, PR #43): static HTML in `docs/mockups/` with no build step.
+  Library with a learning map drawn as a DAG (green passed, amber in progress, hollow not started), resume cards and a
+  catalog table; notebook reader with a cell map, stage diagram, rendered DataFrame output, takeaways and self-checks;
+  a search palette with a live preview and arrow-key navigation; an index with live thumbnails. Shared tokens in
+  `styles.css` (Instrument Sans, lagoon accent), light/dark toggle in `theme.js`, focus styles and reduced motion.
+  Checked at 1360px and 375px in light and dark. The mockups assume per-reader progress tracking and show section
+  counts and reading time, which the `feat/redesign-site` direction removed; that needs a product decision.
+- 2026-11-07: Mockups ship to GitHub Pages at `/data-engineering-handbook/mockups/` (`feat/handbook-mockups`, PR #43).
+  New Makefile targets `mockups` (serve locally) and `mockups-bundle` (copy into `site/out/mockups`); `make build` and
+  the Pages workflow both bundle them. Pages are `noindex`. `tests/test_mockups.py` checks that local links are relative
+  and resolve. Verified with a Pages-style build (`NEXT_PUBLIC_BASE_PATH=/data-engineering-handbook make build`) served
+  under the prefix: the site and all mockup routes return 200 and render. Goes live once PR #43 merges, because only
+  `master` may deploy to the `github-pages` environment.
 
 - 2026-11-07: SQL topic engine labels and site configuration docs (`fix/sql-topic-engine-labels`): six engine-specific
   SQL sections are marked *(engine-specific)* with a legend in the intro, and the Dialect differences table is named as
@@ -133,22 +159,24 @@ notebook, cell or check counts.
 
 ## In Progress
 
-- Website redesign: branch `feat/redesign-site`, PR awaiting review. Visual check in a real browser on GitHub Pages
-  after merge.
+- None.
 
 ## Next Steps
 
-1. Review and merge the website redesign PR (`feat/redesign-site`) once CI is green, then confirm the GitHub Pages deploy
-   renders the new home page, search and license pages.
-2. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
+1. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
+   mode.
+2. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
+   decide whether CI should execute notebooks into a build-only copy with outputs for the reader to render.
+3. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
+4. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
    Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
-3. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
+5. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
    a candidate to trim or to link from the index.
-4. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
+6. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
    split), `notebooks/04_pyspark_concepts.ipynb` (exercise edits), and untracked `scripts/split_sql_notebooks.py`,
    `scripts/add_core_sql_topics.py` and `topics/sql-*` drafts. None of them are on master.
-5. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
-6. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
+7. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
+8. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
 
 ## Blockers

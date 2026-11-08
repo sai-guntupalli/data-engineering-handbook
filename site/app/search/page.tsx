@@ -1,25 +1,17 @@
 import type { Metadata } from "next";
-import { SiteHeader } from "@/components/SiteHeader";
-import { SearchResults } from "@/components/SearchResults";
-import { getNotebookList, getSearchIndex } from "@/lib/notebooks";
+import { AppShell } from "@/components/AppShell";
+import { SearchView } from "@/components/SearchView";
+import { getNotebookList } from "@/lib/notebooks";
 
 export const metadata: Metadata = {
   title: "Search",
 };
 
 export default function SearchPage() {
-  // Build-time data, static export; the ?q= client store filters live.
-  const notebooks = getNotebookList();
-  const index = getSearchIndex();
-
+  // Build-time notebook list; the ?q= parameter filters it in the browser.
   return (
-    <>
-      <SiteHeader index={index} autoFocus panelOnFocus={false} />
-      <main id="main-content">
-        <div className="content-shell prose-shell">
-          <SearchResults notebooks={notebooks} />
-        </div>
-      </main>
-    </>
+    <AppShell crumbs={[{ label: "Library", href: "/" }, { label: "Search" }]}>
+      <SearchView notebooks={getNotebookList()} />
+    </AppShell>
   );
 }

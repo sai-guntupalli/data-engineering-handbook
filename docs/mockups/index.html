@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="description" content="Design mockups for the Data Engineering Handbook: library, notebook reader and search." />
+  <title>Handbook Mockups</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;550;600;650;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="theme.js"></script>
+  <style>
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 56px 24px 96px;
+    }
+    .top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 48px;
+    }
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      margin-top: 36px;
+    }
+    .screen {
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      background: var(--surface);
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .screen:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow);
+    }
+    /* Live thumbnail: the real page at 1360px, scaled to fit the card. */
+    .thumb {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg);
+    }
+    .thumb iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1360px;
+      height: 850px;
+      border: 0;
+      transform-origin: 0 0;
+      transform: scale(var(--s, 0.25));
+      pointer-events: none;
+    }
+    .screen-body {
+      padding: 16px 18px 18px;
+    }
+    .screen-body h2 {
+      margin: 0 0 4px;
+      font-size: 16px;
+      font-weight: 650;
+      letter-spacing: -0.01em;
+    }
+    .screen-body p {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-2);
+    }
+    .system {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 20px;
+      margin-top: 56px;
+    }
+    .system .panel {
+      padding: 20px;
+    }
+    .system h2 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 650;
+    }
+    .system .note {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--text-3);
+    }
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .swatch i {
+      width: 32px;
+      height: 32px;
+      flex: none;
+      border-radius: 8px;
+      box-shadow: inset 0 0 0 1px rgba(20, 24, 33, 0.08);
+    }
+    .swatch span {
+      display: block;
+      font-size: 12px;
+      color: var(--text-3);
+    }
+    .type-sample {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .type-sample .t1 {
+      font-size: 32px;
+      font-weight: 650;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+    }
+    .type-sample .t2 {
+      font-size: 17px;
+      font-weight: 650;
+      letter-spacing: -0.015em;
+    }
+    .type-sample .t3 {
+      font-size: 15.5px;
+      color: var(--text-2);
+    }
+    .type-sample code {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-2);
+    }
+    @media (max-width: 900px) {
+      .screens,
+      .system {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M4.6 4.6 6 6M18 18l1.4 1.4M2.5 12h2M19.5 12h2M4.6 19.4 6 18M18 6l1.4-1.4"/></symbol>
+    </defs>
+  </svg>
+
+  <main class="wrap">
+    <div class="top">
+      <span class="brand" style="padding:0">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 20 20"><path class="edge-line" d="M5 5.5C10 5.5 10 10 15 10M5 14.5C10 14.5 10 10 15 10"/><circle class="node-a" cx="5" cy="5.5" r="2.4"/><circle class="node-a" cx="5" cy="14.5" r="2.4"/><circle class="node-b" cx="15" cy="10" r="2.8"/></svg>
+        </span>
+        <span>Handbook<small>Design mockups</small></span>
+      </span>
+      <button class="btn btn-ghost btn-icon" data-theme-toggle aria-label="Switch colour theme">
+        <svg class="icon i-moon"><use href="#i-moon"/></svg>
+        <svg class="icon i-sun"><use href="#i-sun"/></svg>
+      </button>
+    </div>
+
+    <h1>A handbook you run like a pipeline</h1>
+    <p class="lead">Three screens for the Data Engineering Handbook. Progress borrows the language of a job run: green has passed, amber is in progress, hollow has not started. Everything around that stays quiet.</p>
+
+    <section class="screens" aria-label="Screens">
+      <a class="screen" href="01-library.html">
+        <div class="thumb"><iframe src="01-library.html" title="Library preview" tabindex="-1" loading="lazy"></iframe></div>
+        <div class="screen-body">
+          <h2>Library</h2>
+          <p>A learning map of the topics as a DAG, resume cards, weekly activity, and a catalog table of every notebook.</p>
+        </div>
+      </a>
+      <a class="screen" href="02-notebook.html">
+        <div class="thumb"><iframe src="02-notebook.html" title="Notebook reader preview" tabindex="-1" loading="lazy"></iframe></div>
+        <div class="screen-body">
+          <h2>Notebook reader</h2>
+          <p>A cell map of the run, code with rendered DataFrame output, a stage diagram, takeaways and self-checks.</p>
+        </div>
+      </a>
+      <a class="screen" href="03-search.html">
+        <div class="thumb"><iframe src="03-search.html" title="Search preview" tabindex="-1" loading="lazy"></iframe></div>
+        <div class="screen-body">
+          <h2>Search</h2>
+          <p>A ⌘K palette across notebooks and sections, with a live preview of the selected match. Try the arrow keys.</p>
+        </div>
+      </a>
+    </section>
+
+    <section class="system" aria-label="Design system">
+      <div class="panel">
+        <h2>Colour</h2>
+        <p class="note">Tokens live on :root in styles.css and are redefined for dark mode.</p>
+        <div class="swatches">
+          <div class="swatch"><i style="background:var(--text)"></i><div>Graphite<span>Text, primary buttons</span></div></div>
+          <div class="swatch"><i style="background:var(--bg)"></i><div>Porcelain<span>Page background</span></div></div>
+          <div class="swatch"><i style="background:var(--surface)"></i><div>Surface<span>Panels</span></div></div>
+          <div class="swatch"><i style="background:var(--accent)"></i><div>Lagoon<span>Passed, links</span></div></div>
+          <div class="swatch"><i style="background:var(--amber)"></i><div>Amber<span>In progress, stars</span></div></div>
+          <div class="swatch"><i style="background:var(--code-bg)"></i><div>Ink<span>Code cells</span></div></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Type</h2>
+        <p class="note">Instrument Sans for everything you read; JetBrains Mono only for code.</p>
+        <div class="type-sample">
+          <span class="t1">Pick up where you left off</span>
+          <span class="t2">Shuffles and stages</span>
+          <span class="t3">Every shuffle ends one stage and starts the next.</span>
+          <code>daily.groupBy("order_date").agg(F.sum("amount"))</code>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // Scale each live thumbnail so the 1360px page fills its card width.
+    (function () {
+      function fit() {
+        document.querySelectorAll(".thumb").forEach(function (thumb) {
+          thumb.style.setProperty("--s", String(thumb.clientWidth / 1360));
+        });
+      }
+      fit();
+      window.addEventListener("resize", fit);
+    })();
+  </script>
+</body>
+</html>
