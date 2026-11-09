@@ -78,6 +78,7 @@ export function LearningMap({ map }: { map: LearningMapView }) {
           </span>
         </div>
       </div>
+      <p className="map-hint">Swipe sideways to see the whole map.</p>
       <div className="map-scroll">
         <svg viewBox={`0 0 ${map.width} ${map.height}`} role="group" aria-label="Learning map of the core notebooks">
           {map.headers.map((header) => (

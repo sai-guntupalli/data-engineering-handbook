@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { CaretRight, GithubLogo, SquaresFour, Star } from "@phosphor-icons/react/dist/ssr";
-import { anchorFor } from "@/lib/notebook-groups";
+import { type GroupSection, anchorFor } from "@/lib/notebook-groups";
 import { getNotebookGroups } from "@/lib/notebooks";
 import { authorHref, authorName, licenseName, repositoryHref } from "@/lib/site";
 import { toneStyle } from "@/lib/tone";
@@ -10,6 +10,12 @@ import { SidebarToggle } from "./panels";
 import { ThemeToggle } from "./theme";
 
 export type Crumb = { label: string; href?: string };
+
+/** Sidebar sections, in the order they appear. */
+const SECTIONS: { value: GroupSection; label: string }[] = [
+  { value: "learn", label: "Learn" },
+  { value: "practice", label: "Practice" },
+];
 
 /** The handbook's mark: two inputs flowing into one node, like a tiny DAG. */
 export function BrandMark() {
@@ -73,18 +79,24 @@ export function AppShell({
         </Link>
         <SidebarSearchButton />
 
-        <div className="nav-label">Topics</div>
-        {groups.map((group) => (
-          <Link
-            key={group.label}
-            className="nav-link"
-            data-tip={group.label}
-            href={catalogHref(anchorFor(group.label))}
-          >
-            <span className="dot" style={toneStyle(group.tone, "--dot")} aria-hidden />
-            <span className="nav-text">{group.label}</span>
-            <span className="nav-count">{group.notebooks.length}</span>
-          </Link>
+        {SECTIONS.map((section) => (
+          <Fragment key={section.value}>
+            <div className="nav-label">{section.label}</div>
+            {groups
+              .filter((group) => group.section === section.value)
+              .map((group) => (
+                <Link
+                  key={group.label}
+                  className="nav-link"
+                  data-tip={group.label}
+                  href={catalogHref(anchorFor(group.label))}
+                >
+                  <span className="dot" style={toneStyle(group.tone, "--dot")} aria-hidden />
+                  <span className="nav-text">{group.label}</span>
+                  <span className="nav-count">{group.notebooks.length}</span>
+                </Link>
+              ))}
+          </Fragment>
         ))}
 
         <p className="sidebar-foot">
