@@ -1,11 +1,12 @@
 /**
  * The registry: the only place that says which notebooks the gallery shows.
- * A group's `folder` is where its notebooks live; `slugs` are file names without
- * the extension. The build fails on a missing or unregistered notebook.
+ * A group's `folder` is where its notebooks live, and `folderOverrides` names the
+ * few notebooks that live elsewhere. `slugs` are file names without the extension.
+ * The build fails on a missing or unregistered notebook.
  *
- * Groups come in two sections. "learn" groups teach a topic in order; "practice"
- * groups hold questions and drills. The sidebar and the catalog list them in
- * this order, so the array order below is the order the reader sees.
+ * Groups come in two sections. "learn" groups teach a topic in the order listed;
+ * "practice" groups hold questions and drills for the topic they name. The sidebar
+ * and the catalog show groups in this array order.
  */
 
 /** Colour family of a group; each maps to a `--tone-*` token in globals.css. */
@@ -31,11 +32,18 @@ export type NotebookGroup = {
   section: GroupSection;
   tone: GroupTone;
   folder: string;
+  /** Notebooks whose file is not in `folder`, keyed by slug. */
+  folderOverrides?: Record<string, string>;
   slugs: string[];
 };
 
-const PRACTICE_FOLDER = "notebooks";
+const ROOT_FOLDER = "notebooks";
 const TOPIC_FOLDER = "notebooks/topics";
+
+/** The repository path of one registered notebook, e.g. "notebooks/topics/sql-01-basics.ipynb". */
+export function repoPathFor(group: NotebookGroup, slug: string) {
+  return `${group.folderOverrides?.[slug] ?? group.folder}/${slug}.ipynb`;
+}
 
 const group = (
   label: string,
@@ -44,29 +52,24 @@ const group = (
   tone: GroupTone,
   folder: string,
   slugs: string[],
-): NotebookGroup => ({ label, shortLabel, section, tone, folder, slugs });
+  folderOverrides?: Record<string, string>,
+): NotebookGroup => ({ label, shortLabel, section, tone, folder, slugs, folderOverrides });
 
-export const INTERVIEW_GROUP = group(
-  "Interview questions",
-  "Questions",
-  "practice",
-  "practice",
-  PRACTICE_FOLDER,
-  [
-    "01_python_basics",
-    "02_python_coding_problems",
-    "03_sql_interview_questions",
-    "04_pyspark_concepts",
-    "05_interview_questions",
-    "06_pyspark_coding_challenges",
-  ],
-);
+const learn = (label: string, shortLabel: string, tone: GroupTone, slugs: string[], folderOverrides?: Record<string, string>) =>
+  group(label, shortLabel, "learn", tone, TOPIC_FOLDER, slugs, folderOverrides);
 
-const topic = (label: string, shortLabel: string, tone: GroupTone, slugs: string[]) =>
-  group(label, shortLabel, "learn", tone, TOPIC_FOLDER, slugs);
+const practice = (
+  label: string,
+  shortLabel: string,
+  tone: GroupTone,
+  folder: string,
+  slugs: string[],
+  folderOverrides?: Record<string, string>,
+) => group(label, shortLabel, "practice", tone, folder, slugs, folderOverrides);
 
+/** Learning groups in reading order: languages first, then the tools built on them. */
 export const LEARNING_GROUPS: NotebookGroup[] = [
-  topic("Python learning path", "Python", "python", [
+  learn("Python learning path", "Python", "python", [
     "python-01-values-and-types",
     "python-02-collections",
     "python-03-control-flow-and-functions",
@@ -77,90 +80,80 @@ export const LEARNING_GROUPS: NotebookGroup[] = [
     "python-08-concurrency",
     "python-09-data-engineering",
   ]),
-  topic("SQL learning path", "SQL", "sql", [
-    "sql-01-basics",
-    "sql-02-aggregations-and-ctes",
-    "sql-03-types-functions-and-json",
-    "sql-04-null-handling",
-    "sql-05-case-expressions",
-    "sql-06-joins",
-    "sql-07-set-operations",
-    "sql-08-window-functions",
-    "sql-09-deduplication",
-    "sql-10-time-series",
-    "sql-11-modeling-and-optimization",
-    "sql-12-views-and-changing-data",
-    "sql-13-interview-drills",
-    "sql-14-interview-concepts",
-  ]),
-  topic("Data Engineering", "Core", "core", [
+  learn(
+    "SQL learning path",
+    "SQL",
     "sql",
-    "scala",
+    [
+      "03_sql_interview_questions",
+      "sql-01-basics",
+      "sql-02-aggregations-and-ctes",
+      "sql-03-types-functions-and-json",
+      "sql-04-null-handling",
+      "sql-05-case-expressions",
+      "sql-06-joins",
+      "sql-07-set-operations",
+      "sql-08-window-functions",
+      "sql-09-deduplication",
+      "sql-10-time-series",
+      "sql-11-modeling-and-optimization",
+      "sql-12-views-and-changing-data",
+    ],
+    { "03_sql_interview_questions": ROOT_FOLDER },
+  ),
+  learn("Foundations", "Foundations", "core", ["sql", "data-structure", "statistics", "system-design"]),
+  learn("Modeling and governance", "Modeling", "warehouse", [
+    "data-modeling",
+    "dwha",
+    "data-governance",
+    "cost-optimization",
+    "data-quality",
+  ]),
+  learn("Processing engines", "Processing", "core", [
     "spark",
     "spark-tuning",
+    "scala",
+    "hadoop",
+    "hive",
+    "impala",
+    "trino",
+  ]),
+  learn("Orchestration and tooling", "Tooling", "core", [
     "airflow",
     "dbt",
-    "data-quality",
     "observability",
+    "docker",
+    "kubernetes",
   ]),
-  topic("Lakehouse Formats", "Lakehouse", "lake", [
-    "parquet",
-    "delta",
-    "iceberg",
-    "hudi",
-    "avro",
-    "cdc",
-    "data-modeling",
+  learn("Lakehouse formats", "Lakehouse", "lake", ["parquet", "avro", "delta", "iceberg", "hudi"]),
+  learn("Ingestion and streaming", "Streaming", "stream", ["kafka", "flink", "cdc", "nifi", "flume"]),
+  learn("Databases", "Databases", "other", [
+    "mongo",
+    "cassandra",
+    "hbase",
+    "redis",
+    "dynamodb",
+    "bigtable",
+    "elasticsearch",
+    "clickhouse",
+    "greenplum",
   ]),
-  topic("Cloud Platforms", "Cloud", "cloud", [
+  learn("Cloud platforms", "Cloud", "cloud", [
     "aws",
     "azure",
     "gcp",
+    "databricks",
+    "snowflake",
     "bigquery",
     "redshift",
-    "snowflake",
-    "databricks",
-    "trino",
-    "clickhouse",
-    "dynamodb",
-    "bigtable",
   ]),
-  topic("Streaming and Distributed Systems", "Streaming", "stream", [
-    "kafka",
-    "flink",
-    "redis",
-    "hadoop",
-    "hive",
-    "hbase",
-    "cassandra",
-    "kubernetes",
-  ]),
-  topic("Warehousing and BI", "Warehousing", "warehouse", [
-    "dwha",
-    "system-design",
-    "statistics",
-    "data-governance",
-    "cost-optimization",
-    "tableau",
-    "looker",
-    "superset",
-  ]),
-  topic("AI Foundations", "AI", "ai", ["llm"]),
-  topic("Other Tools", "Other", "other", [
-    "mongo",
-    "nifi",
-    "flume",
-    "greenplum",
-    "impala",
-    "elasticsearch",
-    "docker",
-    "data-structure",
-  ]),
+  learn("BI and visualization", "BI", "warehouse", ["tableau", "looker", "superset"]),
+  learn("AI and LLMs", "AI", "ai", ["llm"]),
 ];
 
+/** Practice groups: each one trains the topic in its name. */
 export const PRACTICE_GROUPS: NotebookGroup[] = [
-  INTERVIEW_GROUP,
-  group("Python practice", "Python drills", "practice", "practice", TOPIC_FOLDER, [
+  practice("Python drills", "Drills", "python", TOPIC_FOLDER, [
     "python-01-practice-values-and-types",
     "python-02-practice-collections",
     "python-03-practice-control-flow-and-functions",
@@ -171,18 +164,38 @@ export const PRACTICE_GROUPS: NotebookGroup[] = [
     "python-08-practice-concurrency",
     "python-09-practice-data-engineering",
   ]),
-  group("Coding interviews", "LeetCode", "practice", "practice", TOPIC_FOLDER, [
-    "leetcode-01-arrays-and-hashing",
-    "leetcode-02-two-pointers-and-sliding-window",
-    "leetcode-03-stacks-and-monotonic-stacks",
-    "leetcode-04-binary-search",
-    "leetcode-05-linked-lists",
-    "leetcode-06-binary-trees",
-    "leetcode-07-graphs-and-grids",
-    "leetcode-08-dynamic-programming",
-    "leetcode-09-backtracking-heaps-intervals-design",
+  practice(
+    "Python coding challenges",
+    "Challenges",
+    "python",
+    TOPIC_FOLDER,
+    [
+      "02_python_coding_problems",
+      "python-challenges-01-arrays-and-hashing",
+      "python-challenges-02-two-pointers-and-sliding-window",
+      "python-challenges-03-stacks-and-monotonic-stacks",
+      "python-challenges-04-binary-search",
+      "python-challenges-05-linked-lists",
+      "python-challenges-06-binary-trees",
+      "python-challenges-07-graphs-and-grids",
+      "python-challenges-08-dynamic-programming",
+      "python-challenges-09-backtracking-heaps-intervals-design",
+    ],
+    { "02_python_coding_problems": ROOT_FOLDER },
+  ),
+  practice("Interview questions", "Questions", "practice", ROOT_FOLDER, [
+    "01_python_basics",
+    "05_interview_questions",
+  ]),
+  practice("SQL interview drills", "SQL drills", "sql", TOPIC_FOLDER, ["sql-13-interview-drills", "sql-14-interview-concepts"]),
+  practice("PySpark interview practice", "PySpark", "core", ROOT_FOLDER, [
+    "04_pyspark_concepts",
+    "06_pyspark_coding_challenges",
   ]),
 ];
+
+/** The question bank that the home page points to for interview prep. */
+export const INTERVIEW_GROUP = PRACTICE_GROUPS[2];
 
 export const ALL_GROUPS: NotebookGroup[] = [...LEARNING_GROUPS, ...PRACTICE_GROUPS];
 

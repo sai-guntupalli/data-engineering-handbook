@@ -22,7 +22,13 @@ describe("the group registry", () => {
     expect(unique(ALL_GROUPS.map((group) => anchorFor(group.label)))).toBe(true);
   });
 
-  it("keeps practice short labels distinct from each other", () => {
-    expect(PRACTICE_GROUPS.map((group) => group.shortLabel)).toEqual(["Questions", "Python drills", "LeetCode"]);
+  it("lists the practice groups by what they train", () => {
+    expect(PRACTICE_GROUPS.map((group) => group.label)).toEqual([
+      "Python drills",
+      "Python coding challenges",
+      "Interview questions",
+      "SQL interview drills",
+      "PySpark interview practice",
+    ]);
   });
 });

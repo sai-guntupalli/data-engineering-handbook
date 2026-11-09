@@ -39,18 +39,25 @@ are shown in markdown code blocks.
 
 | Group | Notebooks |
 |---|---|
+| **Learn** | |
 | Python learning path | Values and types, collections, control flow and functions, iterators and generators, classes and dataclasses, files and formats, errors, logging and testing, concurrency, and data-engineering patterns (idempotent loads, watermarks, retries) |
-| SQL learning path | SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data, interview drills, interview concepts (Spark SQL) |
-| Data Engineering | Scala, Spark, Spark tuning, Airflow, dbt, Data quality, Observability |
-| Lakehouse Formats | Parquet, Delta Lake, Iceberg, Hudi, Avro, Change data capture, Data modeling |
-| Cloud Platforms | AWS, Azure, GCP, BigQuery, Redshift, Snowflake, Databricks, Trino, ClickHouse, DynamoDB, Bigtable |
-| Streaming and Distributed Systems | Kafka, Flink, Redis, Hadoop, Hive, HBase, Cassandra, Kubernetes |
-| Warehousing and BI | Data warehousing, System design, Statistics, Data governance, Cost optimization, Tableau, Looker, Superset |
-| AI Foundations | LLM and AI terminology (fully offline) |
-| Interview questions | `01_python_basics`, `02_python_coding_problems`, `03_sql_interview_questions` (start of the SQL path), `04_pyspark_concepts`, `05_interview_questions`, `06_pyspark_coding_challenges` (interview problems) |
+| SQL learning path | Start-here guide, SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data |
+| Foundations | SQL reference, data structures, statistics, system design |
+| Modeling and governance | Data modeling, data warehousing architecture, data governance, cost optimization, data quality |
+| Processing engines | Spark, Spark tuning, Scala, Hadoop, Hive, Impala, Trino |
+| Orchestration and tooling | Airflow, dbt, observability, Docker, Kubernetes |
+| Lakehouse formats | Parquet, Avro, Delta Lake, Iceberg, Hudi |
+| Ingestion and streaming | Kafka, Flink, change data capture, NiFi, Flume |
+| Databases | MongoDB, Cassandra, HBase, Redis, DynamoDB, Bigtable, Elasticsearch, ClickHouse, Greenplum |
+| Cloud platforms | AWS, Azure, GCP, Databricks, Snowflake, BigQuery, Redshift |
+| BI and visualization | Tableau, Looker, Superset |
+| AI and LLMs | LLM and AI terminology (fully offline) |
+| **Practice** | |
 | Python drills | One practice notebook per Python chapter: six exercises each, with checks and collapsed solutions |
-| LeetCode | Nine notebooks covering 46 common coding-interview problems, with annotated solutions |
-| Other Tools | MongoDB, NiFi, Flume, Greenplum, Impala, Elasticsearch, Docker, Data structures |
+| Python coding challenges | Python Coding Problems for Data Engineers, plus nine notebooks of 46 algorithm problems with annotated solutions |
+| Interview questions | Python basics for interviews, and a question bank with model answers and runnable checks |
+| SQL interview drills | SQL interview drills and interview concepts |
+| PySpark interview practice | PySpark concepts end to end, and PySpark coding challenges for interviews |
 
 ## Layout
 
