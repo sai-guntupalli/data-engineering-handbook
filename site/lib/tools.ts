@@ -22,7 +22,7 @@ export const TOOL_CATEGORIES = [
   { id: "languages", label: "Languages" },
   { id: "processing", label: "Processing engines" },
   { id: "streaming", label: "Streaming and ingestion" },
-  { id: "orchestration", label: "Orchestration and transformation" },
+  { id: "orchestration", label: "Orchestration" },
   { id: "formats", label: "File and table formats" },
   { id: "warehouses", label: "Data warehouses" },
   { id: "databases", label: "NoSQL and search" },

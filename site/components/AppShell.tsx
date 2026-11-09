@@ -3,8 +3,8 @@ import { Fragment, type ReactNode } from "react";
 import { CaretRight, GithubLogo, SquaresFour, Star } from "@phosphor-icons/react/dist/ssr";
 import { getToolCategories } from "@/lib/notebooks";
 import { authorHref, authorName, licenseName, repositoryHref } from "@/lib/site";
-import { toneStyle } from "@/lib/tone";
 import { SearchTrigger, SidebarSearchButton } from "./palette";
+import { SidebarTools } from "./SidebarTools";
 import { SidebarToggle } from "./panels";
 import { ThemeToggle } from "./theme";
 
@@ -31,11 +31,14 @@ export function BrandMark() {
 export function AppShell({
   crumbs,
   current,
+  tool,
   children,
 }: {
   crumbs: Crumb[];
   /** Which primary nav item is the current page. */
-  current?: "library";
+  current?: "library" | "starred";
+  /** Folder of the tool this page belongs to; its sidebar group opens and its link is marked current. */
+  tool?: string;
   children: ReactNode;
 }) {
   const categories = getToolCategories();
@@ -61,24 +64,32 @@ export function AppShell({
           <span className="nav-text">Library</span>
           <span className="nav-count">{total}</span>
         </Link>
-        <Link className="nav-link" data-tip="Starred" href="/starred/">
+        <Link
+          className="nav-link"
+          data-tip="Starred"
+          href="/starred/"
+          aria-current={current === "starred" ? "page" : undefined}
+        >
           <Star size={16} aria-hidden />
           <span className="nav-text">Starred</span>
         </Link>
         <SidebarSearchButton />
 
-        {categories.map((category) => (
-          <Fragment key={category.id}>
-            <div className="nav-label">{category.label}</div>
-            {category.tools.map((tool) => (
-              <Link key={tool.folder} className="nav-link" data-tip={tool.label} href={tool.href}>
-                <span className="dot" style={toneStyle(tool.tone, "--dot")} aria-hidden />
-                <span className="nav-text">{tool.label}</span>
-                <span className="nav-count">{tool.notebooks.length}</span>
-              </Link>
-            ))}
-          </Fragment>
-        ))}
+        <div className="nav-label">Tools</div>
+        <SidebarTools
+          currentTool={tool}
+          categories={categories.map((category) => ({
+            id: category.id,
+            label: category.label,
+            tools: category.tools.map((entry) => ({
+              folder: entry.folder,
+              label: entry.label,
+              href: entry.href,
+              tone: entry.tone,
+              count: entry.notebooks.length,
+            })),
+          }))}
+        />
 
         <p className="sidebar-foot">
           An open handbook by{" "}

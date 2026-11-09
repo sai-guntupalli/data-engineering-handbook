@@ -36,7 +36,7 @@ export default async function ToolPage({ params }: { params: Promise<{ tool: str
   const sections = names.map((name) => ({ name, notebooks: tool.notebooks.filter((notebook) => notebook.subfolder === name) }));
 
   return (
-    <AppShell crumbs={[{ label: "Library", href: "/" }, { label: tool.label }]}>
+    <AppShell crumbs={[{ label: "Library", href: "/" }, { label: tool.label }]} tool={tool.folder}>
       <header className="tool-head">
         <h1>{tool.label}</h1>
         <p className="lead">{tool.description}</p>
