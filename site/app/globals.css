@@ -2601,3 +2601,146 @@ details.setup-cell .cell-body {
   text-transform: uppercase;
   color: var(--text-3);
 }
+
+/* ---------- Sidebar tool groups ---------- */
+
+.nav-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-group-toggle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 30px;
+  margin-top: 6px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-3);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+
+.nav-group-toggle:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.nav-caret {
+  flex: none;
+  transition: transform 0.15s;
+}
+
+.nav-group[data-expanded="true"] .nav-caret {
+  transform: rotate(90deg);
+}
+
+.nav-group-count {
+  margin-left: auto;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.nav-group[data-expanded="false"] .nav-group-items {
+  display: none;
+}
+
+.nav-group-items {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-row {
+  position: relative;
+}
+
+.nav-row .nav-link {
+  padding-right: 34px;
+}
+
+.nav-star {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-3);
+  opacity: 0;
+  transform: translateY(-50%);
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.nav-row:hover .nav-star,
+.nav-star:focus-visible,
+.nav-row.is-starred .nav-star {
+  opacity: 1;
+}
+
+.nav-row.is-starred .nav-star {
+  color: var(--amber);
+}
+
+.nav-star:hover {
+  background: var(--surface-2);
+  color: var(--text);
+}
+
+/* The icon rail has no room for headers or stars: every tool shows as a dot. */
+@media (min-width: 901px) {
+  :root[data-sidebar="collapsed"] .nav-group-toggle,
+  :root[data-sidebar="collapsed"] .nav-star,
+  :root[data-sidebar="collapsed"] .is-starred-group {
+    display: none;
+  }
+
+  :root[data-sidebar="collapsed"] .nav-group .nav-group-items {
+    display: flex;
+    align-items: center;
+  }
+
+  :root[data-sidebar="collapsed"] .nav-row .nav-link {
+    padding-right: 0;
+  }
+}
+
+/* The narrow-screen strip scrolls sideways, so it lists every tool without headers. */
+@media (max-width: 900px) {
+  /* Short pages must not stretch the strip: the page body takes the spare height. */
+  .app {
+    grid-template-rows: auto 1fr;
+  }
+
+  .nav-group,
+  .nav-group-items {
+    flex-direction: row;
+  }
+
+  .nav-group-toggle,
+  .nav-star,
+  .is-starred-group {
+    display: none;
+  }
+
+  .nav-group[data-expanded="false"] .nav-group-items {
+    display: flex;
+  }
+
+  .nav-row .nav-link {
+    padding-right: 10px;
+  }
+}

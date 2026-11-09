@@ -150,6 +150,7 @@ export default async function NotebookPage({ params }: Params) {
 
   return (
     <AppShell
+      tool={notebook.toolFolder}
       crumbs={[
         { label: "Library", href: "/" },
         { label: notebook.toolLabel, href: toolHref },

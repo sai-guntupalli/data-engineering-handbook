@@ -5,6 +5,13 @@
 
 ## Completed
 
+- 2026-11-09: Collapsible, starrable sidebar groups (`feat/collapsible-sidebar`): each tool category in the sidebar is a
+  collapsible group. The group holding the current tool opens by default, and open or closed choices are saved in the
+  browser. Each tool row has a star; starred tools are pinned in a "Starred tools" group at the top of the sidebar and
+  listed on `/starred/` with starred notebooks. The icon rail and the phone strip show every tool without headers. The
+  phone strip no longer stretches on short pages. "Orchestration and transformation" is shortened to "Orchestration".
+  Rules are in `site/lib/sidebar.ts`, with unit tests.
+
 - 2026-11-09: Tool categories (`feat/tool-categories`): the sidebar and the home page group the 43 tools under 12
   categories: Languages, Processing engines, Streaming and ingestion, Orchestration and transformation, File and table
   formats, Data warehouses, NoSQL and search, Cloud platforms, BI and dashboards, Containers and infrastructure, Concepts
