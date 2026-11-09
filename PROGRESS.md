@@ -5,6 +5,14 @@
 
 ## Completed
 
+- 2026-11-09: Learning path replaces the learning map (`feat/learning-path`). The old map pointed each node at a single
+  notebook (the "PySpark" node was a one-minute overview), covered 14 of 106 notebooks, scrolled sideways on phones and
+  never said what to read next. The path has six stages (Foundations, Process at scale, Model and test, Store,
+  Orchestrate and stream, Interview practice). Each step is a whole track, for example all nine Python lessons, and shows
+  "2 of 9 done" with a progress ring. A "Next up" card links to the first unfinished notebook on the path. Stages wrap
+  into a grid, with no sideways scrolling. The path covers 56 notebooks. Rules (`summarizeStep`, `nextUp`,
+  `validatePath`) are in `site/lib/learning-map.ts`, with unit tests. The build fails if a step names an unknown notebook.
+
 - 2026-11-09: Collapsible, starrable sidebar groups (`feat/collapsible-sidebar`): each tool category in the sidebar is a
   collapsible group. The group holding the current tool opens by default, and open or closed choices are saved in the
   browser. Each tool row has a star; starred tools are pinned in a "Starred tools" group at the top of the sidebar and

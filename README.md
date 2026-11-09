@@ -9,8 +9,8 @@ in Colab to run it.
 
 ## The site
 
-- **Library**: a learning map that draws the core notebooks as a pipeline DAG, resume cards for what you were
-  reading, and a catalog of every notebook you can filter by group or by your stars.
+- **Library**: a learning path of six stages, from Python and SQL to streaming and interview practice, with progress
+  per step and a "Next up" link; resume cards for what you were reading; and a card for every tool, grouped by category.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
   explanations, code and self-checks, a table of contents that ticks off sections as you scroll past them, and
   buttons to open it in Colab or download the `.ipynb`.
@@ -63,7 +63,7 @@ site/                      Next.js static site (GitHub Pages); reads ../notebook
   lib/notebook-parse.ts    notebook JSON -> title, sections, cells, reading time (pure, unit-tested)
   lib/notebooks.ts         reads the files, checks the registry, builds summaries and the search index
   lib/tools.ts             the tool registry: one entry per notebooks/topics/ folder, with labels, colour and categories
-  lib/learning-map.ts      the curated DAG on the home page, validated against the registry
+  lib/learning-map.ts      the curated learning path (stages and steps) and its progress rules, validated against the registry
   lib/progress.ts          reading-progress rules (stored in the browser)
   app/tools/[tool]/        one page per tool, listing its subtopics
   app/notebooks/[slug]/    the reader; app/files/ serves each .ipynb; app/search-index.json feeds search
