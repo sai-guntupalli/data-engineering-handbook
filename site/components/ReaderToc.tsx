@@ -93,6 +93,18 @@ export function ReaderToc({
       <div className="read-progress" aria-hidden>
         <span style={{ width: `${fraction * 100}%` }} />
       </div>
+      <details className="toc-narrow" aria-label="On this page">
+        <summary>On this page · {sections.length} sections</summary>
+        <ol>
+          {sections.map((section, index) => (
+            <li key={section.id}>
+              <a href={`#${section.id}`} aria-current={index === current ? "true" : undefined}>
+                {section.title}
+              </a>
+            </li>
+          ))}
+        </ol>
+      </details>
       <aside className="toc" aria-label="On this page">
         <div className="toc-head">
           <p className="toc-title">On this page</p>
