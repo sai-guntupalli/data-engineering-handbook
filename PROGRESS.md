@@ -6,6 +6,12 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-08: PySpark split into modules (`fix/pyspark-modules`): `topics/spark.ipynb` is now an overview that links to
+  eight notebooks, `pyspark-01-foundations` through `pyspark-08-real-world-and-interviews`. The existing lessons moved
+  unchanged, with a new intro, key takeaways and a next link in each module. Each module runs on its own: it repeats the
+  setup and sample tables, and shared helpers (`plan_of`, `daily_revenue`, `raw_customers`, `bronze_orders_raw`) are
+  carried into the modules that use them. Each module runs top to bottom on PySpark 4.0 with OpenJDK 17.
+
 - 2026-11-08: Site review fixes (`fix/site-header-and-groups`): the sidebar has two sections, "Learn" and "Practice".
   Practice groups sit together after the learning groups, and each one names the topic it trains. The group registry
   exports `LEARNING_GROUPS` and `PRACTICE_GROUPS` with a `section` field, and `repoPathFor` resolves a notebook's file,
