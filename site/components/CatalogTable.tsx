@@ -7,7 +7,7 @@ import { useProgress } from "./progress-store";
 import { StarButton } from "./StarButton";
 import { StatusPill } from "./StatusPill";
 
-/** Notebooks as catalog rows: title and summary, group, size, reading status and a star. */
+/** Notebooks as table rows: title and summary, type, size, reading status and a star. */
 export function CatalogTable({ notebooks, caption }: { notebooks: NotebookSummary[]; caption: string }) {
   const progress = useProgress();
   return (
@@ -17,7 +17,7 @@ export function CatalogTable({ notebooks, caption }: { notebooks: NotebookSummar
         <tr>
           <th scope="col">Notebook</th>
           <th scope="col" className="hide-md">
-            Group
+            Type
           </th>
           <th scope="col" className="num hide-sm">
             Sections
@@ -45,12 +45,7 @@ export function CatalogTable({ notebooks, caption }: { notebooks: NotebookSummar
                 </span>
               </Link>
             </td>
-            <td className="hide-md">
-              <span className="group-cell">
-                <span className="dot" style={toneStyle(notebook.tone, "--dot")} aria-hidden />
-                {notebook.groupShortLabel}
-              </span>
-            </td>
+            <td className="hide-md">{notebook.categoryLabel}</td>
             <td className="num hide-sm">{notebook.sectionCount}</td>
             <td className="num hide-md">{notebook.minutes} min</td>
             <td>

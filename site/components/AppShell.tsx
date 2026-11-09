@@ -1,8 +1,7 @@
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { CaretRight, GithubLogo, SquaresFour, Star } from "@phosphor-icons/react/dist/ssr";
-import { type GroupSection, anchorFor } from "@/lib/notebook-groups";
-import { getNotebookGroups } from "@/lib/notebooks";
+import { getTools } from "@/lib/notebooks";
 import { authorHref, authorName, licenseName, repositoryHref } from "@/lib/site";
 import { toneStyle } from "@/lib/tone";
 import { SearchTrigger, SidebarSearchButton } from "./palette";
@@ -10,12 +9,6 @@ import { SidebarToggle } from "./panels";
 import { ThemeToggle } from "./theme";
 
 export type Crumb = { label: string; href?: string };
-
-/** Sidebar sections, in the order they appear. */
-const SECTIONS: { value: GroupSection; label: string }[] = [
-  { value: "learn", label: "Learn" },
-  { value: "practice", label: "Practice" },
-];
 
 /** The handbook's mark: two inputs flowing into one node, like a tiny DAG. */
 export function BrandMark() {
@@ -29,11 +22,6 @@ export function BrandMark() {
       </svg>
     </span>
   );
-}
-
-/** Link to the home catalog filtered to one group (or "starred"). */
-export function catalogHref(filter: string) {
-  return `/?group=${filter}#catalog`;
 }
 
 /**
@@ -50,8 +38,8 @@ export function AppShell({
   current?: "library";
   children: ReactNode;
 }) {
-  const groups = getNotebookGroups();
-  const total = groups.reduce((sum, group) => sum + group.notebooks.length, 0);
+  const tools = getTools();
+  const total = tools.reduce((sum, tool) => sum + tool.notebooks.length, 0);
 
   return (
     <div className="app">
@@ -73,30 +61,19 @@ export function AppShell({
           <span className="nav-text">Library</span>
           <span className="nav-count">{total}</span>
         </Link>
-        <Link className="nav-link" data-tip="Starred" href={catalogHref("starred")}>
+        <Link className="nav-link" data-tip="Starred" href="/starred/">
           <Star size={16} aria-hidden />
           <span className="nav-text">Starred</span>
         </Link>
         <SidebarSearchButton />
 
-        {SECTIONS.map((section) => (
-          <Fragment key={section.value}>
-            <div className="nav-label">{section.label}</div>
-            {groups
-              .filter((group) => group.section === section.value)
-              .map((group) => (
-                <Link
-                  key={group.label}
-                  className="nav-link"
-                  data-tip={group.label}
-                  href={catalogHref(anchorFor(group.label))}
-                >
-                  <span className="dot" style={toneStyle(group.tone, "--dot")} aria-hidden />
-                  <span className="nav-text">{group.label}</span>
-                  <span className="nav-count">{group.notebooks.length}</span>
-                </Link>
-              ))}
-          </Fragment>
+        <div className="nav-label">Tools</div>
+        {tools.map((tool) => (
+          <Link key={tool.folder} className="nav-link" data-tip={tool.label} href={tool.href}>
+            <span className="dot" style={toneStyle(tool.tone, "--dot")} aria-hidden />
+            <span className="nav-text">{tool.label}</span>
+            <span className="nav-count">{tool.notebooks.length}</span>
+          </Link>
         ))}
 
         <p className="sidebar-foot">

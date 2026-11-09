@@ -17,7 +17,7 @@ sys.path.insert(0, str(SCRIPTS))
 import audit_notebooks  # noqa: E402
 import notebook_format  # noqa: E402
 
-RELPATH = "notebooks/topics/example.ipynb"
+RELPATH = "notebooks/example/example.ipynb"
 
 
 def md(text: str, **extra) -> dict:
@@ -102,7 +102,7 @@ class TestAuditHelpers:
 
 def write_formatted(tmp_path: Path, monkeypatch, *cells: dict) -> Path:
     monkeypatch.setattr(audit_notebooks, "ROOT", tmp_path)
-    path = tmp_path / "notebooks" / "topics" / "example.ipynb"
+    path = tmp_path / "notebooks" / "example" / "example.ipynb"
     path.parent.mkdir(parents=True)
     formatted = notebook_format.format_notebook(notebook(*cells), RELPATH)
     path.write_text(notebook_format.serialize(formatted), encoding="utf-8")

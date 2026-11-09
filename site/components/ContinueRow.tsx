@@ -9,7 +9,7 @@ import { useProgress } from "./progress-store";
 import { useSearchIndex } from "./search-index";
 import { StatusPill } from "./StatusPill";
 
-export type Starter = { title: string; text: string; href: string; tone: string; group: string };
+export type Starter = { title: string; text: string; href: string; tone: string; tool: string };
 
 const RESUME_LIMIT = 2;
 
@@ -66,7 +66,7 @@ export function ContinueRow({ notebooks, starters }: { notebooks: NotebookSummar
           <Link key={starter.href} className="panel starter" href={starter.href}>
             <span className="group-cell muted">
               <span className="dot" style={toneStyle(starter.tone, "--dot")} aria-hidden />
-              {starter.group}
+              {starter.tool}
             </span>
             <h3>{starter.title}</h3>
             <p>{starter.text}</p>
@@ -97,7 +97,7 @@ export function ContinueRow({ notebooks, starters }: { notebooks: NotebookSummar
             <div className="resume-top">
               <span>
                 <span className="dot" style={toneStyle(notebook.tone, "--dot")} aria-hidden />
-                {notebook.groupLabel}
+                {notebook.toolLabel}
               </span>
               <StatusPill entry={entry} />
             </div>

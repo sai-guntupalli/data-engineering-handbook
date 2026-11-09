@@ -68,9 +68,26 @@ make notebooks   # execute every notebook (PySpark ones need Java 17+)
 make validate    # everything CI runs
 ```
 
-New topic notebooks go in `notebooks/topics/<slug>.ipynb`; register the slug in
-[`site/lib/notebook-groups.ts`](site/lib/notebook-groups.ts) so the gallery shows it. The build fails when a
-notebook is not registered or a registered slug has no file.
+New notebooks go in the folder of the tool they teach, `notebooks/topics/<tool>/<slug>.ipynb`. Python notebooks sit in `learning/` or `practice/` inside it. A new tool needs a folder and an entry in
+[`site/lib/tools.ts`](site/lib/tools.ts) so the gallery shows it. The build fails when a folder has no
+entry or an entry has no folder.
+
+### Naming notebooks
+
+File names are lowercase kebab-case, with no underscores or leading numbers. A file name is also the page URL
+(`/notebooks/<name>/`), so it must be unique across the repository. Start it with the tool folder name:
+
+| Pattern | Use it for | Example |
+| --- | --- | --- |
+| `<tool>.ipynb` | a tool with one notebook | `kafka/kafka.ipynb` |
+| `<tool>-<NN>-<subject>.ipynb` | an ordered series; `00` is an overview or start-here page | `sql/sql-01-basics.ipynb` |
+| `<tool>-<series>-<NN>-<subject>.ipynb` | a numbered practice series | `python/practice/python-drills-01-values-and-types.ipynb` |
+| `<tool>-<subject>.ipynb` | a standalone notebook | `sql/sql-reference.ipynb` |
+| `<subject>.ipynb` | `concepts/` only, for subjects that are not a tool | `concepts/data-modeling.ipynb` |
+
+Titles use sentence case and keep product names as written (`Apache Kafka`, `dbt`). A numbered series uses
+`<Series> <N>: <subject>`, for example `SQL 6: joins` or `Python drills 2: collections`. Words such as
+`drills`, `challenges`, `practice`, `interview` and `reference` in a file name set its type on the tool page.
 
 ## Commit checklist
 

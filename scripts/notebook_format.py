@@ -16,7 +16,7 @@ The formatter is idempotent and only touches presentation, never lesson content:
 Usage:
   python scripts/notebook_format.py            # format every notebook in place
   python scripts/notebook_format.py --check    # exit 1 if any notebook would change
-  python scripts/notebook_format.py notebooks/topics/kafka.ipynb
+  python scripts/notebook_format.py notebooks/topics/kafka/kafka.ipynb
 """
 
 from __future__ import annotations

@@ -6,21 +6,35 @@
 import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES, layoutMap, validateMap, type MapLayout } from "./learning-map";
-import { ALL_GROUPS, type GroupSection, type GroupTone, type NotebookGroup, repoPathFor } from "./notebook-groups";
 import { monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
+import {
+  CATEGORY_LABELS,
+  TOOLS,
+  TOOLS_BY_FOLDER,
+  categoryOf,
+  compareSubtopics,
+  type GroupTone,
+  type NotebookCategory,
+  type Tool,
+} from "./tools";
 
 export type NotebookSummary = {
-  /** Repository-relative path, e.g. notebooks/topics/spark.ipynb */
+  /** Repository-relative path, e.g. notebooks/kafka/kafka.ipynb */
   repoPath: string;
-  /** File name without the extension, e.g. spark; also the reader URL segment. */
+  /** File name without the extension, e.g. kafka; also the reader URL segment. */
   slug: string;
   title: string;
   description: string;
-  groupLabel: string;
-  groupShortLabel: string;
+  /** The tool this notebook belongs to (its folder). */
+  toolFolder: string;
+  toolLabel: string;
+  /** Folder inside the tool folder, e.g. "learning" for python/learning; empty when the notebook sits at the top. */
+  subfolder: string;
   tone: GroupTone;
+  category: NotebookCategory;
+  categoryLabel: string;
   monogram: string;
   sectionCount: number;
   checks: number;
@@ -34,11 +48,10 @@ export type NotebookSummary = {
   downloadHref: string;
 };
 
-export type NotebookGroupView = {
-  label: string;
-  shortLabel: string;
-  section: GroupSection;
-  tone: GroupTone;
+/** One tool and its subtopics, in the order the tool page lists them. */
+export type ToolView = Tool & {
+  /** Site-relative tool page. */
+  href: string;
   notebooks: NotebookSummary[];
 };
 
@@ -65,15 +78,21 @@ const COLAB_HREF = "https://colab.research.google.com/github";
 
 // The app lives in site/; the notebooks are the repository's top-level content.
 const repoRoot = path.resolve(process.cwd(), "..");
+/** Tools are folders under this one; a tool folder may nest subfolders such as python/learning. */
+const TOPICS_DIR = path.join(repoRoot, "notebooks", "topics");
 
 type LoadedNotebook = { summary: NotebookSummary; intro: string; sections: Section[]; cells: ParsedCell[] };
 
-function readNotebook(group: NotebookGroup, slug: string): LoadedNotebook {
-  const repoPath = repoPathFor(group, slug);
+type NotebookFile = {
+  /** The tool folder, e.g. "python". */
+  folder: string;
+  /** Repository-relative path, e.g. notebooks/topics/python/learning/python-01-values-and-types.ipynb. */
+  repoPath: string;
+  slug: string;
+};
+
+function readNotebook(tool: Tool, { repoPath, slug }: NotebookFile): LoadedNotebook {
   const file = path.join(repoRoot, repoPath);
-  if (!fs.existsSync(file)) {
-    throw new Error(`lib/notebook-groups.ts lists ${repoPath} (group "${group.label}"), but the file is missing`);
-  }
   let raw: RawNotebook;
   try {
     raw = JSON.parse(fs.readFileSync(file, "utf8")) as RawNotebook;
@@ -82,15 +101,19 @@ function readNotebook(group: NotebookGroup, slug: string): LoadedNotebook {
     throw new Error(`Could not parse notebook ${repoPath}: ${reason}`);
   }
   const parsed = parseNotebook(raw, slug);
+  const category = categoryOf(slug);
   return {
     summary: {
       repoPath,
       slug,
       title: parsed.title,
       description: parsed.description,
-      groupLabel: group.label,
-      groupShortLabel: group.shortLabel,
-      tone: group.tone,
+      toolFolder: tool.folder,
+      toolLabel: tool.label,
+      subfolder: path.dirname(path.relative(path.join("notebooks", "topics", tool.folder), repoPath)).replace(/^\.$/, ""),
+      tone: tool.tone,
+      category,
+      categoryLabel: CATEGORY_LABELS[category],
       monogram: monogram(parsed.title),
       sectionCount: parsed.sections.length,
       checks: parsed.checks,
@@ -106,78 +129,95 @@ function readNotebook(group: NotebookGroup, slug: string): LoadedNotebook {
   };
 }
 
-function listNotebookFiles(dir: string): string[] {
-  if (!fs.existsSync(dir)) return [];
-  return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-    const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) return listNotebookFiles(full);
-    return entry.name.endsWith(".ipynb") ? [path.relative(repoRoot, full).split(path.sep).join("/")] : [];
-  });
+/** Every notebook under notebooks/topics/, with the tool it belongs to (the first folder below topics). */
+function listNotebookFiles(dir = TOPICS_DIR): NotebookFile[] {
+  const toolFolders = fs.readdirSync(dir, { withFileTypes: true }).filter((entry) => entry.isDirectory());
+  const walk = (current: string): string[] =>
+    fs.readdirSync(current, { withFileTypes: true }).flatMap((entry) => {
+      const full = path.join(current, entry.name);
+      if (entry.isDirectory()) return walk(full);
+      return entry.name.endsWith(".ipynb") ? [full] : [];
+    });
+  return toolFolders.flatMap((tool) =>
+    walk(path.join(dir, tool.name)).map((file) => ({
+      folder: tool.name,
+      repoPath: path.relative(repoRoot, file).split(path.sep).join("/"),
+      slug: path.basename(file, ".ipynb"),
+    })),
+  );
 }
 
 /**
- * Fail the build when the registry and the files disagree: a file no group
- * lists, a path listed twice, or two notebooks sharing a reader URL.
+ * Fail the build when the tool registry and the folders disagree: a folder with no
+ * entry, an entry with no folder, a notebook outside a tool folder, or two
+ * notebooks sharing a reader URL.
  */
-function assertRegistryMatchesFiles(): void {
-  const registered = new Set<string>();
-  const slugs = new Set<string>();
+function assertRegistryMatchesFolders(files: NotebookFile[]): void {
   const problems: string[] = [];
-  for (const group of ALL_GROUPS) {
-    for (const slug of group.slugs) {
-      const repoPath = repoPathFor(group, slug);
-      if (registered.has(repoPath)) problems.push(`${repoPath} is registered more than once`);
-      if (slugs.has(slug)) problems.push(`two notebooks share the slug "${slug}"`);
-      registered.add(repoPath);
-      slugs.add(slug);
-    }
+  const slugs = new Set<string>();
+  for (const file of files) {
+    if (!TOOLS_BY_FOLDER.has(file.folder)) problems.push(`notebooks/topics/${file.folder}/ has no entry in lib/tools.ts`);
+    if (slugs.has(file.slug)) problems.push(`two notebooks share the slug "${file.slug}"`);
+    slugs.add(file.slug);
   }
-  for (const repoPath of listNotebookFiles(path.join(repoRoot, "notebooks"))) {
-    if (!registered.has(repoPath)) problems.push(`${repoPath} is not listed in lib/notebook-groups.ts`);
+  const folders = new Set(files.map((file) => file.folder));
+  for (const tool of TOOLS) {
+    if (!folders.has(tool.folder)) problems.push(`lib/tools.ts lists "${tool.folder}", but notebooks/topics/${tool.folder}/ is missing or empty`);
   }
   if (problems.length > 0) {
-    throw new Error(`lib/notebook-groups.ts issues:\n${problems.map((problem) => `  - ${problem}`).join("\n")}`);
+    throw new Error(`lib/tools.ts and notebooks/topics/ disagree:\n${problems.map((problem) => `  - ${problem}`).join("\n")}`);
   }
 }
 
-let cache: { groups: NotebookGroupView[]; details: Map<string, LoadedNotebook> } | undefined;
+let cache: { tools: ToolView[]; details: Map<string, LoadedNotebook> } | undefined;
 
 /** Parsed once per build; the notebooks tree is static repository content. */
 function load() {
   if (cache) return cache;
-  assertRegistryMatchesFiles();
+  const files = listNotebookFiles();
+  assertRegistryMatchesFolders(files);
   const details = new Map<string, LoadedNotebook>();
-  const groups = ALL_GROUPS.map((group) => {
-    const notebooks = group.slugs.map((slug) => {
-      const loaded = readNotebook(group, slug);
-      details.set(slug, loaded);
-      return loaded.summary;
+  const tools: ToolView[] = [...TOOLS]
+    .sort((a, b) => a.label.localeCompare(b.label, "en"))
+    .map((tool) => {
+      const notebooks = files
+        .filter((file) => file.folder === tool.folder)
+        .sort((a, b) => compareSubtopics(a, b))
+        .map((file) => {
+          const loaded = readNotebook(tool, file);
+          details.set(file.slug, loaded);
+          return loaded.summary;
+        });
+      return { ...tool, href: `/tools/${tool.folder}/`, notebooks };
     });
-    return { label: group.label, shortLabel: group.shortLabel, section: group.section, tone: group.tone, notebooks };
-  }).filter((group) => group.notebooks.length > 0);
-  cache = { groups, details };
+  cache = { tools, details };
   return cache;
 }
 
-export function getNotebookGroups(): NotebookGroupView[] {
-  return load().groups;
+/** Every tool, alphabetical, each with its subtopics in reading order. */
+export function getTools(): ToolView[] {
+  return load().tools;
 }
 
-/** Every notebook in group order. */
+export function getTool(folder: string): ToolView | null {
+  return getTools().find((tool) => tool.folder === folder) ?? null;
+}
+
+/** Every notebook, grouped by tool. */
 export function getNotebookList(): NotebookSummary[] {
-  return getNotebookGroups().flatMap((group) => group.notebooks);
+  return getTools().flatMap((tool) => tool.notebooks);
 }
 
 export function getNotebookSlugs(): string[] {
   return getNotebookList().map((notebook) => notebook.slug);
 }
 
-/** One notebook with its cells, plus the notebooks before and after it in its group. */
+/** One notebook with its cells, plus the notebooks before and after it in its tool. */
 export function getNotebook(slug: string): NotebookDetail | null {
-  const { groups, details } = load();
+  const { details } = load();
   const loaded = details.get(slug);
   if (!loaded) return null;
-  const siblings = groups.find((group) => group.label === loaded.summary.groupLabel)?.notebooks ?? [];
+  const siblings = getTool(loaded.summary.toolFolder)?.notebooks ?? [];
   const at = siblings.findIndex((notebook) => notebook.slug === slug);
   const neighbour = (notebook: NotebookSummary | undefined): NotebookNeighbour | null =>
     notebook ? { title: notebook.title, href: notebook.href } : null;
@@ -198,7 +238,7 @@ export function getSearchEntries(): SearchEntry[] {
     const shared = {
       repoPath: notebook.repoPath,
       notebookTitle: notebook.title,
-      groupLabel: notebook.groupLabel,
+      toolLabel: notebook.toolLabel,
       tone: notebook.tone,
       monogram: notebook.monogram,
       colabHref: notebook.colabHref,

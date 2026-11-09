@@ -8,7 +8,7 @@ back: notebooks are committed without outputs (see scripts/notebook_format.py).
 Usage:
   python scripts/run_notebooks.py                     # run every notebook
   python scripts/run_notebooks.py --jobs 4            # run four at a time
-  python scripts/run_notebooks.py notebooks/topics/kafka.ipynb
+  python scripts/run_notebooks.py notebooks/topics/kafka/kafka.ipynb
 
 Requires the notebook tooling: uv sync --extra notebooks
 """

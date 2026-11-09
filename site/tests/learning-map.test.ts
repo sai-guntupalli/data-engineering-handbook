@@ -7,9 +7,16 @@ import {
   validateMap,
   type MapColumn,
 } from "../lib/learning-map";
-import { ALL_GROUPS } from "../lib/notebook-groups";
+import fs from "node:fs";
+import path from "node:path";
 
-const registered = new Set(ALL_GROUPS.flatMap((group) => group.slugs));
+const TOPICS_DIR = path.resolve(__dirname, "../../notebooks/topics");
+const walk = (dir: string): string[] =>
+  fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+    const full = path.join(dir, entry.name);
+    return entry.isDirectory() ? walk(full) : entry.name.endsWith(".ipynb") ? [entry.name.slice(0, -".ipynb".length)] : [];
+  });
+const registered = new Set(walk(TOPICS_DIR));
 
 describe("the curated learning map", () => {
   it("only uses registered notebooks and valid edges", () => {

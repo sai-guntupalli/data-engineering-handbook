@@ -25,7 +25,7 @@ type PaletteState = { open: () => void };
 const PaletteContext = createContext<PaletteState>({ open: () => {} });
 
 const LIMITS = { notebooks: 6, sections: 12 };
-const STARTING_POINTS = ["notebooks/topics/python-01-values-and-types.ipynb", "notebooks/topics/sql-01-basics.ipynb"];
+const STARTING_POINTS = ["notebooks/topics/python/learning/python-01-values-and-types.ipynb", "notebooks/topics/sql/sql-01-basics.ipynb"];
 
 type Scope = "all" | "notebook" | "section";
 
@@ -131,7 +131,7 @@ function ResultRow({
         <strong>
           <Highlighted text={entry.title} query={query} />
         </strong>
-        <small>{entry.kind === "section" ? entry.notebookTitle : entry.groupLabel}</small>
+        <small>{entry.kind === "section" ? entry.notebookTitle : entry.toolLabel}</small>
       </span>
       <KeyReturn size={16} className="enter" aria-hidden />
     </div>
@@ -151,7 +151,7 @@ function Preview({ entry, query, onOpen }: { entry: SearchEntry; query: string; 
             Section
           </>
         ) : (
-          entry.groupLabel
+          entry.toolLabel
         )}
       </div>
       <h3>{entry.title}</h3>
@@ -162,7 +162,7 @@ function Preview({ entry, query, onOpen }: { entry: SearchEntry; query: string; 
       ) : null}
       <div className="meta-row">
         <StatusPill entry={progress.notebooks[entry.repoPath]} />
-        {entry.kind === "section" ? <span className="tag">{entry.groupLabel}</span> : null}
+        {entry.kind === "section" ? <span className="tag">{entry.toolLabel}</span> : null}
       </div>
       <div className="actions">
         <Link className="btn btn-primary" href={entry.href} onClick={onOpen}>

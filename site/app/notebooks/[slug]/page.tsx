@@ -11,11 +11,10 @@ import {
   GithubLogo,
   Package,
 } from "@phosphor-icons/react/dist/ssr";
-import { AppShell, catalogHref } from "@/components/AppShell";
+import { AppShell } from "@/components/AppShell";
 import { CopyCodeButton, CopyLinkButton, MarkDonePanel } from "@/components/ReaderControls";
 import { EndSentinel, ReaderToc } from "@/components/ReaderToc";
 import { StarButton } from "@/components/StarButton";
-import { anchorFor } from "@/lib/notebook-groups";
 import type { ParsedCell } from "@/lib/notebook-parse";
 import { getNotebook, getNotebookSlugs, type NotebookDetail } from "@/lib/notebooks";
 import { highlightCode, renderMarkdown } from "@/lib/render";
@@ -146,23 +145,23 @@ export default async function NotebookPage({ params }: Params) {
   const notebook = getNotebook((await params).slug);
   if (!notebook) notFound();
 
-  const groupHref = catalogHref(anchorFor(notebook.groupLabel));
+  const toolHref = `/tools/${notebook.toolFolder}/`;
   const tocSections = notebook.sections.map(({ id, title }) => ({ id, title }));
 
   return (
     <AppShell
       crumbs={[
         { label: "Library", href: "/" },
-        { label: notebook.groupLabel, href: groupHref },
+        { label: notebook.toolLabel, href: toolHref },
         { label: notebook.title },
       ]}
     >
       <div className="reader">
         <article className="article">
           <header>
-            <Link className="kicker" href={groupHref}>
+            <Link className="kicker" href={toolHref}>
               <span className="dot" style={toneStyle(notebook.tone, "--dot")} aria-hidden />
-              {notebook.groupLabel}
+              {notebook.toolLabel}
             </Link>
             <h1>{notebook.title}</h1>
             {notebook.intro || notebook.description ? <p className="lead">{notebook.intro || notebook.description}</p> : null}
@@ -226,7 +225,7 @@ export default async function NotebookPage({ params }: Params) {
               {notebook.next ? (
                 <Link href={notebook.next.href} className="next">
                   <small>
-                    Next in {notebook.groupLabel}
+                    Next in {notebook.toolLabel}
                     <ArrowRight size={13} aria-hidden />
                   </small>
                   <strong>{notebook.next.title}</strong>

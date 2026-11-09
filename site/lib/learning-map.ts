@@ -21,7 +21,7 @@ export const LEARNING_MAP_COLUMNS: MapColumn[] = [
     title: "Process and model",
     nodes: [
       { slug: "sql-08-window-functions", label: "Window functions" },
-      { slug: "spark", label: "PySpark" },
+      { slug: "pyspark-00-overview", label: "PySpark" },
       { slug: "data-modeling", label: "Data modeling" },
     ],
   },
@@ -52,11 +52,11 @@ export const LEARNING_MAP_COLUMNS: MapColumn[] = [
 
 export const LEARNING_MAP_EDGES: MapEdge[] = [
   ["python-01-values-and-types", "python-02-collections"],
-  ["python-02-collections", "spark"],
+  ["python-02-collections", "pyspark-00-overview"],
   ["sql-01-basics", "sql-08-window-functions"],
   ["sql-01-basics", "data-modeling"],
-  ["sql-08-window-functions", "spark"],
-  ["spark", "airflow"],
+  ["sql-08-window-functions", "pyspark-00-overview"],
+  ["pyspark-00-overview", "airflow"],
   ["data-modeling", "dbt"],
   ["dbt", "data-quality"],
   ["airflow", "parquet"],
