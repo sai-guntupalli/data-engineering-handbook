@@ -5,6 +5,14 @@
 
 ## Completed
 
+- 2026-11-09: Notebook names standardized (`chore/standardize-notebook-names`): 31 files renamed to lowercase kebab-case that
+  starts with the tool name. Examples: `01_python_basics` became `python-interview-basics`, `03_sql_interview_questions` became
+  `sql-00-start-here`, `python-01-practice-*` became `python-drills-01-*`, and `dwha` became `data-warehousing`. The `spark/`
+  folder is now `pyspark/`, with `pyspark-00-overview` first, and `mongo/` is now `mongodb/`. Series titles follow
+  `<Series> <N>: <subject>`, and other titles use sentence case without "for Data Engineers" (66 titles). The 14 SQL
+  notebooks use the standard setup cell instead of `!pip install`, and all 14 run cleanly. The naming rules are in
+  CONTRIBUTING.md. Reader URLs changed for the renamed notebooks.
+
 - 2026-11-08: Notebooks grouped by tool (`refactor/topics-tool-folders`): every notebook moved into
   `notebooks/topics/<tool>/`, 43 tool folders in all. Python is split into `python/learning/` (9 lessons) and
   `python/practice/` (drills, coding challenges and interview basics). Non-tool subjects such as data modeling and CDC sit

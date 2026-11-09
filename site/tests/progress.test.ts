@@ -13,7 +13,7 @@ import {
 } from "../lib/progress";
 
 const NOW = new Date(2026, 10, 7, 12, 0, 0);
-const SPARK = "notebooks/topics/spark/spark.ipynb";
+const SPARK = "notebooks/topics/pyspark/pyspark-00-overview.ipynb";
 const DELTA = "notebooks/topics/delta/delta.ipynb";
 
 describe("statusOf and fractionOf", () => {

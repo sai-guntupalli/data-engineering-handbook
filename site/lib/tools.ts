@@ -41,30 +41,24 @@ const CATEGORY_ORDER: NotebookCategory[] = ["lesson", "reference", "drill", "cha
 
 /** Notebooks whose file name does not say their category. */
 const CATEGORY_OVERRIDES: Record<string, NotebookCategory> = {
-  "01_python_basics": "interview",
-  "03_sql_interview_questions": "lesson",
-  "04_pyspark_concepts": "reference",
+  "pyspark-concepts-end-to-end": "reference",
   "pyspark-08-real-world-and-interviews": "lesson",
-  sql: "reference",
 };
-
-/** Overview notebooks that open their tool, ahead of every other subtopic. */
-const LEADING = new Set(["spark"]);
 
 export function categoryOf(slug: string): NotebookCategory {
   const override = CATEGORY_OVERRIDES[slug];
   if (override) return override;
+  if (/reference/.test(slug)) return "reference";
   if (/drill|practice/.test(slug)) return "drill";
-  if (/challenge|coding_problems/.test(slug)) return "challenge";
+  if (/challenge|coding-problems/.test(slug)) return "challenge";
   if (/interview/.test(slug)) return "interview";
   return "lesson";
 }
 
-/** Sort rank: overviews first, then category, then the file name with numbers compared as numbers. */
+/** Sort rank: category first, then the file name with numbers compared as numbers (so a 00 overview leads). */
 export function compareSubtopics(a: { slug: string }, b: { slug: string }): number {
-  const lead = Number(LEADING.has(b.slug)) - Number(LEADING.has(a.slug));
   const rank = CATEGORY_ORDER.indexOf(categoryOf(a.slug)) - CATEGORY_ORDER.indexOf(categoryOf(b.slug));
-  return lead || rank || a.slug.localeCompare(b.slug, "en", { numeric: true });
+  return rank || a.slug.localeCompare(b.slug, "en", { numeric: true });
 }
 
 export const TOOLS: Tool[] = [
@@ -98,7 +92,7 @@ export const TOOLS: Tool[] = [
   { folder: "kubernetes", label: "Kubernetes", description: "Running containers and scheduled jobs on a cluster.", tone: "core" },
   { folder: "llm", label: "LLMs and AI", description: "Terminology and data-engineering ideas for language models.", tone: "ai" },
   { folder: "looker", label: "Looker", description: "Semantic modeling and dashboards on top of a warehouse.", tone: "warehouse" },
-  { folder: "mongo", label: "MongoDB", description: "Document storage, aggregation pipelines and indexes.", tone: "other" },
+  { folder: "mongodb", label: "MongoDB", description: "Document storage, aggregation pipelines and indexes.", tone: "other" },
   { folder: "nifi", label: "Apache NiFi", description: "Visual data flows for routing and transforming records.", tone: "stream" },
   { folder: "parquet", label: "Parquet", description: "Columnar file format: encodings, row groups and predicate pushdown.", tone: "lake" },
   { folder: "python", label: "Python", description: "The language of most data pipelines: values, collections, iterators, files, concurrency and testing.", tone: "python" },
@@ -106,7 +100,7 @@ export const TOOLS: Tool[] = [
   { folder: "redshift", label: "Amazon Redshift", description: "AWS columnar warehouse: distribution keys, sort keys and COPY.", tone: "cloud" },
   { folder: "scala", label: "Scala", description: "The language behind Spark: basics for reading and writing Spark jobs.", tone: "core" },
   { folder: "snowflake", label: "Snowflake", description: "Cloud warehouse with virtual warehouses, micro-partitions and streams.", tone: "cloud" },
-  { folder: "spark", label: "Spark", description: "PySpark for batch and streaming: DataFrames, joins, pipelines and tuning.", tone: "core" },
+  { folder: "pyspark", label: "PySpark", description: "Spark from Python for batch and streaming: DataFrames, joins, pipelines and tuning.", tone: "core" },
   { folder: "sql", label: "SQL", description: "Querying and modeling data: from SELECT to window functions and time-series.", tone: "sql" },
   { folder: "superset", label: "Apache Superset", description: "Open-source dashboards and charts on SQL databases.", tone: "warehouse" },
   { folder: "tableau", label: "Tableau", description: "Visual analysis and dashboards for business users.", tone: "warehouse" },
