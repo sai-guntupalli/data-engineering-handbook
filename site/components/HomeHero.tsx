@@ -36,7 +36,7 @@ export function HomeHero({
           <h1>Learn data engineering by running it</h1>
           <p className="lead">
             Every topic is a notebook: read it here, then run it in Google Colab with nothing to install. Follow the
-            learning path below, or search for the tool you need.
+            learning path below, or search for the topic you need.
           </p>
         </div>
         <div className="actions">

@@ -52,7 +52,7 @@ function setGroupExpanded(categoryId: string, expanded: boolean) {
 }
 
 function ToolRow({ tool, starred, current }: { tool: SidebarTool; starred: boolean; current: boolean }) {
-  const action = starred ? `Unstar the ${tool.label} tool` : `Star the ${tool.label} tool`;
+  const action = starred ? `Unstar the ${tool.label} topic` : `Star the ${tool.label} topic`;
   return (
     <div className={starred ? "nav-row is-starred" : "nav-row"}>
       <Link className="nav-link" data-tip={tool.label} href={tool.href} aria-current={current ? "page" : undefined}>
@@ -88,7 +88,7 @@ export function SidebarTools({ categories, currentTool }: { categories: SidebarC
     <>
       {starredTools.length > 0 ? (
         <div className="nav-group is-starred-group">
-          <div className="nav-label">Starred tools</div>
+          <div className="nav-label">Starred topics</div>
           {starredTools.map((tool) => (
             <ToolRow key={tool.folder} tool={tool} starred current={tool.folder === currentTool} />
           ))}

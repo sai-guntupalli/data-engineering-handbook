@@ -116,7 +116,7 @@ export function LearningMap({ path }: { path: LearningPathView }) {
           <div>
             <span className="next-label">Path complete</span>
             <strong>Every notebook on the path is done.</strong>
-            <small>Pick any tool below to go deeper.</small>
+            <small>Pick any topic below to go deeper.</small>
           </div>
         </div>
       )}

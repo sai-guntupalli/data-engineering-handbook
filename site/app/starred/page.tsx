@@ -18,7 +18,7 @@ export default function StarredPage() {
     <AppShell crumbs={[{ label: "Library", href: "/" }, { label: "Starred" }]} current="starred">
       <header className="tool-head">
         <h1>Starred</h1>
-        <p className="lead">Tools and notebooks you starred on this device. Stars are stored in this browser only.</p>
+        <p className="lead">Topics and notebooks you starred on this device. Stars are stored in this browser only.</p>
       </header>
       <StarredList tools={tools} notebooks={getNotebookList()} />
     </AppShell>

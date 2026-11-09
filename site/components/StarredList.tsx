@@ -19,7 +19,7 @@ export function StarredList({ tools, notebooks }: { tools: StarredTool[]; notebo
     return (
       <div className="panel empty-state">
         <h2>Nothing starred yet</h2>
-        <p>Star a tool from the sidebar, or a notebook from its row or its page. Stars stay on this device.</p>
+        <p>Star a topic from the sidebar, or a notebook from its row or its page. Stars stay on this device.</p>
       </div>
     );
   }
@@ -27,9 +27,9 @@ export function StarredList({ tools, notebooks }: { tools: StarredTool[]; notebo
   return (
     <>
       {starredTools.length > 0 ? (
-        <section className="tool-section" aria-labelledby="starred-tools">
-          <h2 id="starred-tools">
-            Tools <span className="count">{starredTools.length}</span>
+        <section className="tool-section" aria-labelledby="starred-topics">
+          <h2 id="starred-topics">
+            Topics <span className="count">{starredTools.length}</span>
           </h2>
           <ul className="tool-grid">
             {starredTools.map((tool) => (

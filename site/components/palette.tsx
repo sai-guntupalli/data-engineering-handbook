@@ -329,7 +329,7 @@ function CommandPalette({ onClose }: { onClose: () => void }) {
               <p className="palette-empty">Loading the index…</p>
             ) : hasQuery && flat.length === 0 ? (
               <p className="palette-empty">
-                Nothing matches “{query.trim()}”. Try a tool such as <strong>spark</strong> or a concept such as{" "}
+                Nothing matches “{query.trim()}”. Try a topic such as <strong>spark</strong> or a concept such as{" "}
                 <strong>window</strong>.
               </p>
             ) : (

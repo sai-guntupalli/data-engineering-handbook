@@ -35,11 +35,11 @@ export default function Home() {
       <LearningMap path={getLearningPath()} />
       <ContinueRow notebooks={notebooks} starters={starters} />
 
-      <div className="section-head" id="tools">
+      <div className="section-head" id="topics">
         <div>
-          <h2>Tools</h2>
+          <h2>Topics</h2>
           <p>
-            {tools.length} tools and {notebooks.length} notebooks, grouped by what they do. Choose a tool to see its subtopics.
+            {tools.length} topics and {notebooks.length} notebooks, grouped by what they cover. Open a topic to see its notebooks.
           </p>
         </div>
       </div>
