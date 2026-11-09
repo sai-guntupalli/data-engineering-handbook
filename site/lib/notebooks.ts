@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES, layoutMap, validateMap, type MapLayout } from "./learning-map";
-import { ALL_GROUPS, type GroupTone, type NotebookGroup } from "./notebook-groups";
+import { ALL_GROUPS, type GroupSection, type GroupTone, type NotebookGroup } from "./notebook-groups";
 import { monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
@@ -37,6 +37,7 @@ export type NotebookSummary = {
 export type NotebookGroupView = {
   label: string;
   shortLabel: string;
+  section: GroupSection;
   tone: GroupTone;
   notebooks: NotebookSummary[];
 };
@@ -152,7 +153,7 @@ function load() {
       details.set(slug, loaded);
       return loaded.summary;
     });
-    return { label: group.label, shortLabel: group.shortLabel, tone: group.tone, notebooks };
+    return { label: group.label, shortLabel: group.shortLabel, section: group.section, tone: group.tone, notebooks };
   }).filter((group) => group.notebooks.length > 0);
   cache = { groups, details };
   return cache;

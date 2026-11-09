@@ -6,6 +6,13 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
+- 2026-11-08: Site review fixes (`fix/site-header-and-groups`): the sidebar now has two sections, "Learn" (the learning
+  paths and topic groups) and "Practice" (Interview questions, Python drills, LeetCode), so practice groups sit together
+  after the learning groups. Short labels are now distinct: "Questions", "Python drills", "LeetCode". The group registry
+  exports `LEARNING_GROUPS` and `PRACTICE_GROUPS` with a `section` field, and a test checks the order and uniqueness.
+  On phones the top-bar search collapses to an icon so the GitHub link and theme toggle fit, and the learning map shows
+  a "Swipe sideways" hint. The star buttons were already labelled for screen readers, so no change was needed there.
+
 - 2026-11-08: Coding interview practice (`feat/leetcode-practice-notebooks`): nine notebooks,
   `leetcode-01-arrays-and-hashing` through `leetcode-09-backtracking-heaps-intervals-design`, 46 problems in all.
   Problem choice follows common interview lists and the numbering in `cnkyrpsgl/leetcode`. Statements are
