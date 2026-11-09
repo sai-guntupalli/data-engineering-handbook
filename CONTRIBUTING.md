@@ -72,6 +72,23 @@ New notebooks go in the folder of the tool they teach, `notebooks/topics/<tool>/
 [`site/lib/tools.ts`](site/lib/tools.ts) so the gallery shows it. The build fails when a folder has no
 entry or an entry has no folder.
 
+### Naming notebooks
+
+File names are lowercase kebab-case, with no underscores or leading numbers. A file name is also the page URL
+(`/notebooks/<name>/`), so it must be unique across the repository. Start it with the tool folder name:
+
+| Pattern | Use it for | Example |
+| --- | --- | --- |
+| `<tool>.ipynb` | a tool with one notebook | `kafka/kafka.ipynb` |
+| `<tool>-<NN>-<subject>.ipynb` | an ordered series; `00` is an overview or start-here page | `sql/sql-01-basics.ipynb` |
+| `<tool>-<series>-<NN>-<subject>.ipynb` | a numbered practice series | `python/practice/python-drills-01-values-and-types.ipynb` |
+| `<tool>-<subject>.ipynb` | a standalone notebook | `sql/sql-reference.ipynb` |
+| `<subject>.ipynb` | `concepts/` only, for subjects that are not a tool | `concepts/data-modeling.ipynb` |
+
+Titles use sentence case and keep product names as written (`Apache Kafka`, `dbt`). A numbered series uses
+`<Series> <N>: <subject>`, for example `SQL 6: joins` or `Python drills 2: collections`. Words such as
+`drills`, `challenges`, `practice`, `interview` and `reference` in a file name set its type on the tool page.
+
 ## Commit checklist
 
 - [ ] `make validate` passes.

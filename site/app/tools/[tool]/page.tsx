@@ -45,22 +45,22 @@ export default async function ToolPage({ params }: { params: Promise<{ tool: str
           interview questions.
         </p>
       </header>
-      {sections.map((section) => (
-        <section key={section.name} className="tool-section" aria-labelledby={`section-${section.name || "all"}`}>
-          {sections.length > 1 ? (
+      {sections.map((section) =>
+        sections.length > 1 ? (
+          <section key={section.name} className="tool-section" aria-labelledby={`section-${section.name}`}>
             <h2 id={`section-${section.name}`}>
               {titleCase(section.name)} <span className="count">{section.notebooks.length}</span>
             </h2>
-          ) : (
-            <h2 id="section-all" className="sr-only">
-              {tool.label} subtopics
-            </h2>
-          )}
-          <div className="panel">
-            <CatalogTable notebooks={section.notebooks} caption={`${tool.label}: ${section.name || "subtopics"}`} />
-          </div>
-        </section>
-      ))}
+            <div className="panel">
+              <CatalogTable notebooks={section.notebooks} caption={`${tool.label}: ${section.name}`} />
+            </div>
+          </section>
+        ) : (
+          <section key={section.name} className="tool-section panel">
+            <CatalogTable notebooks={section.notebooks} caption={`${tool.label} subtopics`} />
+          </section>
+        ),
+      )}
     </AppShell>
   );
 }
