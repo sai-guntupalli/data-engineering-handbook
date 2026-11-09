@@ -2,7 +2,7 @@
  * Search over notebooks and their sections. The command palette loads the
  * entries from /search-index.json; /search ranks notebooks with the same rules.
  */
-import type { GroupTone } from "./notebook-groups";
+import type { GroupTone } from "./tools";
 
 export type SearchEntry = {
   kind: "notebook" | "section";
@@ -10,7 +10,7 @@ export type SearchEntry = {
   /** Notebook title for a notebook, heading text for a section. */
   title: string;
   notebookTitle: string;
-  groupLabel: string;
+  toolLabel: string;
   tone: GroupTone;
   monogram: string;
   snippet: string;
@@ -26,7 +26,7 @@ export type SearchableNotebook = {
   repoPath: string;
   title: string;
   description: string;
-  groupLabel: string;
+  toolLabel: string;
 };
 
 function wordsOf(query: string): string[] {
@@ -62,7 +62,7 @@ export function matchNotebooks<T extends SearchableNotebook>(notebooks: T[], que
   const words = wordsOf(query);
   if (words.length === 0) return [];
   return ranked(notebooks, (notebook) =>
-    rankText(notebook.title, [notebook.description, notebook.groupLabel, notebook.repoPath], query, words),
+    rankText(notebook.title, [notebook.description, notebook.toolLabel, notebook.repoPath], query, words),
   );
 }
 
@@ -75,7 +75,7 @@ export function searchEntries(
   const words = wordsOf(query);
   if (words.length === 0) return { notebooks: [], sections: [], total: 0 };
   const matches = ranked(entries, (entry) =>
-    rankText(entry.title, [entry.notebookTitle, entry.groupLabel, entry.snippet], query, words),
+    rankText(entry.title, [entry.notebookTitle, entry.toolLabel, entry.snippet], query, words),
   );
   const notebooks = matches.filter((entry) => entry.kind === "notebook");
   const sections = matches.filter((entry) => entry.kind === "section");

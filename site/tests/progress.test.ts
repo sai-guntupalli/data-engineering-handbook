@@ -13,8 +13,8 @@ import {
 } from "../lib/progress";
 
 const NOW = new Date(2026, 10, 7, 12, 0, 0);
-const SPARK = "notebooks/topics/spark.ipynb";
-const DELTA = "notebooks/topics/delta.ipynb";
+const SPARK = "notebooks/topics/spark/spark.ipynb";
+const DELTA = "notebooks/topics/delta/delta.ipynb";
 
 describe("statusOf and fractionOf", () => {
   it("is not started without an entry", () => {
@@ -64,7 +64,7 @@ describe("recentInProgress and countByStatus", () => {
   it("lists in-progress notebooks newest first", () => {
     let state = markSectionRead(EMPTY_PROGRESS, SPARK, "a", 10, new Date(2026, 10, 1));
     state = markSectionRead(state, DELTA, "a", 10, new Date(2026, 10, 5));
-    state = setDone(state, "notebooks/topics/dbt.ipynb", true, 4, NOW);
+    state = setDone(state, "notebooks/topics/dbt/dbt.ipynb", true, 4, NOW);
     expect(recentInProgress(state, 5)).toEqual([DELTA, SPARK]);
     expect(recentInProgress(state, 1)).toEqual([DELTA]);
     expect(countByStatus(state)).toEqual({ done: 1, "in-progress": 2, "not-started": 0 });

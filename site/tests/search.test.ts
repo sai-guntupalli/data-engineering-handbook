@@ -4,10 +4,10 @@ import { highlightParts, matchNotebooks, searchEntries, type SearchEntry } from 
 function entry(kind: SearchEntry["kind"], title: string, snippet = "", notebookTitle = title): SearchEntry {
   return {
     kind,
-    repoPath: `notebooks/topics/${notebookTitle.toLowerCase()}.ipynb`,
+    repoPath: `notebooks/topics/tool/${notebookTitle.toLowerCase()}.ipynb`,
     title,
     notebookTitle,
-    groupLabel: "Data Engineering",
+    toolLabel: "Data Engineering",
     tone: "core",
     monogram: "XX",
     snippet,
@@ -55,9 +55,9 @@ describe("searchEntries", () => {
 
 describe("matchNotebooks", () => {
   const notebooks = [
-    { repoPath: "a", title: "Apache Kafka", description: "Topics and partitions", groupLabel: "Streaming" },
-    { repoPath: "b", title: "Kafka Connect", description: "", groupLabel: "Streaming" },
-    { repoPath: "c", title: "Flink", description: "Reads from Kafka", groupLabel: "Streaming" },
+    { repoPath: "a", title: "Apache Kafka", description: "Topics and partitions", toolLabel: "Streaming" },
+    { repoPath: "b", title: "Kafka Connect", description: "", toolLabel: "Streaming" },
+    { repoPath: "c", title: "Flink", description: "Reads from Kafka", toolLabel: "Streaming" },
   ];
 
   it("prefers titles that start with the query", () => {

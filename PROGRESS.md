@@ -1,9 +1,18 @@
 # Progress
 
-**Current Status**: All 98 notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The site groups them into
-17 groups (12 Learn, 5 Practice), and the usability pass is in `fix/review-usability`.
+**Current Status**: 106 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
+`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
 
 ## Completed
+
+- 2026-11-08: Notebooks grouped by tool (`refactor/topics-tool-folders`): every notebook moved into
+  `notebooks/topics/<tool>/`, 43 tool folders in all. Python is split into `python/learning/` (9 lessons) and
+  `python/practice/` (drills, coding challenges and interview basics). Non-tool subjects such as data modeling and CDC sit
+  in `concepts/`. Links and Colab badges were rewritten for the new paths. The site now lists tools in the sidebar and as
+  cards on the home page. Each tool has a page at `/tools/<tool>/` that lists its subtopics in order (lessons, then
+  drills, challenges and interview questions), with one section per subfolder. `site/lib/tools.ts` replaces the group
+  registry, and the build fails when a folder and the registry disagree. Starred notebooks moved to `/starred/`. Reading
+  progress and stars are keyed by file path, so progress saved before the move does not carry over.
 
 - 2026-11-08: Review fixes (`fix/review-usability`): the reader counts `check(...)` calls as self-checks (it counted only
   `assert` before), so practice pages no longer show "0 self-checks". The catalog filter is split into Learn and Practice

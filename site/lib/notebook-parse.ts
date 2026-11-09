@@ -3,7 +3,7 @@
  * No file system access here, so every rule is unit-testable.
  */
 import { marked, type Token, type Tokens } from "marked";
-import { anchorFor } from "./notebook-groups";
+import { anchorFor } from "./tools";
 
 export type RawCell = { cell_type?: string; source?: string | string[] };
 export type RawNotebook = { cells?: RawCell[] };

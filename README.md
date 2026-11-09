@@ -37,33 +37,23 @@ are shown in markdown code blocks.
 
 ## What is inside
 
-| Group | Notebooks |
+Every notebook lives in the folder of the tool it teaches, under `notebooks/topics/`. The site lists the tools; choosing one shows its subtopics.
+
+| Folder | What it holds |
 |---|---|
-| **Learn** | |
-| Python learning path | Values and types, collections, control flow and functions, iterators and generators, classes and dataclasses, files and formats, errors, logging and testing, concurrency, and data-engineering patterns (idempotent loads, watermarks, retries) |
-| SQL learning path | Start-here guide, SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data |
-| Foundations | SQL reference, data structures, statistics, system design |
-| Modeling and governance | Data modeling, data warehousing architecture, data governance, cost optimization, data quality |
-| PySpark learning path | Overview, then eight modules: foundations, reading, SQL and cleaning, joins and aggregations, windows and nested data, writing and pipelines, structured streaming, monitoring and performance, and real-world use cases |
-| Processing engines | Spark tuning, Scala, Hadoop, Hive, Impala, Trino |
-| Orchestration and tooling | Airflow, dbt, observability, Docker, Kubernetes |
-| Lakehouse formats | Parquet, Avro, Delta Lake, Iceberg, Hudi |
-| Ingestion and streaming | Kafka, Flink, change data capture, NiFi, Flume |
-| Databases | MongoDB, Cassandra, HBase, Redis, DynamoDB, Bigtable, Elasticsearch, ClickHouse, Greenplum |
-| Cloud platforms | AWS, Azure, GCP, Databricks, Snowflake, BigQuery, Redshift |
-| BI and visualization | Tableau, Looker, Superset |
-| AI and LLMs | LLM and AI terminology (fully offline) |
-| **Practice** | |
-| Python drills | One practice notebook per Python chapter: six exercises each, with checks and collapsed solutions |
-| Python coding challenges | Python Coding Problems for Data Engineers, plus nine notebooks of 46 algorithm problems with annotated solutions |
-| Interview questions | Python basics for interviews, and a question bank with model answers and runnable checks |
-| SQL interview drills | SQL interview drills and interview concepts |
-| PySpark interview practice | PySpark concepts end to end, and PySpark coding challenges for interviews |
+| `python/learning/` | Python lessons from values and types to data-engineering patterns |
+| `python/practice/` | Python drills, coding challenges and interview basics |
+| `sql/` | SQL lessons from SELECT to window functions, interview drills and a reference |
+| `spark/` | Spark overview, eight PySpark modules, Spark tuning and PySpark interview practice |
+| `interview-questions/` | Questions across Python, SQL and Spark, with model answers and runnable checks |
+| `concepts/` | Data concepts that apply to any stack: modeling, quality, governance, CDC, cost and design |
+| `llm/` | Terminology and data-engineering ideas for language models |
+| One folder per tool | Airflow, Avro, AWS, Azure, BigQuery, Bigtable, Cassandra, ClickHouse, Databricks, dbt, Delta Lake, Docker, DynamoDB, Elasticsearch, Flink, Flume, Google Cloud, Greenplum, Hadoop, HBase, Hive, Hudi, Iceberg, Impala, Kafka, Kubernetes, Looker, MongoDB, NiFi, Parquet, Redis, Redshift, Scala, Snowflake, Superset, Tableau and Trino |
 
 ## Layout
 
 ```text
-notebooks/                 the product: 6 practice notebooks + topics/<topic>.ipynb (68 total)
+notebooks/topics/          the product: one folder per tool (106 notebooks in total)
 scripts/
   notebook_format.py       canonical form: credit line, Open in Colab badge, no outputs, stable cell ids
   audit_notebooks.py       Colab-runnability rules (setup cell, no live servers, one title, links...)
@@ -72,9 +62,10 @@ tests/                     unit tests for the tooling (pytest)
 site/                      Next.js static site (GitHub Pages); reads ../notebooks at build time
   lib/notebook-parse.ts    notebook JSON -> title, sections, cells, reading time (pure, unit-tested)
   lib/notebooks.ts         reads the files, checks the registry, builds summaries and the search index
-  lib/notebook-groups.ts   the registry: which notebook belongs to which group, and each group's colour
+  lib/tools.ts             the tool registry: one entry per notebooks/topics/ folder, with labels, colour and categories
   lib/learning-map.ts      the curated DAG on the home page, validated against the registry
   lib/progress.ts          reading-progress rules (stored in the browser)
+  app/tools/[tool]/        one page per tool, listing its subtopics
   app/notebooks/[slug]/    the reader; app/files/ serves each .ipynb; app/search-index.json feeds search
   tests/                   vitest unit tests for lib/
 docs/mockups/              static design mockups the site is built from

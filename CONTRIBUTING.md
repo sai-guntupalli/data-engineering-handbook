@@ -68,9 +68,9 @@ make notebooks   # execute every notebook (PySpark ones need Java 17+)
 make validate    # everything CI runs
 ```
 
-New topic notebooks go in `notebooks/topics/<slug>.ipynb`; register the slug in
-[`site/lib/notebook-groups.ts`](site/lib/notebook-groups.ts) so the gallery shows it. The build fails when a
-notebook is not registered or a registered slug has no file.
+New notebooks go in the folder of the tool they teach, `notebooks/topics/<tool>/<slug>.ipynb`. Python notebooks sit in `learning/` or `practice/` inside it. A new tool needs a folder and an entry in
+[`site/lib/tools.ts`](site/lib/tools.ts) so the gallery shows it. The build fails when a folder has no
+entry or an entry has no folder.
 
 ## Commit checklist
 
