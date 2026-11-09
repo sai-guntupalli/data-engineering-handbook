@@ -22,7 +22,7 @@ export default function Home() {
 
   const starters = [
     ...starterFor(python, "Values, types and the standard library habits every pipeline depends on."),
-    ...starterFor(sql, "Fourteen chapters from SELECT to window functions, each checked as it runs."),
+    ...starterFor(sql, "Chapters from SELECT to window functions, each checked as it runs."),
     ...starterFor(practice, "Interview questions with model answers and runnable checks."),
   ];
 

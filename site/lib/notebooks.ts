@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES, layoutMap, validateMap, type MapLayout } from "./learning-map";
-import { ALL_GROUPS, type GroupSection, type GroupTone, type NotebookGroup } from "./notebook-groups";
+import { ALL_GROUPS, type GroupSection, type GroupTone, type NotebookGroup, repoPathFor } from "./notebook-groups";
 import { monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
@@ -69,7 +69,7 @@ const repoRoot = path.resolve(process.cwd(), "..");
 type LoadedNotebook = { summary: NotebookSummary; intro: string; sections: Section[]; cells: ParsedCell[] };
 
 function readNotebook(group: NotebookGroup, slug: string): LoadedNotebook {
-  const repoPath = `${group.folder}/${slug}.ipynb`;
+  const repoPath = repoPathFor(group, slug);
   const file = path.join(repoRoot, repoPath);
   if (!fs.existsSync(file)) {
     throw new Error(`lib/notebook-groups.ts lists ${repoPath} (group "${group.label}"), but the file is missing`);
@@ -125,7 +125,7 @@ function assertRegistryMatchesFiles(): void {
   const problems: string[] = [];
   for (const group of ALL_GROUPS) {
     for (const slug of group.slugs) {
-      const repoPath = `${group.folder}/${slug}.ipynb`;
+      const repoPath = repoPathFor(group, slug);
       if (registered.has(repoPath)) problems.push(`${repoPath} is registered more than once`);
       if (slugs.has(slug)) problems.push(`two notebooks share the slug "${slug}"`);
       registered.add(repoPath);

@@ -6,18 +6,18 @@ learning map, in-site notebook reader, ⌘K search, reading progress. It replace
 
 ## Completed
 
-- 2026-11-08: Site review fixes (`fix/site-header-and-groups`): the sidebar now has two sections, "Learn" (the learning
-  paths and topic groups) and "Practice" (Interview questions, Python drills, LeetCode), so practice groups sit together
-  after the learning groups. Short labels are now distinct: "Questions", "Python drills", "LeetCode". The group registry
-  exports `LEARNING_GROUPS` and `PRACTICE_GROUPS` with a `section` field, and a test checks the order and uniqueness.
-  On phones the top-bar search collapses to an icon so the GitHub link and theme toggle fit, and the learning map shows
-  a "Swipe sideways" hint. The star buttons were already labelled for screen readers, so no change was needed there.
+- 2026-11-08: Site review fixes (`fix/site-header-and-groups`): the sidebar has two sections, "Learn" and "Practice".
+  Practice groups sit together after the learning groups, and each one names the topic it trains. The group registry
+  exports `LEARNING_GROUPS` and `PRACTICE_GROUPS` with a `section` field, and `repoPathFor` resolves a notebook's file,
+  including per-notebook `folderOverrides`. A test checks the order and uniqueness of labels. The nine algorithm
+  notebooks are renamed `python-challenges-01-…` through `python-challenges-09-…` and titled "Python coding challenges",
+  so no site or repo text names a third-party problem site. On phones the top-bar search collapses to an icon so the
+  GitHub link and theme toggle fit, and the learning map shows a "Swipe sideways" hint.
 
-- 2026-11-08: Coding interview practice (`feat/leetcode-practice-notebooks`): nine notebooks,
-  `leetcode-01-arrays-and-hashing` through `leetcode-09-backtracking-heaps-intervals-design`, 46 problems in all.
-  Problem choice follows common interview lists and the numbering in `cnkyrpsgl/leetcode`. Statements are
-  paraphrased and solutions were written fresh. Each solution is annotated with its approach, complexity, inline comments and a tip. Each exercise has a check cell and a collapsed solution. Registered
-  as a "Coding interviews" group.
+- 2026-11-08: Python coding challenges (`feat/leetcode-practice-notebooks`): nine notebooks,
+  `python-challenges-01-arrays-and-hashing` through `python-challenges-09-backtracking-heaps-intervals-design`, 46 problems
+  in all. Problem choice follows common interview topics. Statements are paraphrased and solutions were written fresh. Each solution is annotated with its approach, complexity, inline comments and a tip. Each exercise has a check cell and a collapsed solution. Registered
+  as the "Python coding challenges" group.
 
 - 2026-11-08: Hands-on Python practice notebooks (`feat/python-collections-deep-dive`): one per chapter,
   `python-01-practice-values-and-types` through `python-09-practice-data-engineering`. Each has six exercises with
