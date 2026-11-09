@@ -44,7 +44,8 @@ are shown in markdown code blocks.
 | SQL learning path | Start-here guide, SQL basics, aggregations and CTEs, types, functions and JSON, NULL handling, CASE, joins, set operations, window functions, deduplication, time-series, modeling and optimization, views and changing data |
 | Foundations | SQL reference, data structures, statistics, system design |
 | Modeling and governance | Data modeling, data warehousing architecture, data governance, cost optimization, data quality |
-| Processing engines | Spark, Spark tuning, Scala, Hadoop, Hive, Impala, Trino |
+| PySpark learning path | Overview, then eight modules: foundations, reading, SQL and cleaning, joins and aggregations, windows and nested data, writing and pipelines, structured streaming, monitoring and performance, and real-world use cases |
+| Processing engines | Spark tuning, Scala, Hadoop, Hive, Impala, Trino |
 | Orchestration and tooling | Airflow, dbt, observability, Docker, Kubernetes |
 | Lakehouse formats | Parquet, Avro, Delta Lake, Iceberg, Hudi |
 | Ingestion and streaming | Kafka, Flink, change data capture, NiFi, Flume |

@@ -101,6 +101,17 @@ export const LEARNING_GROUPS: NotebookGroup[] = [
     ],
     { "03_sql_interview_questions": ROOT_FOLDER },
   ),
+  learn("PySpark learning path", "PySpark", "core", [
+    "spark",
+    "pyspark-01-foundations",
+    "pyspark-02-reading-sql-and-cleaning",
+    "pyspark-03-joins-and-aggregations",
+    "pyspark-04-windows-and-nested-data",
+    "pyspark-05-writing-pipelines-and-quality",
+    "pyspark-06-structured-streaming",
+    "pyspark-07-monitoring-and-performance",
+    "pyspark-08-real-world-and-interviews",
+  ]),
   learn("Foundations", "Foundations", "core", ["sql", "data-structure", "statistics", "system-design"]),
   learn("Modeling and governance", "Modeling", "warehouse", [
     "data-modeling",
@@ -110,7 +121,6 @@ export const LEARNING_GROUPS: NotebookGroup[] = [
     "data-quality",
   ]),
   learn("Processing engines", "Processing", "core", [
-    "spark",
     "spark-tuning",
     "scala",
     "hadoop",
