@@ -11,7 +11,7 @@ export type RawNotebook = { cells?: RawCell[] };
 /**
  * - `markdown`: explanation
  * - `setup`: the install cell every notebook starts with
- * - `check`: code with an `assert`, a self-check
+ * - `check`: code with an `assert` or a practice `check(...)` call, a self-check
  * - `code`: any other code
  */
 export type CellKind = "markdown" | "setup" | "check" | "code";
@@ -159,10 +159,13 @@ export function outlineOf(markdown: string): OutlineItem[] {
   });
 }
 
+/** An `assert`, or a top-level call to a practice helper: check(...), check_async(...), score(). */
+const CHECK_PATTERN = /\bassert\b|^\s*(?:await\s+)?(?:check|check_async)\(|^score\(\)/m;
+
 export function cellKindOf(cellType: string, source: string): CellKind {
   if (cellType === "markdown") return "markdown";
   if (source.trimStart().startsWith(SETUP_PREFIX)) return "setup";
-  return /\bassert\b/.test(source) ? "check" : "code";
+  return CHECK_PATTERN.test(source) ? "check" : "code";
 }
 
 function countWords(text: string): number {

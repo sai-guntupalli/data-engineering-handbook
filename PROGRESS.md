@@ -1,11 +1,16 @@
 # Progress
 
-**Current Status**: All notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The 14-chapter SQL path is on master (PR #34).
-The design mockups (PR #43) are live at `/mockups/`, and the site has been rebuilt to match them (PR #44, merged):
-learning map, in-site notebook reader, ⌘K search, reading progress. It replaces the editorial design from PRs #35 and #39.
+**Current Status**: All 98 notebooks are Colab-runnable and executed by CI on PySpark 4.0 (JDK 17). The site groups them into
+17 groups (12 Learn, 5 Practice), and the usability pass is in `fix/review-usability`.
 
 ## Completed
 
+- 2026-11-08: Review fixes (`fix/review-usability`): the reader counts `check(...)` calls as self-checks (it counted only
+  `assert` before), so practice pages no longer show "0 self-checks". The catalog filter is split into Learn and Practice
+  rows that wrap instead of scrolling. Four titles were clarified (`01_python_basics`, `04_pyspark_concepts`,
+  `05_interview_questions`, `hadoop`). Every notebook page says results are not stored. The "How to use this notebook"
+  box in 18 practice notebooks is collapsed by default. On screens up to 1100px, a collapsible "On this page" list
+  sits above the text, because the sidebar section list was hidden there. The practice chips use full names.
 - 2026-11-08: PySpark split into modules (`fix/pyspark-modules`): `topics/spark.ipynb` is now an overview that links to
   eight notebooks, `pyspark-01-foundations` through `pyspark-08-real-world-and-interviews`. The existing lessons moved
   unchanged, with a new intro, key takeaways and a next link in each module. Each module runs on its own: it repeats the

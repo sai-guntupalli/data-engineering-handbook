@@ -1172,9 +1172,9 @@ h1 {
 
 .catalog-tools {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px 16px;
   flex-wrap: wrap;
   padding: 12px 14px;
   border-bottom: 1px solid var(--border);
@@ -1769,6 +1769,10 @@ details.setup-cell .cell-body {
   font-size: 13.5px;
 }
 
+.toc-narrow {
+  display: none;
+}
+
 .toc {
   position: sticky;
   top: 92px;
@@ -1798,13 +1802,15 @@ details.setup-cell .cell-body {
   color: var(--text-3);
 }
 
-.toc ol {
+.toc ol,
+.toc-narrow ol {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.toc li a {
+.toc li a,
+.toc-narrow li a {
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -1813,11 +1819,13 @@ details.setup-cell .cell-body {
   line-height: 1.4;
 }
 
-.toc li a:hover {
+.toc li a:hover,
+.toc-narrow li a:hover {
   color: var(--text);
 }
 
-.toc .state {
+.toc .state,
+.toc-narrow .state {
   width: 14px;
   height: 14px;
   flex: none;
@@ -1829,11 +1837,13 @@ details.setup-cell .cell-body {
   color: var(--on-accent);
 }
 
-.toc li a.is-read {
+.toc li a.is-read,
+.toc-narrow li a.is-read {
   color: var(--text-2);
 }
 
-.toc li a.is-read .state {
+.toc li a.is-read .state,
+.toc-narrow li a.is-read .state {
   background: var(--accent);
   box-shadow: none;
 }
@@ -2169,6 +2179,7 @@ details.setup-cell .cell-body {
 
 .prose-page {
   max-width: 760px;
+  overflow-wrap: anywhere;
 }
 
 .prose-section {
@@ -2388,6 +2399,26 @@ details.setup-cell .cell-body {
   .toc {
     display: none;
   }
+  /* Narrow screens get a compact "On this page" disclosure above the text. */
+  .toc-narrow {
+    display: block;
+    order: -1;
+    margin-bottom: 24px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    padding: 12px 16px;
+  }
+  .toc-narrow summary {
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .toc-narrow ol {
+    margin-top: 12px;
+    max-height: 55vh;
+    overflow-y: auto;
+  }
   .continue {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -2494,4 +2525,34 @@ details.setup-cell .cell-body {
   .palette-foot span:not(:first-child) {
     display: none;
   }
+}
+
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  max-width: 100%;
+}
+
+/* Every chip stays visible: long rows wrap instead of scrolling sideways. */
+.filter-row .segmented {
+  flex-wrap: wrap;
+  overflow-x: visible;
+}
+
+.filter-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.output-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-3);
 }

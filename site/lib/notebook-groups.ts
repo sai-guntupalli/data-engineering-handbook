@@ -163,7 +163,7 @@ export const LEARNING_GROUPS: NotebookGroup[] = [
 
 /** Practice groups: each one trains the topic in its name. */
 export const PRACTICE_GROUPS: NotebookGroup[] = [
-  practice("Python drills", "Drills", "python", TOPIC_FOLDER, [
+  practice("Python drills", "Python drills", "python", TOPIC_FOLDER, [
     "python-01-practice-values-and-types",
     "python-02-practice-collections",
     "python-03-practice-control-flow-and-functions",
@@ -176,7 +176,7 @@ export const PRACTICE_GROUPS: NotebookGroup[] = [
   ]),
   practice(
     "Python coding challenges",
-    "Challenges",
+    "Coding challenges",
     "python",
     TOPIC_FOLDER,
     [
@@ -193,12 +193,12 @@ export const PRACTICE_GROUPS: NotebookGroup[] = [
     ],
     { "02_python_coding_problems": ROOT_FOLDER },
   ),
-  practice("Interview questions", "Questions", "practice", ROOT_FOLDER, [
+  practice("Interview questions", "Interview questions", "practice", ROOT_FOLDER, [
     "01_python_basics",
     "05_interview_questions",
   ]),
   practice("SQL interview drills", "SQL drills", "sql", TOPIC_FOLDER, ["sql-13-interview-drills", "sql-14-interview-concepts"]),
-  practice("PySpark interview practice", "PySpark", "core", ROOT_FOLDER, [
+  practice("PySpark interview practice", "PySpark practice", "core", ROOT_FOLDER, [
     "04_pyspark_concepts",
     "06_pyspark_coding_challenges",
   ]),
