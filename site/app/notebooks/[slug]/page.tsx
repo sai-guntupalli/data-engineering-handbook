@@ -187,6 +187,9 @@ export default async function NotebookPage({ params }: Params) {
               <span className="tag">About {notebook.minutes} min</span>
               <span className="tag">{notebook.checks} self-checks</span>
             </div>
+            <p className="output-note">
+              Results are not stored with the notebook. Run it in Colab, or run the cells in order, to see the output.
+            </p>
           </header>
 
           <CellMap cells={notebook.cells} checks={notebook.checks} />

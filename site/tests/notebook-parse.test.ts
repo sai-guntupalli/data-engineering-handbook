@@ -82,6 +82,10 @@ describe("cellKindOf", () => {
     expect(cellKindOf("code", "result = 1\nassert result == 1")).toBe("check");
     expect(cellKindOf("code", "reassert = 2")).toBe("code");
     expect(cellKindOf("markdown", "assert this")).toBe("markdown");
+    expect(cellKindOf("code", 'check("two_sum", lambda: two_sum([1], 1), [0])')).toBe("check");
+    expect(cellKindOf("code", "await check_async('x', fn, 1)")).toBe("check");
+    expect(cellKindOf("code", "score()")).toBe("check");
+    expect(cellKindOf("code", "def check(label, make_actual, expected):\n    pass")).toBe("code");
   });
 });
 
