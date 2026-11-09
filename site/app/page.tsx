@@ -3,7 +3,7 @@ import { ContinueRow, type Starter } from "@/components/ContinueRow";
 import { HomeHero } from "@/components/HomeHero";
 import { LearningMap } from "@/components/LearningMap";
 import { ToolGrid } from "@/components/ToolGrid";
-import { getLearningMap, getNotebookList, getTool, getTools, type ToolView } from "@/lib/notebooks";
+import { getLearningMap, getNotebookList, getTool, getToolCategories, getTools, type ToolView } from "@/lib/notebooks";
 
 /** The first subtopic of a tool, as a starting-point card. */
 function starterFor(tool: ToolView | null, text: string): Starter[] {
@@ -39,11 +39,11 @@ export default function Home() {
         <div>
           <h2>Tools</h2>
           <p>
-            {tools.length} tools and {notebooks.length} notebooks. Choose a tool to see its subtopics.
+            {tools.length} tools and {notebooks.length} notebooks, grouped by what they do. Choose a tool to see its subtopics.
           </p>
         </div>
       </div>
-      <ToolGrid tools={tools} />
+      <ToolGrid categories={getToolCategories()} />
     </AppShell>
   );
 }

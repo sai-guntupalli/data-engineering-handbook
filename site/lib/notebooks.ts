@@ -11,10 +11,12 @@ import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
 import {
   CATEGORY_LABELS,
+  TOOL_CATEGORIES,
   TOOLS,
   TOOLS_BY_FOLDER,
   categoryOf,
   compareSubtopics,
+  toolSortName,
   type GroupTone,
   type NotebookCategory,
   type Tool,
@@ -178,7 +180,7 @@ function load() {
   assertRegistryMatchesFolders(files);
   const details = new Map<string, LoadedNotebook>();
   const tools: ToolView[] = [...TOOLS]
-    .sort((a, b) => a.label.localeCompare(b.label, "en"))
+    .sort((a, b) => toolSortName(a.label).localeCompare(toolSortName(b.label), "en"))
     .map((tool) => {
       const notebooks = files
         .filter((file) => file.folder === tool.folder)
@@ -194,9 +196,21 @@ function load() {
   return cache;
 }
 
-/** Every tool, alphabetical, each with its subtopics in reading order. */
+/** Every tool, alphabetical (ignoring "Apache" and "Amazon"), each with its subtopics in reading order. */
 export function getTools(): ToolView[] {
   return load().tools;
+}
+
+export type ToolCategoryView = { id: string; label: string; tools: ToolView[] };
+
+/** Tools under their category headings, in the order of TOOL_CATEGORIES. */
+export function getToolCategories(): ToolCategoryView[] {
+  const tools = getTools();
+  return TOOL_CATEGORIES.map((category) => ({
+    id: category.id,
+    label: category.label,
+    tools: tools.filter((tool) => tool.category === category.id),
+  })).filter((category) => category.tools.length > 0);
 }
 
 export function getTool(folder: string): ToolView | null {

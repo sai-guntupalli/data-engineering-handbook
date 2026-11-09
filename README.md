@@ -37,7 +37,7 @@ are shown in markdown code blocks.
 
 ## What is inside
 
-Every notebook lives in the folder of the tool it teaches, under `notebooks/topics/`. The site lists the tools; choosing one shows its subtopics.
+Every notebook lives in the folder of the tool it teaches, under `notebooks/topics/`. The site lists the tools under twelve categories (languages, processing engines, streaming and ingestion, orchestration, file and table formats, warehouses, NoSQL and search, cloud platforms, BI, infrastructure, concepts and interview prep); choosing a tool shows its subtopics.
 
 | Folder | What it holds |
 |---|---|

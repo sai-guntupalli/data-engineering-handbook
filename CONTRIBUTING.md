@@ -69,7 +69,7 @@ make validate    # everything CI runs
 ```
 
 New notebooks go in the folder of the tool they teach, `notebooks/topics/<tool>/<slug>.ipynb`. Python notebooks sit in `learning/` or `practice/` inside it. A new tool needs a folder and an entry in
-[`site/lib/tools.ts`](site/lib/tools.ts) so the gallery shows it. The build fails when a folder has no
+[`site/lib/tools.ts`](site/lib/tools.ts), with a category from `TOOL_CATEGORIES`, so the gallery shows it. The build fails when a folder has no
 entry or an entry has no folder.
 
 ### Naming notebooks

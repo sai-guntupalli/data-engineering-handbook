@@ -17,13 +17,37 @@ export type GroupTone =
   | "ai"
   | "other";
 
+/** The sidebar and the home page group tools under these headings, in this order. */
+export const TOOL_CATEGORIES = [
+  { id: "languages", label: "Languages" },
+  { id: "processing", label: "Processing engines" },
+  { id: "streaming", label: "Streaming and ingestion" },
+  { id: "orchestration", label: "Orchestration and transformation" },
+  { id: "formats", label: "File and table formats" },
+  { id: "warehouses", label: "Data warehouses" },
+  { id: "databases", label: "NoSQL and search" },
+  { id: "cloud", label: "Cloud platforms" },
+  { id: "bi", label: "BI and dashboards" },
+  { id: "infrastructure", label: "Containers and infrastructure" },
+  { id: "foundations", label: "Concepts" },
+  { id: "interviews", label: "Interview prep" },
+] as const;
+
+export type ToolCategory = (typeof TOOL_CATEGORIES)[number]["id"];
+
 export type Tool = {
-  /** Folder under notebooks/, e.g. "kafka". Also the URL segment of the tool page. */
+  /** Folder under notebooks/topics/, e.g. "kafka". Also the URL segment of the tool page. */
   folder: string;
   label: string;
   description: string;
   tone: GroupTone;
+  category: ToolCategory;
 };
+
+/** Sort key that ignores a vendor prefix, so "Apache Kafka" sorts under K next to "Kubernetes". */
+export function toolSortName(label: string): string {
+  return label.replace(/^(Apache|Amazon) /, "").toLowerCase();
+}
 
 /** What a notebook teaches with: the tool page sorts and labels subtopics by this. */
 export type NotebookCategory = "lesson" | "reference" | "drill" | "challenge" | "interview";
@@ -62,49 +86,49 @@ export function compareSubtopics(a: { slug: string }, b: { slug: string }): numb
 }
 
 export const TOOLS: Tool[] = [
-  { folder: "airflow", label: "Apache Airflow", description: "Scheduling, DAGs, retries and operators for pipelines.", tone: "core" },
-  { folder: "avro", label: "Apache Avro", description: "Row-based schemas and compact binary data for streams.", tone: "lake" },
-  { folder: "aws", label: "AWS", description: "Storage, compute and data services on Amazon Web Services.", tone: "cloud" },
-  { folder: "azure", label: "Azure", description: "Storage, analytics and pipeline services on Microsoft Azure.", tone: "cloud" },
-  { folder: "bigquery", label: "BigQuery", description: "Google's serverless warehouse: partitioning, costs and SQL.", tone: "cloud" },
-  { folder: "bigtable", label: "Bigtable", description: "Wide-column storage for high-volume key lookups.", tone: "cloud" },
-  { folder: "cassandra", label: "Apache Cassandra", description: "Partitioned, replicated storage with tunable consistency.", tone: "stream" },
-  { folder: "clickhouse", label: "ClickHouse", description: "Columnar analytics database for fast aggregations.", tone: "cloud" },
-  { folder: "concepts", label: "Data concepts", description: "Modeling, quality, governance, cost and design ideas that apply to any stack.", tone: "warehouse" },
-  { folder: "databricks", label: "Databricks", description: "Lakehouse platform: Spark, Delta tables and Unity Catalog.", tone: "cloud" },
-  { folder: "dbt", label: "dbt", description: "SQL transformations as tested, documented models.", tone: "core" },
-  { folder: "delta", label: "Delta Lake", description: "ACID tables on object storage, with time travel and merges.", tone: "lake" },
-  { folder: "docker", label: "Docker", description: "Images, layers and containers for reproducible jobs.", tone: "other" },
-  { folder: "dynamodb", label: "DynamoDB", description: "Key-value and document storage with single-table design.", tone: "cloud" },
-  { folder: "elasticsearch", label: "Elasticsearch", description: "Search and log analytics on inverted indexes.", tone: "other" },
-  { folder: "flink", label: "Apache Flink", description: "Stateful stream processing with event time and checkpoints.", tone: "stream" },
-  { folder: "flume", label: "Apache Flume", description: "Log collection and transport into Hadoop.", tone: "stream" },
-  { folder: "gcp", label: "Google Cloud", description: "Storage, analytics and pipeline services on Google Cloud.", tone: "cloud" },
-  { folder: "greenplum", label: "Greenplum", description: "Massively parallel PostgreSQL-based warehouse.", tone: "other" },
-  { folder: "hadoop", label: "Hadoop", description: "HDFS and MapReduce, the foundation of the Hadoop ecosystem.", tone: "stream" },
-  { folder: "hbase", label: "Apache HBase", description: "Wide-column storage on HDFS for random reads and writes.", tone: "stream" },
-  { folder: "hive", label: "Apache Hive", description: "SQL over files in Hadoop, with a metastore and partitions.", tone: "stream" },
-  { folder: "hudi", label: "Apache Hudi", description: "Upserts and incremental pipelines on data lakes.", tone: "lake" },
-  { folder: "iceberg", label: "Apache Iceberg", description: "Open table format with snapshots, schema evolution and hidden partitions.", tone: "lake" },
-  { folder: "impala", label: "Apache Impala", description: "Low-latency SQL on Hadoop data.", tone: "other" },
-  { folder: "interview-questions", label: "Interview questions", description: "Questions across Python, SQL and Spark, with model answers and runnable checks.", tone: "practice" },
-  { folder: "kafka", label: "Apache Kafka", description: "Topics, partitions, consumer groups and delivery guarantees.", tone: "stream" },
-  { folder: "kubernetes", label: "Kubernetes", description: "Running containers and scheduled jobs on a cluster.", tone: "core" },
-  { folder: "llm", label: "LLMs and AI", description: "Terminology and data-engineering ideas for language models.", tone: "ai" },
-  { folder: "looker", label: "Looker", description: "Semantic modeling and dashboards on top of a warehouse.", tone: "warehouse" },
-  { folder: "mongodb", label: "MongoDB", description: "Document storage, aggregation pipelines and indexes.", tone: "other" },
-  { folder: "nifi", label: "Apache NiFi", description: "Visual data flows for routing and transforming records.", tone: "stream" },
-  { folder: "parquet", label: "Parquet", description: "Columnar file format: encodings, row groups and predicate pushdown.", tone: "lake" },
-  { folder: "python", label: "Python", description: "The language of most data pipelines: values, collections, iterators, files, concurrency and testing.", tone: "python" },
-  { folder: "redis", label: "Redis", description: "In-memory data structures for caches, counters and queues.", tone: "stream" },
-  { folder: "redshift", label: "Amazon Redshift", description: "AWS columnar warehouse: distribution keys, sort keys and COPY.", tone: "cloud" },
-  { folder: "scala", label: "Scala", description: "The language behind Spark: basics for reading and writing Spark jobs.", tone: "core" },
-  { folder: "snowflake", label: "Snowflake", description: "Cloud warehouse with virtual warehouses, micro-partitions and streams.", tone: "cloud" },
-  { folder: "pyspark", label: "PySpark", description: "Spark from Python for batch and streaming: DataFrames, joins, pipelines and tuning.", tone: "core" },
-  { folder: "sql", label: "SQL", description: "Querying and modeling data: from SELECT to window functions and time-series.", tone: "sql" },
-  { folder: "superset", label: "Apache Superset", description: "Open-source dashboards and charts on SQL databases.", tone: "warehouse" },
-  { folder: "tableau", label: "Tableau", description: "Visual analysis and dashboards for business users.", tone: "warehouse" },
-  { folder: "trino", label: "Trino", description: "Federated SQL across many data sources.", tone: "cloud" },
+  { folder: "airflow", label: "Apache Airflow", description: "Scheduling, DAGs, retries and operators for pipelines.", tone: "core", category: "orchestration" },
+  { folder: "avro", label: "Apache Avro", description: "Row-based schemas and compact binary data for streams.", tone: "lake", category: "formats" },
+  { folder: "aws", label: "AWS", description: "Storage, compute and data services on Amazon Web Services.", tone: "cloud", category: "cloud" },
+  { folder: "azure", label: "Azure", description: "Storage, analytics and pipeline services on Microsoft Azure.", tone: "cloud", category: "cloud" },
+  { folder: "bigquery", label: "BigQuery", description: "Google's serverless warehouse: partitioning, costs and SQL.", tone: "cloud", category: "warehouses" },
+  { folder: "bigtable", label: "Bigtable", description: "Wide-column storage for high-volume key lookups.", tone: "cloud", category: "databases" },
+  { folder: "cassandra", label: "Apache Cassandra", description: "Partitioned, replicated storage with tunable consistency.", tone: "stream", category: "databases" },
+  { folder: "clickhouse", label: "ClickHouse", description: "Columnar analytics database for fast aggregations.", tone: "cloud", category: "warehouses" },
+  { folder: "concepts", label: "Data concepts", description: "Modeling, quality, governance, cost and design ideas that apply to any stack.", tone: "warehouse", category: "foundations" },
+  { folder: "databricks", label: "Databricks", description: "Lakehouse platform: Spark, Delta tables and Unity Catalog.", tone: "cloud", category: "cloud" },
+  { folder: "dbt", label: "dbt", description: "SQL transformations as tested, documented models.", tone: "core", category: "orchestration" },
+  { folder: "delta", label: "Delta Lake", description: "ACID tables on object storage, with time travel and merges.", tone: "lake", category: "formats" },
+  { folder: "docker", label: "Docker", description: "Images, layers and containers for reproducible jobs.", tone: "other", category: "infrastructure" },
+  { folder: "dynamodb", label: "DynamoDB", description: "Key-value and document storage with single-table design.", tone: "cloud", category: "databases" },
+  { folder: "elasticsearch", label: "Elasticsearch", description: "Search and log analytics on inverted indexes.", tone: "other", category: "databases" },
+  { folder: "flink", label: "Apache Flink", description: "Stateful stream processing with event time and checkpoints.", tone: "stream", category: "processing" },
+  { folder: "flume", label: "Apache Flume", description: "Log collection and transport into Hadoop.", tone: "stream", category: "streaming" },
+  { folder: "gcp", label: "Google Cloud", description: "Storage, analytics and pipeline services on Google Cloud.", tone: "cloud", category: "cloud" },
+  { folder: "greenplum", label: "Greenplum", description: "Massively parallel PostgreSQL-based warehouse.", tone: "other", category: "warehouses" },
+  { folder: "hadoop", label: "Hadoop", description: "HDFS and MapReduce, the foundation of the Hadoop ecosystem.", tone: "stream", category: "processing" },
+  { folder: "hbase", label: "Apache HBase", description: "Wide-column storage on HDFS for random reads and writes.", tone: "stream", category: "databases" },
+  { folder: "hive", label: "Apache Hive", description: "SQL over files in Hadoop, with a metastore and partitions.", tone: "stream", category: "processing" },
+  { folder: "hudi", label: "Apache Hudi", description: "Upserts and incremental pipelines on data lakes.", tone: "lake", category: "formats" },
+  { folder: "iceberg", label: "Apache Iceberg", description: "Open table format with snapshots, schema evolution and hidden partitions.", tone: "lake", category: "formats" },
+  { folder: "impala", label: "Apache Impala", description: "Low-latency SQL on Hadoop data.", tone: "other", category: "processing" },
+  { folder: "interview-questions", label: "Interview questions", description: "Questions across Python, SQL and Spark, with model answers and runnable checks.", tone: "practice", category: "interviews" },
+  { folder: "kafka", label: "Apache Kafka", description: "Topics, partitions, consumer groups and delivery guarantees.", tone: "stream", category: "streaming" },
+  { folder: "kubernetes", label: "Kubernetes", description: "Running containers and scheduled jobs on a cluster.", tone: "core", category: "infrastructure" },
+  { folder: "llm", label: "LLMs and AI", description: "Terminology and data-engineering ideas for language models.", tone: "ai", category: "foundations" },
+  { folder: "looker", label: "Looker", description: "Semantic modeling and dashboards on top of a warehouse.", tone: "warehouse", category: "bi" },
+  { folder: "mongodb", label: "MongoDB", description: "Document storage, aggregation pipelines and indexes.", tone: "other", category: "databases" },
+  { folder: "nifi", label: "Apache NiFi", description: "Visual data flows for routing and transforming records.", tone: "stream", category: "streaming" },
+  { folder: "parquet", label: "Parquet", description: "Columnar file format: encodings, row groups and predicate pushdown.", tone: "lake", category: "formats" },
+  { folder: "python", label: "Python", description: "The language of most data pipelines: values, collections, iterators, files, concurrency and testing.", tone: "python", category: "languages" },
+  { folder: "redis", label: "Redis", description: "In-memory data structures for caches, counters and queues.", tone: "stream", category: "databases" },
+  { folder: "redshift", label: "Amazon Redshift", description: "AWS columnar warehouse: distribution keys, sort keys and COPY.", tone: "cloud", category: "warehouses" },
+  { folder: "scala", label: "Scala", description: "The language behind Spark: basics for reading and writing Spark jobs.", tone: "core", category: "languages" },
+  { folder: "snowflake", label: "Snowflake", description: "Cloud warehouse with virtual warehouses, micro-partitions and streams.", tone: "cloud", category: "warehouses" },
+  { folder: "pyspark", label: "PySpark", description: "Spark from Python for batch and streaming: DataFrames, joins, pipelines and tuning.", tone: "core", category: "processing" },
+  { folder: "sql", label: "SQL", description: "Querying and modeling data: from SELECT to window functions and time-series.", tone: "sql", category: "languages" },
+  { folder: "superset", label: "Apache Superset", description: "Open-source dashboards and charts on SQL databases.", tone: "warehouse", category: "bi" },
+  { folder: "tableau", label: "Tableau", description: "Visual analysis and dashboards for business users.", tone: "warehouse", category: "bi" },
+  { folder: "trino", label: "Trino", description: "Federated SQL across many data sources.", tone: "cloud", category: "processing" },
 ];
 
 export const TOOLS_BY_FOLDER = new Map(TOOLS.map((tool) => [tool.folder, tool]));
