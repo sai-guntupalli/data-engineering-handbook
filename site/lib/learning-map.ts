@@ -1,159 +1,192 @@
 /**
- * The learning map on the home page: a curated path through the notebooks,
- * drawn as a pipeline DAG. Columns run left to right; an edge means "read this
- * first". The build fails if a node names a notebook the registry does not list.
+ * The learning path on the home page: stages in reading order, each made of steps.
+ * A step is a track of notebooks (all nine Python lessons, say), so its progress
+ * means something, and the path can say which notebook to read next.
+ * The build fails if a step names a notebook the registry does not list.
  */
+import type { NotebookStatus } from "./progress";
 
-export type MapNode = { slug: string; label: string };
-export type MapColumn = { title: string; nodes: MapNode[] };
-export type MapEdge = readonly [from: string, to: string];
+export type PathStep = {
+  id: string;
+  label: string;
+  /** Tool page for the step, site-relative. */
+  toolHref: string;
+  /** Notebooks in reading order. */
+  slugs: string[];
+};
 
-export const LEARNING_MAP_COLUMNS: MapColumn[] = [
+export type PathStage = {
+  title: string;
+  /** One line on why this stage matters. */
+  purpose: string;
+  steps: PathStep[];
+};
+
+const series = (prefix: string, names: string[]) => names.map((name) => `${prefix}${name}`);
+
+export const LEARNING_PATH: PathStage[] = [
   {
     title: "Foundations",
-    nodes: [
-      { slug: "python-01-values-and-types", label: "Python basics" },
-      { slug: "python-02-collections", label: "Python collections" },
-      { slug: "sql-01-basics", label: "SQL basics" },
+    purpose: "The two languages every pipeline is written in.",
+    steps: [
+      {
+        id: "python",
+        label: "Python",
+        toolHref: "/tools/python/",
+        slugs: series("python-", [
+          "01-values-and-types",
+          "02-collections",
+          "03-control-flow-and-functions",
+          "04-iterators-and-generators",
+          "05-classes-and-dataclasses",
+          "06-files-and-formats",
+          "07-errors-logging-and-testing",
+          "08-concurrency",
+          "09-data-engineering",
+        ]),
+      },
+      {
+        id: "sql",
+        label: "SQL",
+        toolHref: "/tools/sql/",
+        slugs: series("sql-", [
+          "00-start-here",
+          "01-basics",
+          "02-aggregations-and-ctes",
+          "03-types-functions-and-json",
+          "04-null-handling",
+          "05-case-expressions",
+          "06-joins",
+          "07-set-operations",
+          "08-window-functions",
+          "09-deduplication",
+          "10-time-series",
+          "11-modeling-and-optimization",
+          "12-views-and-changing-data",
+        ]),
+      },
     ],
   },
   {
-    title: "Process and model",
-    nodes: [
-      { slug: "sql-08-window-functions", label: "Window functions" },
-      { slug: "pyspark-00-overview", label: "PySpark" },
-      { slug: "data-modeling", label: "Data modeling" },
+    title: "Process at scale",
+    purpose: "Run the same logic on data that does not fit on one machine.",
+    steps: [
+      {
+        id: "pyspark",
+        label: "PySpark",
+        toolHref: "/tools/pyspark/",
+        slugs: series("pyspark-", [
+          "00-overview",
+          "01-foundations",
+          "02-reading-sql-and-cleaning",
+          "03-joins-and-aggregations",
+          "04-windows-and-nested-data",
+          "05-writing-pipelines-and-quality",
+          "06-structured-streaming",
+          "07-monitoring-and-performance",
+          "08-real-world-and-interviews",
+        ]),
+      },
+      { id: "spark-tuning", label: "Spark tuning", toolHref: "/tools/pyspark/", slugs: ["pyspark-tuning"] },
     ],
   },
   {
-    title: "Orchestrate and test",
-    nodes: [
-      { slug: "airflow", label: "Airflow" },
-      { slug: "dbt", label: "dbt" },
-      { slug: "data-quality", label: "Data quality" },
+    title: "Model and test",
+    purpose: "Shape tables people can trust, and prove it with tests.",
+    steps: [
+      { id: "modeling", label: "Data modeling", toolHref: "/tools/concepts/", slugs: ["data-modeling", "data-warehousing"] },
+      { id: "dbt", label: "dbt", toolHref: "/tools/dbt/", slugs: ["dbt"] },
+      { id: "quality", label: "Data quality", toolHref: "/tools/concepts/", slugs: ["data-quality", "data-observability"] },
     ],
   },
   {
     title: "Store",
-    nodes: [
-      { slug: "parquet", label: "Parquet" },
-      { slug: "delta", label: "Delta Lake" },
-      { slug: "iceberg", label: "Apache Iceberg" },
+    purpose: "File and table formats that keep data cheap, fast and correct.",
+    steps: [
+      { id: "parquet", label: "Parquet", toolHref: "/tools/parquet/", slugs: ["parquet"] },
+      { id: "delta", label: "Delta Lake", toolHref: "/tools/delta/", slugs: ["delta"] },
+      { id: "iceberg", label: "Iceberg", toolHref: "/tools/iceberg/", slugs: ["iceberg"] },
     ],
   },
   {
-    title: "Stream",
-    nodes: [
-      { slug: "kafka", label: "Kafka" },
-      { slug: "flink", label: "Flink" },
+    title: "Orchestrate and stream",
+    purpose: "Run pipelines on a schedule, then on events as they arrive.",
+    steps: [
+      { id: "airflow", label: "Airflow", toolHref: "/tools/airflow/", slugs: ["airflow"] },
+      { id: "kafka", label: "Kafka", toolHref: "/tools/kafka/", slugs: ["kafka"] },
+      { id: "flink", label: "Flink", toolHref: "/tools/flink/", slugs: ["flink"] },
+    ],
+  },
+  {
+    title: "Interview practice",
+    purpose: "Check what you learned under interview conditions.",
+    steps: [
+      {
+        id: "python-drills",
+        label: "Python drills",
+        toolHref: "/tools/python/",
+        slugs: series("python-drills-", [
+          "01-values-and-types",
+          "02-collections",
+          "03-control-flow-and-functions",
+          "04-iterators-and-generators",
+          "05-classes-and-dataclasses",
+          "06-files-and-formats",
+          "07-errors-logging-and-testing",
+          "08-concurrency",
+          "09-data-engineering",
+        ]),
+      },
+      { id: "sql-drills", label: "SQL interview drills", toolHref: "/tools/sql/", slugs: ["sql-13-interview-drills", "sql-14-interview-concepts"] },
+      {
+        id: "question-bank",
+        label: "Question bank",
+        toolHref: "/tools/interview-questions/",
+        slugs: ["interview-question-bank", "pyspark-concepts-end-to-end"],
+      },
     ],
   },
 ];
 
-export const LEARNING_MAP_EDGES: MapEdge[] = [
-  ["python-01-values-and-types", "python-02-collections"],
-  ["python-02-collections", "pyspark-00-overview"],
-  ["sql-01-basics", "sql-08-window-functions"],
-  ["sql-01-basics", "data-modeling"],
-  ["sql-08-window-functions", "pyspark-00-overview"],
-  ["pyspark-00-overview", "airflow"],
-  ["data-modeling", "dbt"],
-  ["dbt", "data-quality"],
-  ["airflow", "parquet"],
-  ["dbt", "delta"],
-  ["parquet", "delta"],
-  ["delta", "iceberg"],
-  ["delta", "kafka"],
-  ["iceberg", "flink"],
-  ["kafka", "flink"],
-];
+export type StepSummary = { done: number; total: number; status: NotebookStatus };
 
-export const MAP_GEOMETRY = {
-  left: 20,
-  top: 50,
-  columnWidth: 200,
-  nodeWidth: 150,
-  nodeHeight: 40,
-  rowPitch: 70,
-  headerY: 32,
-  bottomPadding: 15,
-} as const;
-
-export type PlacedNode = MapNode & { column: number; row: number; x: number; y: number };
-export type PlacedEdge = { from: string; to: string; d: string };
-export type MapLayout = {
-  width: number;
-  height: number;
-  headers: { title: string; x: number }[];
-  nodes: PlacedNode[];
-  edges: PlacedEdge[];
-};
-
-/** Place nodes on a grid (short columns are centred) and route each edge. */
-export function layoutMap(columns: MapColumn[], edges: readonly MapEdge[]): MapLayout {
-  const g = MAP_GEOMETRY;
-  const maxRows = Math.max(...columns.map((column) => column.nodes.length));
-  const nodes: PlacedNode[] = columns.flatMap((column, columnIndex) => {
-    const offset = ((maxRows - column.nodes.length) * g.rowPitch) / 2;
-    return column.nodes.map((node, row) => ({
-      ...node,
-      column: columnIndex,
-      row,
-      x: g.left + columnIndex * g.columnWidth,
-      y: g.top + offset + row * g.rowPitch,
-    }));
-  });
-  const bySlug = new Map(nodes.map((node) => [node.slug, node]));
-
-  const placedEdges = edges.flatMap(([from, to]) => {
-    const a = bySlug.get(from);
-    const b = bySlug.get(to);
-    if (!a || !b) return [];
-    if (a.column === b.column) {
-      const x = a.x + g.nodeWidth / 2;
-      const [top, bottom] = a.y < b.y ? [a, b] : [b, a];
-      return [{ from, to, d: `M${x} ${top.y + g.nodeHeight} L${x} ${bottom.y}` }];
-    }
-    const x1 = a.x + g.nodeWidth;
-    const y1 = a.y + g.nodeHeight / 2;
-    const x2 = b.x;
-    const y2 = b.y + g.nodeHeight / 2;
-    const mid = (x1 + x2) / 2;
-    const d = y1 === y2 ? `M${x1} ${y1} L${x2} ${y2}` : `M${x1} ${y1} C${mid} ${y1} ${mid} ${y2} ${x2} ${y2}`;
-    return [{ from, to, d }];
-  });
-
-  return {
-    width: g.left * 2 + (columns.length - 1) * g.columnWidth + g.nodeWidth,
-    height: g.top + maxRows * g.rowPitch - (g.rowPitch - g.nodeHeight) + g.bottomPadding,
-    headers: columns.map((column, index) => ({ title: column.title, x: g.left + 2 + index * g.columnWidth })),
-    nodes,
-    edges: placedEdges,
-  };
+/** A step is done when every notebook is done, started when any notebook is touched. */
+export function summarizeStep(statuses: NotebookStatus[]): StepSummary {
+  const done = statuses.filter((status) => status === "done").length;
+  const touched = statuses.some((status) => status !== "not-started");
+  const status: NotebookStatus = done === statuses.length ? "done" : touched ? "in-progress" : "not-started";
+  return { done, total: statuses.length, status };
 }
 
-/** Problems that would draw a broken map; empty when the map is valid. */
-export function validateMap(columns: MapColumn[], edges: readonly MapEdge[], knownSlugs: Set<string>): string[] {
-  const problems: string[] = [];
-  const position = new Map<string, { column: number; row: number }>();
-  columns.forEach((column, columnIndex) =>
-    column.nodes.forEach((node, row) => {
-      if (position.has(node.slug)) problems.push(`${node.slug} appears more than once`);
-      if (!knownSlugs.has(node.slug)) problems.push(`${node.slug} is not a registered notebook`);
-      position.set(node.slug, { column: columnIndex, row });
-    }),
-  );
-  for (const [from, to] of edges) {
-    const a = position.get(from);
-    const b = position.get(to);
-    if (!a || !b) {
-      problems.push(`edge ${from} -> ${to} names a node that is not on the map`);
-      continue;
+export type NextUp = { stageIndex: number; stepIndex: number; slug: string };
+
+/** The first unfinished notebook along the path, or null when the whole path is done. */
+export function nextUp(stages: PathStage[], statusOf: (slug: string) => NotebookStatus): NextUp | null {
+  for (const [stageIndex, stage] of stages.entries()) {
+    for (const [stepIndex, step] of stage.steps.entries()) {
+      const slug = step.slugs.find((candidate) => statusOf(candidate) !== "done");
+      if (slug) return { stageIndex, stepIndex, slug };
     }
-    const sameColumnNeighbours = a.column === b.column && Math.abs(a.row - b.row) === 1;
-    const nextColumn = b.column === a.column + 1;
-    if (!sameColumnNeighbours && !nextColumn) {
-      problems.push(`edge ${from} -> ${to} must join neighbours in a column or move one column right`);
+  }
+  return null;
+}
+
+/** Problems that would draw a broken path; empty when the path is valid. */
+export function validatePath(stages: PathStage[], knownSlugs: Set<string>): string[] {
+  const problems: string[] = [];
+  const seen = new Set<string>();
+  const ids = new Set<string>();
+  for (const stage of stages) {
+    if (stage.steps.length === 0) problems.push(`stage "${stage.title}" has no steps`);
+    for (const step of stage.steps) {
+      if (ids.has(step.id)) problems.push(`step id "${step.id}" is used twice`);
+      ids.add(step.id);
+      if (step.slugs.length === 0) problems.push(`step "${step.id}" has no notebooks`);
+      for (const slug of step.slugs) {
+        if (!knownSlugs.has(slug)) problems.push(`${slug} is not a registered notebook`);
+        if (seen.has(slug)) problems.push(`${slug} appears more than once`);
+        seen.add(slug);
+      }
     }
   }
   return problems;

@@ -5,7 +5,7 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES, layoutMap, validateMap, type MapLayout } from "./learning-map";
+import { LEARNING_PATH, validatePath } from "./learning-map";
 import { monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
@@ -68,10 +68,9 @@ export type NotebookDetail = NotebookSummary & {
   next: NotebookNeighbour | null;
 };
 
-export type LearningMapView = MapLayout & {
-  /** Slug -> reader link and repository path, for status lookups. */
-  targets: Record<string, { href: string; repoPath: string; title: string }>;
-};
+export type PathNotebook = { slug: string; repoPath: string; href: string; title: string };
+export type PathStepView = { id: string; label: string; toolHref: string; notebooks: PathNotebook[] };
+export type LearningPathView = { stages: { title: string; purpose: string; steps: PathStepView[] }[] };
 
 const GITHUB_BLOB = `https://github.com/${repository}/blob/${branch}`;
 // Plain <a> links (downloads) are not rewritten by Next, so they carry the base path themselves.
@@ -271,19 +270,26 @@ export function getSearchEntries(): SearchEntry[] {
   });
 }
 
-/** The home page learning map, laid out, with each node resolved to its notebook. */
-export function getLearningMap(): LearningMapView {
+/** The home page learning path, with each step's notebooks resolved to links and titles. */
+export function getLearningPath(): LearningPathView {
   const { details } = load();
-  const problems = validateMap(LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES, new Set(details.keys()));
+  const problems = validatePath(LEARNING_PATH, new Set(details.keys()));
   if (problems.length > 0) {
     throw new Error(`lib/learning-map.ts issues:\n${problems.map((problem) => `  - ${problem}`).join("\n")}`);
   }
-  const layout = layoutMap(LEARNING_MAP_COLUMNS, LEARNING_MAP_EDGES);
-  const targets = Object.fromEntries(
-    layout.nodes.map((node) => {
-      const summary = details.get(node.slug)!.summary;
-      return [node.slug, { href: summary.href, repoPath: summary.repoPath, title: summary.title }];
-    }),
-  );
-  return { ...layout, targets };
+  return {
+    stages: LEARNING_PATH.map((stage) => ({
+      title: stage.title,
+      purpose: stage.purpose,
+      steps: stage.steps.map((step) => ({
+        id: step.id,
+        label: step.label,
+        toolHref: step.toolHref,
+        notebooks: step.slugs.map((slug) => {
+          const { summary } = details.get(slug)!;
+          return { slug, repoPath: summary.repoPath, href: summary.href, title: summary.title };
+        }),
+      })),
+    })),
+  };
 }

@@ -3,7 +3,7 @@ import { ContinueRow, type Starter } from "@/components/ContinueRow";
 import { HomeHero } from "@/components/HomeHero";
 import { LearningMap } from "@/components/LearningMap";
 import { ToolGrid } from "@/components/ToolGrid";
-import { getLearningMap, getNotebookList, getTool, getToolCategories, getTools, type ToolView } from "@/lib/notebooks";
+import { getLearningPath, getNotebookList, getTool, getToolCategories, getTools, type ToolView } from "@/lib/notebooks";
 
 /** The first subtopic of a tool, as a starting-point card. */
 function starterFor(tool: ToolView | null, text: string): Starter[] {
@@ -32,7 +32,7 @@ export default function Home() {
         sqlStart={sql!.notebooks[0]}
         practiceHref={interview!.href}
       />
-      <LearningMap map={getLearningMap()} />
+      <LearningMap path={getLearningPath()} />
       <ContinueRow notebooks={notebooks} starters={starters} />
 
       <div className="section-head" id="tools">
