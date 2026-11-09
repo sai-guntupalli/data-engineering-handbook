@@ -5,6 +5,9 @@
 
 ## Completed
 
+- 2026-11-09: "Tools" renamed to "Topics" in the UI (`feat/learning-path`): the home page section, the sidebar
+  label, the starred group and page, star labels and empty-state text. Concepts and Interview prep are not tools, and
+  the folders already live in `notebooks/topics/`. URLs stay `/tools/<folder>/` so existing links keep working.
 - 2026-11-09: Learning path replaces the learning map (`feat/learning-path`). The old map pointed each node at a single
   notebook (the "PySpark" node was a one-minute overview), covered 14 of 106 notebooks, scrolled sideways on phones and
   never said what to read next. The path has six stages (Foundations, Process at scale, Model and test, Store,

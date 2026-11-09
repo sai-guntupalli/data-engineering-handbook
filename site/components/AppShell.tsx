@@ -75,7 +75,7 @@ export function AppShell({
         </Link>
         <SidebarSearchButton />
 
-        <div className="nav-label">Tools</div>
+        <div className="nav-label">Topics</div>
         <SidebarTools
           currentTool={tool}
           categories={categories.map((category) => ({
