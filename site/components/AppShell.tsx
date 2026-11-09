@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Fragment, type ReactNode } from "react";
 import { CaretRight, GithubLogo, SquaresFour, Star } from "@phosphor-icons/react/dist/ssr";
-import { getTools } from "@/lib/notebooks";
+import { getToolCategories } from "@/lib/notebooks";
 import { authorHref, authorName, licenseName, repositoryHref } from "@/lib/site";
 import { toneStyle } from "@/lib/tone";
 import { SearchTrigger, SidebarSearchButton } from "./palette";
@@ -38,8 +38,8 @@ export function AppShell({
   current?: "library";
   children: ReactNode;
 }) {
-  const tools = getTools();
-  const total = tools.reduce((sum, tool) => sum + tool.notebooks.length, 0);
+  const categories = getToolCategories();
+  const total = categories.reduce((sum, category) => sum + category.tools.reduce((n, tool) => n + tool.notebooks.length, 0), 0);
 
   return (
     <div className="app">
@@ -67,13 +67,17 @@ export function AppShell({
         </Link>
         <SidebarSearchButton />
 
-        <div className="nav-label">Tools</div>
-        {tools.map((tool) => (
-          <Link key={tool.folder} className="nav-link" data-tip={tool.label} href={tool.href}>
-            <span className="dot" style={toneStyle(tool.tone, "--dot")} aria-hidden />
-            <span className="nav-text">{tool.label}</span>
-            <span className="nav-count">{tool.notebooks.length}</span>
-          </Link>
+        {categories.map((category) => (
+          <Fragment key={category.id}>
+            <div className="nav-label">{category.label}</div>
+            {category.tools.map((tool) => (
+              <Link key={tool.folder} className="nav-link" data-tip={tool.label} href={tool.href}>
+                <span className="dot" style={toneStyle(tool.tone, "--dot")} aria-hidden />
+                <span className="nav-text">{tool.label}</span>
+                <span className="nav-count">{tool.notebooks.length}</span>
+              </Link>
+            ))}
+          </Fragment>
         ))}
 
         <p className="sidebar-foot">

@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { TOOLS, anchorFor, categoryOf, compareSubtopics } from "../lib/tools";
+import { TOOL_CATEGORIES, TOOLS, anchorFor, categoryOf, compareSubtopics, toolSortName } from "../lib/tools";
 
 const TOPICS_DIR = path.resolve(__dirname, "../../notebooks/topics");
 
@@ -47,5 +47,17 @@ describe("the tool registry", () => {
     const unique = (values: string[]) => new Set(values).size === values.length;
     expect(unique(TOOLS.map((tool) => tool.label))).toBe(true);
     expect(unique(TOOLS.map((tool) => anchorFor(tool.label)))).toBe(true);
+  });
+
+  it("puts every tool in a category, and leaves no category empty", () => {
+    const ids = TOOL_CATEGORIES.map((category) => category.id);
+    expect(TOOLS.every((tool) => ids.includes(tool.category))).toBe(true);
+    for (const id of ids) expect(TOOLS.some((tool) => tool.category === id)).toBe(true);
+  });
+
+  it("sorts tool names without their vendor prefix", () => {
+    expect(toolSortName("Apache Kafka")).toBe("kafka");
+    expect(toolSortName("Amazon Redshift")).toBe("redshift");
+    expect(toolSortName("dbt")).toBe("dbt");
   });
 });

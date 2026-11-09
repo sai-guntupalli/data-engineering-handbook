@@ -5,6 +5,12 @@
 
 ## Completed
 
+- 2026-11-09: Tool categories (`feat/tool-categories`): the sidebar and the home page group the 43 tools under 12
+  categories: Languages, Processing engines, Streaming and ingestion, Orchestration and transformation, File and table
+  formats, Data warehouses, NoSQL and search, Cloud platforms, BI and dashboards, Containers and infrastructure, Concepts
+  and Interview prep. Each tool in `site/lib/tools.ts` has a `category`. Inside a category, tools sort without their
+  "Apache" or "Amazon" prefix.
+
 - 2026-11-09: Notebook names standardized (`chore/standardize-notebook-names`): 31 files renamed to lowercase kebab-case that
   starts with the tool name. Examples: `01_python_basics` became `python-interview-basics`, `03_sql_interview_questions` became
   `sql-00-start-here`, `python-01-practice-*` became `python-drills-01-*`, and `dwha` became `data-warehousing`. The `spark/`
