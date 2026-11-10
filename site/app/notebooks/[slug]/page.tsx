@@ -319,7 +319,7 @@ export default async function NotebookPage({ params }: Params) {
               {notebook.next ? (
                 <Link href={notebook.next.href} className="next">
                   <small>
-                    Next in {notebook.toolLabel}
+                    Next {notebook.pagerLabel}
                     <ArrowRight size={13} aria-hidden />
                   </small>
                   <strong>{notebook.next.title}</strong>

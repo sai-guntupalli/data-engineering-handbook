@@ -1,9 +1,10 @@
 # Progress
 
 **Current Status**: Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
-`feat/review-p1-merge-notebooks`, awaiting review. Site review done (7.0/10, `docs/reviews/2026-11-09-site-review.md`) and its P0 errors fixed
-(PR #67, merged). Results on the site (cell outputs from a CI-executed copy) are merged
-(PR #68). 103 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
+`feat/review-p1-merge-notebooks` (PR #70), awaiting review. Site review done (7.0/10,
+`docs/reviews/2026-11-09-site-review.md`); P0 errors fixed (#67), results on the site (#68) and the learning-path
+pager with hidden SQL 13 solutions (#69) are merged. 103 notebooks, all Colab-runnable and executed by CI on
+PySpark 4.0 (JDK 17), stored in
 `notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
 
 ## Completed
@@ -30,6 +31,13 @@
   - The learning path drops the retired notebooks (Process at scale is the PySpark track).
   Verified: all 23 changed notebooks run top to bottom on PySpark 4.0.5 with JDK 17; format check and audit pass on
   all 103; pytest, vitest, ruff, eslint, tsc and `next build` pass; the three redirect pages point at the right notebooks.
+- 2026-11-10: Review P1, navigation and drills (`feat/review-p1-navigation`, PR #69, merged). The reader's pager now follows the
+  learning path first (Parquet -> Delta Lake -> Iceberg, Airflow -> Kafka -> Flink, Python 9 -> SQL 0), then the
+  notebook's tool, then its category, so single-notebook tools such as Avro link onward. Before, 39 pages had no pager;
+  now all 106 do, and the 12 without a "next" link are last in their order. Rules are in `site/lib/pager.ts`
+  (`pickNeighbours`), with unit tests. SQL 13's 22 answer cells are tagged `solution`, so the reader keeps them closed
+  until opened, and the intro says to write the query first. Verified: SQL 13 runs on PySpark 4.0.5, vitest (72),
+  tsc, lint, the notebook audit and `next build` pass; checked in the browser.
 - 2026-11-09: Results on the site (`feat/site-rendered-outputs`). The reader now shows each code cell's output under
   it. Notebooks stay output-free in git: `scripts/run_notebooks.py --output-dir build/executed` (`make outputs`) saves a
   copy of each notebook that runs cleanly, with trimmed outputs (no setup-cell noise, no HTML, no ANSI colour, text
@@ -339,14 +347,15 @@
    results on the site are in #68):
    - P1 dedupe: done in `feat/review-p1-merge-notebooks` (merged notebooks, one home per topic). Still open:
      trimming pyspark-concepts-end-to-end to a capstone.
-   - P1: SQL chapter order (basics, joins, NULL, CASE, aggregations/CTEs, set ops, windows); a "next in learning
-     path" link on the 39 standalone pages; a Reference/Legacy shelf for notebooks off the path.
-   - P1: hidden solutions and difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise.
+   - P1: SQL chapter order (basics, joins, NULL, CASE, aggregations/CTEs, set ops, windows); a Reference/Legacy
+     shelf for notebooks off the path. (The learning-path pager is done, #69.)
+   - P1: difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise. (SQL 13 solutions are
+     hidden, #69.)
    - P2: real engines instead of simulations, a freshness pass with version badges, missing pages, UX polish.
 1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
 2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
    mode.
-3. Review and merge `feat/site-rendered-outputs` (results on the site). After the first deploy, check a PySpark
+3. Results on the site merged (#68). On the deployed site, check a PySpark
    page (show() tables), a Python lesson (prints) and the deploy time (it now executes every notebook).
 4. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
 5. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled

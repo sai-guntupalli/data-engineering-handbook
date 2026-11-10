@@ -7,6 +7,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_PATH, validatePath } from "./learning-map";
 import { RETIRED_NOTEBOOKS } from "./retired";
+import { pickNeighbours, type ReadingOrder } from "./pager";
 import { attachOutputs, monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
@@ -71,6 +72,8 @@ export type NotebookDetail = NotebookSummary & {
   cells: ParsedCell[];
   previous: NotebookNeighbour | null;
   next: NotebookNeighbour | null;
+  /** Where the pager's order comes from, after "Next": "on the learning path", "in PySpark", ... */
+  pagerLabel: string;
 };
 
 export type PathNotebook = { slug: string; repoPath: string; href: string; title: string };
@@ -264,22 +267,38 @@ export function getNotebookSlugs(): string[] {
   return getNotebookList().map((notebook) => notebook.slug);
 }
 
-/** One notebook with its cells, plus the notebooks before and after it in its tool. */
+/** Reading orders the pager tries in turn: the learning path, the notebook's tool, then its category. */
+function readingOrdersFor(summary: NotebookSummary): ReadingOrder[] {
+  const tool = getTool(summary.toolFolder);
+  const category = getToolCategories().find((view) => view.tools.some((each) => each.folder === summary.toolFolder));
+  return [
+    { label: "on the learning path", slugs: LEARNING_PATH.flatMap((stage) => stage.steps.flatMap((step) => step.slugs)) },
+    { label: `in ${summary.toolLabel}`, slugs: tool?.notebooks.map((notebook) => notebook.slug) ?? [] },
+    {
+      label: `in ${category?.label ?? summary.categoryLabel}`,
+      slugs: category?.tools.flatMap((each) => each.notebooks.map((notebook) => notebook.slug)) ?? [],
+    },
+  ];
+}
+
+/** One notebook with its cells, plus the notebooks before and after it (see lib/pager.ts). */
 export function getNotebook(slug: string): NotebookDetail | null {
   const { details } = load();
   const loaded = details.get(slug);
   if (!loaded) return null;
-  const siblings = getTool(loaded.summary.toolFolder)?.notebooks ?? [];
-  const at = siblings.findIndex((notebook) => notebook.slug === slug);
-  const neighbour = (notebook: NotebookSummary | undefined): NotebookNeighbour | null =>
-    notebook ? { title: notebook.title, href: notebook.href } : null;
+  const choice = pickNeighbours(slug, readingOrdersFor(loaded.summary));
+  const neighbour = (other: string | null | undefined): NotebookNeighbour | null => {
+    const found = other ? details.get(other)?.summary : undefined;
+    return found ? { title: found.title, href: found.href } : null;
+  };
   return {
     ...loaded.summary,
     intro: loaded.intro,
     sections: loaded.sections,
     cells: loaded.cells,
-    previous: neighbour(siblings[at - 1]),
-    next: neighbour(siblings[at + 1]),
+    previous: neighbour(choice?.previous),
+    next: neighbour(choice?.next),
+    pagerLabel: choice?.label ?? `in ${loaded.summary.toolLabel}`,
   };
 }
 

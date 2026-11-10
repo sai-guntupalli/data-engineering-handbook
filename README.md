@@ -13,7 +13,8 @@ in Colab to run it.
   per step and a "Next up" link; resume cards for what you were reading; and a card for every tool, grouped by category.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
   explanations, code, self-checks and solutions, a table of contents that ticks off sections as you scroll past them,
-  and buttons to open it in Colab or download the `.ipynb`. Solutions to practice problems are cells tagged
+  and buttons to open it in Colab or download the `.ipynb`. The pager at the bottom follows the learning path
+  (Parquet, then Delta Lake, then Iceberg), then the notebook's tool, then its category, so every page links onward. Solutions to practice problems are cells tagged
   `solution`; the reader shows each one as a panel that stays closed until you open it. The deployed site shows
   each code cell's results under it, from an executed copy that CI builds; the notebooks themselves stay output-free.
 - **Moved notebooks**: notebooks merged into others are listed in `site/lib/retired.ts`; their old URLs redirect to
