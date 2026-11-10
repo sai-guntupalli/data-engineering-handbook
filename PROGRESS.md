@@ -3,11 +3,35 @@
 **Current Status**: All P0 and P1 items from the 2026-11-09 site review are merged (#67-#73): verified errors fixed,
 results shown on the site, a pager on every page, 103 notebooks after merges with redirects for old URLs, SQL chapters
 in dependency order, a Legacy shelf, stronger practice checks with difficulty tags, a PySpark capstone, and reader/SEO
-polish. P2 (freshness pass, real engines, new topics, payload size) is next. Notebooks are Colab-runnable, executed by
+polish. The P2 freshness pass is on `feat/review-p2-freshness` (33 tool pages); real engines, new topics and
+payload size are next. Notebooks are Colab-runnable, executed by
 CI on PySpark 4.0 (JDK 17), and stored in `notebooks/topics/<tool>/`; the site lists 43 tools.
 
 ## Completed
 
+- 2026-11-10: P2 freshness pass (`feat/review-p2-freshness`). 33 tool pages updated for 2025-26 releases, each with
+  a `*Last reviewed: November 2026, against <tool/version>.*` line; new version facts were checked against official
+  docs or release notes, and five surprising ones re-checked by hand (Spark 4.3, Kafka 4.4, dbt v2 GA, Dataplex ->
+  Knowledge Catalog, Cloud Composer -> Managed Service for Apache Airflow).
+  - Spark and streaming: Spark Connect, VARIANT and Python Data Source cells (runnable on 4.0),
+    `transformWithStateInPandas`; Kafka 4.x (ZooKeeper removed, KIP-848, share groups and DLQ) and an error-handling
+    consumer loop; Flink 2.x and Flink CDC; NiFi 2.x and Python processors; Hive 4 with Iceberg and the metastore as
+    a catalog; Trino release numbering and corrected connector write support.
+  - Formats: Delta table features with liquid clustering first; Iceberg format v3 and neutral catalogs (REST,
+    Polaris, S3 Tables); Hudi 1.x and an explicit "this is a model" note; Parquet page index, bloom filters,
+    encodings, field IDs, encryption and new types, with two runnable pyarrow cells (`pyarrow>=26`).
+  - Warehouses: Redshift AUTO keys, AQUA status, Serverless, zero-ETL, data sharing, streaming, Iceberg; Snowflake
+    Gen2, Cortex, Open Catalog/Polaris, hybrid tables; BigQuery editions, managed Iceberg, search and vector indexes,
+    continuous queries; ClickHouse JSON type, lightweight updates, SharedMergeTree; Greenplum status and Cloudberry.
+  - NoSQL and search: Cassandra 5.0 and Accord status; Elasticsearch ES|QL, logsdb, `semantic_text`, OpenSearch at
+    the Linux Foundation; MongoDB Search/Vector Search and Queryable Encryption; DynamoDB global tables and zero-ETL;
+    Bigtable SQL and continuous materialized views; Bigtable/HBase cross-links.
+  - Cloud and orchestration: Azure rebuilt around Microsoft Fabric/OneLake with Synapse as the existing path and a
+    migration section; Databricks Lakehouse Federation and UCX; AWS S3 Tables and IaC; GCP editions, Knowledge
+    Catalog, Dataform; Looker vs Data Studio; dbt v2, microbatch, Mesh and the Semantic Layer; Airflow 3 framing,
+    AssetWatcher and HITL; Kubernetes batch schedulers.
+  Verified: all 33 changed notebooks run top to bottom (PySpark 4.0.5, JDK 17); format check and audit pass on all
+  103; pytest (44), vitest (81), ESLint and `next build` pass.
 - 2026-11-10: P2 reader and search.
   On `feat/review-p2-reader`, based on master after #72:
   - Label Spark/DuckDB SQL wrappers accurately and describe assertion-bearing cells as checked examples.
@@ -390,14 +414,8 @@ CI on PySpark 4.0 (JDK 17), and stored in `notebooks/topics/<tool>/`; the site l
 
 Remaining roadmap from `docs/reviews/2026-11-09-site-review.md` (P2), in priority order:
 
-1. Freshness pass with a "last reviewed" line on every tool page. Update for 2025-26 releases: Spark Connect and Spark 4
-   features; Kafka 4 (KIP-848 consumer protocol, share groups); Flink 2.x; NiFi 2.x; Hudi 1.0; Iceberg v3 and
-   catalogs (Polaris, S3 Tables); Delta row tracking and liquid clustering first; Parquet bloom filters and page index;
-   Redshift (zero-ETL, data sharing, Serverless; fix the AQUA and interleaved-key emphasis); Snowflake (Cortex,
-   Open Catalog, Gen2, hybrid tables); BigQuery editions and managed Iceberg; ClickHouse JSON type and lightweight
-   updates; Greenplum status; Cassandra 5 (SAI, Accord); Elasticsearch ES|QL and `semantic_text`; MongoDB Atlas
-   Search/Vector Search; DynamoDB global tables; Azure rewritten around Fabric/OneLake; Databricks UCX; Looker vs
-   Looker Studio; dbt microbatch and Fusion; Airflow intro framing (Airflow 3); Kubernetes batch schedulers.
+1. Freshness pass: done on `feat/review-p2-freshness` for 33 tool pages. Tool pages not yet carrying a
+   "Last reviewed" line (concepts, BI, Docker, Scala, Flume, Impala, Hadoop, SQL/Python tracks) are next in line.
 2. Run real tools instead of simulations where Colab allows: Delta/Iceberg MERGE in PySpark 5 and SQL 12, a real
    streaming source and windowed aggregation in PySpark 6, a dbt-duckdb project, scala-cli for Scala, a local PyFlink
    cell; label the remaining simulated cells.
