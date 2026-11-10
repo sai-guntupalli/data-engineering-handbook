@@ -112,6 +112,9 @@ To improve:
 
 ## Roadmap
 
+Status: P0 errors fixed (#67) and results on the site (#68). P1 dedupe: notebooks merged and one home per
+repeated topic (`feat/review-p1-merge-notebooks`).
+
 | Pri | Work |
 |---|---|
 | P0 | Fix every verified error above; link the PySpark overview table; replace the SQL 0 changelog with a learner roadmap |

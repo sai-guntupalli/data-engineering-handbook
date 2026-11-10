@@ -6,6 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_PATH, validatePath } from "./learning-map";
+import { RETIRED_NOTEBOOKS } from "./retired";
 import { attachOutputs, monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
@@ -200,10 +201,21 @@ function assertRegistryMatchesFolders(files: NotebookFile[]): void {
 let cache: { tools: ToolView[]; details: Map<string, LoadedNotebook> } | undefined;
 
 /** Parsed once per build; the notebooks tree is static repository content. */
+/** A retired notebook must be gone from the repository, and the notebook it moved to must exist. */
+function assertRetiredNotebooksMoved(files: NotebookFile[]) {
+  const live = new Map(files.map((file) => [file.slug, file.repoPath]));
+  const problems = RETIRED_NOTEBOOKS.flatMap((retired) => [
+    ...(live.has(retired.slug) ? [`${retired.slug} is listed in lib/retired.ts but still exists`] : []),
+    ...(live.get(retired.movedTo) === retired.movedToPath ? [] : [`${retired.slug} moved to ${retired.movedToPath}, which is missing`]),
+  ]);
+  if (problems.length > 0) throw new Error(`lib/retired.ts is out of date:\n${problems.map((p) => `  - ${p}`).join("\n")}`);
+}
+
 function load() {
   if (cache) return cache;
   const files = listNotebookFiles();
   assertRegistryMatchesFolders(files);
+  assertRetiredNotebooksMoved(files);
   const details = new Map<string, LoadedNotebook>();
   const tools: ToolView[] = [...TOOLS]
     .sort((a, b) => toolSortName(a.label).localeCompare(toolSortName(b.label), "en"))
