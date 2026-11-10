@@ -70,6 +70,7 @@ site/                      Next.js static site (GitHub Pages); reads ../notebook
   app/notebooks/[slug]/    the reader; app/files/ serves each .ipynb; app/search-index.json feeds search
   tests/                   vitest unit tests for lib/
 docs/mockups/              static design mockups the site is built from
+docs/reviews/              content and UX reviews of the site, with the fix checklist
 ```
 
 ## Commands
