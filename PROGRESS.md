@@ -66,6 +66,17 @@ as deployed platform integrations.
 
 ## Completed
 
+- 2026-11-11: Snowflake notebook review and polish (`feat/snowflake-notebook-polish`). A review of the rewrite
+  (#78) found a rigid template (four identical sub-headings on all 38 topics), limitations that restated the
+  explanation, cost facts scattered across five topics, recent features stranded in their own part, two overlapping
+  tuning topics and no quick reference. Changes: each topic now opens with a plain lead (problem, then what it is and
+  how it works), then "Use it for" (or "Where it matters" for concepts), "Watch out for" and an Example, with no
+  restated facts; a new "How Snowflake bills you" topic consolidates the cost model; Gen2 sits with warehouses,
+  Horizon/Open Catalog with Iceberg, Cortex with UDFs, hybrid tables with transactions, resource monitors with cost;
+  the query-profile and step-by-step tuning topics are merged; a "Key numbers to remember" table (11 rows, each traced
+  to its topic) precedes the exercises. 39 topics in six parts; prose down from 14.7K to 12.0K words (total 21.8K ->
+  18.8K, most of the rest is SQL). Verified: runs top to bottom; format check and audit pass; `next build` passes;
+  checked in the browser.
 - 2026-11-11: Snowflake notebook rewritten for clarity (`feat/snowflake-notebook-rewrite`). The owner found that
   code came before explanations and that explanations were unclear. The 36 question-style sections became 38 topics
   under plain headings, each in the same order: **Explanation** (simple words, terms defined on first use),
