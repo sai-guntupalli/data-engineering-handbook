@@ -112,6 +112,8 @@ To improve:
 
 ## Roadmap
 
+P2 freshness pass: 33 tool pages updated with a "Last reviewed" line (`feat/review-p2-freshness`).
+
 P2 reader batch (2026-11-10, `feat/review-p2-reader`): SQL wrapper labels, checked-example labels, immediate section
 search results, palette index warmup/cache, compact mobile top bar, canonical URLs, social image and WebSite JSON-LD
 implemented. Site tests (81), lint, type check and build pass; SQL reader and search checked in browser.

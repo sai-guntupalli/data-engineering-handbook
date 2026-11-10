@@ -641,7 +641,7 @@ requires-dist = [
     { name = "pandas", marker = "extra == 'notebooks'", specifier = ">=2.2" },
     { name = "pip", marker = "extra == 'notebooks'", specifier = ">=24" },
     { name = "polars", marker = "extra == 'notebooks'", specifier = ">=1.0" },
-    { name = "pyarrow", marker = "extra == 'notebooks'", specifier = ">=15" },
+    { name = "pyarrow", marker = "extra == 'notebooks'", specifier = ">=26" },
     { name = "pyiceberg", extras = ["sql-sqlite", "pyarrow", "pyiceberg-core"], marker = "extra == 'notebooks'", specifier = ">=0.9" },
     { name = "pyspark", marker = "extra == 'notebooks'", specifier = ">=4.0,<4.1" },
     { name = "pytest", marker = "extra == 'notebooks'", specifier = ">=8" },
