@@ -112,6 +112,14 @@ To improve:
 
 ## Roadmap
 
+P2 freshness pass: 33 tool pages updated with a "Last reviewed" line (`feat/review-p2-freshness`).
+
+P2 reader batch (2026-11-10, `feat/review-p2-reader`): SQL wrapper labels, checked-example labels, immediate section
+search results, palette index warmup/cache, compact mobile top bar, canonical URLs, social image and WebSite JSON-LD
+implemented. Site tests (81), lint, type check and build pass; SQL reader and search checked in browser.
+Pages run 42829280321 provides a baseline: outputs 7m10s, build 8m38s, workflow about 10m40s. HTML payload reduction,
+tool freshness, runnable integrations, new pages and curriculum additions are still open.
+
 P1 practice update (2026-11-10, `feat/review-p1-practice`): completed difficulty tags, 6–10 checks per Python
 exercise, reference-answer and wrong-answer verification across all 18 practice notebooks, failure-path atomic-write
 checks, explicit lock-use verification, and a deterministic content-hash upsert drill. The PySpark concepts notebook

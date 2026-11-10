@@ -36,6 +36,8 @@ function isTyping(target: EventTarget | null): boolean {
 
 /** Owns the palette's open state and the ⌘K / Ctrl+K and / shortcuts. */
 export function PaletteProvider({ children }: { children: ReactNode }) {
+  // Warm the shared static index while the reader is idle, before opening search.
+  useSearchIndex(true);
   const [isOpen, setIsOpen] = useState(false);
   const open = useCallback(() => setIsOpen(true), []);
 

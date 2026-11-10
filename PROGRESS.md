@@ -19,43 +19,75 @@
   DuckDB and says so. Catalog, IAM, orchestration and compatibility examples are explicitly local models.
 - Python lessons identify Python 3.12+ as their target; concurrency includes TaskGroup and timeout examples.
 
-The wider P2 roadmap is **not complete**: the platform-by-platform release refresh, real Iceberg DML,
+The wider P2 roadmap is **not complete**: real Iceberg DML,
 Scala/PyFlink runtimes, per-chapter SQL dialect comparisons, pytest/Polars lesson expansion and deeper new-topic
 coverage still require work. This batch does not claim production PostgreSQL, cloud IAM or deployed orchestration
-validation. Reader performance work is tracked separately in PR #73.
+validation. The tool freshness and reader/SEO updates from #73–#75 are merged and preserved.
 
-## Practice verification — 2026-11-10
-
-Completed the interrupted P1 practice work on `feat/review-p1-practice`:
-
-- Python challenges 1–9 and drills 1–9 now have difficulty estimates and 6–10 labelled checks per exercise.
-  The binary-search explanation compares the middle value with the right boundary. Pipeline-context notes connect
-  the algorithm challenges to data work.
-- File drills test replacement and partial-write failures: original content survives and temporary files are removed.
-  The reference atomic writer cleans up in `finally`. Retry drills reject non-positive attempt counts.
-- Concurrency drills test result order, bounded concurrency, cancellation and errors. Instrumented lock scopes reject
-  unlocked counter and queue implementations on five repeated trials. The queue exercise explicitly explains that
-  CPython list append is atomic; scheduler timing is not used to claim a guaranteed race.
-- Data-engineering drill 7 implements canonical JSON SHA-256 upserts, timestamp/hash tie-breaking, stale-row rejection,
-  immutable inputs and idempotent replay. Newer unchanged payloads advance version metadata.
-- SQL 13 and all 34 PySpark challenges have difficulty estimates. The 46-cell PySpark capstone replaces repeated
-  lessons with a batch pipeline and 12 interview questions; it links to modules 1–8.
-- Added `scripts/verify_practice_answers.py`: nbclient executes temporary notebook copies with reference answers,
-  checks scores and rejects wrong answers without storing outputs in source notebooks.
-
-Verification: all 21 changed notebooks execute cleanly (PySpark 4.0 with Java 17); notebook format/audit pass for all
-103 notebooks; Python tests (44), site tests (79), ruff, ESLint, TypeScript and production build pass.
-The broader P2 freshness, new-topic and site-performance roadmap remains pending; this entry covers the P1 practice work.
-
-**Current Status**: SQL chapter order and Legacy shelf on `feat/review-p1-sql-order` (stacked on #70). Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
-`feat/review-p1-merge-notebooks` (PR #70), awaiting review. Site review done (7.0/10,
-`docs/reviews/2026-11-09-site-review.md`); P0 errors fixed (#67), results on the site (#68) and the learning-path
-pager with hidden SQL 13 solutions (#69) are merged. 103 notebooks, all Colab-runnable and executed by CI on
-PySpark 4.0 (JDK 17), stored in
-`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
+**Current Status**: All P0 and P1 items from the 2026-11-09 site review are merged (#67-#73): verified errors fixed,
+results shown on the site, a pager on every page, 103 notebooks after merges with redirects for old URLs, SQL chapters
+in dependency order, a Legacy shelf, stronger practice checks with difficulty tags, a PySpark capstone, and reader/SEO
+polish. The P2 freshness pass is on `feat/review-p2-freshness` (33 tool pages); real engines, new topics and
+payload size are next. Notebooks are Colab-runnable, executed by
+CI on PySpark 4.0 (JDK 17), and stored in `notebooks/topics/<tool>/`; the site lists 43 tools.
 
 ## Completed
 
+- 2026-11-10: P2 freshness pass (`feat/review-p2-freshness`). 33 tool pages updated for 2025-26 releases, each with
+  a `*Last reviewed: November 2026, against <tool/version>.*` line; new version facts were checked against official
+  docs or release notes, and five surprising ones re-checked by hand (Spark 4.3, Kafka 4.4, dbt v2 GA, Dataplex ->
+  Knowledge Catalog, Cloud Composer -> Managed Service for Apache Airflow).
+  - Spark and streaming: Spark Connect, VARIANT and Python Data Source cells (runnable on 4.0),
+    `transformWithStateInPandas`; Kafka 4.x (ZooKeeper removed, KIP-848, share groups and DLQ) and an error-handling
+    consumer loop; Flink 2.x and Flink CDC; NiFi 2.x and Python processors; Hive 4 with Iceberg and the metastore as
+    a catalog; Trino release numbering and corrected connector write support.
+  - Formats: Delta table features with liquid clustering first; Iceberg format v3 and neutral catalogs (REST,
+    Polaris, S3 Tables); Hudi 1.x and an explicit "this is a model" note; Parquet page index, bloom filters,
+    encodings, field IDs, encryption and new types, with two runnable pyarrow cells (`pyarrow>=26`).
+  - Warehouses: Redshift AUTO keys, AQUA status, Serverless, zero-ETL, data sharing, streaming, Iceberg; Snowflake
+    Gen2, Cortex, Open Catalog/Polaris, hybrid tables; BigQuery editions, managed Iceberg, search and vector indexes,
+    continuous queries; ClickHouse JSON type, lightweight updates, SharedMergeTree; Greenplum status and Cloudberry.
+  - NoSQL and search: Cassandra 5.0 and Accord status; Elasticsearch ES|QL, logsdb, `semantic_text`, OpenSearch at
+    the Linux Foundation; MongoDB Search/Vector Search and Queryable Encryption; DynamoDB global tables and zero-ETL;
+    Bigtable SQL and continuous materialized views; Bigtable/HBase cross-links.
+  - Cloud and orchestration: Azure rebuilt around Microsoft Fabric/OneLake with Synapse as the existing path and a
+    migration section; Databricks Lakehouse Federation and UCX; AWS S3 Tables and IaC; GCP editions, Knowledge
+    Catalog, Dataform; Looker vs Data Studio; dbt v2, microbatch, Mesh and the Semantic Layer; Airflow 3 framing,
+    AssetWatcher and HITL; Kubernetes batch schedulers.
+  Verified: all 33 changed notebooks run top to bottom (PySpark 4.0.5, JDK 17); format check and audit pass on all
+  103; pytest (44), vitest (81), ESLint and `next build` pass.
+- 2026-11-10: P2 reader and search.
+  On `feat/review-p2-reader`, based on master after #72:
+  - Label Spark/DuckDB SQL wrappers accurately and describe assertion-bearing cells as checked examples.
+  - Render the section index with the search page; warm and cache the palette index before the first search.
+  - Keep mobile top-bar controls in a non-wrapping 48px row.
+  - Add canonical URLs on home, topic, notebook and search pages, a 1200×630 PNG social image (SVG source retained),
+    large-image Twitter metadata and WebSite JSON-LD.
+  - Measured completed Pages run 42829280321: notebook outputs took 7m10s (13:58:05–14:05:15 UTC);
+    build job 8m38s and total workflow about 10m40s. This is a post-change baseline, not a proven regression versus
+    the old workflow; earlier runs need a comparable dataset before attributing a timing difference.
+  Verified: site tests (81), ESLint, TypeScript and static production build; browser review of SQL labels and immediate
+  search results. No notebook content changed in this batch. The wider P2 tool freshness pass, real-tool examples,
+  new topics, Python additions, SQL translations, shared-code deduplication and HTML payload reduction remain pending.
+- 2026-11-10: Practice verification.
+  Completed the interrupted P1 practice work on `feat/review-p1-practice`:
+  - Python challenges 1–9 and drills 1–9 now have difficulty estimates and 6–10 labelled checks per exercise.
+    The binary-search explanation compares the middle value with the right boundary. Pipeline-context notes connect
+    the algorithm challenges to data work.
+  - File drills test replacement and partial-write failures: original content survives and temporary files are removed.
+    The reference atomic writer cleans up in `finally`. Retry drills reject non-positive attempt counts.
+  - Concurrency drills test result order, bounded concurrency, cancellation and errors. Instrumented lock scopes reject
+    unlocked counter and queue implementations on five repeated trials. The queue exercise explicitly explains that
+    CPython list append is atomic; scheduler timing is not used to claim a guaranteed race.
+  - Data-engineering drill 7 implements canonical JSON SHA-256 upserts, timestamp/hash tie-breaking, stale-row rejection,
+    immutable inputs and idempotent replay. Newer unchanged payloads advance version metadata.
+  - SQL 13 and all 34 PySpark challenges have difficulty estimates. The 46-cell PySpark capstone replaces repeated
+    lessons with a batch pipeline and 12 interview questions; it links to modules 1–8.
+  - Added `scripts/verify_practice_answers.py`: nbclient executes temporary notebook copies with reference answers,
+    checks scores and rejects wrong answers without storing outputs in source notebooks.
+  Verification: all 21 changed notebooks execute cleanly (PySpark 4.0 with Java 17); notebook format/audit pass for all
+  103 notebooks; Python tests (44), site tests (79), ruff, ESLint, TypeScript and production build pass.
+  The broader P2 freshness, new-topic and site-performance roadmap remains pending; this entry covers the P1 practice work.
 - 2026-11-10: Review P1, SQL chapter order and the Legacy shelf (`feat/review-p1-sql-order`, stacked on #70).
   - SQL chapters renumbered into dependency order: 1 basics, 2 joins, 3 NULL handling, 4 CASE, 5 aggregations and CTEs,
     6 set operations, 7 types, functions and JSON, then 8-14 unchanged. Six files renamed (`sql-06-joins` ->
@@ -404,31 +436,25 @@ PySpark 4.0 (JDK 17), stored in
 
 ## Next Steps
 
-0. Continue the review roadmap in `docs/reviews/2026-11-09-site-review.md`, in order (P0 errors are fixed in #67;
-   results on the site are in #68):
-   - P1 dedupe: done in `feat/review-p1-merge-notebooks` (merged notebooks, one home per topic). Still open:
-     trimming pyspark-concepts-end-to-end to a capstone.
-   - P1: SQL chapter order and the Legacy shelf: done in `feat/review-p1-sql-order`.
-   - P1: difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise. (SQL 13 solutions are
-     hidden, #69.)
-   - P2: real engines instead of simulations, a freshness pass with version badges, missing pages, UX polish.
-1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
-2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
-   mode.
-3. Results on the site merged (#68). On the deployed site, check a PySpark
-   page (show() tables), a Python lesson (prints) and the deploy time (it now executes every notebook).
-4. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
-5. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
-   Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
-6. Decide on the older DuckDB reference `topics/sql.ipynb` (61K words, 74 cells). It overlaps the new path, so it is
-   a candidate to trim or to link from the index.
-7. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
-   split), `notebooks/04_pyspark_concepts.ipynb` (exercise edits), and untracked `scripts/split_sql_notebooks.py`,
-   `scripts/add_core_sql_topics.py` and `topics/sql-*` drafts. None of them are on master.
-8. Review and merge the PySpark challenges PR (`feat/pyspark-coding-challenges`). Check the reader on the deployed
-   site: 24 solution panels closed on load, opening one shows the code, and the cell map shows the solution ticks.
-9. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
-   `02_python_coding_problems` (12K).
+Remaining roadmap from `docs/reviews/2026-11-09-site-review.md` (P2), in priority order:
+
+1. Freshness pass: done on `feat/review-p2-freshness` for 33 tool pages. Tool pages not yet carrying a
+   "Last reviewed" line (concepts, BI, Docker, Scala, Flume, Impala, Hadoop, SQL/Python tracks) are next in line.
+2. Run real tools instead of simulations where Colab allows: Delta/Iceberg MERGE in PySpark 5 and SQL 12, a real
+   streaming source and windowed aggregation in PySpark 6, a dbt-duckdb project, scala-cli for Scala, a local PyFlink
+   cell; label the remaining simulated cells.
+3. New pages: open table format comparison, lakehouse and catalogs, DuckDB, Postgres, orchestration patterns,
+   semantic layer, security/IAM, CI/CD and IaC for data.
+4. Python track: state a 3.12 baseline; real pytest in Python 7; `asyncio.TaskGroup`/`timeout` in Python 8; Polars or
+   PyArrow. Concepts: cut data-structures to its DE tail, move statistics to an appendix, give the LLM page a DE angle.
+5. SQL: a dialect note or translation table (Postgres, Snowflake, BigQuery) in each chapter.
+6. Shared code: the Spark setup repeated across PySpark modules and the grader harness in 18 practice notebooks.
+7. HTML payload: pages average about 350 KB because content ships twice (HTML and the hydration payload).
+8. `PRODUCT.md` still describes a stateless site; update it for reading progress, outputs and the reader.
+9. Run one SQL notebook in a real Colab runtime with "Run all" (needs the owner's Google sign-in); Colab's Java is
+   not verified.
+10. The main checkout (`docs/interactive-viewer-spec`) has uncommitted site edits from an older layout (`app/`,
+    `components/`); the owner should decide whether to keep or discard them.
 
 ## Blockers
 

@@ -23,6 +23,11 @@ and a dbt-duckdb build. Each notebook distinguishes executable integrations from
 
 ## The site
 
+Reader and search improvements: SQL executed through Spark or DuckDB is labelled `SQL · Python wrapper`,
+and checked examples are distinguished from plain code. The search page receives its section index at build time;
+the command palette warms and reuses the shared static index. Home, topic and notebook pages include canonical URLs,
+with a shared social-preview image and WebSite structured data. The phone top bar keeps its controls in one compact row.
+
 - **Library**: a learning path of six stages, from Python and SQL to streaming and interview practice, with progress
   per step and a "Next up" link; resume cards for what you were reading; and a card for every tool, grouped by category.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
@@ -110,6 +115,7 @@ make install     # notebook packages + dev tools (uv) and site dependencies (npm
 make format      # format notebooks and Python tooling
 make check       # audit every notebook
 make notebooks   # execute every notebook (PySpark ones need Java 8-21; JOBS=4 by default)
+make verify-practice  # run each practice answer and a wrong answer against its checks
 make test        # unit tests: tooling (pytest) and site data layer (vitest)
 make lint        # ruff + eslint
 make dev         # serve the gallery at http://localhost:3000

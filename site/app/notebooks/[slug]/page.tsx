@@ -19,10 +19,12 @@ import { CopyCodeButton, CopyLinkButton, MarkDonePanel } from "@/components/Read
 import { EndSentinel, ReaderToc } from "@/components/ReaderToc";
 import { StarButton } from "@/components/StarButton";
 import type { CellOutput, ParsedCell } from "@/lib/notebook-parse";
+import { codeLabel } from "@/lib/notebook-parse";
 import { getNotebook, getNotebookSlugs, getTool, type NotebookDetail } from "@/lib/notebooks";
 import { RETIRED_BY_SLUG, RETIRED_NOTEBOOKS, type RetiredNotebook } from "@/lib/retired";
 import { highlightCode, renderMarkdown } from "@/lib/render";
 import { toneStyle } from "@/lib/tone";
+import { siteUrl } from "@/lib/site";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -60,7 +62,8 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   if (RETIRED_BY_SLUG.has(slug)) return { title: "Moved", robots: { index: false } };
   const notebook = getNotebook(slug);
-  return notebook ? { title: notebook.title, description: notebook.description || undefined } : {};
+  return notebook ? { title: notebook.title, description: notebook.description || undefined,
+    alternates: { canonical: `${siteUrl}/notebooks/${slug}/` } } : {};
 }
 
 function OutputBlock({ output, number }: { output: CellOutput; number: number }) {
@@ -140,12 +143,12 @@ function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
           {cell.kind === "check" ? (
             <span className="cell-kind is-check">
               <CheckCircle size={14} weight="bold" aria-hidden />
-              Self-check
+              {codeLabel(cell.source)} · checked example
             </span>
           ) : (
             <span className="cell-kind">
               <Code size={14} aria-hidden />
-              Python
+              {codeLabel(cell.source)}
             </span>
           )}
         </span>

@@ -67,6 +67,9 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   item, duplicates, ties, `None`, and the trap the exercise teaches. A check must be able to fail for a plausible wrong
   answer; confirm it against the reference solution and one deliberately wrong version with
   `uv run --extra notebooks python scripts/verify_practice_answers.py`.
+- **Last reviewed.** Tool pages end their opening paragraph with `*Last reviewed: <Month YYYY>, against <tool and
+  version>.*` (managed services: "against the <service> documentation as of <Month YYYY>"). Update it whenever you
+  check the page against a new release, and confirm version-specific facts against official docs or release notes.
 - **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge. The
   site's results come from `make outputs`, which executes the notebooks into `build/executed` (git-ignored).
 
