@@ -56,6 +56,9 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   belong in a fenced block in a markdown cell, not in a code cell.
 - **Lean prose.** One `# Title` (first cell), then `##` sections and `###` subsections without skipping levels.
   One idea per markdown cell, a small runnable example below it, `assert`s that prove the point.
+- **Hidden solutions.** Practice problems give the statement, sample input and expected output first. The answer is a
+  code cell tagged `solution` (Jupyter: *Cell → Cell Tags*, or `"tags": ["solution"]` in the cell metadata). The
+  reader shows it closed; the formatter keeps the tag.
 - **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge.
 
 ## Workflow

@@ -67,6 +67,11 @@ class TestFormatNotebook:
         assert "kernelspec" in result["metadata"]
         assert result["nbformat_minor"] == 5
 
+    def test_solution_tag_is_kept_and_other_cell_metadata_is_dropped(self):
+        tagged = code("assert 1 == 1", metadata={"tags": ["solution"], "collapsed": True})
+        result = notebook_format.format_notebook(notebook(md("# T"), tagged), RELPATH)
+        assert result["cells"][1]["metadata"] == {"tags": ["solution"]}
+
     def test_ids_are_stable_unique_and_existing_ones_kept(self):
         nb = notebook(md("# T"), code("a = 1", id="keepme"), code("b = 2", id="keepme"))
         first = notebook_format.format_notebook(nb, RELPATH)

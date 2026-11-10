@@ -12,8 +12,9 @@ in Colab to run it.
 - **Library**: a learning path of six stages, from Python and SQL to streaming and interview practice, with progress
   per step and a "Next up" link; resume cards for what you were reading; and a card for every tool, grouped by category.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
-  explanations, code and self-checks, a table of contents that ticks off sections as you scroll past them, and
-  buttons to open it in Colab or download the `.ipynb`.
+  explanations, code, self-checks and solutions, a table of contents that ticks off sections as you scroll past them,
+  and buttons to open it in Colab or download the `.ipynb`. Solutions to practice problems are cells tagged
+  `solution`; the reader shows each one as a panel that stays closed until you open it.
 - **Search**: press <kbd>⌘K</kbd>, <kbd>Ctrl+K</kbd> or <kbd>/</kbd> anywhere to search every notebook title and
   section heading, with a preview of the match. `/search?q=…` lists all results.
 - **Collapsible panels**: fold the sidebar into an icon rail with the button at the left of the top bar (or press

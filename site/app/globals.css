@@ -799,6 +799,12 @@ kbd {
   background: var(--text-3);
 }
 
+.legend .l-solution {
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
 .legend .l-text {
   border-radius: 3px;
   background: var(--surface-2);
@@ -1499,6 +1505,11 @@ table.rows {
   opacity: 0.7;
 }
 
+.ticks a.t-solution {
+  background: var(--surface);
+  box-shadow: inset 0 0 0 2px var(--accent);
+}
+
 .cellmap .legend {
   margin-top: 12px;
   gap: 14px;
@@ -1722,14 +1733,21 @@ table.rows {
   white-space: pre;
 }
 
-details.setup-cell {
+details.setup-cell,
+details.solution-cell {
   margin-top: 20px;
   border: 1px dashed var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--surface);
 }
 
-details.setup-cell > summary {
+details.solution-cell {
+  border-style: solid;
+  border-color: var(--accent);
+}
+
+details.setup-cell > summary,
+details.solution-cell > summary {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -1741,15 +1759,22 @@ details.setup-cell > summary {
   list-style: none;
 }
 
-details.setup-cell > summary::-webkit-details-marker {
+details.solution-cell > summary {
+  color: var(--accent);
+}
+
+details.setup-cell > summary::-webkit-details-marker,
+details.solution-cell > summary::-webkit-details-marker {
   display: none;
 }
 
-details.setup-cell[open] > summary {
+details.setup-cell[open] > summary,
+details.solution-cell[open] > summary {
   border-bottom: 1px dashed var(--border-strong);
 }
 
-details.setup-cell .cell-body {
+details.setup-cell .cell-body,
+details.solution-cell .cell-body {
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 

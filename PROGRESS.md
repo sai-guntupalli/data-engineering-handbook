@@ -5,6 +5,16 @@
 
 ## Completed
 
+- 2026-11-09: PySpark coding challenges expanded (`feat/pyspark-coding-challenges`): 19 new problems join the five
+  first-edition ones, 24 in total in `notebooks/topics/pyspark/pyspark-coding-challenges.ipynb`. Part one covers
+  DataFrame manipulation (when/otherwise, nulls, strings, dates, explode, pivot and stack, UDF vs built-ins), joins
+  (semi and anti, broadcast with a plan check, self join, full outer reconciliation, non-equi), window functions
+  (rank family, lag and lead, row and range frames, top-N with ties, first and last frames) and aggregations (null
+  semantics, rollup). Every problem has a statement, sample input and expected output; each solution is a code cell
+  tagged `solution`. The reader shows solutions as closed panels, and the formatter keeps cell tags. Verified: the
+  notebook runs top to bottom on PySpark 4.0.5 with JDK 17 (`scripts/run_notebooks.py`), `audit_notebooks.py`
+  passes, pytest passes with new tests for the tag, and the site passes vitest (new solution-kind tests), lint and
+  `next build`. The prerendered reader has 24 solution panels, none open.
 - 2026-11-09: "Tools" renamed to "Topics" in the UI (`feat/learning-path`): the home page section, the sidebar
   label, the starred group and page, star labels and empty-state text. Concepts and Interview prep are not tools, and
   the folders already live in `notebooks/topics/`. URLs stay `/tools/<folder>/` so existing links keep working.
@@ -289,7 +299,8 @@
 7. Reconcile the uncommitted WIP in the main checkout: `notebooks/03_sql_interview_questions.ipynb` (a SQLite-based
    split), `notebooks/04_pyspark_concepts.ipynb` (exercise edits), and untracked `scripts/split_sql_notebooks.py`,
    `scripts/add_core_sql_topics.py` and `topics/sql-*` drafts. None of them are on master.
-8. Review PR #29 (PySpark coding challenges, `feat/pyspark-coding-problems`).
+8. Review and merge the PySpark challenges PR (`feat/pyspark-coding-challenges`). Check the reader on the deployed
+   site: 24 solution panels closed on load, opening one shows the code, and the cell map shows the solution ticks.
 9. Optional deeper trims: `04_pyspark_concepts` (12.9K words), `snowflake` (13.1K), `bigquery` (12.3K),
    `02_python_coding_problems` (12K).
 
