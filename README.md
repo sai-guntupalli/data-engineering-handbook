@@ -21,6 +21,12 @@ New starting points cover [table formats](notebooks/topics/concepts/open-table-f
 Local integrations include delta-rs DML in SQL 12/PySpark 5, a real Structured Streaming file source in PySpark 6,
 and a dbt-duckdb build. Each notebook distinguishes executable integrations from platform syntax and local models.
 
+The [SQL interview drills](notebooks/topics/sql/sql-13-interview-drills.ipynb) and
+[PySpark coding challenges](notebooks/topics/pyspark/pyspark-coding-challenges.ipynb) put the problem rules, sample
+input tables and complete expected outputs before each exercise. Solutions stay closed on the handbook site.
+Regression checks live outside the reading view; `make verify-challenges` runs the current answers and checks their
+published sample tables as well as the regression cases (Java 17+ required).
+
 ## The site
 
 Reader and search improvements: SQL executed through Spark or DuckDB is labelled `SQL · Python wrapper`,

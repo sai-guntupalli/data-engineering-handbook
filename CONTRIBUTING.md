@@ -61,6 +61,11 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   reader shows it closed; the formatter keeps the tag.
 - **Difficulty.** Every practice problem and drill exercise has a line right under its heading:
   `**Difficulty:** Easy · about 5 min` (Easy, Medium or Hard, with an honest time estimate).
+- **SQL/PySpark challenges.** Put the problem rules, readable sample input and complete expected output before the
+  exercise and hidden solution. Keep grading assertions in `tests/fixtures/challenge-checks/`; preserve meaningful
+  data-quality failure handling when it is part of the task. Run `make verify-challenges` to verify current answers
+  against regression cases and the published output tables. Avoid scoreboards and test-only materialization code
+  in the learner-facing notebook.
 - **Checks that catch mistakes.** Keep Python practice checks in `tests/fixtures/practice-checks/`, outside the
   learner-facing notebook. Explain the question and show concrete sample inputs and expected outputs before the
   exercise cell. Avoid scoreboards and pass/todo output. Give each exercise 6-10 maintainer checks for empty input, single

@@ -17,7 +17,7 @@ MOCKUPS_PORT ?= 8000
 # Executed notebook copies with outputs, read by the site build (see site/lib/notebooks.ts).
 OUTPUTS ?= build/executed
 
-.PHONY: help install dev test lint format check notebooks verify-practice outputs build build-with-outputs mockups mockups-bundle validate stats clean
+.PHONY: help install dev test lint format check notebooks verify-practice verify-challenges outputs build build-with-outputs mockups mockups-bundle validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -58,6 +58,9 @@ outputs: ## Execute every notebook and save copies with trimmed outputs to build
 verify-practice: ## Run each practice exercise's reference answer and a wrong answer against its checks
 	$(PY) scripts/verify_practice_answers.py
 
+verify-challenges: ## Verify SQL/PySpark answers and published sample outputs (requires Java 17+)
+	$(PY) scripts/verify_challenge_answers.py
+
 build: ## Build the static gallery site (with the design mockups) into site/out
 	npm --prefix $(SITE) run build
 	$(MAKE) mockups-bundle
@@ -73,7 +76,7 @@ mockups-bundle: ## Copy the design mockups into site/out/mockups for GitHub Page
 	rm -rf $(SITE)/out/mockups
 	cp -R $(MOCKUPS) $(SITE)/out/mockups
 
-validate: lint test check notebooks verify-practice build ## Everything CI runs
+validate: lint test check notebooks verify-practice verify-challenges build ## Everything CI runs
 	@echo "validate: all checks passed"
 
 stats: ## Notebook counts and size

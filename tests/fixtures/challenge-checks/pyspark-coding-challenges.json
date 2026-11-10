@@ -1,0 +1,686 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-coding-challenges.ipynb",
+ "solutions": {
+  "589da0a4": {
+   "fingerprint": "ad590451c8ca6ce15c39ccd1942dd6f49de53937a6eaddc4d8a42342d7ab6694",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in result.collect()] == [\n    (1, 125.0, \"medium\", True, \"US\"),\n    (2, 40.0, \"small\", False, \"international\"),\n    (3, 999.0, \"large\", True, \"US\"),\n    (4, 25.0, \"small\", False, \"unknown\"),\n    (5, 600.0, \"large\", True, \"international\"),\n]"
+    }
+   ]
+  },
+  "89996ee3": {
+   "fingerprint": "b4f3733b6dfdfc05ebc9310d71753ce1c46050c4a54f47854103d54d7a91c316",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert [tuple(r) for r in result.collect()] == [\n    (1, \"ani\", 88.5, True),\n    (2, \"Ben\", 0.0, False),\n    (3, \"anonymous\", 42.0, False),\n    (5, \"dee\", 0.0, True),\n]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert null_counts == {\"user_id\": 0, \"first_name\": 2, \"nickname\": 2, \"score\": 2, \"plan\": 1}"
+    }
+   ]
+  },
+  "a1921757": {
+   "fingerprint": "36cb09fe86b88e6321220def46119f5a6c31916ca6ecfcfa1af1dfd15b7dd59b",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "by_id = {r[\"id\"]: r.asDict() for r in result.collect()}"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert by_id[1][\"email_clean\"] == \"alice.smith@example.com\" and by_id[1][\"email_valid\"] is True"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert by_id[3][\"email_clean\"] is None and by_id[3][\"email_valid\"] is None and by_id[3][\"postal_padded\"] is None"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert by_id[4][\"email_valid\"] is False and by_id[4][\"email_domain\"] == \"example.net\""
+    },
+    {
+     "after_statement": 4,
+     "source": "assert by_id[4][\"postal_padded\"] == \"000150\""
+    },
+    {
+     "after_statement": 4,
+     "source": "assert [by_id[i][\"slug\"] for i in (1, 2, 3, 4)] == [\"berlin-germany\", \"paris-france\", \"lima-peru\", \"oslo-norway\"]"
+    }
+   ]
+  },
+  "9d790a78": {
+   "fingerprint": "5a3328ec17df940751b6c30853a5bcbb2a7c9041bdcc008b8643b4491ab130a9",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "assert [\n    (r.sub_id, str(r.renewal_date), str(r.month_end), r.days_active, r.is_active, r.started_on_weekend)\n    for r in result.collect()\n] == [\n    (\"s1\", \"2026-02-28\", \"2026-01-31\", 43, False, True),\n    (\"s2\", \"2026-03-10\", \"2026-02-28\", 49, True, False),\n    (\"s3\", \"2026-04-07\", \"2026-03-31\", 1, False, True),\n    (\"s4\", \"2026-04-14\", \"2026-03-31\", 0, False, True),\n]"
+    }
+   ]
+  },
+  "2295939e": {
+   "fingerprint": "f24afa373d22cac00861c18d59a4815d15ca8e41ddd9ce2933aa37d92741f474",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in exploded.orderBy(\"article_id\", \"tag_pos\").collect()] == [\n    (1, 0, \"spark\"), (1, 1, \"sql\"),\n    (2, 0, \"delta\"), (2, 1, \"iceberg\"), (2, 2, \"spark\"),\n    (3, None, None), (4, None, None),\n]"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert tag_counts == {\"spark\": 2, \"sql\": 1, \"delta\": 1, \"iceberg\": 1, None: 2}"
+    }
+   ]
+  },
+  "7f9ad9be": {
+   "fingerprint": "177eaeba243e4892d6d960e4d1aa41eaed0254fdaaa535c5ab73fc61e9a9e886",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in wide.collect()] == [\n    (\"north\", 100, 200, 0, 0),\n    (\"south\", 80, 0, 120, 0),\n    (\"west\", 30, 40, 60, 90),\n]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert long.count() == 8"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert long.agg(F.sum(\"amount\")).first()[0] == sales.agg(F.sum(\"amount\")).first()[0] == 720"
+    }
+   ]
+  },
+  "3b4d64b4": {
+   "fingerprint": "c84316ef18d152cb4f24f0fc76fce9fdb911ad257d8fcec4d0dd2836a8d357fd",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert [tuple(r) for r in builtin.collect()] == [tuple(r) for r in legacy.collect()]"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert \"BatchEvalPython\" not in plan.getvalue()"
+    }
+   ]
+  },
+  "6c07a794": {
+   "fingerprint": "d237dc32f5ee1486afa5c6025fe7ab2ef57a8e16698b96ebe0e077cddc7c8466",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert [tuple(r) for r in with_orders.orderBy(\"customer_id\").collect()] == [(1, \"ana\"), (3, \"cy\")]"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert [tuple(r) for r in without_orders.orderBy(\"customer_id\").collect()] == [(2, \"ben\"), (4, \"dee\")]"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert with_orders.columns == [\"customer_id\", \"name\"]"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert inner_rows == 3"
+    }
+   ]
+  },
+  "6a595279": {
+   "fingerprint": "6abc45a5ec9229b8296209bc4bcc4f9be4cc3dbb4b562871548c9d98ed351ba2",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert [tuple(r) for r in per_country.collect()] == [(\"BR\", 200), (\"DE\", 200), (\"IN\", 200), (\"JP\", 200), (\"US\", 200)]"
+    },
+    {
+     "after_statement": 7,
+     "source": "assert \"BroadcastHashJoin\" in plan.getvalue()"
+    }
+   ]
+  },
+  "daf9b269": {
+   "fingerprint": "0b35cabeff8bbb715a6d2ce35d8f8dac344076fbd1d5da6d16c5e305edb0b15e",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "assert [tuple(r) for r in over_manager.collect()] == [(\"Ravi\", \"Lena\", 200, 170), (\"Tom\", \"Omar\", 160, 150)]"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert {r[\"manager_id\"]: r[\"count\"] for r in reports.collect()} == {1: 2, 2: 1, 3: 2}"
+    }
+   ]
+  },
+  "f1280ea5": {
+   "fingerprint": "70bf974b6b6e9b333f8c3e99141be2d1a5e0ba0f5a095674cfe9661040866ef3",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert [tuple(r) for r in recon.collect()] == [\n    (\"A1\", \"match\"), (\"A2\", \"mismatch\"), (\"A3\", \"match\"), (\"A4\", \"missing_in_warehouse\"), (\"A5\", \"missing_in_source\"),\n]"
+    }
+   ]
+  },
+  "9b4efd8e": {
+   "fingerprint": "42100b097ed9dc7cf772e53996e6ad78d7ccceaeafa8c282066f493f2792c3ff",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert [tuple(r) for r in priced.collect()] == [\n    (1, 30.0, \"basic\", \"SPRING10\"),\n    (2, 50.0, \"plus\", \"SPRING10\"),\n    (3, 250.0, \"pro\", \"SUMMER15\"),\n    (4, 120.0, \"plus\", \"SUMMER15\"),\n    (5, 10.0, \"basic\", None),\n]"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert priced.count() == orders_nq.count()"
+    }
+   ]
+  },
+  "ee65d292": {
+   "fingerprint": "3658c017ab6ace7e7d204c5e2a9815e3b6e1fa50ad5ec6d7b4335a60184d5f44",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "assert [tuple(r) for r in ranked.collect()] == [\n    (\"cs\", \"ben\", 90, 1, 1, 1),\n    (\"cs\", \"ana\", 70, 2, 2, 2),\n    (\"math\", \"ana\", 95, 1, 1, 1),\n    (\"math\", \"cy\", 95, 2, 1, 1),\n    (\"math\", \"ben\", 88, 3, 3, 2),\n    (\"math\", \"eli\", 88, 4, 3, 2),\n    (\"math\", \"dee\", 80, 5, 5, 3),\n]"
+    }
+   ]
+  },
+  "88cb6dde": {
+   "fingerprint": "a3b25b5a4e27f31a81e0ac964511ffd0ede5e7f1297d0bb3fd4deb25c0149815",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert [\n    (r.customer_id, str(r.order_date), r.days_since_previous, r.churn_risk) for r in result.collect()\n] == [\n    (\"c1\", \"2026-01-01\", None, False),\n    (\"c1\", \"2026-01-15\", 14, False),\n    (\"c1\", \"2026-03-01\", 45, True),\n    (\"c2\", \"2026-02-10\", None, False),\n    (\"c3\", \"2026-01-03\", None, False),\n    (\"c3\", \"2026-01-05\", 2, False),\n]"
+    }
+   ]
+  },
+  "af864598": {
+   "fingerprint": "78efc37542662425839bc24c86542e013d22c9d069639ba5d66996835f3c0d63",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert [\n    (r.store_id, str(r.sale_date), r.running_total, r.moving_avg_3, r.sum_last_3_days) for r in result.collect()\n] == [\n    (\"s1\", \"2026-03-01\", 100.0, 100.0, 100.0),\n    (\"s1\", \"2026-03-02\", 140.0, 70.0, 140.0),\n    (\"s1\", \"2026-03-03\", 200.0, 66.67, 200.0),\n    (\"s1\", \"2026-03-05\", 280.0, 60.0, 140.0),\n    (\"s2\", \"2026-03-01\", 10.0, 10.0, 10.0),\n    (\"s2\", \"2026-03-02\", 40.0, 20.0, 40.0),\n]"
+    }
+   ]
+  },
+  "d6457b40": {
+   "fingerprint": "22ae5ea4b3787517d78d158e16a8001b826de461f552e65195e8855bbe515d75",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert sorted(tuple(r) for r in top_two_levels.collect()) == sorted([\n    (\"books\", \"Emma\", 300.0), (\"books\", \"Ulysses\", 300.0), (\"books\", \"Dune\", 120.0),\n    (\"games\", \"Chess\", 75.0), (\"games\", \"Risk\", 75.0), (\"games\", \"Go\", 20.0),\n    (\"toys\", \"Yo-yo\", 9.0),\n])"
+    }
+   ]
+  },
+  "82b5e803": {
+   "fingerprint": "a4998fbebd44f36c3ff6f2b17cb42014bcccc20a27ef32e9e8c916cc155d479c",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "assert all(r.naive_last == r.price for r in naive_last.collect())  # the default frame stops at the current row"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert [\n    (r.sku, str(r.effective_on), r.price, r.first_price, r.last_price, r.pct_vs_first) for r in result.collect()\n] == [\n    (\"sku1\", \"2026-01-01\", 10.0, 10.0, 9.0, 0.0),\n    (\"sku1\", \"2026-02-01\", 12.0, 10.0, 9.0, 20.0),\n    (\"sku1\", \"2026-03-01\", 9.0, 10.0, 9.0, -10.0),\n    (\"sku2\", \"2026-01-15\", 5.0, 5.0, 6.0, 0.0),\n    (\"sku2\", \"2026-04-01\", 6.0, 5.0, 6.0, 20.0),\n]"
+    }
+   ]
+  },
+  "c45e0820": {
+   "fingerprint": "6a16acf156a852bfb0b74b70a9e1f2295c81b9234796554060177ce0f26500c6",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "by_merchant = {r[\"merchant_id\"]: r.asDict() for r in result.collect()}"
+    },
+    {
+     "after_statement": 2,
+     "source": "assert by_merchant[\"m1\"] == {\n    \"merchant_id\": \"m1\", \"n_rows\": 3, \"n_amount\": 2, \"total_amount\": 40.0, \"avg_amount\": 20.0,\n    \"distinct_methods\": 2, \"ok_payments\": 2, \"ok_amount\": 40.0,\n}"
+    },
+    {
+     "after_statement": 2,
+     "source": "assert by_merchant[\"m2\"][\"total_amount\"] is None and by_merchant[\"m2\"][\"avg_amount\"] is None"
+    },
+    {
+     "after_statement": 2,
+     "source": "assert by_merchant[\"m2\"][\"n_rows\"] == 2 and by_merchant[\"m2\"][\"distinct_methods\"] == 1"
+    },
+    {
+     "after_statement": 2,
+     "source": "assert by_merchant[\"m3\"][\"distinct_methods\"] == 1 and by_merchant[\"m3\"][\"ok_amount\"] == 10.0"
+    }
+   ]
+  },
+  "9d234441": {
+   "fingerprint": "6d36bff29254cb0f3f4b600aac7e836ca25cb48e74fcb5ab71e23aa0e07ea96c",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert sorted(tuple(r) for r in report.collect()) == sorted([\n    (\"ALL\", \"ALL\", \"grand_total\", 460.0),\n    (\"EU\", \"ALL\", \"region_total\", 220.0),\n    (\"EU\", \"DE\", \"country\", 150.0),\n    (\"EU\", \"FR\", \"country\", 70.0),\n    (\"US\", \"ALL\", \"region_total\", 240.0),\n    (\"US\", \"US\", \"country\", 240.0),\n])"
+    }
+   ]
+  },
+  "666f2692": {
+   "fingerprint": "37d17d45a4fa59812254b952860c99d3867804a7c5522e4d61c8591b75b8da8d",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert winning_keys.groupBy(\"customer_id\").count().filter(F.col(\"count\") > 1).count() == 0"
+    },
+    {
+     "after_statement": 3,
+     "source": "rows = {r[\"customer_id\"]: r for r in latest_customers.collect()}"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert latest_customers.count() == 3"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert rows[\"c1\"][\"ingest_id\"] == 11 and rows[\"c1\"][\"email\"] == \"ava@example.com\""
+    },
+    {
+     "after_statement": 3,
+     "source": "assert rows[\"c2\"][\"email\"] is None                 # null email is kept, not dropped"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert rows[\"c3\"][\"ingest_id\"] == 30"
+    },
+    {
+     "after_statement": 3,
+     "source": "duplicate_winners = latest_customers.groupBy(\"customer_id\").count().filter(F.col(\"count\") > 1)"
+    },
+    {
+     "after_statement": 3,
+     "source": "assert duplicate_winners.count() == 0"
+    }
+   ]
+  },
+  "2111ad80": {
+   "fingerprint": "2a8b208c6c5ca1d59b7e5b4ed33502cb7929bdda0d3700d05c95be1ad1c0fdcd",
+   "blocks": [
+    {
+     "after_statement": 6,
+     "source": "by_order = {r[\"order_id\"]: r for r in order_summary.collect()}"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert order_summary.count() == 3                  # o3 is kept although its product has no category"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert by_order[\"o1\"][\"order_total\"] == 45.0 and by_order[\"o1\"][\"net_total\"] == 38.0"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert by_order[\"o2\"][\"discount_total\"] == 0.0"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert by_order[\"o3\"][\"net_total\"] == 7.0"
+    },
+    {
+     "after_statement": 6,
+     "source": "by_category = {r[\"category\"]: r[\"category_revenue\"] for r in category_summary.collect()}"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert by_category == {\"home\": 55.0, \"sale\": 30.0}"
+    },
+    {
+     "after_statement": 8,
+     "source": "assert order_revenue == line_revenue == 63.0"
+    }
+   ]
+  },
+  "c8d11a1a": {
+   "fingerprint": "b3b18f7c59665e4399741ade222d3f116c4b2c9d1e1e3bcb2478faa06b4f7546",
+   "blocks": [
+    {
+     "after_statement": 11,
+     "source": "assert priced.count() == 4                         # one row per event, no fan-out"
+    },
+    {
+     "after_statement": 11,
+     "source": "assert segments == {\"e1\": \"standard\", \"e2\": \"premium\", \"e3\": \"standard\", \"e4\": None}"
+    },
+    {
+     "after_statement": 13,
+     "source": "assert boundary_row[\"segment\"] == \"premium\""
+    }
+   ]
+  },
+  "a8b398a6": {
+   "fingerprint": "8a6c4a00ba8afb033803342a3227e8c6388c64c373b4c2d27787a62225c976a7",
+   "blocks": [
+    {
+     "after_statement": 6,
+     "source": "rows = [tuple(r) for r in sessions.select(\"user_id\", \"event_count\", \"session_value\").collect()]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows == [(\"u1\", 2, 4.0), (\"u1\", 1, 7.0), (\"u2\", 2, 8.0)]"
+    }
+   ]
+  },
+  "2c8115e6": {
+   "fingerprint": "0c1aad3135021ea82bafcd5e4b7799be362e2bee9d983564d8fe4afdf3d87e07",
+   "blocks": [
+    {
+     "after_statement": 9,
+     "source": "assert salted.count() == baseline.count() == 5     # the null-account row is dropped by both"
+    },
+    {
+     "after_statement": 9,
+     "source": "assert salted.agg(F.sum(\"metric\")).first()[0] == baseline.agg(F.sum(\"metric\")).first()[0] == 72"
+    },
+    {
+     "after_statement": 9,
+     "source": "assert {r.event_id for r in salted.collect()} == {r.event_id for r in baseline.collect()}"
+    }
+   ]
+  },
+  "ab0a889e": {
+   "fingerprint": "d0cc791ce4be5f7555491ae2aefdf0d79f0dd9b503678e5f8c366f5b793e6cc7",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [tuple(r) for r in result.orderBy('id').collect()] == [\n    (1, 'ava@example.com', 'adult'), (2, 'unknown', 'minor'), (3, 'unknown', 'unknown')]"
+    }
+   ]
+  },
+  "96df7f24": {
+   "fingerprint": "01bdc5fab307b5f57c05027d3e54167c60453bad1af906b672ae8add6630e8b2",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [tuple(r) for r in result.orderBy('team').collect()] == [('A', 3, 2, 15.0), ('B', 1, 0, None)]"
+    }
+   ]
+  },
+  "29f5a737": {
+   "fingerprint": "07fb79656a2b4c5fdc695b1e8561a7a60f8c4c3133a139e8c478bb6236c52071",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [(r.order_id, r.placed_date.isoformat(), r.days_to_ship) for r in result.orderBy('order_id').collect()] == [('o1', '2026-01-30', 3), ('o2', '2026-02-28', None), ('o3', '2026-03-01', 0)]"
+    }
+   ]
+  },
+  "2ad19738": {
+   "fingerprint": "b316d22eddaf3f096c88f0e7aa9fb4180b9892b75120b5b7475fc739aa387e17",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [tuple(r) for r in result.orderBy('customer_id').collect()] == [(1, 'Ava', 2), (2, 'Bo', 1), (3, 'Cy', 0)]"
+    }
+   ]
+  },
+  "1205bc99": {
+   "fingerprint": "02d9462cd4b3dbc090c634c37b30834bd91f368aaa9b541c44c6115b40edde74",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [r.customer_id for r in result.orderBy('customer_id').collect()] == [2, 3]"
+    }
+   ]
+  },
+  "789b1da0": {
+   "fingerprint": "5626fd8a529fc612a845ca6fb0c695f8c6cc8fb244e89ae6d5452579f1a2f6f3",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in result.collect()] == [('east', 120)]"
+    }
+   ]
+  },
+  "c2882fdc": {
+   "fingerprint": "900d561a5694f255d85e833d86c7f3c00b6a15954db25fe9946e5dddb1eed5bc",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in result.orderBy('department', 'rank').collect()] == [('A', 1, 100, 1), ('A', 2, 100, 2), ('B', 4, 90, 1)]"
+    }
+   ]
+  },
+  "0fa36c62": {
+   "fingerprint": "f89ed7c0259b81632bb97377d374a5c1929025fa733bf5d96f8acad17059d644",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert [tuple(r) for r in result.orderBy('account', 'tx_id').collect()] == [('a', 1, 5), ('a', 2, 5), ('a', 3, 12), ('b', 4, 2)]"
+    }
+   ]
+  },
+  "164e17fa": {
+   "fingerprint": "ac7d54cf83e54cafe91db25b9343a40c3c7fce3457929d8ee256cb74b402467b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [tuple(r) for r in result.orderBy('customer_id', 'tag').collect()] == [(1, 'spark'), (1, 'sql'), (2, None), (3, None)]"
+    }
+   ]
+  },
+  "cf311f3d": {
+   "fingerprint": "010498a25243fd6e387c5110cef354e47523e12443d48122201a46e36b4a71f7",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert [tuple(r) for r in result.orderBy('id').collect()] == [(1, 10, None), (2, 20, 'web')]"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "589da0a4": {
+   "expected_cell": "51324390",
+   "frames": [
+    "result"
+   ]
+  },
+  "89996ee3": {
+   "expected_cell": "a2fd3fa9",
+   "frames": [
+    "result",
+    "spark.createDataFrame([null_counts])"
+   ]
+  },
+  "a1921757": {
+   "expected_cell": "306758ed",
+   "frames": [
+    "result"
+   ]
+  },
+  "9d790a78": {
+   "expected_cell": "4f818e98",
+   "frames": [
+    "result"
+   ]
+  },
+  "2295939e": {
+   "expected_cell": "9a7e907a",
+   "frames": [
+    "exploded.orderBy('article_id', 'tag_pos')",
+    "exploded.groupBy('tag').count().orderBy('tag')"
+   ]
+  },
+  "7f9ad9be": {
+   "expected_cell": "34e9d9fc",
+   "frames": [
+    "wide",
+    "long.orderBy('region', 'quarter')"
+   ]
+  },
+  "3b4d64b4": {
+   "expected_cell": "a35c2749",
+   "frames": [
+    "builtin"
+   ]
+  },
+  "6c07a794": {
+   "expected_cell": "2fa185a4",
+   "frames": [
+    "with_orders.orderBy('customer_id')",
+    "without_orders.orderBy('customer_id')"
+   ]
+  },
+  "6a595279": {
+   "expected_cell": "fb8a8b48",
+   "frames": [
+    "per_country"
+   ]
+  },
+  "daf9b269": {
+   "expected_cell": "4cc0b63f",
+   "frames": [
+    "over_manager",
+    "reports.orderBy('manager_id')"
+   ]
+  },
+  "f1280ea5": {
+   "expected_cell": "478cf533",
+   "frames": [
+    "recon"
+   ]
+  },
+  "9b4efd8e": {
+   "expected_cell": "6e52d039",
+   "frames": [
+    "priced"
+   ]
+  },
+  "ee65d292": {
+   "expected_cell": "75e27fdb",
+   "frames": [
+    "ranked"
+   ]
+  },
+  "88cb6dde": {
+   "expected_cell": "93216675",
+   "frames": [
+    "result"
+   ]
+  },
+  "af864598": {
+   "expected_cell": "333ec508",
+   "frames": [
+    "result"
+   ]
+  },
+  "d6457b40": {
+   "expected_cell": "fddcc822",
+   "frames": [
+    "top_two_levels"
+   ]
+  },
+  "82b5e803": {
+   "expected_cell": "12d6225a",
+   "frames": [
+    "result"
+   ]
+  },
+  "c45e0820": {
+   "expected_cell": "af2bb146",
+   "frames": [
+    "result"
+   ]
+  },
+  "9d234441": {
+   "expected_cell": "2744cf61",
+   "frames": [
+    "report"
+   ]
+  },
+  "666f2692": {
+   "expected_cell": "c754c7e7",
+   "frames": [
+    "latest_customers.orderBy('customer_id')"
+   ]
+  },
+  "2111ad80": {
+   "expected_cell": "164dffff",
+   "frames": [
+    "order_summary",
+    "category_summary"
+   ]
+  },
+  "c8d11a1a": {
+   "expected_cell": "9daa6253",
+   "frames": [
+    "priced.orderBy('event_id')"
+   ]
+  },
+  "a8b398a6": {
+   "expected_cell": "6058c8c0",
+   "frames": [
+    "sessions"
+   ]
+  },
+  "2c8115e6": {
+   "expected_cell": "070528cb",
+   "frames": [
+    "salted.orderBy('event_id')",
+    "join_totals"
+   ]
+  },
+  "ab0a889e": {
+   "expected_cell": "a9dc48ac",
+   "frames": [
+    "result.orderBy('id')"
+   ]
+  },
+  "96df7f24": {
+   "expected_cell": "dcb708a6",
+   "frames": [
+    "result.orderBy('team')"
+   ]
+  },
+  "29f5a737": {
+   "expected_cell": "543bb822",
+   "frames": [
+    "result.orderBy('order_id')"
+   ]
+  },
+  "2ad19738": {
+   "expected_cell": "d21c3cb2",
+   "frames": [
+    "result.orderBy('customer_id')"
+   ]
+  },
+  "1205bc99": {
+   "expected_cell": "8e834cd3",
+   "frames": [
+    "result.orderBy('customer_id')"
+   ]
+  },
+  "789b1da0": {
+   "expected_cell": "364be5d8",
+   "frames": [
+    "result.orderBy('region')"
+   ]
+  },
+  "c2882fdc": {
+   "expected_cell": "de2e18bc",
+   "frames": [
+    "result.orderBy('department', 'rank')"
+   ]
+  },
+  "0fa36c62": {
+   "expected_cell": "0397c1e4",
+   "frames": [
+    "result.orderBy('account', 'tx_id')"
+   ]
+  },
+  "164e17fa": {
+   "expected_cell": "35f4a1d8",
+   "frames": [
+    "result.orderBy('customer_id', 'tag')"
+   ]
+  },
+  "cf311f3d": {
+   "expected_cell": "6fd198ac",
+   "frames": [
+    "result.orderBy('id')"
+   ]
+  }
+ },
+ "helpers": []
+}
