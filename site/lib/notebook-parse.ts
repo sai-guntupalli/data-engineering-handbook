@@ -5,16 +5,20 @@
 import { marked, type Token, type Tokens } from "marked";
 import { anchorFor } from "./tools";
 
-export type RawCell = { cell_type?: string; source?: string | string[] };
+export type RawCell = { cell_type?: string; source?: string | string[]; metadata?: { tags?: string[] } };
 export type RawNotebook = { cells?: RawCell[] };
 
 /**
  * - `markdown`: explanation
  * - `setup`: the install cell every notebook starts with
+ * - `solution`: a code cell tagged `solution`; the reader keeps it closed until the reader opens it
  * - `check`: code with an `assert` or a practice `check(...)` call, a self-check
  * - `code`: any other code
  */
-export type CellKind = "markdown" | "setup" | "check" | "code";
+export type CellKind = "markdown" | "setup" | "solution" | "check" | "code";
+
+/** The Jupyter cell tag that marks an answer. The reader hides these cells until they are opened. */
+export const SOLUTION_TAG = "solution";
 
 export type ParsedCell = {
   /** Position in the original notebook, used for #cell-N anchors. */
@@ -38,6 +42,8 @@ export type ParsedNotebook = {
   sections: Section[];
   cells: ParsedCell[];
   checks: number;
+  /** Code cells tagged `solution`. Their asserts check the answers, so they are not counted as self-checks. */
+  solutions: number;
   minutes: number;
 };
 
@@ -162,8 +168,9 @@ export function outlineOf(markdown: string): OutlineItem[] {
 /** An `assert`, or a top-level call to a practice helper: check(...), check_async(...), score(). */
 const CHECK_PATTERN = /\bassert\b|^\s*(?:await\s+)?(?:check|check_async)\(|^score\(\)/m;
 
-export function cellKindOf(cellType: string, source: string): CellKind {
+export function cellKindOf(cellType: string, source: string, tags: readonly string[] = []): CellKind {
   if (cellType === "markdown") return "markdown";
+  if (tags.includes(SOLUTION_TAG)) return "solution";
   if (source.trimStart().startsWith(SETUP_PREFIX)) return "setup";
   return CHECK_PATTERN.test(source) ? "check" : "code";
 }
@@ -202,7 +209,7 @@ export function parseNotebook(raw: RawNotebook, fallbackTitle: string): ParsedNo
     }
     if (!source.trim()) return;
 
-    const kind = cellKindOf(cellType, source);
+    const kind = cellKindOf(cellType, source, cell.metadata?.tags);
     if (kind === "markdown") {
       markdownWords += countWords(source);
       for (const item of outlineOf(source)) {
@@ -226,6 +233,7 @@ export function parseNotebook(raw: RawNotebook, fallbackTitle: string): ParsedNo
     sections,
     cells,
     checks: cells.filter((cell) => cell.kind === "check").length,
+    solutions: cells.filter((cell) => cell.kind === "solution").length,
     minutes: estimateMinutes(markdownWords, codeLines),
   };
 }

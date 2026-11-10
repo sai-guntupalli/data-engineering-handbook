@@ -40,6 +40,8 @@ export type NotebookSummary = {
   monogram: string;
   sectionCount: number;
   checks: number;
+  /** Code cells tagged `solution`, shown closed in the reader. */
+  solutions: number;
   minutes: number;
   /** Reader page, site-relative. */
   href: string;
@@ -118,6 +120,7 @@ function readNotebook(tool: Tool, { repoPath, slug }: NotebookFile): LoadedNoteb
       monogram: monogram(parsed.title),
       sectionCount: parsed.sections.length,
       checks: parsed.checks,
+      solutions: parsed.solutions,
       minutes: parsed.minutes,
       href: `/notebooks/${slug}/`,
       githubHref: `${GITHUB_BLOB}/${repoPath}`,

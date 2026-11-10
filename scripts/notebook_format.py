@@ -63,6 +63,12 @@ def cell_source(cell: dict) -> str:
     return "".join(source) if isinstance(source, list) else str(source)
 
 
+def _kept_cell_metadata(cell: dict) -> dict:
+    """Cell tags survive formatting: the `solution` tag is what hides an answer on the site."""
+    tags = cell.get("metadata", {}).get("tags")
+    return {"tags": list(tags)} if tags else {}
+
+
 def _format_opening_cell(text: str, relpath: str) -> str:
     """Title, credit line, badge, then the cell's own remaining content."""
     lines = [line for line in text.split("\n") if not _OWNED_LINE.match(line)]
@@ -97,7 +103,7 @@ def format_notebook(notebook: dict, relpath: str) -> dict:
             text = text.strip("\n")
             if not text.strip():
                 continue
-        formatted = {"cell_type": cell_type, "metadata": {}, "source": text}
+        formatted = {"cell_type": cell_type, "metadata": _kept_cell_metadata(cell), "source": text}
         if "id" in cell:
             formatted["id"] = cell["id"]
         if cell_type == "code":
