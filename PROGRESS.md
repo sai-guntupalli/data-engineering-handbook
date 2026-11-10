@@ -1,8 +1,9 @@
 # Progress
 
-**Current Status**: 106 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
-`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics. Results on the site (cell
-outputs from a CI-executed copy) are on `feat/site-rendered-outputs`, awaiting review.
+**Current Status**: Site review done (7.0/10, `docs/reviews/2026-11-09-site-review.md`) and its P0 errors fixed
+(PR #67, merged). Results on the site (cell outputs from a CI-executed copy) are on `feat/site-rendered-outputs`
+(PR #68), awaiting review. 106 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
+`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
 
 ## Completed
 
@@ -14,7 +15,22 @@ outputs from a CI-executed copy) are on `feat/site-rendered-outputs`, awaiting r
   unchanged (`attachOutputs` in `site/lib/notebook-parse.ts`). The header note says where results come from. The
   Pages workflow installs Java 17 and the notebook packages, runs `make outputs` (a failure there publishes that
   notebook without results instead of blocking the deploy) and builds with the copies. `make build-with-outputs`
-  does the same locally. Tests: 7 pytest cases for trimming, 8 vitest cases for parsing and matching.
+  does the same locally. Tests: 10 pytest cases (trimming, log-noise filtering and a real `run_one` execution), 8 vitest cases for parsing
+  and matching.
+- 2026-11-09: Site review and P0 fixes (`fix/handbook-review-p0`, PR #67, merged). A full review of the site (106 notebooks, home,
+  search) is in `docs/reviews/2026-11-09-site-review.md`: overall 7.0/10, scores per dimension, track and notebook,
+  and a P0/P1/P2 roadmap. Fixed the verified errors: the per-batch `pandas_udf` z-score in PySpark 8 (now a global
+  aggregate broadcast back, plus a note on reusing training stats); `collect()` inside `foreachBatch` in PySpark 6
+  (now an idempotent per-batch Parquet write); the Scala Spark job rewritten in Scala 2.13 to match the build, which
+  now uses Spark 4.0.1; BigQuery time-travel window (2-7 days plus a 7-day fail-safe); Elasticsearch AGPL licence;
+  Flink restart strategy via configuration (`RestartStrategies` was removed in 2.0); dbt intro added and `tests:` keys
+  renamed `data_tests:` in dbt, data-quality and data-observability; Azure "Try it" numbering; a Redis licensing and
+  Valkey section; the zoneinfo version claim; stale `0N_*.ipynb` references in the PySpark overview, PySpark 8,
+  concepts-end-to-end, the SQL reference, the question bank and both Python practice notebooks; typos in Hadoop, Trino
+  and data structures. Python 9 gains a lookback-window section for late and tied rows. SQL 0 replaces its changelog
+  with a learner guide (who it is for, how to use it, the Spark SQL dialect). The PySpark overview links its practice
+  notebooks and states prerequisites. Verified: all 22 changed notebooks run top to bottom on PySpark 4.0.5 with JDK 17,
+  the format check and audit pass, pytest (34), vitest (60), lint and `next build` pass.
 - 2026-11-09: PySpark coding challenges expanded (`feat/pyspark-coding-challenges`): 19 new problems join the five
   first-edition ones, 24 in total in `notebooks/topics/pyspark/pyspark-coding-challenges.ipynb`. Part one covers
   DataFrame manipulation (when/otherwise, nulls, strings, dates, explode, pivot and stack, UDF vs built-ins), joins
@@ -296,6 +312,15 @@ outputs from a CI-executed copy) are on `feat/site-rendered-outputs`, awaiting r
 
 ## Next Steps
 
+0. Continue the review roadmap in `docs/reviews/2026-11-09-site-review.md`, in order (P0 errors are fixed in #67;
+   results on the site are in #68):
+   - P1: one canonical page per repeated topic (NOT IN, top-N, dedup/SCD2, isolation levels, contracts, freshness,
+     skew/AQE); merge data-modeling with data-warehousing and PySpark 7 with tuning; fold python-interview-basics into
+     the lessons.
+   - P1: SQL chapter order (basics, joins, NULL, CASE, aggregations/CTEs, set ops, windows); a "next in learning
+     path" link on the 39 standalone pages; a Reference/Legacy shelf for notebooks off the path.
+   - P1: hidden solutions and difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise.
+   - P2: real engines instead of simulations, a freshness pass with version badges, missing pages, UX polish.
 1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
 2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
    mode.
