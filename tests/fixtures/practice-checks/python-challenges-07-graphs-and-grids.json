@@ -33,36 +33,7 @@
    "id": "d3fcb587",
    "metadata": {},
    "outputs": [],
-   "source": [
-    "_tally = {\"passed\": 0, \"total\": 0}\n",
-    "\n",
-    "def check(label, make_actual, expected):\n",
-    "    \"\"\"Run one check. It never raises, so the notebook always runs from top to bottom.\"\"\"\n",
-    "    _tally[\"total\"] += 1\n",
-    "    try:\n",
-    "        actual = make_actual()\n",
-    "    except Exception as error:\n",
-    "        print(f\"error  {label}: {type(error).__name__}: {error}\")\n",
-    "        return\n",
-    "    if actual == expected:\n",
-    "        _tally[\"passed\"] += 1\n",
-    "        print(f\"pass   {label}\")\n",
-    "    else:\n",
-    "        print(f\"todo   {label}: got {actual!r}\")\n",
-    "\n",
-    "def raises(make_actual, error_type):\n",
-    "    \"\"\"True when the call raises error_type, False when it raises anything else or nothing.\"\"\"\n",
-    "    try:\n",
-    "        make_actual()\n",
-    "    except error_type:\n",
-    "        return True\n",
-    "    except Exception:\n",
-    "        return False\n",
-    "    return False\n",
-    "\n",
-    "def score():\n",
-    "    print(f\"\\nScore: {_tally['passed']} of {_tally['total']} checks pass\")"
-   ]
+   "source": []
   },
   {
    "cell_type": "code",
@@ -183,5 +154,8 @@
     "## Score"
    ]
   }
+ ],
+ "harness_ids": [
+  "d3fcb587"
  ]
 }

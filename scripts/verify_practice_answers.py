@@ -27,6 +27,8 @@ def verify(p):
     if fixture.exists():
         checks = json.loads(fixture.read_text())
         by_id = {c["id"]: c for c in cells + checks["cells"]}
+        for cell_id in checks.get("harness_ids", []):
+            by_id[cell_id]["source"] = fixture.with_name("harness.py").read_text().splitlines(keepends=True)
         for original_id, location in checks.get("solutions", {}).items():
             answer = "".join(by_id[location["cell_id"]]["source"])
             blocks = re.findall(r"```python\n(.*?)\n```", answer, re.S)
