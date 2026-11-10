@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#161c20"/>
+  <path d="M80 86h1040M80 535h1040" stroke="#46535c"/>
+  <text x="80" y="155" fill="#a6bec9" font-family="sans-serif" font-size="24">SAI GUNTUPALLI / OPEN HANDBOOK</text>
+  <text x="76" y="285" fill="#f5f6f4" font-family="sans-serif" font-weight="700" font-size="76">Data engineering</text>
+  <text x="76" y="375" fill="#f5f6f4" font-family="sans-serif" font-weight="700" font-size="76">handbook.</text>
+  <text x="80" y="465" fill="#afbbc1" font-family="sans-serif" font-size="29">Python · SQL · Spark · Data systems</text>
+</svg>

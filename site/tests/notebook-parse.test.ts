@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   cellKindOf,
+  codeLabel,
   createIdAllocator,
   estimateMinutes,
   monogram,
@@ -21,6 +22,17 @@ const TITLE_CELL = [
   "\n",
   "How Spark turns your code into a distributed plan, with runnable checks.\n",
 ];
+
+describe("codeLabel", () => {
+  it("identifies SQL executed inside Python", () => {
+    expect(codeLabel('spark.sql("SELECT 1")')).toBe("SQL · Python wrapper");
+    expect(codeLabel('con.execute("SELECT 1")')).toBe("SQL · Python wrapper");
+  });
+  it("keeps ordinary Python examples labelled accurately", () => {
+    expect(codeLabel('result = orders.select("id")')).toBe("Python");
+    expect(cellKindOf("code", 'orders.show()')).toBe("code");
+  });
+});
 
 function notebook(cells: RawNotebook["cells"]): RawNotebook {
   return { cells };

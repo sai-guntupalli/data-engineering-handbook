@@ -1,5 +1,22 @@
 # Progress
 
+## P2 reader and search — 2026-11-10
+
+On `feat/review-p2-reader`, based on master after #72:
+
+- Label Spark/DuckDB SQL wrappers accurately and describe assertion-bearing cells as checked examples.
+- Render the section index with the search page; warm and cache the palette index before the first search.
+- Keep mobile top-bar controls in a non-wrapping 48px row.
+- Add canonical URLs on home, topic, notebook and search pages, a 1200×630 PNG social image (SVG source retained),
+  large-image Twitter metadata and WebSite JSON-LD.
+- Measured completed Pages run 42829280321: notebook outputs took 7m10s (13:58:05–14:05:15 UTC);
+  build job 8m38s and total workflow about 10m40s. This is a post-change baseline, not a proven regression versus
+  the old workflow; earlier runs need a comparable dataset before attributing a timing difference.
+
+Verified: site tests (81), ESLint, TypeScript and static production build; browser review of SQL labels and immediate
+search results. No notebook content changed in this batch. The wider P2 tool freshness pass, real-tool examples,
+new topics, Python additions, SQL translations, shared-code deduplication and HTML payload reduction remain pending.
+
 ## Practice verification — 2026-11-10
 
 Completed the interrupted P1 practice work on `feat/review-p1-practice`:

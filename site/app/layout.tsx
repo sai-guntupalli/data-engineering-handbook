@@ -34,11 +34,13 @@ export const metadata: Metadata = {
     siteName,
     title: siteName,
     description: siteDescription,
+    images: [{ url: `${siteUrl}/og.png`, width: 1200, height: 630, alt: siteName }],
   },
   twitter: {
-    card: "summary",
+    card: "summary_large_image",
     title: siteName,
     description: siteDescription,
+    images: [`${siteUrl}/og.png`],
   },
 };
 
@@ -48,6 +50,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="en" className={`${instrumentSans.variable} ${jetbrainsMono.variable}`} suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: BOOT_SCRIPT }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+          "@context": "https://schema.org", "@type": "WebSite", name: siteName,
+          url: `${siteUrl}/`, description: siteDescription,
+          author: { "@type": "Person", name: authorName, url: authorHref },
+        }).replace(/</g, "\\u003c") }} />
       </head>
       <body>
         <a href="#main-content" className="skip-link">

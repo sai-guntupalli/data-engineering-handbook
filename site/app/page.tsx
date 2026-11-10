@@ -1,4 +1,6 @@
 import { AppShell } from "@/components/AppShell";
+import { siteUrl } from "@/lib/site";
+export const metadata = { alternates: { canonical: `${siteUrl}/` } };
 import { ContinueRow, type Starter } from "@/components/ContinueRow";
 import { HomeHero } from "@/components/HomeHero";
 import { LearningMap } from "@/components/LearningMap";
