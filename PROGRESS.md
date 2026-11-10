@@ -1,11 +1,40 @@
 # Progress
 
-**Current Status**: All P0 and P1 items from the 2026-11-09 site review are merged (#67-#73): verified errors fixed,
-results shown on the site, a pager on every page, 103 notebooks after merges with redirects for old URLs, SQL chapters
-in dependency order, a Legacy shelf, stronger practice checks with difficulty tags, a PySpark capstone, and reader/SEO
-polish. The P2 freshness pass is on `feat/review-p2-freshness` (33 tool pages); real engines, new topics and
-payload size are next. Notebooks are Colab-runnable, executed by
-CI on PySpark 4.0 (JDK 17), and stored in `notebooks/topics/<tool>/`; the site lists 43 tools.
+## Python practice cleanup and local integrations — 2026-11-10
+
+- Reviewed Python challenges 1–9, drills 1–9 and the coding-problems workbook. Questions and concrete sample
+  inputs/outputs now precede exercise cells. Removed visible check blocks, scoring helpers, score headings and
+  async test probes. Replaced dense test-helper expressions with readable examples for files, classes, retries,
+  logging and coroutines. Solutions remain closed by default.
+- Consolidated the coding workbook from 303 to 76 cells, retaining problem statements, examples and collapsed
+  approach/implementation explanations. Corrected the null-aware average example and clarified materialized
+  parsing memory costs and touching-interval conventions.
+- Moved regression machinery into `tests/fixtures/practice-checks/`. The verifier uses the current notebook
+  answers, executes the workbook regression cases and rejects wrong drill/challenge answers. Updated contribution
+  guidance so future edits do not restore learner-facing scoreboards.
+- Added local Delta update/delete/merge examples to PySpark 5 and SQL 12, a real file-source Structured Streaming
+  window in PySpark 6, and a temporary dbt-duckdb seed/model/test project. Delta uses delta-rs, not Spark SQL DML.
+- Added introductory notebooks for open table formats, catalogs, DuckDB, PostgreSQL, orchestration, semantic
+  layers, security/IAM and CI/CD/IaC. DuckDB examples execute locally; PostgreSQL transaction illustration uses
+  DuckDB and says so. Catalog, IAM, orchestration and compatibility examples are explicitly local models.
+- Python lessons identify Python 3.12+ as their target; concurrency includes TaskGroup and timeout examples.
+
+Verified: all 111 notebooks completed local execution; the merged dbt and streaming notebooks also passed a
+separate rerun. All 19 Python practice notebooks pass reference-answer verification (including wrong-answer
+rejection for challenges/drills and the workbook regression cases). Pytest (44), site tests (81), notebook
+format/audit, ruff, ESLint, TypeScript and the static production build pass. Reviewed the values/types drill and
+coding workbook in the local browser; questions/examples render before closed solutions. Source notebooks
+contain no stored outputs. Direct Google Colab execution was not performed.
+
+The wider P2 roadmap is **not complete**: real Iceberg DML,
+Scala/PyFlink runtimes, per-chapter SQL dialect comparisons, pytest/Polars lesson expansion and deeper new-topic
+coverage still require work. This batch does not claim production PostgreSQL, cloud IAM or deployed orchestration
+validation. The tool freshness and reader/SEO updates from #73–#75 are merged and preserved.
+
+**Current Status**: P0/P1 fixes and the P2 tool freshness/reader work are merged (#67–#75). This branch adds
+Python practice cleanup, eight starting-point topic notebooks and local Delta/streaming/dbt integrations. The
+library has 111 notebooks across 45 tools. Further P2 work is listed below; introductory models are not presented
+as deployed platform integrations.
 
 ## Completed
 
@@ -418,13 +447,15 @@ Remaining roadmap from `docs/reviews/2026-11-09-site-review.md` (P2), in priorit
    "Last reviewed" line (concepts, BI, Docker, Scala, Flume, Impala, Hadoop, SQL/Python tracks) are next in line.
 2. Run real tools instead of simulations where Colab allows: Delta/Iceberg MERGE in PySpark 5 and SQL 12, a real
    streaming source and windowed aggregation in PySpark 6, a dbt-duckdb project, scala-cli for Scala, a local PyFlink
-   cell; label the remaining simulated cells.
+   cell; label the remaining simulated cells. Delta-rs DML, streaming and dbt-duckdb are implemented in this batch;
+   Iceberg DML and Scala/PyFlink remain.
 3. New pages: open table format comparison, lakehouse and catalogs, DuckDB, Postgres, orchestration patterns,
-   semantic layer, security/IAM, CI/CD and IaC for data.
+   semantic layer, security/IAM, CI/CD and IaC for data. Introductory pages are added; deeper platform examples remain.
 4. Python track: state a 3.12 baseline; real pytest in Python 7; `asyncio.TaskGroup`/`timeout` in Python 8; Polars or
    PyArrow. Concepts: cut data-structures to its DE tail, move statistics to an appendix, give the LLM page a DE angle.
 5. SQL: a dialect note or translation table (Postgres, Snowflake, BigQuery) in each chapter.
-6. Shared code: the Spark setup repeated across PySpark modules and the grader harness in 18 practice notebooks.
+6. Shared code: Spark setup is still repeated across PySpark modules. Python practice grader code is now external
+   to the 18 exercise notebooks, with reference-answer verification included in `make test` and CI.
 7. HTML payload: pages average about 350 KB because content ships twice (HTML and the hydration payload).
 8. `PRODUCT.md` still describes a stateless site; update it for reading progress, outputs and the reader.
 9. Run one SQL notebook in a real Colab runtime with "Run all" (needs the owner's Google sign-in); Colab's Java is

@@ -1,0 +1,146 @@
+{
+ "order": [
+  "b42ee1f5",
+  "becc58cb",
+  "4890af2c",
+  "979b3e7f",
+  "2da552ce",
+  "680daa74",
+  "94681597",
+  "d315e329",
+  "424e10b9",
+  "0d4ceb54",
+  "2769411e",
+  "ca577102",
+  "f7ead780",
+  "ae6772d8",
+  "38fb41fd",
+  "96ad8be6",
+  "7e459631",
+  "cdf8d786",
+  "1691c370",
+  "baad4496",
+  "6000164c",
+  "6df9ee72",
+  "f367dd90",
+  "0897c6c0",
+  "68654932"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4890af2c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "680daa74",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"climb_stairs(1)\", lambda: climb_stairs(1), 1)\n",
+    "check(\"climb_stairs(2)\", lambda: climb_stairs(2), 2)\n",
+    "check(\"climb_stairs(5)\", lambda: climb_stairs(5), 8)\n",
+    "check(\"climb_stairs(3)\", lambda: climb_stairs(3), 3)\n",
+    "check(\"climb_stairs(4)\", lambda: climb_stairs(4), 5)\n",
+    "check(\"climb_stairs(10)\", lambda: climb_stairs(10), 89)\n",
+    "check(\"climb_stairs(30) without exponential recursion\", lambda: climb_stairs(30), 1346269)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0d4ceb54",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"rob([1, 2, 3, 1])\", lambda: rob([1, 2, 3, 1]), 4)\n",
+    "check(\"rob([2, 7, 9, 3, 1])\", lambda: rob([2, 7, 9, 3, 1]), 12)\n",
+    "check(\"rob([])\", lambda: rob([]), 0)\n",
+    "check(\"rob(single house)\", lambda: rob([5]), 5)\n",
+    "check(\"rob(two houses: take the bigger)\", lambda: rob([2, 1]), 2)\n",
+    "check(\"rob(skip two houses in a row)\", lambda: rob([2, 1, 1, 2]), 4)\n",
+    "check(\"rob(all zeros)\", lambda: rob([0, 0, 0]), 0)\n",
+    "check(\"rob(both ends)\", lambda: rob([10, 1, 1, 10]), 20)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ae6772d8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"coin_change([1, 2, 5], 11)\", lambda: coin_change([1, 2, 5], 11), 3)\n",
+    "check(\"coin_change([2], 3)\", lambda: coin_change([2], 3), -1)\n",
+    "check(\"coin_change([], 0)\", lambda: coin_change([], 0), 0)\n",
+    "check(\"coin_change([1], 0) needs no coins\", lambda: coin_change([1], 0), 0)\n",
+    "check(\"coin_change greedy trap: [1, 3, 4], 6\", lambda: coin_change([1, 3, 4], 6), 2)\n",
+    "check(\"coin_change(unsorted coins)\", lambda: coin_change([5, 2, 1], 11), 3)\n",
+    "check(\"coin_change(one exact coin)\", lambda: coin_change([7], 7), 1)\n",
+    "check(\"coin_change(no combination fits)\", lambda: coin_change([2, 5], 3), -1)\n",
+    "check(\"coin_change(larger amount)\", lambda: coin_change([186, 419, 83, 408], 6249), 20)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cdf8d786",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"length_of_lis([10, 9, 2, 5, 3, 7, 101, 18])\", lambda: length_of_lis([10, 9, 2, 5, 3, 7, 101, 18]), 4)\n",
+    "check(\"length_of_lis([0, 1, 0, 3, 2, 3])\", lambda: length_of_lis([0, 1, 0, 3, 2, 3]), 4)\n",
+    "check(\"length_of_lis([7, 7, 7])\", lambda: length_of_lis([7, 7, 7]), 1)\n",
+    "check(\"length_of_lis(empty list)\", lambda: length_of_lis([]), 0)\n",
+    "check(\"length_of_lis(single value)\", lambda: length_of_lis([5]), 1)\n",
+    "check(\"length_of_lis(strictly decreasing)\", lambda: length_of_lis([5, 4, 3, 2, 1]), 1)\n",
+    "check(\"length_of_lis(already increasing)\", lambda: length_of_lis([1, 2, 3, 4]), 4)\n",
+    "check(\"length_of_lis(negative values)\", lambda: length_of_lis([-3, -1, -2, 0]), 3)\n",
+    "check(\"length_of_lis(subsequence is not contiguous)\", lambda: length_of_lis([3, 10, 2, 1, 20]), 3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6df9ee72",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"longest_common_subsequence('abcde', 'ace')\", lambda: longest_common_subsequence(\"abcde\", \"ace\"), 3)\n",
+    "check(\"longest_common_subsequence('abc', 'def')\", lambda: longest_common_subsequence(\"abc\", \"def\"), 0)\n",
+    "check(\"longest_common_subsequence(empty string)\", lambda: longest_common_subsequence(\"\", \"abc\"), 0)\n",
+    "check(\"longest_common_subsequence(identical strings)\", lambda: longest_common_subsequence(\"abc\", \"abc\"), 3)\n",
+    "check(\"longest_common_subsequence(order matters)\", lambda: longest_common_subsequence(\"abc\", \"cba\"), 1)\n",
+    "check(\"longest_common_subsequence(repeated letters)\", lambda: longest_common_subsequence(\"aab\", \"azb\"), 2)\n",
+    "check(\"longest_common_subsequence(one match out of repeats)\", lambda: longest_common_subsequence(\"bl\", \"yby\"), 1)\n",
+    "check(\"longest_common_subsequence(longer strings)\", lambda: longest_common_subsequence(\"oxcpqrsvwf\", \"shmtulqrypy\"), 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "68654932",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "0897c6c0",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ],
+ "harness_ids": [
+  "4890af2c"
+ ]
+}

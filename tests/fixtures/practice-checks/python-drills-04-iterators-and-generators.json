@@ -1,0 +1,216 @@
+{
+ "order": [
+  "60ca54ba",
+  "38ba8700",
+  "93f1df29",
+  "b1039b62",
+  "8612bd7f",
+  "48a898d1",
+  "b6c6d263",
+  "8f855a7c",
+  "1778f2a4",
+  "003abfea",
+  "74c90e8c",
+  "ed123dff",
+  "263ea03a",
+  "c47bf423",
+  "42fea838",
+  "12f8b4fa",
+  "b4dd1f97",
+  "be2672b5",
+  "8965fc9a",
+  "8ea0e109",
+  "3e83e489",
+  "1050555a",
+  "28b53b17",
+  "0395b1cc",
+  "847ad2b6",
+  "6efff670",
+  "580e777b",
+  "607324c2",
+  "9a7d62ae"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "93f1df29",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "48a898d1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"list(running_total([1, 2, 3])) == [1, 3, 6]\", lambda: list(running_total([1, 2, 3])), [1, 3, 6])\n",
+    "check(\"list(running_total([])) == []\", lambda: list(running_total([])), [])\n",
+    "\n",
+    "\n",
+    "import inspect\n",
+    "\n",
+    "\n",
+    "def explode_after(values):\n",
+    "    \"\"\"Yield values, then raise if anyone reads further. Detects code that reads the whole input.\"\"\"\n",
+    "    yield from values\n",
+    "    raise RuntimeError(\"read past the values the caller needed\")\n",
+    "\n",
+    "\n",
+    "check(\"list(running_total([5])) == [5] (single value)\", lambda: list(running_total([5])), [5])\n",
+    "check(\"running_total with negatives and zero\", lambda: list(running_total([3, -5, 2, 0])), [3, -2, 0, 0])\n",
+    "check(\"running_total with floats\", lambda: list(running_total([0.5, 0.25])), [0.5, 0.75])\n",
+    "check(\"running_total accepts an iterator\", lambda: list(running_total(iter([1, 2]))), [1, 3])\n",
+    "check(\"running_total is a generator\", lambda: inspect.isgenerator(running_total([1])), True)\n",
+    "check(\n",
+    "    \"running_total yields before reading the whole input\",\n",
+    "    lambda: next(running_total(explode_after([1, 2]))),\n",
+    "    1,\n",
+    ")\n",
+    "check(\"running_total of 1..100 ends at 5050\", lambda: list(running_total(range(1, 101)))[-1], 5050)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "003abfea",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"list(chunks(range(5), 2))\", lambda: list(chunks(range(5), 2)), [[0, 1], [2, 3], [4]])\n",
+    "check(\"list(chunks([], 3)) == []\", lambda: list(chunks([], 3)), [])\n",
+    "check(\"chunks with size 1\", lambda: list(chunks([1, 2, 3], 1)), [[1], [2], [3]])\n",
+    "check(\"chunks with size above the length\", lambda: list(chunks([1, 2], 5)), [[1, 2]])\n",
+    "check(\"chunks of an exact multiple has no empty tail\", lambda: list(chunks(range(4), 2)), [[0, 1], [2, 3]])\n",
+    "check(\"chunks yields lists\", lambda: list(chunks(\"abc\", 2)), [[\"a\", \"b\"], [\"c\"]])\n",
+    "check(\"chunks accepts an iterator (no slicing)\", lambda: list(chunks(iter(range(5)), 2)), [[0, 1], [2, 3], [4]])\n",
+    "check(\"chunks is a generator\", lambda: inspect.isgenerator(chunks([1], 1)), True)\n",
+    "check(\n",
+    "    \"chunks yields the first batch before reading on\",\n",
+    "    lambda: next(chunks(explode_after([1, 2, 3]), 2)),\n",
+    "    [1, 2],\n",
+    ")\n",
+    "check(\"chunks of 1000 items by 7\", lambda: len(list(chunks(range(1000), 7))), 143)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c47bf423",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import itertools\n",
+    "check(\"first_evens(count(1), 3) == [2, 4, 6]\", lambda: first_evens(itertools.count(1), 3), [2, 4, 6])\n",
+    "check(\"first_evens([1, 3], 2) == []\", lambda: first_evens([1, 3], 2), [])\n",
+    "check(\"first_evens(..., 0) == []\", lambda: first_evens([2, 4], 0), [])\n",
+    "check(\"first_evens returns what exists when the stream ends early\", lambda: first_evens([1, 2, 3], 5), [2])\n",
+    "check(\"first_evens keeps zero and negatives\", lambda: first_evens([-2, 0, 3], 2), [-2, 0])\n",
+    "check(\"first_evens keeps duplicates\", lambda: first_evens([2, 2, 2], 2), [2, 2])\n",
+    "check(\n",
+    "    \"first_evens stops without reading the rest\",\n",
+    "    lambda: first_evens(explode_after([1, 2, 3, 4]), 2),\n",
+    "    [2, 4],\n",
+    ")\n",
+    "check(\n",
+    "    \"first_evens leaves the next value in the stream\",\n",
+    "    lambda: (lambda stream: (first_evens(stream, 2), next(stream))[1])(iter([1, 2, 3, 4, 5, 6])),\n",
+    "    5,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "be2672b5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"flatten([1, [2, [3]], 4])\", lambda: list(flatten([1, [2, [3]], 4])), [1, 2, 3, 4])\n",
+    "check(\"flatten([]) == []\", lambda: list(flatten([])), [])\n",
+    "check(\"flatten([[[[1]]]]) (deep nesting)\", lambda: list(flatten([[[[1]]]])), [1])\n",
+    "check(\"flatten skips empty sublists\", lambda: list(flatten([[], [1, []], []])), [1])\n",
+    "check(\"flatten does not split strings\", lambda: list(flatten([\"ab\", [\"cd\"]])), [\"ab\", \"cd\"])\n",
+    "check(\"flatten keeps tuples whole\", lambda: list(flatten([(1, 2), [3]])), [(1, 2), 3])\n",
+    "check(\"flatten keeps None items\", lambda: list(flatten([None, [None]])), [None, None])\n",
+    "check(\"flatten is a generator\", lambda: inspect.isgenerator(flatten([1])), True)\n",
+    "check(\n",
+    "    \"flatten 200 levels deep\",\n",
+    "    lambda: list(flatten(__import__(\"functools\").reduce(lambda inner, _: [inner], range(200), [7]))),\n",
+    "    [7],\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1050555a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"list(pairwise([1, 2, 3]))\", lambda: list(pairwise([1, 2, 3])), [(1, 2), (2, 3)])\n",
+    "check(\"list(pairwise([1])) == []\", lambda: list(pairwise([1])), [])\n",
+    "check(\"list(pairwise([])) == []\", lambda: list(pairwise([])), [])\n",
+    "check(\"pairwise accepts an iterator\", lambda: list(pairwise(iter([1, 2, 3]))), [(1, 2), (2, 3)])\n",
+    "check(\"pairwise of a string\", lambda: list(pairwise(\"abc\")), [(\"a\", \"b\"), (\"b\", \"c\")])\n",
+    "check(\"pairwise keeps duplicates\", lambda: list(pairwise([1, 1])), [(1, 1)])\n",
+    "check(\n",
+    "    \"pairwise treats None as a value, not a sentinel\",\n",
+    "    lambda: list(pairwise([None, None, 1])),\n",
+    "    [(None, None), (None, 1)],\n",
+    ")\n",
+    "check(\n",
+    "    \"pairwise yields before reading the whole input\",\n",
+    "    lambda: next(pairwise(explode_after([1, 2, 3]))),\n",
+    "    (1, 2),\n",
+    ")\n",
+    "check(\"pairwise of 100 items gives 99 pairs\", lambda: len(list(pairwise(range(100)))), 99)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6efff670",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"sum_by_key(...)\",\n",
+    "    lambda: sum_by_key([(\"a\", 1), (\"a\", 2), (\"b\", 5)]),\n",
+    "    [(\"a\", 3), (\"b\", 5)],\n",
+    ")\n",
+    "check(\"sum_by_key([]) == []\", lambda: sum_by_key([]), [])\n",
+    "check(\"sum_by_key with one pair\", lambda: sum_by_key([(\"x\", 4)]), [(\"x\", 4)])\n",
+    "check(\"sum_by_key keeps the last group\", lambda: sum_by_key([(\"a\", 1), (\"b\", 2)]), [(\"a\", 1), (\"b\", 2)])\n",
+    "check(\"sum_by_key adds equal pairs\", lambda: sum_by_key([(\"a\", 1), (\"a\", 1)]), [(\"a\", 2)])\n",
+    "check(\"sum_by_key with negatives\", lambda: sum_by_key([(\"a\", -1), (\"a\", 1)]), [(\"a\", 0)])\n",
+    "check(\"sum_by_key with int keys\", lambda: sum_by_key([(1, 1), (2, 2), (2, 3)]), [(1, 1), (2, 5)])\n",
+    "check(\"sum_by_key keeps key order\", lambda: sum_by_key([(\"m\", 1), (\"n\", 1), (\"o\", 1)]), [(\"m\", 1), (\"n\", 1), (\"o\", 1)])\n",
+    "check(\"sum_by_key of 100 pairs for one key\", lambda: sum_by_key([(\"k\", 1)] * 100), [(\"k\", 100)])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9a7d62ae",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "607324c2",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ],
+ "harness_ids": [
+  "93f1df29"
+ ]
+}

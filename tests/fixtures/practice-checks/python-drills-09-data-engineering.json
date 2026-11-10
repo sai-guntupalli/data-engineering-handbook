@@ -1,0 +1,231 @@
+{
+ "order": [
+  "2541070e",
+  "11b8ef3b",
+  "9c7c498c",
+  "2440140c",
+  "7b0dd8fc",
+  "6937795c",
+  "bca9cdc1",
+  "8eccf13c",
+  "eac6b277",
+  "bfdacd50",
+  "6e315efc",
+  "d3c17292",
+  "1c2edff6",
+  "35c73b98",
+  "3d3686d0",
+  "b3efa37d",
+  "498c3658",
+  "67449ae9",
+  "968cb688",
+  "73dfe341",
+  "539659fa",
+  "7438012e",
+  "a370a59e",
+  "98f0eda1",
+  "c81dff17",
+  "7b0ffdad",
+  "aac24029",
+  "f3493a37",
+  "384b1e23",
+  "310791ae",
+  "ebd93a8f",
+  "7f2403e6",
+  "cbf104dc"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9c7c498c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6937795c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"valid row\", lambda: validate_row({\"order_id\": 1, \"qty\": \"3\"}), (True, None))\n",
+    "check(\n",
+    "    \"missing order_id\",\n",
+    "    lambda: validate_row({\"qty\": \"3\"}),\n",
+    "    (False, \"missing order_id\"),\n",
+    ")\n",
+    "check(\n",
+    "    \"qty is not an integer\",\n",
+    "    lambda: validate_row({\"order_id\": 1, \"qty\": \"x\"}),\n",
+    "    (False, \"qty is not an integer\"),\n",
+    ")\n",
+    "check(\n",
+    "    \"qty is negative\",\n",
+    "    lambda: validate_row({\"order_id\": 1, \"qty\": \"-2\"}),\n",
+    "    (False, \"qty is negative\"),\n",
+    ")\n",
+    "check('zero qty', lambda: validate_row({'order_id': 0, 'qty': '0'}), (True, None))\n",
+    "check('missing qty', lambda: validate_row({'order_id': 1}), (False, 'qty is not an integer'))\n",
+    "check('rule precedence', lambda: validate_row({'qty': '-1'}), (False, 'missing order_id'))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bfdacd50",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"dedupe_by_key keeps the last row per key\",\n",
+    "    lambda: dedupe_by_key(\n",
+    "        [{\"id\": 1, \"v\": \"a\"}, {\"id\": 2, \"v\": \"b\"}, {\"id\": 1, \"v\": \"c\"}],\n",
+    "        \"id\",\n",
+    "    ),\n",
+    "    [{\"id\": 1, \"v\": \"c\"}, {\"id\": 2, \"v\": \"b\"}],\n",
+    ")\n",
+    "check('empty rows', lambda: dedupe_by_key([], 'id'), [])\n",
+    "check('one row', lambda: dedupe_by_key([{'id': 1}], 'id'), [{'id': 1}])\n",
+    "check('three versions', lambda: dedupe_by_key([{'id':1,'v':1},{'id':1,'v':2},{'id':1,'v':3}], 'id'), [{'id':1,'v':3}])\n",
+    "check('null key', lambda: dedupe_by_key([{'id':None},{'id':2}], 'id'), [{'id':None},{'id':2}])\n",
+    "check('different key column', lambda: dedupe_by_key([{'k':'a'},{'k':'b'}], 'k'), [{'k':'a'},{'k':'b'}])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "35c73b98",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"filter_newer keeps later rows and advances the watermark\",\n",
+    "    lambda: filter_newer([{\"ts\": \"2024-01-10\"}, {\"ts\": \"2024-01-12\"}], \"2024-01-10\"),\n",
+    "    ([{\"ts\": \"2024-01-12\"}], \"2024-01-12\"),\n",
+    ")\n",
+    "check(\n",
+    "    \"filter_newer keeps the old watermark when nothing is new\",\n",
+    "    lambda: filter_newer([{\"ts\": \"2024-01-10\"}], \"2024-02-01\"),\n",
+    "    ([], \"2024-02-01\"),\n",
+    ")\n",
+    "check('empty batch', lambda: filter_newer([], '2024-01-01'), ([], '2024-01-01'))\n",
+    "check('equal timestamp excluded', lambda: filter_newer([{'ts':'2024-01-01'}], '2024-01-01'), ([], '2024-01-01'))\n",
+    "check('unordered input', lambda: filter_newer([{'ts':'2024-03-01'},{'ts':'2024-02-01'}], '2024-01-01'), ([{'ts':'2024-03-01'},{'ts':'2024-02-01'}], '2024-03-01'))\n",
+    "check('duplicate timestamp retained', lambda: len(filter_newer([{'ts':'2024-02-01'},{'ts':'2024-02-01'}], '2024-01-01')[0]), 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "67449ae9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"partition_path(...)\",\n",
+    "    lambda: partition_path(\"warehouse\", \"orders\", \"2024-01-15\").as_posix(),\n",
+    "    \"warehouse/orders/dt=2024-01-15/part-0000.jsonl\",\n",
+    ")\n",
+    "check('Path input', lambda: partition_path(Path('root'), 't', '2024-02-29').as_posix(), 'root/t/dt=2024-02-29/part-0000.jsonl')\n",
+    "check('absolute root', lambda: partition_path('/tmp', 't', '2024-01-01').is_absolute(), True)\n",
+    "check('relative root', lambda: partition_path('root', 't', '2024-01-01').is_absolute(), False)\n",
+    "check('return type', lambda: isinstance(partition_path('r', 't', 'd'), Path), True)\n",
+    "check('filename', lambda: partition_path('r','t','d').name, 'part-0000.jsonl')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7438012e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"retry_delays(4, 0.5)\", lambda: retry_delays(4, 0.5), [0.5, 1.0, 2.0])\n",
+    "check(\"retry_delays(1, 1.0) == []\", lambda: retry_delays(1, 1.0), [])\n",
+    "check('zero attempts', lambda: retry_delays(0, 1), [])\n",
+    "check('two attempts', lambda: retry_delays(2, 3), [3])\n",
+    "check('zero delay', lambda: retry_delays(4, 0), [0, 0, 0])\n",
+    "check('integer delays', lambda: retry_delays(5, 2), [2, 4, 8, 16])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7b0ffdad",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"reason_counts\",\n",
+    "    lambda: reason_counts([{\"reason\": \"a\"}, {\"reason\": \"b\"}, {\"reason\": \"a\"}]),\n",
+    "    {\"a\": 2, \"b\": 1},\n",
+    ")\n",
+    "check(\"reason_counts([]) == {}\", lambda: reason_counts([]), {})\n",
+    "check('one reason', lambda: reason_counts([{'reason':'bad'}]), {'bad':1})\n",
+    "check('all same', lambda: reason_counts([{'reason':'bad'}]*5), {'bad':5})\n",
+    "check('empty reason', lambda: reason_counts([{'reason':''}]), {'':1})\n",
+    "check('generator input', lambda: reason_counts({'reason':r} for r in ['a','b','a']), {'a':2,'b':1})"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "310791ae",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import copy\n",
+    "import hashlib\n",
+    "import json\n",
+    "\n",
+    "upsert_batch = [{'id':1, 'updated_at':'2026-01-02T00:00:00Z', 'payload':{'v':2}}]\n",
+    "def upsert_repeat():\n",
+    "    first = upsert_hashed([], upsert_batch)\n",
+    "    return upsert_hashed(first, upsert_batch) == first\n",
+    "def upsert_ties():\n",
+    "    rows = [upsert_batch[0], {**upsert_batch[0], 'payload':{'v':3}}]\n",
+    "    return upsert_hashed([], rows) == upsert_hashed([], list(reversed(rows)))\n",
+    "def upsert_no_mutation():\n",
+    "    before = copy.deepcopy(upsert_batch)\n",
+    "    upsert_hashed([], upsert_batch)\n",
+    "    return upsert_batch == before\n",
+    "def upsert_stale():\n",
+    "    first = upsert_hashed([], upsert_batch)\n",
+    "    return upsert_hashed(first, [{**upsert_batch[0], 'updated_at':'2026-01-01T00:00:00Z', 'payload':{'v':99}}]) == first\n",
+    "def upsert_canonical():\n",
+    "    rows = [{'id':1, 'updated_at':'2026-01-01T00:00:00Z', 'payload':{'b':2,'a':1}}]\n",
+    "    return upsert_hashed([], rows)[0]['content_hash'] == hashlib.sha256(b'{\"a\":1,\"b\":2}').hexdigest()\n",
+    "check('empty batch', lambda: upsert_hashed([], []), [])\n",
+    "check('insert', lambda: len(upsert_hashed([], upsert_batch)), 1)\n",
+    "check('rerun is idempotent', upsert_repeat, True)\n",
+    "check('ties are deterministic', upsert_ties, True)\n",
+    "check('inputs unchanged', upsert_no_mutation, True)\n",
+    "check('stale update ignored', upsert_stale, True)\n",
+    "check('canonical payload hash', upsert_canonical, True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cbf104dc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "7f2403e6",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ],
+ "harness_ids": [
+  "9c7c498c"
+ ]
+}

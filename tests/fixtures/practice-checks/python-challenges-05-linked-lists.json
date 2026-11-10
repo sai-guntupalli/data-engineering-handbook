@@ -1,0 +1,197 @@
+{
+ "order": [
+  "8474cfec",
+  "c8b62cc7",
+  "b8b58a23",
+  "7b09940c",
+  "21fd1cbb",
+  "f593a7ce",
+  "36853986",
+  "c33dcfc1",
+  "c554d8a1",
+  "2732d491",
+  "46730bc2",
+  "48f5ecca",
+  "f4c9bf0f",
+  "e9dc290f",
+  "9d2c39fd",
+  "0d1bf175",
+  "c79fe7a2",
+  "6a654e13",
+  "82cf8c1a",
+  "5988691d",
+  "3bbdc313",
+  "fcc2bf17",
+  "cf85e0c5",
+  "ae1bd20f",
+  "e80704cf",
+  "31a8f9ce"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b8b58a23",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "36853986",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def old_head_becomes_tail(values):\n",
+    "    \"\"\"Reverse a list and read from the old head, which should now be the last node.\"\"\"\n",
+    "    head = make_list(values)\n",
+    "    reverse_list(head)\n",
+    "    return to_list(head)\n",
+    "\n",
+    "check(\"reverse_list([1, 2, 3, 4, 5])\", lambda: to_list(reverse_list(make_list([1, 2, 3, 4, 5]))), [5, 4, 3, 2, 1])\n",
+    "check(\"reverse_list(empty)\", lambda: to_list(reverse_list(make_list([]))), [])\n",
+    "check(\"single node\", lambda: to_list(reverse_list(make_list([1]))), [1])\n",
+    "check(\"two nodes\", lambda: to_list(reverse_list(make_list([1, 2]))), [2, 1])\n",
+    "check(\"duplicate values\", lambda: to_list(reverse_list(make_list([1, 1, 2]))), [2, 1, 1])\n",
+    "check(\"in place: the old head is now the tail\", lambda: old_head_becomes_tail([1, 2, 3]), [1])\n",
+    "check(\n",
+    "    \"long list (10,000 nodes, no recursion limit)\",\n",
+    "    lambda: to_list(reverse_list(make_list(list(range(10_000))))),\n",
+    "    list(range(9_999, -1, -1)),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "46730bc2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def reuses_nodes():\n",
+    "    \"\"\"True when the merged list is built from the original nodes, not copies.\"\"\"\n",
+    "    first, second = make_list([1]), make_list([2])\n",
+    "    merged = merge_two_sorted(first, second)\n",
+    "    return merged is first and merged.next is second\n",
+    "\n",
+    "check(\n",
+    "    \"merge_two_sorted([1, 2, 4], [1, 3, 4])\",\n",
+    "    lambda: to_list(merge_two_sorted(make_list([1, 2, 4]), make_list([1, 3, 4]))),\n",
+    "    [1, 1, 2, 3, 4, 4],\n",
+    ")\n",
+    "check(\"first empty\", lambda: to_list(merge_two_sorted(make_list([]), make_list([0]))), [0])\n",
+    "check(\"second empty\", lambda: to_list(merge_two_sorted(make_list([1, 2]), make_list([]))), [1, 2])\n",
+    "check(\"both empty\", lambda: to_list(merge_two_sorted(make_list([]), make_list([]))), [])\n",
+    "check(\"first all smaller\", lambda: to_list(merge_two_sorted(make_list([1, 2, 3]), make_list([4, 5, 6]))), [1, 2, 3, 4, 5, 6])\n",
+    "check(\"second all smaller\", lambda: to_list(merge_two_sorted(make_list([4, 5, 6]), make_list([1, 2, 3]))), [1, 2, 3, 4, 5, 6])\n",
+    "check(\"all duplicates\", lambda: to_list(merge_two_sorted(make_list([2, 2]), make_list([2]))), [2, 2, 2])\n",
+    "check(\"negatives\", lambda: to_list(merge_two_sorted(make_list([-3, 0]), make_list([-2, 5]))), [-3, -2, 0, 5])\n",
+    "check(\"reuses the existing nodes\", reuses_nodes, True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9d2c39fd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def make_cycle(values, back_to):\n",
+    "    \"\"\"Build a list whose last node points back to the node at index back_to.\"\"\"\n",
+    "    head = make_list(values)\n",
+    "    nodes = []\n",
+    "    node = head\n",
+    "    while node is not None:\n",
+    "        nodes.append(node)\n",
+    "        node = node.next\n",
+    "    nodes[-1].next = nodes[back_to]\n",
+    "    return head\n",
+    "\n",
+    "check(\"has_cycle with a cycle\", lambda: has_cycle(make_cycle([3, 2, 0, -4], 1)), True)\n",
+    "check(\"has_cycle without a cycle\", lambda: has_cycle(make_list([1, 2, 3])), False)\n",
+    "check(\"empty list\", lambda: has_cycle(None), False)\n",
+    "check(\"single node, no cycle\", lambda: has_cycle(make_list([1])), False)\n",
+    "check(\"single node pointing to itself\", lambda: has_cycle(make_cycle([1], 0)), True)\n",
+    "check(\"tail points back to the head\", lambda: has_cycle(make_cycle([1, 2], 0)), True)\n",
+    "check(\"repeated values are not a cycle\", lambda: has_cycle(make_list([1, 1, 1, 1])), False)\n",
+    "check(\"long tail before the cycle\", lambda: has_cycle(make_cycle(list(range(100)), 90)), True)\n",
+    "check(\"long list without a cycle (10,000 nodes)\", lambda: has_cycle(make_list(list(range(10_000)))), False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "82cf8c1a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"remove_nth_from_end([1, 2, 3, 4, 5], 2)\",\n",
+    "    lambda: to_list(remove_nth_from_end(make_list([1, 2, 3, 4, 5]), 2)),\n",
+    "    [1, 2, 3, 5],\n",
+    ")\n",
+    "check(\"remove_nth_from_end([1], 1)\", lambda: to_list(remove_nth_from_end(make_list([1]), 1)), [])\n",
+    "check(\"remove the head\", lambda: to_list(remove_nth_from_end(make_list([1, 2]), 2)), [2])\n",
+    "check(\"remove the tail\", lambda: to_list(remove_nth_from_end(make_list([1, 2]), 1)), [1])\n",
+    "check(\"remove the middle\", lambda: to_list(remove_nth_from_end(make_list([1, 2, 3]), 2)), [1, 3])\n",
+    "check(\"removes by position, not by value\", lambda: to_list(remove_nth_from_end(make_list([1, 2, 1]), 1)), [1, 2])\n",
+    "check(\n",
+    "    \"long list, remove the head (1,000 nodes)\",\n",
+    "    lambda: to_list(remove_nth_from_end(make_list(list(range(1_000))), 1_000)),\n",
+    "    list(range(1, 1_000)),\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cf85e0c5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"add_two_numbers([2, 4, 3], [5, 6, 4])\",\n",
+    "    lambda: to_list(add_two_numbers(make_list([2, 4, 3]), make_list([5, 6, 4]))),\n",
+    "    [7, 0, 8],\n",
+    ")\n",
+    "check(\n",
+    "    \"add_two_numbers with carries\",\n",
+    "    lambda: to_list(add_two_numbers(make_list([9, 9, 9, 9, 9, 9, 9]), make_list([9, 9, 9, 9]))),\n",
+    "    [8, 9, 9, 9, 0, 0, 0, 1],\n",
+    ")\n",
+    "check(\"final carry adds a digit: 99 + 1\", lambda: to_list(add_two_numbers(make_list([9, 9]), make_list([1]))), [0, 0, 1])\n",
+    "check(\"zero plus zero\", lambda: to_list(add_two_numbers(make_list([0]), make_list([0]))), [0])\n",
+    "check(\"no carries\", lambda: to_list(add_two_numbers(make_list([1, 2, 3]), make_list([4, 5, 6]))), [5, 7, 9])\n",
+    "check(\"single digits with a carry: 5 + 5\", lambda: to_list(add_two_numbers(make_list([5]), make_list([5]))), [0, 1])\n",
+    "check(\"shorter first list\", lambda: to_list(add_two_numbers(make_list([1]), make_list([9, 9, 9]))), [0, 0, 0, 1])\n",
+    "check(\n",
+    "    \"long numbers (1,000 digits)\",\n",
+    "    lambda: to_list(add_two_numbers(make_list([9] * 1_000), make_list([1]))),\n",
+    "    [0] * 1_000 + [1],\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31a8f9ce",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e80704cf",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ],
+ "harness_ids": [
+  "b8b58a23"
+ ]
+}

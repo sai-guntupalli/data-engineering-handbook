@@ -61,9 +61,12 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   reader shows it closed; the formatter keeps the tag.
 - **Difficulty.** Every practice problem and drill exercise has a line right under its heading:
   `**Difficulty:** Easy · about 5 min` (Easy, Medium or Hard, with an honest time estimate).
-- **Checks that catch mistakes.** Give each exercise 6-10 checks, labelled by the case they cover: empty input, single
+- **Checks that catch mistakes.** Keep Python practice checks in `tests/fixtures/practice-checks/`, outside the
+  learner-facing notebook. Explain the question and show concrete sample inputs and expected outputs before the
+  exercise cell. Avoid scoreboards and pass/todo output. Give each exercise 6-10 maintainer checks for empty input, single
   item, duplicates, ties, `None`, and the trap the exercise teaches. A check must be able to fail for a plausible wrong
-  answer; confirm it against the reference solution and one deliberately wrong version.
+  answer; confirm it against the reference solution and one deliberately wrong version with
+  `uv run --extra notebooks python scripts/verify_practice_answers.py`.
 - **Last reviewed.** Tool pages end their opening paragraph with `*Last reviewed: <Month YYYY>, against <tool and
   version>.*` (managed services: "against the <service> documentation as of <Month YYYY>"). Update it whenever you
   check the page against a new release, and confirm version-specific facts against official docs or release notes.
