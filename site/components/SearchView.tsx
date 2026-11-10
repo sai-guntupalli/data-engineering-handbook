@@ -5,7 +5,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { Hash, MagnifyingGlass } from "@phosphor-icons/react";
 import type { NotebookSummary } from "@/lib/notebooks";
 import { toneStyle } from "@/lib/tone";
-import { highlightParts, matchNotebooks, searchEntries } from "@/lib/search";
+import { highlightParts, matchNotebooks, searchEntries, type SearchEntry } from "@/lib/search";
 import { CatalogTable } from "./CatalogTable";
 import { useSearchIndex } from "./search-index";
 import { setUrlParam, useUrlParam } from "./url-state";
@@ -29,11 +29,11 @@ function Marked({ text, query }: { text: string; query: string }) {
 }
 
 /** Full search results: matching notebooks as catalog rows, then matching sections. */
-export function SearchView({ notebooks }: { notebooks: NotebookSummary[] }) {
+export function SearchView({ notebooks, initialEntries }: { notebooks: NotebookSummary[]; initialEntries: SearchEntry[] }) {
   const query = useUrlParam("q");
   const trimmed = query.trim();
   const inputRef = useRef<HTMLInputElement>(null);
-  const { entries, failed } = useSearchIndex(true);
+  const { entries, failed } = useSearchIndex(true, initialEntries);
 
   useEffect(() => inputRef.current?.focus(), []);
 

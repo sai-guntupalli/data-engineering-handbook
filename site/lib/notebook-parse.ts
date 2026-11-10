@@ -192,6 +192,11 @@ export function outlineOf(markdown: string): OutlineItem[] {
 /** An `assert`, or a top-level call to a practice helper: check(...), check_async(...), score(). */
 const CHECK_PATTERN = /\bassert\b|^\s*(?:await\s+)?(?:check|check_async)\(|^score\(\)/m;
 
+/** SQL examples execute inside a Python Spark/DuckDB wrapper in Jupyter. */
+export function codeLabel(source: string): string {
+  return /\b(?:spark\.sql|(?:conn|con)\.execute)\s*\(/.test(source) ? "SQL · Python wrapper" : "Python";
+}
+
 export function cellKindOf(cellType: string, source: string, tags: readonly string[] = []): CellKind {
   if (cellType === "markdown") return "markdown";
   if (tags.includes(SOLUTION_TAG)) return "solution";

@@ -9,6 +9,11 @@ in Colab to run it.
 
 ## The site
 
+Reader and search improvements: SQL executed through Spark or DuckDB is labelled `SQL · Python wrapper`,
+and checked examples are distinguished from plain code. The search page receives its section index at build time;
+the command palette warms and reuses the shared static index. Home, topic and notebook pages include canonical URLs,
+with a shared social-preview image and WebSite structured data. The phone top bar keeps its controls in one compact row.
+
 - **Library**: a learning path of six stages, from Python and SQL to streaming and interview practice, with progress
   per step and a "Next up" link; resume cards for what you were reading; and a card for every tool, grouped by category.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of

@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { AppShell } from "@/components/AppShell";
 import { CatalogTable } from "@/components/CatalogTable";
 import { getTool, getTools } from "@/lib/notebooks";
+import { siteUrl } from "@/lib/site";
 
 export const dynamicParams = false;
 
@@ -24,7 +25,8 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: { params: Promise<{ tool: string }> }): Promise<Metadata> {
   const tool = getTool((await params).tool);
-  return { title: tool ? `${tool.label} notebooks` : "Tool not found" };
+  return { title: tool ? `${tool.label} notebooks` : "Tool not found",
+    ...(tool ? { alternates: { canonical: `${siteUrl}/tools/${tool.folder}/` } } : {}) };
 }
 
 export default async function ToolPage({ params }: { params: Promise<{ tool: string }> }) {
