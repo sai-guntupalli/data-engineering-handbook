@@ -1,0 +1,561 @@
+{
+ "notebook": "notebooks/topics/sql/sql-13-interview-drills.ipynb",
+ "solutions": {
+  "d93bc28c": {
+   "fingerprint": "c45c592716f04bdbe8c6626c9e4ca6ff35432fb31a93d73dba3b5619bf82e6f7",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(130000,)]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(130000,)]"
+    }
+   ]
+  },
+  "861d8656": {
+   "fingerprint": "b20f5dd3a5af3ee959af86c4869ba3441ddf2d4c80534a8d0cab80cee1650187",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(120000,)]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(120000,)]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows(q) == [(120000,), (120000,)]"
+    }
+   ]
+  },
+  "d0d6cd3a": {
+   "fingerprint": "f6fc5a1c75b1b15041264cea4fe6012826134e4ea3ccf341aa7809964abcf284",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, \"Alice\", 150000), (1, \"Bob\", 120000), (1, \"Carol\", 120000),\n        (2, \"Frank\", 130000), (2, \"Grace\", 98000), (2, \"Heidi\", 87000),\n        (3, \"Judy\", 105000), (3, \"Kevin\", 88000),\n        (4, \"Leo\", 90000), (4, \"Mallory\", 72000), (4, \"Nina\", 68000),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(1, 3, 3, 4), (2, 3, 4, 4), (3, 2, 2, 2), (4, 3, 3, 3)]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows(q) == [\n        (\"Alice\", 150000, 1, 1), (\"Bob\", 120000, 2, 2), (\"Carol\", 120000, 2, 2),\n        (\"Dave\", 95000, 4, 3), (\"Eve\", 90000, 5, 4),\n    ]"
+    }
+   ]
+  },
+  "dbb2c7ea": {
+   "fingerprint": "d5d4830928995591e0d4d35d939dc98f1b7a69106dfad52b2c36c7884dcce61c",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, 1, 165000, date(2023, 6, 1)),\n        (2, 1, 128000, date(2023, 5, 1)),\n        (3, 1, 125000, date(2023, 3, 1)),\n        (6, 2, 140000, date(2023, 7, 1)),\n        (7, 2, 101000, date(2023, 4, 1)),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [\n        (1, 1, 165000, date(2023, 6, 1)),\n        (2, 1, 128000, date(2023, 5, 1)),\n        (3, 1, 125000, date(2023, 3, 1)),\n        (6, 2, 140000, date(2023, 7, 1)),\n        (7, 2, 101000, date(2023, 4, 1)),\n    ]"
+    }
+   ]
+  },
+  "d95fc41e": {
+   "fingerprint": "c76228f651e0757fa81a6c42e0ffe80feff0f3560f22e5b411f4f8d50bf42a5a",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(2, 1, 165000), (4, 2, 128000), (5, 3, 125000), (7, 6, 140000), (8, 7, 101000)]"
+    }
+   ]
+  },
+  "3668f0af": {
+   "fingerprint": "91f7dbfd079f8408293fbd7c5e9d361ee1b2938b8523b6f47264993a1817c019",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(\"dave@example.com\", 2, \"Dave,Kevin\"), (\"heidi@example.com\", 2, \"Heidi,Nina\")]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(4, \"dave@example.com\"), (11, \"dave@example.com\"), (8, \"heidi@example.com\"), (14, \"heidi@example.com\")]"
+    }
+   ]
+  },
+  "6fc05726": {
+   "fingerprint": "90fc82d93e1a4212442d9d89d88e78081ccead47601230ddba17f96926609675",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert rows(q) == [\n        (1, 165000), (2, 128000), (3, 125000), (4, 95000), (5, 90000),\n        (6, 140000), (7, 101000), (8, 87000), (9, 87000), (10, 105000),\n        (11, 88000), (12, 90000), (13, 72000), (14, 68000),\n    ]"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert rows(q) == [(5,)]"
+    }
+   ]
+  },
+  "d74e5b63": {
+   "fingerprint": "c69f3d39729ae7f77f51294a23817b45361fee86c7f3c07ded0efe91ba98f4d7",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (11, date(2023, 1, 2), 500, 500), (1, date(2023, 1, 5), 100, 600),\n        (4, date(2023, 1, 20), 300, 900), (7, date(2023, 1, 25), 120, 1020),\n        (5, date(2023, 2, 5), 250, 1270), (2, date(2023, 2, 10), 200, 1470),\n        (9, date(2023, 2, 14), 220, 1690), (13, date(2023, 2, 18), 275, 1965),\n        (8, date(2023, 2, 28), 180, 2145), (12, date(2023, 3, 5), 450, 2595),\n        (3, date(2023, 3, 15), 150, 2745), (6, date(2023, 3, 20), 400, 3145),\n        (14, date(2023, 3, 25), 325, 3470), (10, date(2023, 3, 30), 320, 3790),\n    ]"
+    }
+   ]
+  },
+  "2bf3655b": {
+   "fingerprint": "8502c8865a9b11cf18357da6f6e1e5ddc0aab12a3ead17ad3359b116672219c9",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, date(2023, 1, 5), 100, 100), (1, date(2023, 2, 10), 200, 300),\n        (1, date(2023, 3, 15), 150, 450), (2, date(2023, 1, 20), 300, 300),\n        (2, date(2023, 3, 20), 400, 700), (3, date(2023, 1, 25), 120, 120),\n        (3, date(2023, 2, 28), 180, 300), (4, date(2023, 3, 30), 320, 320),\n        (5, date(2023, 1, 2), 500, 500), (5, date(2023, 3, 5), 450, 950),\n        (6, date(2023, 2, 18), 275, 275),\n    ]"
+    }
+   ]
+  },
+  "56932ce6": {
+   "fingerprint": "d8ec4bb3cd7fcdd2ef05feaecb5cb3ecfdab0cf43cb36ebca2f18a252b0b9ef0",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(\"2023-01\", 1020, None, None), (\"2023-02\", 655, 1020, -35.78), (\"2023-03\", 1320, 655, 101.53)]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(\"2023-01\", None), (\"2023-02\", 0.642), (\"2023-03\", 2.015)]"
+    }
+   ]
+  },
+  "9060874a": {
+   "fingerprint": "6c6db9fd1573c68829995a8f78b6fed406acb6ed7fe7e4f55761cb01dd92e2e3",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(1, 450, 15.03), (2, 700, 23.37), (3, 300, 10.02), (4, 320, 10.68), (5, 950, 31.72), (6, 275, 9.18)]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(100.0,)]"
+    }
+   ]
+  },
+  "5ce7429c": {
+   "fingerprint": "671622ce364972f71e0f9aeae947851d39bf058b0413bb5acea4607035db15aa",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, \"Alice\", None), (2, \"Bob\", \"Alice\"), (3, \"Carol\", \"Alice\"),\n        (4, \"Dave\", \"Bob\"), (5, \"Eve\", \"Bob\"),\n        (6, \"Frank\", None), (7, \"Grace\", \"Frank\"), (8, \"Heidi\", \"Frank\"), (9, \"Ivan\", \"Frank\"),\n        (10, \"Judy\", None), (11, \"Kevin\", \"Judy\"),\n        (12, \"Leo\", None), (13, \"Mallory\", \"Leo\"), (14, \"Nina\", \"Leo\"),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(3, \"Carol\", 0), (4, \"Dave\", 0), (5, \"Eve\", 0), (7, \"Grace\", 0), (8, \"Heidi\", 0),\n     (9, \"Ivan\", 0), (11, \"Kevin\", 0), (13, \"Mallory\", 0), (14, \"Nina\", 0)]"
+    }
+   ]
+  },
+  "980c9a00": {
+   "fingerprint": "568c162a30936e6a6734226cf68a4ebb5a4c65136f0d56138b2ab351d18f4c84",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(7, \"Gamma SA\"), (8, \"Hotel BV\")]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(7, \"Gamma SA\"), (8, \"Hotel BV\")]"
+    }
+   ]
+  },
+  "07900bfc": {
+   "fingerprint": "838b165eab8728296f300e5fbc62ddd0d492b79bb4e4a369c694e23d4265f6cd",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, \"Acme Corp\", 3, 450), (2, \"Beta LLC\", 3, 950), (3, \"Cyan Inc\", 2, 300),\n        (4, \"Delta Co\", 2, 540), (5, \"Echo Ltd\", 2, 950), (6, \"Foxtrot GmbH\", 2, 600),\n        (7, \"Gamma SA\", 0, 0), (8, \"Hotel BV\", 0, 0),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(7, 1), (8, 1)]"
+    }
+   ]
+  },
+  "db00c517": {
+   "fingerprint": "b844087f46b9016b8cf9821e139d6da289c986ffebc8e9fa570b5e967b0b5077",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(1, \"Acme Corp\"), (2, \"Beta LLC\"), (3, \"Cyan Inc\"), (4, \"Delta Co\"), (5, \"Echo Ltd\"), (6, \"Foxtrot GmbH\")]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(1, \"Acme Corp\"), (2, \"Beta LLC\"), (3, \"Cyan Inc\"), (4, \"Delta Co\"), (5, \"Echo Ltd\"), (6, \"Foxtrot GmbH\")]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows(q) == []"
+    },
+    {
+     "after_statement": 8,
+     "source": "assert rows(q) == [(2,), (3,), (4,), (5,), (6,), (7,), (8,)]"
+    }
+   ]
+  },
+  "b3617421": {
+   "fingerprint": "28433ef7c13479c8a76b393be0c2adc4fab8ed36300b0151a5944ca043a808f9",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (\"Alice\", 1, 150000), (\"Bob\", 1, 120000), (\"Carol\", 1, 120000),\n        (\"Frank\", 2, 130000), (\"Judy\", 3, 105000), (\"Leo\", 4, 90000),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [\n        (\"Alice\", 1, 150000), (\"Bob\", 1, 120000), (\"Carol\", 1, 120000),\n        (\"Frank\", 2, 130000), (\"Judy\", 3, 105000), (\"Leo\", 4, 90000),\n    ]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows(q) == [(1, 115000.0), (2, 100500.0), (3, 96500.0), (4, 76666.67)]"
+    }
+   ]
+  },
+  "3853c0f9": {
+   "fingerprint": "5a4774a9ef5f2a940ce02b448fd8fd113055a96ddd8ad61371234c55b298f767",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, \"Acme Corp\", 3, 0, 0), (2, \"Beta LLC\", 2, 0, 1), (3, \"Cyan Inc\", 2, 0, 0),\n        (4, \"Delta Co\", 1, 1, 0), (5, \"Echo Ltd\", 2, 0, 0), (6, \"Foxtrot GmbH\", 1, 0, 1),\n        (7, \"Gamma SA\", 0, 0, 0), (8, \"Hotel BV\", 0, 0, 0),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(1, 3, 0, 0), (2, 2, 0, 1), (3, 2, 0, 0), (4, 1, 1, 0), (5, 2, 0, 0), (6, 1, 0, 1)]"
+    }
+   ]
+  },
+  "20aeb99b": {
+   "fingerprint": "4509b29a3e7fe0b4beede4c0d82549bc445e99ce7bf8b6153446d957e08bbc46",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(92500.0,)]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(92500.0,)]"
+    },
+    {
+     "after_statement": 6,
+     "source": "assert rows(q) == [(90000,), (95000,)]"
+    }
+   ]
+  },
+  "7b160146": {
+   "fingerprint": "af6ac4657eb46cf8618bcd2d5ddc51c02bceb041625440f06e8963564f7fe203",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (1, date(2023, 1, 1), date(2023, 1, 3), 3), (1, date(2023, 1, 5), date(2023, 1, 6), 2),\n        (2, date(2023, 1, 1), date(2023, 1, 2), 2), (2, date(2023, 1, 4), date(2023, 1, 4), 1),\n        (3, date(2023, 2, 1), date(2023, 2, 1), 1), (4, date(2023, 2, 1), date(2023, 2, 1), 1),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(1, 3), (2, 2), (3, 1), (4, 1)]"
+    }
+   ]
+  },
+  "ca81f9d1": {
+   "fingerprint": "66e09bf8d808be8d157f44e2a3531785ccea98bc2920dd31cab0e5c6e307206a",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [(1, 5), (2, 3), (3, 2), (4, 1)]"
+    }
+   ]
+  },
+  "914f4537": {
+   "fingerprint": "06e4faf7fe89e848e79932d54fef9202996e4580691bdba04a160e5cbecc4700",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (\"2023-01\", \"2023-01\", 4), (\"2023-01\", \"2023-02\", 3), (\"2023-01\", \"2023-03\", 3),\n        (\"2023-02\", \"2023-02\", 2), (\"2023-02\", \"2023-03\", 2),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [(\"2023-01\", 4), (\"2023-02\", 2)]"
+    }
+   ]
+  },
+  "e6513a4a": {
+   "fingerprint": "922165a33f0c8effef07073eeb3f78a56955f26c529701dccfacecfdbe5feb5e",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert rows(q) == [\n        (date(2023, 1, 2), 1), (date(2023, 1, 5), 2), (date(2023, 1, 20), 3), (date(2023, 1, 25), 4),\n        (date(2023, 2, 5), 4), (date(2023, 2, 10), 4), (date(2023, 2, 14), 5), (date(2023, 2, 18), 6),\n        (date(2023, 2, 28), 6), (date(2023, 3, 5), 6), (date(2023, 3, 15), 6), (date(2023, 3, 20), 6),\n        (date(2023, 3, 25), 6), (date(2023, 3, 30), 6),\n    ]"
+    },
+    {
+     "after_statement": 4,
+     "source": "assert rows(q) == [\n        (date(2023, 1, 2), 1), (date(2023, 1, 5), 2), (date(2023, 1, 20), 3),\n        (date(2023, 1, 25), 4), (date(2023, 2, 14), 5), (date(2023, 2, 18), 6),\n    ]"
+    }
+   ]
+  }
+ },
+ "removed_cells": [
+  {
+   "before": "71b66d4a",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "6d94e8ff",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "assert rows(\"SELECT DISTINCT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 3\") == [(105000,)]\n",
+     "assert rows(\"SELECT salary FROM employees ORDER BY salary DESC LIMIT 1 OFFSET 3\") == [(120000,)]"
+    ]
+   }
+  },
+  {
+   "before": "7c40a0c1",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "7ea8096f",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "TIED = \"SELECT * FROM VALUES (150), (150), (130) AS t(salary)\"\n",
+     "assert rows(f\"SELECT salary FROM ({TIED}) ORDER BY salary DESC LIMIT 1 OFFSET 1\") == [(150,)]\n",
+     "assert rows(f\"SELECT MAX(salary) FROM ({TIED}) WHERE salary < (SELECT MAX(salary) FROM ({TIED}))\") == [(130,)]"
+    ]
+   }
+  },
+  {
+   "before": "0c65f041",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "74d70f74",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "q = \"\"\"\n",
+     "    SELECT\n",
+     "        (SELECT COUNT(*) FROM departments)      AS departments,\n",
+     "        (SELECT COUNT(*) FROM employees)        AS employees,\n",
+     "        (SELECT COUNT(*) FROM employee_updates) AS employee_updates,\n",
+     "        (SELECT COUNT(*) FROM customers)        AS customers,\n",
+     "        (SELECT COUNT(*) FROM orders)           AS orders,\n",
+     "        (SELECT COUNT(*) FROM events)           AS events\n",
+     "    \"\"\"\n",
+     "spark.sql(q).show()\n",
+     "assert rows(q) == [(4, 14, 8, 8, 14, 15)]"
+    ]
+   }
+  },
+  {
+   "before": "107d5def",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "3d26d8c5",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "q = \"\"\"\n",
+     "    SELECT id,\n",
+     "           SUM(amount) OVER (ORDER BY d)     AS by_date_only,\n",
+     "           SUM(amount) OVER (ORDER BY d, id) AS by_date_and_id\n",
+     "    FROM VALUES (1, DATE '2023-01-01', 10), (2, DATE '2023-01-02', 20), (3, DATE '2023-01-02', 30) AS t(id, d, amount)\n",
+     "    ORDER BY id\n",
+     "    \"\"\"\n",
+     "spark.sql(q).show()\n",
+     "assert rows(q) == [(1, 10, 10), (2, 60, 30), (3, 60, 60)]"
+    ]
+   }
+  },
+  {
+   "before": "becfacf4",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "127058cd",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "q = \"\"\"\n",
+     "    WITH u AS (\n",
+     "        SELECT * FROM VALUES (1, 9, 100, DATE '2023-06-01'), (2, 9, 110, DATE '2023-06-01')\n",
+     "        AS u(update_id, emp_id, salary, updated_at)\n",
+     "    )\n",
+     "    SELECT u.update_id FROM u\n",
+     "    JOIN (SELECT emp_id, MAX(updated_at) AS max_ts FROM u GROUP BY emp_id) m\n",
+     "      ON m.emp_id = u.emp_id AND m.max_ts = u.updated_at\n",
+     "    ORDER BY u.update_id\n",
+     "    \"\"\"\n",
+     "assert rows(q) == [(1,), (2,)]"
+    ]
+   }
+  },
+  {
+   "before": "abed314e",
+   "cell": {
+    "cell_type": "code",
+    "execution_count": null,
+    "id": "e53d2f86",
+    "metadata": {},
+    "outputs": [],
+    "source": [
+     "q = \"\"\"\n",
+     "    SELECT customer_id, order_date, running_total FROM (\n",
+     "        SELECT customer_id, order_date, status,\n",
+     "               SUM(amount) OVER (PARTITION BY customer_id ORDER BY order_date, order_id) AS running_total\n",
+     "        FROM orders\n",
+     "    )\n",
+     "    WHERE status = 'completed' AND customer_id = 2\n",
+     "    ORDER BY order_date\n",
+     "    \"\"\"\n",
+     "assert rows(q) == [(2, date(2023, 1, 20), 300), (2, date(2023, 3, 20), 950)]"
+    ]
+   }
+  }
+ ],
+ "examples": {
+  "d93bc28c": {
+   "expected_cell": "8e5b4a1a",
+   "output_indices": [
+    0
+   ]
+  },
+  "861d8656": {
+   "expected_cell": "7c40a0c1",
+   "output_indices": [
+    0
+   ]
+  },
+  "d0d6cd3a": {
+   "expected_cell": "71b66d4a",
+   "output_indices": [
+    0,
+    1
+   ]
+  },
+  "dbb2c7ea": {
+   "expected_cell": "84d23640",
+   "output_indices": [
+    0
+   ]
+  },
+  "d95fc41e": {
+   "expected_cell": "becfacf4",
+   "output_indices": [
+    0
+   ]
+  },
+  "3668f0af": {
+   "expected_cell": "e527738f",
+   "output_indices": [
+    0
+   ]
+  },
+  "6fc05726": {
+   "expected_cell": "73e52a10",
+   "output_indices": [
+    0
+   ]
+  },
+  "d74e5b63": {
+   "expected_cell": "3ada8d9d",
+   "output_indices": [
+    0
+   ]
+  },
+  "2bf3655b": {
+   "expected_cell": "107d5def",
+   "output_indices": [
+    0
+   ]
+  },
+  "56932ce6": {
+   "expected_cell": "abed314e",
+   "output_indices": [
+    0
+   ]
+  },
+  "9060874a": {
+   "expected_cell": "6ba9c252",
+   "output_indices": [
+    0
+   ]
+  },
+  "5ce7429c": {
+   "expected_cell": "1ac7ac46",
+   "output_indices": [
+    0
+   ]
+  },
+  "980c9a00": {
+   "expected_cell": "76babc92",
+   "output_indices": [
+    0
+   ]
+  },
+  "07900bfc": {
+   "expected_cell": "53757249",
+   "output_indices": [
+    0
+   ]
+  },
+  "db00c517": {
+   "expected_cell": "c5d401a0",
+   "output_indices": [
+    0,
+    1,
+    2,
+    3
+   ]
+  },
+  "b3617421": {
+   "expected_cell": "39461620",
+   "output_indices": [
+    0
+   ]
+  },
+  "3853c0f9": {
+   "expected_cell": "9e8a3e2e",
+   "output_indices": [
+    0
+   ]
+  },
+  "20aeb99b": {
+   "expected_cell": "a3b1499b",
+   "output_indices": [
+    0
+   ]
+  },
+  "7b160146": {
+   "expected_cell": "075ae2e4",
+   "output_indices": [
+    0,
+    1
+   ]
+  },
+  "ca81f9d1": {
+   "expected_cell": "c43cae7a",
+   "output_indices": [
+    0
+   ]
+  },
+  "914f4537": {
+   "expected_cell": "d3092bc8",
+   "output_indices": [
+    0
+   ]
+  },
+  "e6513a4a": {
+   "expected_cell": "ed5f31f5",
+   "output_indices": [
+    0
+   ]
+  }
+ },
+ "helpers": [
+  "from datetime import date, datetime\nfrom decimal import Decimal\n\ndef rows(query):\n    \"\"\"Run a query and return its rows as tuples; DECIMAL values become floats.\"\"\"\n    return [tuple(float(v) if isinstance(v, Decimal) else v for v in row) for row in spark.sql(query).collect()]"
+ ]
+}

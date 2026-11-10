@@ -7,6 +7,12 @@ explanation, a small example right below it, and `assert`s that prove the point.
 **Browse:** <https://sai-guntupalli.github.io/data-engineering-handbook/> — read any notebook on the site, or open it
 in Colab to run it.
 
+The [SQL interview drills](notebooks/topics/sql/sql-13-interview-drills.ipynb) and
+[PySpark coding challenges](notebooks/topics/pyspark/pyspark-coding-challenges.ipynb) put the problem rules, sample
+input tables and complete expected outputs before each exercise. Solutions stay closed on the handbook site.
+Regression checks live outside the reading view; `make verify-challenges` runs the current answers and checks their
+published sample tables as well as the regression cases (Java 17+ required).
+
 ## The site
 
 Reader and search improvements: SQL executed through Spark or DuckDB is labelled `SQL · Python wrapper`,

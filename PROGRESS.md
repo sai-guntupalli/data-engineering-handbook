@@ -1,5 +1,33 @@
 # Progress
 
+## SQL and PySpark challenge cleanup — 2026-11-10
+
+- Reviewed SQL 13's 22 drills and all 34 PySpark coding challenges. Every question now includes readable sample input
+  tables and complete expected output tables, followed by an exercise cell and a solution closed by default on the
+  site. Kept the solution tags and added notebook hidden-source metadata.
+- Expanded terse SQL prompts into explicit rules for columns, output grain, ordering, nulls, ties, status filters and
+  time boundaries. Replaced result row-count summaries with actual rows. SQL's shared views still initialize once;
+  each question repeats its relevant input columns for readability. Corrected Q19's title to match its all-streaks
+  and longest-streak tasks.
+- PySpark examples explain what the results mean and show secondary outputs such as null counts, tag counts,
+  unpivoted sales, semi/anti join results, direct reports, order dates from lag/lead and salted-join totals. The
+  generated click input is explicitly a five-row preview of IDs 0–999. Removed interviewer boilerplate.
+- Moved grading assertions and test-only result dictionaries into regression fixtures. SQL approach notes are
+  collapsed; meaningful source-ambiguity and overlapping-history failures remain part of the PySpark solutions.
+  The original UDF no longer prints its answer before the expected-output section.
+- Added `scripts/verify_challenge_answers.py` and `make verify-challenges`, included in CI's `make validate`.
+  Verification uses current notebook answers, restores checks in memory at their original execution points and
+  compares every published output table. Missing or changed answers fail rather than silently skipping checks.
+- Updated README and contribution guidance. This branch starts from master independently of the open Python
+  cleanup PR #76; it changes the SQL/PySpark challenge pages only.
+
+Verified: both changed notebooks run top to bottom on local Spark 4.0.5/Java 17. `make verify-challenges` passes for
+all 56 answers, regression cases and published output tables. Pytest (55), site tests (81), ruff, ESLint,
+TypeScript/production build, and format/audit of all 103 notebooks pass. Browser-reviewed both pages with executed
+results: input/expected tables precede exercises and all solutions are closed by default. The review prompted
+removing repeated PySpark input prints and placing input-building code after the sample tables; the notebook was
+rerun after that adjustment. Source notebooks contain no stored outputs. Direct Colab execution was not performed.
+
 **Current Status**: All P0 and P1 items from the 2026-11-09 site review are merged (#67-#73): verified errors fixed,
 results shown on the site, a pager on every page, 103 notebooks after merges with redirects for old URLs, SQL chapters
 in dependency order, a Legacy shelf, stronger practice checks with difficulty tags, a PySpark capstone, and reader/SEO
