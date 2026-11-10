@@ -1,11 +1,25 @@
 # Data Engineering Handbook
 
 An open handbook of **runnable Jupyter notebooks** for data engineering. Every topic is one notebook: a short
-explanation, a small example right below it, and `assert`s that prove the point. Every notebook opens in
+explanation and a small example right below it. Python practice pages put the question, sample input and expected
+output first, with solutions collapsed by default. Maintainer regression checks run separately with
+`uv run --extra notebooks python scripts/verify_practice_answers.py`. Every notebook opens in
 **Google Colab** and runs top to bottom with no local setup — CI executes all of them on every change.
 
 **Browse:** <https://sai-guntupalli.github.io/data-engineering-handbook/> — read any notebook on the site, or open it
 in Colab to run it.
+
+Python practice notebooks show sample calls and expected results before the exercise, with answers closed until
+you expand them. Large edge-case check suites are maintained outside the reading experience.
+
+New starting points cover [table formats](notebooks/topics/concepts/open-table-formats.ipynb),
+[catalogs](notebooks/topics/concepts/lakehouse-catalogs.ipynb), [DuckDB](notebooks/topics/duckdb/duckdb.ipynb),
+[PostgreSQL](notebooks/topics/postgres/postgres.ipynb),
+[orchestration](notebooks/topics/concepts/orchestration-patterns.ipynb),
+[semantic layers](notebooks/topics/concepts/semantic-layer.ipynb),
+[IAM](notebooks/topics/concepts/security-and-iam.ipynb) and [CI/CD](notebooks/topics/concepts/cicd-and-iac.ipynb).
+Local integrations include delta-rs DML in SQL 12/PySpark 5, a real Structured Streaming file source in PySpark 6,
+and a dbt-duckdb build. Each notebook distinguishes executable integrations from platform syntax and local models.
 
 The [SQL interview drills](notebooks/topics/sql/sql-13-interview-drills.ipynb) and
 [PySpark coding challenges](notebooks/topics/pyspark/pyspark-coding-challenges.ipynb) put the problem rules, sample

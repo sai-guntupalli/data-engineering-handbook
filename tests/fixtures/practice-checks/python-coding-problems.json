@@ -1,0 +1,1922 @@
+{
+ "order": [
+  "235495a6",
+  "bf1e44cc",
+  "60cb2a84",
+  "51fc13de",
+  "31edac82",
+  "e0c3b9ab",
+  "cb2331fb",
+  "351b57e5",
+  "4bd7f192",
+  "eea89454",
+  "6151d4b1",
+  "b5a538d3",
+  "177dba7e",
+  "244a9055",
+  "f67b3c42",
+  "06ff0760",
+  "a8bd9aa5",
+  "89b53a38",
+  "00923b57",
+  "a4f7d272",
+  "b86645a5",
+  "aaa7e2c4",
+  "c0f25fb1",
+  "3dc75021",
+  "ed62d51e",
+  "1e07254d",
+  "75892c3f",
+  "fb081691",
+  "abf29d41",
+  "24a1f559",
+  "c9c6f743",
+  "1c5fab9e",
+  "f3a4791f",
+  "71db5ce0",
+  "6da56adf",
+  "e03d9a8d",
+  "9531b972",
+  "fc92473a",
+  "249af1ee",
+  "2bd81ddd",
+  "33936a8c",
+  "9d1aa443",
+  "b122d31d",
+  "562b9645",
+  "eb5f9d70",
+  "a1aa740c",
+  "bf566059",
+  "b2acef16",
+  "e12ee955",
+  "4fe25ade",
+  "878263cb",
+  "5992e155",
+  "b5ae4109",
+  "93e16c5c",
+  "48dde307",
+  "8b6b943c",
+  "617ef36d",
+  "edde557b",
+  "7d32ce48",
+  "7922dc7a",
+  "73e4f11e",
+  "50ee7eaa",
+  "35690083",
+  "7e75b3c8",
+  "6dab6612",
+  "b7987f59",
+  "7a03c0c1",
+  "88cbf904",
+  "143c1c0b",
+  "453edf46",
+  "6f572d03",
+  "bdfb74e9",
+  "2d5a48bc",
+  "e1cf39e3",
+  "f825af26",
+  "83c4754e",
+  "5326c5ab",
+  "2b71b7da",
+  "48deeb8b",
+  "75b3f026",
+  "f36e7f6f",
+  "026ac5b7",
+  "9150cccd",
+  "3d8bbee0",
+  "c32c6273",
+  "9c271c37",
+  "641eba2e",
+  "4fe95c0d",
+  "eb3d167b",
+  "ace2fe5a",
+  "432e9208",
+  "77b60f0d",
+  "7eec9fa3",
+  "c5c431b6",
+  "7914a250",
+  "156fb587",
+  "1c3d0ed7",
+  "c3e5a1ec",
+  "e4a51bac",
+  "1fe99b82",
+  "2ec60629",
+  "2c8bcf46",
+  "148bb59b",
+  "42f06543",
+  "087bdc42",
+  "fee6eae1"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "235495a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import platform\n",
+    "import sys\n",
+    "\n",
+    "print(f\"Python {sys.version.split()[0]} on {platform.system()}\")\n",
+    "print(\"Standard library only: no pandas / pyspark / shell magics required.\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bf1e44cc",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "60cb2a84",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "51fc13de",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31edac82",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e0c3b9ab",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "records = [\n",
+    "    {\"id\": \"a\", \"v\": 1},\n",
+    "    {\"id\": \"b\", \"v\": 2},\n",
+    "    {\"id\": \"a\", \"v\": 3},\n",
+    "    {\"id\": \"c\", \"v\": 4},\n",
+    "    {\"id\": \"b\", \"v\": 5},\n",
+    "]\n",
+    "print(\"dedupe:\", dedupe_preserving_order(records))\n",
+    "assert dedupe_preserving_order(records) == [\n",
+    "    {\"id\": \"a\", \"v\": 1},\n",
+    "    {\"id\": \"b\", \"v\": 2},\n",
+    "    {\"id\": \"c\", \"v\": 4},\n",
+    "]\n",
+    "assert dedupe_preserving_order(records, key=\"v\") == records  # every v is unique"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "cb2331fb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "grouped = group_by(records, key=\"id\")\n",
+    "print(\"group order:\", list(grouped))\n",
+    "assert list(grouped) == [\"a\", \"b\", \"c\"]  # first-seen order, not sorted\n",
+    "assert [row[\"v\"] for row in grouped[\"a\"]] == [1, 3]\n",
+    "\n",
+    "agg = aggregate([(\"us\", 10.0), (\"eu\", 5.0), (\"us\", 30.0), (\"eu\", 5.0), (\"us\", None)])\n",
+    "print(\"aggregate:\", agg)\n",
+    "assert agg[\"us\"] == {\"rows\": 3, \"distinct\": 2, \"total\": 40.0, \"avg\": 20.0}\n",
+    "assert agg[\"eu\"] == {\"rows\": 2, \"distinct\": 1, \"total\": 10.0, \"avg\": 5.0}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "351b57e5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert dedupe_preserving_order([]) == []\n",
+    "assert dedupe_preserving_order([{\"id\": None}, {\"id\": None}, {\"id\": 1}]) == [{\"id\": 1}]\n",
+    "assert frequency_map([\"us\", \"eu\", \"us\", \"us\", \"eu\"]) == {\"us\": 3, \"eu\": 2}\n",
+    "assert frequency_map([]) == {}\n",
+    "assert group_by([], key=\"id\") == {}\n",
+    "assert aggregate([]) == {}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4bd7f192",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"dedupe   :\", [row[\"id\"] for row in dedupe_preserving_order(records)])\n",
+    "print(\"frequency:\", frequency_map([\"us\", \"eu\", \"us\", \"us\", \"eu\"]))\n",
+    "print(\"aggregate:\", aggregate([(\"us\", 10.0), (\"us\", 30.0), (\"us\", None)]))\n",
+    "print(\"P1 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eea89454",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6151d4b1",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b5a538d3",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "177dba7e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "244a9055",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rows = [\n",
+    "    {\"status\": \"a\", \"amount\": 3, \"id\": 3},\n",
+    "    {\"status\": \"a\", \"amount\": 1, \"id\": 1},\n",
+    "    {\"status\": \"b\", \"amount\": 2, \"id\": 2},\n",
+    "    {\"status\": \"a\", \"amount\": 1, \"id\": 4},\n",
+    "]\n",
+    "expected = [\n",
+    "    {\"status\": \"a\", \"amount\": 3, \"id\": 3},\n",
+    "    {\"status\": \"a\", \"amount\": 1, \"id\": 1},\n",
+    "    {\"status\": \"a\", \"amount\": 1, \"id\": 4},\n",
+    "    {\"status\": \"b\", \"amount\": 2, \"id\": 2},\n",
+    "]\n",
+    "print(\"sorted:\", [(r[\"status\"], r[\"amount\"], r[\"id\"]) for r in sort_orders(rows)])\n",
+    "assert sort_orders(rows) == expected\n",
+    "assert sort_by_keys_stable(rows, [(\"status\", False), (\"amount\", True), (\"id\", False)]) == expected\n",
+    "assert sort_with_comparator(rows) == expected"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f67b3c42",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "before = [dict(row) for row in rows]\n",
+    "sort_orders(rows)\n",
+    "assert rows == before, \"sorted() must not mutate the input\"\n",
+    "\n",
+    "# Stability: equal keys keep their original relative order.\n",
+    "letters = [(\"b\", 1), (\"a\", 1), (\"b\", 0)]\n",
+    "assert sorted(letters, key=lambda pair: pair[1]) == [(\"b\", 0), (\"b\", 1), (\"a\", 1)]\n",
+    "\n",
+    "# Nulls-last never raises, even when None sits next to a number.\n",
+    "assert sort_nulls_last([{\"x\": 2}, {\"x\": None}, {\"x\": 1}], \"x\") == [{\"x\": 1}, {\"x\": 2}, {\"x\": None}]\n",
+    "assert sort_nulls_last([], \"x\") == []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "06ff0760",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"expected:\", [(r[\"status\"], r[\"amount\"], r[\"id\"]) for r in expected])\n",
+    "print(\"actual  :\", [(r[\"status\"], r[\"amount\"], r[\"id\"]) for r in sort_orders(rows)])\n",
+    "assert sort_orders(rows) == sort_by_keys_stable(rows, [(\"status\", False), (\"amount\", True), (\"id\", False)])\n",
+    "print(\"P2 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a8bd9aa5",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "89b53a38",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "00923b57",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a4f7d272",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "keys = [\"a\", \"b\", \"a\", \"c\", \"a\", \"b\", \"d\"]\n",
+    "print(\"top_k:\", top_k(keys, 2))\n",
+    "assert top_k(keys, 2) == [(\"a\", 3), (\"b\", 2)]\n",
+    "assert top_k_bounded(keys, 2) == [(\"a\", 3), (\"b\", 2)]\n",
+    "assert sorted(top_k_bounded(keys, 10)) == sorted(top_k(keys, 10))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b86645a5",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rows = [\n",
+    "    {\"dept\": \"eng\", \"name\": \"ana\", \"salary\": 120},\n",
+    "    {\"dept\": \"eng\", \"name\": \"bob\", \"salary\": 150},\n",
+    "    {\"dept\": \"eng\", \"name\": \"cy\", \"salary\": 90},\n",
+    "    {\"dept\": \"ops\", \"name\": \"di\", \"salary\": 100},\n",
+    "    {\"dept\": \"ops\", \"name\": \"ed\", \"salary\": 110},\n",
+    "]\n",
+    "top2 = top_n_per_group(rows, \"dept\", \"salary\", 2)\n",
+    "print(\"top2 eng:\", [(r[\"name\"], r[\"salary\"]) for r in top2[\"eng\"]])\n",
+    "assert [(r[\"name\"], r[\"salary\"]) for r in top2[\"eng\"]] == [(\"bob\", 150), (\"ana\", 120)]\n",
+    "assert [(r[\"name\"], r[\"salary\"]) for r in top2[\"ops\"]] == [(\"ed\", 110), (\"di\", 100)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "aaa7e2c4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert top_k(keys, 0) == []\n",
+    "assert top_k_bounded(keys, 0) == []\n",
+    "assert top_n_per_group(rows, \"dept\", \"salary\", 0) == {}\n",
+    "assert top_n_per_group([], \"dept\", \"salary\", 2) == {}\n",
+    "\n",
+    "# Ties fall back to input order (the running index), so the result is stable.\n",
+    "tied = [\n",
+    "    {\"dept\": \"d\", \"name\": \"first\", \"salary\": 10},\n",
+    "    {\"dept\": \"d\", \"name\": \"second\", \"salary\": 10},\n",
+    "    {\"dept\": \"d\", \"name\": \"low\", \"salary\": 1},\n",
+    "]\n",
+    "assert [r[\"name\"] for r in top_n_per_group(tied, \"dept\", \"salary\", 2)[\"d\"]] == [\"first\", \"second\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c0f25fb1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"top_k ->\", top_k(keys, 2))\n",
+    "print(\"eng   ->\", [(r[\"name\"], r[\"salary\"]) for r in top2[\"eng\"]])\n",
+    "print(\"ops   ->\", [(r[\"name\"], r[\"salary\"]) for r in top2[\"ops\"]])\n",
+    "print(\"P3 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3dc75021",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ed62d51e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1e07254d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "75892c3f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fb081691",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "abf29d41",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"moving_average:\", moving_average([1, 2, 3, 4, 5], 3))\n",
+    "assert moving_average([1, 2, 3, 4, 5], 3) == [2.0, 3.0, 4.0]\n",
+    "assert moving_average([1], 1) == [1.0]\n",
+    "print(\"max_window_sum:\", max_window_sum([1, 2, 3, 4, 5], 3))\n",
+    "assert max_window_sum([1, 2, 3, 4, 5], 3) == 12\n",
+    "print(\"percentile p50:\", percentile([10.0, 12.0, 13.0, 15.0, 20.0, 100.0], 50))\n",
+    "assert percentile([10.0, 12.0, 13.0, 15.0, 20.0, 100.0], 50) == 14.0\n",
+    "print(\"trailing_event_count:\", trailing_event_count([0, 1, 2, 10, 11], 3))\n",
+    "assert trailing_event_count([0, 1, 2, 10, 11], 3) == [1, 2, 3, 1, 2]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "24a1f559",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert percentile([1, 2, 3, 4], 50) == 2.5\n",
+    "assert percentile([5], 99) == 5.0\n",
+    "assert percentile([1.0, 2.0, 3.0], 0) == 1.0\n",
+    "assert percentile([1.0, 2.0, 3.0], 100) == 3.0\n",
+    "assert rolling_percentile([1, 2, 3, 4], 3, 100) == [3.0, 4.0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c9c6f743",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert moving_average([1, 2], 3) == []\n",
+    "assert max_window_sum([1, 2], 3) is None\n",
+    "assert max_window_sum([], 1) is None\n",
+    "assert max_window_sum([-5, -1, -3], 2) == -4\n",
+    "assert trailing_event_count([], 3) == []\n",
+    "\n",
+    "for bad_call in (\n",
+    "    lambda: moving_average([1, 2], 0),\n",
+    "    lambda: percentile([], 50),\n",
+    "    lambda: percentile([1, 2, 3], 101),\n",
+    "    lambda: rolling_percentile([1, 2], 0, 50),\n",
+    "):\n",
+    "    try:\n",
+    "        bad_call()\n",
+    "    except ValueError:\n",
+    "        pass\n",
+    "    else:\n",
+    "        raise AssertionError(\"invalid window or percentile must raise ValueError\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1c5fab9e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"moving_average            ->\", moving_average([1, 2, 3, 4, 5], 3))\n",
+    "print(\"max_window_sum            ->\", max_window_sum([1, 2, 3, 4, 5], 3))\n",
+    "print(\"percentile(p50)           ->\", percentile([10.0, 12.0, 13.0, 15.0, 20.0, 100.0], 50))\n",
+    "print(\"trailing_event_count      ->\", trailing_event_count([0, 1, 2, 10, 11], 3))\n",
+    "assert trailing_event_count([0, 1, 2, 10, 11], 3) == [1, 2, 3, 1, 2]\n",
+    "print(\"P4 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f3a4791f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "71db5ce0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6da56adf",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e03d9a8d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9531b972",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fc92473a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert two_sum_sorted([1, 3, 4, 6, 8, 11], 10) == (2, 3)\n",
+    "assert two_sum_sorted([1, 2, 3], 100) is None\n",
+    "assert two_sum_sorted([1], 1) is None\n",
+    "assert two_sum_sorted([-3, -1, 4, 9], 1) == (0, 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "249af1ee",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "prefix = build_prefix_sums([2, 4, 6, 8])\n",
+    "print(\"prefix:\", prefix, \"range[1:3] =\", range_sum(prefix, 1, 3))\n",
+    "assert prefix == [0, 2, 6, 12, 20]\n",
+    "assert range_sum(prefix, 1, 3) == 10\n",
+    "assert range_sum(prefix, 0, 4) == 20\n",
+    "assert range_sum(prefix, 2, 2) == 0\n",
+    "assert count_subarrays_with_sum([1, 1, 1], 2) == 2\n",
+    "assert count_subarrays_with_sum([1, -1, 1, -1], 0) == 4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2bd81ddd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"first_at_or_after([1,3,3,7], 3) =\", first_at_or_after([1, 3, 3, 7], 3))\n",
+    "assert first_at_or_after([1, 3, 3, 7], 3) == 3\n",
+    "assert first_at_or_after([1, 3, 3, 7], 8) is None\n",
+    "assert first_at_or_after([], 1) is None\n",
+    "assert last_at_or_before([1, 3, 3, 7], 3) == 3\n",
+    "assert last_at_or_before([1, 3, 3, 7], 0) is None"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "33936a8c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert count_subarrays_with_sum([], 0) == 0\n",
+    "assert build_prefix_sums([]) == [0]\n",
+    "assert range_sum(build_prefix_sums([]), 0, 0) == 0\n",
+    "\n",
+    "try:\n",
+    "    range_sum(prefix, 3, 1)\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"lo > hi must raise\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9d1aa443",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"prefix      ->\", build_prefix_sums([2, 4, 6, 8]))\n",
+    "print(\"range[1:3]  ->\", range_sum(build_prefix_sums([2, 4, 6, 8]), 1, 3))\n",
+    "print(\"subarrays   ->\", count_subarrays_with_sum([1, 1, 1], 2))\n",
+    "print(\"first >= 3  ->\", first_at_or_after([1, 3, 3, 7], 3))\n",
+    "print(\"P5 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b122d31d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "562b9645",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))\n",
+    "assert merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]) == [(1, 6), (8, 10), (15, 18)]\n",
+    "assert merge_intervals([(1, 4), (4, 5)]) == [(1, 5)]\n",
+    "assert merge_intervals([(1, 10), (2, 3), (4, 5)]) == [(1, 10)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eb5f9d70",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert merge_intervals([(5, 5)]) == [(5, 5)]\n",
+    "assert merge_intervals([]) == []\n",
+    "\n",
+    "# Input order must not matter, and the input must not be mutated.\n",
+    "data = [(8, 10), (1, 3), (2, 6), (15, 18)]\n",
+    "snapshot = list(data)\n",
+    "assert merge_intervals(data) == [(1, 6), (8, 10), (15, 18)]\n",
+    "assert data == snapshot\n",
+    "\n",
+    "try:\n",
+    "    merge_intervals([(3, 1)])\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"start > end must raise\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a1aa740c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"merged ->\", merge_intervals([(1, 3), (2, 6), (8, 10), (15, 18)]))\n",
+    "print(\"touching ->\", merge_intervals([(1, 4), (4, 5)]))\n",
+    "print(\"nested ->\", merge_intervals([(1, 10), (2, 3), (4, 5)]))\n",
+    "print(\"P6 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bf566059",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b2acef16",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e12ee955",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4fe25ade",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "878263cb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "partitions = [\"2026-01-01\", \"2026-02-01\", \"2026-03-01\", \"2026-04-01\"]\n",
+    "print(\"partition_for_key:\", partition_for_key(partitions, \"2026-03-15\"))\n",
+    "assert partition_for_key(partitions, \"2026-03-15\") == \"2026-03-01\"\n",
+    "assert partition_for_key(partitions, \"2026-01-01\") == \"2026-01-01\"\n",
+    "assert partition_for_key(partitions, \"2025-12-31\") is None\n",
+    "assert partition_for_key([], \"2026-01-01\") is None\n",
+    "assert first_at_or_after(partitions, \"2026-03-15\") == \"2026-04-01\"\n",
+    "assert first_at_or_after(partitions, \"2026-03-01\") == \"2026-03-01\"\n",
+    "assert first_at_or_after(partitions, \"2027-01-01\") is None"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5992e155",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "a, b = [1, 3, 8], [2, 4, 5, 6, 7]\n",
+    "merged = sorted(a + b)\n",
+    "print(\"merged:\", merged)\n",
+    "for k in range(1, len(merged) + 1):\n",
+    "    assert kth_smallest_two_sorted(a, b, k) == merged[k - 1]\n",
+    "assert kth_smallest_two_sorted([], [1, 2, 3], 2) == 2\n",
+    "assert kth_smallest_two_sorted([1, 2], [], 1) == 1\n",
+    "assert median_two_sorted([1, 3], [2]) == 2.0\n",
+    "assert median_two_sorted([1, 2], [3, 4]) == 2.5"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b5ae4109",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "for bad_call in (\n",
+    "    lambda: kth_smallest_two_sorted([1], [2], 3),\n",
+    "    lambda: kth_smallest_two_sorted([2, 1], [3], 2),\n",
+    "    lambda: median_two_sorted([], []),\n",
+    "):\n",
+    "    try:\n",
+    "        bad_call()\n",
+    "    except ValueError:\n",
+    "        pass\n",
+    "    else:\n",
+    "        raise AssertionError(\"invalid input must raise ValueError\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "93e16c5c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"partition_for_key(2026-03-15) ->\", partition_for_key(partitions, \"2026-03-15\"))\n",
+    "print(\"first_at_or_after(2026-03-15) ->\", first_at_or_after(partitions, \"2026-03-15\"))\n",
+    "print(\"kth_smallest_two_sorted(k=4)  ->\", kth_smallest_two_sorted([1, 3, 8], [2, 4, 5, 6, 7], 4))\n",
+    "assert kth_smallest_two_sorted([1, 3, 8], [2, 4, 5, 6, 7], 4) == 4\n",
+    "print(\"P7 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "48dde307",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "8b6b943c",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "617ef36d",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "edde557b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import gzip\n",
+    "import itertools\n",
+    "import tempfile\n",
+    "from pathlib import Path\n",
+    "\n",
+    "with tempfile.TemporaryDirectory() as tmp:\n",
+    "    tmp_path = Path(tmp)\n",
+    "    raw = tmp_path / \"events.csv\"\n",
+    "    raw.write_text(\n",
+    "        \"u1,10\\n\\n\" + \"u2,5\\n\" + \"u1,2.5\\n\" + \"bad,not-a-number\\n\" + \"u3,7\",\n",
+    "        encoding=\"utf-8\",\n",
+    "    )\n",
+    "    print(\"totals:\", totals_by_user(raw))\n",
+    "    assert totals_by_user(raw) == {\"u1\": 12.5, \"u2\": 5.0, \"u3\": 7.0}\n",
+    "    assert first_n_matching(raw, \"u1\", 1) == [\"u1,10\"]\n",
+    "    assert first_n_matching(raw, \"missing\", 5) == []\n",
+    "\n",
+    "    gz = tmp_path / \"events.csv.gz\"\n",
+    "    with gzip.open(gz, \"wt\", encoding=\"utf-8\") as handle:\n",
+    "        handle.write(\"a,1\\nb,2\\n\")\n",
+    "    assert totals_by_user(gz) == {\"a\": 1.0, \"b\": 2.0}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7d32ce48",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def naturals():\n",
+    "    value = 0\n",
+    "    while True:\n",
+    "        yield value\n",
+    "        value += 1\n",
+    "\n",
+    "\n",
+    "# Generators are lazy: an infinite source is fine as long as you stop early.\n",
+    "assert list(itertools.islice(naturals(), 3)) == [0, 1, 2]\n",
+    "gen = naturals()\n",
+    "assert next(gen) == 0 and next(gen) == 1  # state advances only on demand\n",
+    "\n",
+    "\n",
+    "def explode():\n",
+    "    yield 1\n",
+    "    raise AssertionError(\"generator body must not run eagerly\")\n",
+    "\n",
+    "\n",
+    "probe = explode()\n",
+    "assert next(probe) == 1  # nothing raises until the generator is advanced\n",
+    "probe.close()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7922dc7a",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import sys\n",
+    "import tempfile\n",
+    "from pathlib import Path\n",
+    "\n",
+    "with tempfile.TemporaryDirectory() as tmp:\n",
+    "    sample = Path(tmp) / \"events.csv\"\n",
+    "    sample.write_text(\"u1,10\\nu1,2.5\\nbad,not-a-number\\n\", encoding=\"utf-8\")\n",
+    "    print(\"totals ->\", totals_by_user(sample))\n",
+    "    assert totals_by_user(sample) == {\"u1\": 12.5}\n",
+    "\n",
+    "large_generator = (line for line in range(10**9))\n",
+    "assert sys.getsizeof(large_generator) < sys.getsizeof([0] * 10_000)\n",
+    "next(large_generator)               # state advances only on demand\n",
+    "large_generator.close()\n",
+    "print(\"P8 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "73e4f11e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "50ee7eaa",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "35690083",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7e75b3c8",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6dab6612",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "csv_text = 'order_id,amount,note\\n1,10.5,\"a, b\"\\n2,3.0,\\n'\n",
+    "print(\"csv:\", parse_csv(csv_text))\n",
+    "assert parse_csv(csv_text) == [\n",
+    "    {\"order_id\": \"1\", \"amount\": \"10.5\", \"note\": \"a, b\"},\n",
+    "    {\"order_id\": \"2\", \"amount\": \"3.0\", \"note\": \"\"},\n",
+    "]\n",
+    "assert parse_csv(\"\\ufeffid,v\\n1,2\\n\") == [{\"id\": \"1\", \"v\": \"2\"}]  # BOM stripped\n",
+    "\n",
+    "json_text = '[{\"order_id\": 1, \"amount\": 10.5}, {\"order_id\": 2, \"amount\": 3.0}]'\n",
+    "assert parse_json_array(json_text) == [\n",
+    "    {\"order_id\": 1, \"amount\": 10.5},\n",
+    "    {\"order_id\": 2, \"amount\": 3.0},\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "b7987f59",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "ndjson_text = '{\"order_id\": 1}\\n\\n{\"order_id\": 2}\\n'\n",
+    "assert parse_ndjson(ndjson_text) == [{\"order_id\": 1}, {\"order_id\": 2}]\n",
+    "assert parse_ndjson(\"\") == []\n",
+    "\n",
+    "streamed = list(iter_json_array('  [ {\"a\": 1}, {\"b\": [1, 2]}, 3 ] '))\n",
+    "print(\"streamed JSON:\", streamed)\n",
+    "assert streamed == [{\"a\": 1}, {\"b\": [1, 2]}, 3]\n",
+    "assert list(iter_json_array(\"[]\")) == []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7a03c0c1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "try:\n",
+    "    parse_json_array('{\"order_id\": 1}')\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"non-array JSON must raise\")\n",
+    "\n",
+    "try:\n",
+    "    parse_ndjson('{\"ok\": 1}\\nnot json\\n')\n",
+    "except ValueError as exc:\n",
+    "    assert \"line 2\" in str(exc)\n",
+    "else:\n",
+    "    raise AssertionError(\"bad NDJSON must raise\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "88cbf904",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"csv      ->\", parse_csv(csv_text))\n",
+    "print(\"ndjson   ->\", parse_ndjson(ndjson_text))\n",
+    "print(\"streamed ->\", list(iter_json_array('  [ {\"a\": 1}, {\"b\": [1, 2]}, 3 ] ')))\n",
+    "print(\"P9 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "143c1c0b",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "453edf46",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6f572d03",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "order = {\n",
+    "    \"order_id\": 1,\n",
+    "    \"customer\": {\"country\": \"us\", \"city\": \"austin\"},\n",
+    "    \"items\": [{\"sku\": \"a\", \"qty\": 2}, {\"sku\": \"b\", \"qty\": 1}],\n",
+    "    \"tags\": [\"gift\", \"rush\"],\n",
+    "}\n",
+    "flat = flatten_record(order)\n",
+    "print(\"flat:\", flat)\n",
+    "assert flat == {\n",
+    "    \"order_id\": 1,\n",
+    "    \"customer.country\": \"us\",\n",
+    "    \"customer.city\": \"austin\",\n",
+    "    \"items[0].sku\": \"a\",\n",
+    "    \"items[0].qty\": 2,\n",
+    "    \"items[1].sku\": \"b\",\n",
+    "    \"items[1].qty\": 1,\n",
+    "    \"tags[0]\": \"gift\",\n",
+    "    \"tags[1]\": \"rush\",\n",
+    "}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "bdfb74e9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rows = explode_rows([order], \"items\")\n",
+    "print(\"exploded rows:\", len(rows))\n",
+    "assert rows == [\n",
+    "    {\n",
+    "        \"order_id\": 1,\n",
+    "        \"customer\": {\"country\": \"us\", \"city\": \"austin\"},\n",
+    "        \"tags\": [\"gift\", \"rush\"],\n",
+    "        \"sku\": \"a\",\n",
+    "        \"qty\": 2,\n",
+    "    },\n",
+    "    {\n",
+    "        \"order_id\": 1,\n",
+    "        \"customer\": {\"country\": \"us\", \"city\": \"austin\"},\n",
+    "        \"tags\": [\"gift\", \"rush\"],\n",
+    "        \"sku\": \"b\",\n",
+    "        \"qty\": 1,\n",
+    "    },\n",
+    "]\n",
+    "assert order[\"items\"] == [{\"sku\": \"a\", \"qty\": 2}, {\"sku\": \"b\", \"qty\": 1}]  # not mutated"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2d5a48bc",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert flatten_record({}) == {}\n",
+    "assert flatten_record({\"a\": {\"b\": {\"c\": 1}}}) == {\"a.b.c\": 1}\n",
+    "assert flatten_record({\"a\": 1}, sep=\"/\") == {\"a\": 1}\n",
+    "assert explode_rows([{\"id\": 1, \"items\": []}], \"items\") == [{\"id\": 1}]\n",
+    "assert explode_rows([{\"id\": 1}], \"items\") == [{\"id\": 1}]\n",
+    "assert explode_rows([{\"id\": 1, \"items\": [\"x\", \"y\"]}], \"items\") == [\n",
+    "    {\"id\": 1, \"items\": \"x\"},\n",
+    "    {\"id\": 1, \"items\": \"y\"},\n",
+    "]\n",
+    "assert explode_rows([], \"items\") == []"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e1cf39e3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"flat keys ->\", list(flat))\n",
+    "print(\"rows      ->\", [(r[\"sku\"], r[\"qty\"]) for r in rows])\n",
+    "print(\"P10 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f825af26",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "83c4754e",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5326c5ab",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "facts = [(\"c1\", \"o1\"), (\"c2\", \"o2\"), (\"c9\", \"o3\")]\n",
+    "dims = [(\"c1\", \"Alice\"), (\"c2\", \"Bob\")]\n",
+    "print(\"inner:\", hash_join(facts, dims))\n",
+    "assert hash_join(facts, dims) == [(\"c1\", \"o1\", \"Alice\"), (\"c2\", \"o2\", \"Bob\")]\n",
+    "assert hash_join(facts, dims, how=\"left\") == [\n",
+    "    (\"c1\", \"o1\", \"Alice\"),\n",
+    "    (\"c2\", \"o2\", \"Bob\"),\n",
+    "    (\"c9\", \"o3\", None),\n",
+    "]\n",
+    "assert list(hash_join_streaming(facts, dims)) == [(\"c1\", \"o1\", \"Alice\"), (\"c2\", \"o2\", \"Bob\")]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2b71b7da",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert hash_join([(\"c1\", \"o1\")], [(\"c1\", \"A\"), (\"c1\", \"B\")]) == [\n",
+    "    (\"c1\", \"o1\", \"A\"),\n",
+    "    (\"c1\", \"o1\", \"B\"),\n",
+    "]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "48deeb8b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert hash_join([(None, \"o1\")], [(None, \"A\")]) == []\n",
+    "assert hash_join([(None, \"o1\")], [(None, \"A\")], how=\"left\") == [(None, \"o1\", None)]\n",
+    "assert hash_join([], dims) == []\n",
+    "assert hash_join(facts, []) == []\n",
+    "\n",
+    "try:\n",
+    "    hash_join([], [], how=\"outer\")\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"unsupported join type must raise\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "75b3f026",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"inner ->\", hash_join(facts, dims))\n",
+    "print(\"left  ->\", hash_join(facts, dims, how=\"left\"))\n",
+    "print(\"P11 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "f36e7f6f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "026ac5b7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9150cccd",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3d8bbee0",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c32c6273",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "baseline = [{\"id\": 1, \"amount\": 10.0, \"note\": \"x\"}, {\"id\": 2, \"amount\": 3.0, \"note\": None}]\n",
+    "current = [{\"id\": 3, \"amount\": \"10\", \"note\": \"y\", \"coupon\": \"SAVE\"}]\n",
+    "drift = detect_schema_drift(infer_schema(baseline), infer_schema(current))\n",
+    "print(\"drift:\", drift)\n",
+    "assert drift == {\"added\": [\"coupon\"], \"removed\": [], \"retyped\": [\"amount\"]}\n",
+    "assert detect_schema_drift({}, {}) == {\"added\": [], \"removed\": [], \"retyped\": []}\n",
+    "assert detect_schema_drift({\"a\": {\"int\"}}, {\"a\": {\"int\"}, \"b\": {\"str\"}})[\"added\"] == [\"b\"]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "9c271c37",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert describe_type(set()) == \"null\"\n",
+    "assert describe_type({\"int\"}) == \"int\"\n",
+    "assert describe_type({\"float\", \"int\"}) == \"mixed(float|int)\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "641eba2e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "records = [\n",
+    "    {\"id\": \"u1\", \"updated_at\": 1, \"offset\": 1, \"v\": \"old\"},\n",
+    "    {\"id\": \"u2\", \"updated_at\": 1, \"offset\": 1, \"v\": \"only\"},\n",
+    "    {\"id\": \"u1\", \"updated_at\": 3, \"offset\": 9, \"v\": \"new\"},\n",
+    "    {\"id\": \"u1\", \"updated_at\": 3, \"offset\": 4, \"v\": \"older-tie\"},\n",
+    "    {\"id\": \"u1\", \"updated_at\": 2, \"offset\": 50, \"v\": \"stale\"},\n",
+    "]\n",
+    "result = dedupe_latest(records)\n",
+    "by_id = {row[\"id\"]: row for row in result}\n",
+    "print(\"winners:\", {k: v[\"v\"] for k, v in by_id.items()})\n",
+    "assert by_id[\"u1\"][\"v\"] == \"new\"      # greatest timestamp wins\n",
+    "assert by_id[\"u2\"][\"v\"] == \"only\"     # single record retained\n",
+    "assert len(result) == 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4fe95c0d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "assert dedupe_latest([]) == []\n",
+    "assert records[0][\"v\"] == \"old\"       # input not mutated"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "eb3d167b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"drift   ->\", drift)\n",
+    "print(\"winners ->\", {k: v[\"v\"] for k, v in by_id.items()})\n",
+    "print(\"P12 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ace2fe5a",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "432e9208",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "events = [\n",
+    "    {\"user\": \"u1\", \"ts\": 0, \"event_id\": \"e1\"},\n",
+    "    {\"user\": \"u1\", \"ts\": 300, \"event_id\": \"e2\"},\n",
+    "    {\"user\": \"u1\", \"ts\": 2400, \"event_id\": \"e3\"},  # 2100s gap -> new session\n",
+    "    {\"user\": \"u1\", \"ts\": 2500, \"event_id\": \"e4\"},\n",
+    "    {\"user\": \"u2\", \"ts\": 0, \"event_id\": \"e5\"},\n",
+    "]\n",
+    "sessions = sessionize(events, gap_seconds=1800)\n",
+    "print(\"sessions:\", [(s[\"user\"], s[\"start\"], s[\"end\"], s[\"count\"]) for s in sessions])\n",
+    "assert [(s[\"user\"], s[\"start\"], s[\"end\"], s[\"count\"]) for s in sessions] == [\n",
+    "    (\"u1\", 0, 300, 2),\n",
+    "    (\"u1\", 2400, 2500, 2),\n",
+    "    (\"u2\", 0, 0, 1),\n",
+    "]\n",
+    "assert sessions[0][\"event_ids\"] == [\"e1\", \"e2\"]\n",
+    "assert sessions[0][\"duration\"] == 300\n",
+    "assert sessions[2][\"duration\"] == 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "77b60f0d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "same = sessionize(\n",
+    "    [{\"user\": \"u\", \"ts\": 0, \"event_id\": \"a\"}, {\"user\": \"u\", \"ts\": 1800, \"event_id\": \"b\"}], 1800\n",
+    ")\n",
+    "assert len(same) == 1\n",
+    "assert same[0][\"count\"] == 2\n",
+    "\n",
+    "shuffled = [events[3], events[0], events[1], events[2], events[4]]\n",
+    "assert sessionize(shuffled, 1800) == sessions\n",
+    "assert sessionize([], 1800) == []\n",
+    "\n",
+    "try:\n",
+    "    sessionize([], -1)\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"negative gap must raise\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7eec9fa3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"sessions ->\", [(s[\"user\"], s[\"start\"], s[\"end\"], s[\"count\"]) for s in sessions])\n",
+    "print(\"ids      ->\", [s[\"event_ids\"] for s in sessions])\n",
+    "print(\"P13 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c5c431b6",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "7914a250",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "156fb587",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1c3d0ed7",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "c3e5a1ec",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cache: LRUCache[str, int] = LRUCache(2)\n",
+    "cache.put(\"a\", 1)\n",
+    "cache.put(\"b\", 2)\n",
+    "assert cache.get(\"a\") == 1          # \"a\" is now most recently used\n",
+    "cache.put(\"c\", 3)                   # evicts \"b\"\n",
+    "assert cache.get(\"b\") is None\n",
+    "assert cache.get(\"c\") == 3\n",
+    "assert cache.keys_oldest_first() == [\"a\", \"c\"]\n",
+    "cache.put(\"c\", 30)                  # update keeps it freshest\n",
+    "assert cache.get(\"c\") == 30\n",
+    "cache.put(\"d\", 4)                   # evicts \"a\"\n",
+    "assert cache.get(\"a\") is None\n",
+    "print(\"cache hits/misses:\", cache.hits, cache.misses)\n",
+    "assert cache.hits == 3 and cache.misses == 2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e4a51bac",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "calls = {\"n\": 0}\n",
+    "slept: list[float] = []\n",
+    "\n",
+    "\n",
+    "def flaky() -> str:\n",
+    "    calls[\"n\"] += 1\n",
+    "    if calls[\"n\"] < 3:\n",
+    "        raise TimeoutError(\"temporary\")\n",
+    "    return \"ok\"\n",
+    "\n",
+    "\n",
+    "print(\"delays:\", backoff_delays(4, base=0.1, factor=2.0, max_delay=10.0))\n",
+    "assert backoff_delays(4, base=0.1, factor=2.0, max_delay=10.0) == [0.1, 0.2, 0.4]\n",
+    "assert backoff_delays(5, base=1.0, factor=3.0, max_delay=5.0) == [1.0, 3.0, 5.0, 5.0]\n",
+    "assert backoff_delays(1) == []\n",
+    "assert retry(flaky, attempts=5, base=0.1, factor=2.0, sleep=slept.append) == \"ok\"\n",
+    "assert calls[\"n\"] == 3\n",
+    "print(\"slept between retries:\", slept)\n",
+    "assert slept == [0.1, 0.2]          # two failures -> two sleeps"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1fe99b82",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "try:\n",
+    "    LRUCache(0)\n",
+    "except ValueError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"capacity 0 must raise\")\n",
+    "\n",
+    "\n",
+    "def always_fails() -> None:\n",
+    "    raise TimeoutError(\"down\")\n",
+    "\n",
+    "\n",
+    "try:\n",
+    "    retry(always_fails, attempts=2, sleep=slept.append)\n",
+    "except TimeoutError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"exhausted retries must raise\")\n",
+    "\n",
+    "assert compute_delay(0, base=1.0, factor=2.0, max_delay=10.0, jitter=0.5, rand=lambda: 0.0) == 0.5\n",
+    "assert compute_delay(0, base=1.0, factor=2.0, max_delay=10.0, jitter=0.5, rand=lambda: 1.0) == 1.0\n",
+    "assert retry(lambda: \"ok\", attempts=1) == \"ok\""
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2ec60629",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "print(\"hits/misses ->\", cache.hits, cache.misses)\n",
+    "print(\"schedule    ->\", backoff_delays(4, base=0.1, factor=2.0, max_delay=10.0))\n",
+    "print(\"slept       ->\", slept)\n",
+    "print(\"P14 checks passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2c8bcf46",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import heapq\n",
+    "import sys\n",
+    "\n",
+    "# nlargest equals a full-sort slice, but keeps memory bounded by k.\n",
+    "data = [5, 1, 9, 3, 7, 2]\n",
+    "assert heapq.nlargest(3, data) == sorted(data, reverse=True)[:3]\n",
+    "assert heapq.nsmallest(2, data) == sorted(data)[:2]\n",
+    "\n",
+    "\n",
+    "# A generator holds constant state regardless of how many items it could produce.\n",
+    "def count_up(limit):\n",
+    "    value = 0\n",
+    "    while value < limit:\n",
+    "        yield value\n",
+    "        value += 1\n",
+    "\n",
+    "\n",
+    "large_generator = count_up(10**9)\n",
+    "assert sys.getsizeof(large_generator) < sys.getsizeof([0] * 10_000)\n",
+    "assert [next(large_generator) for _ in range(3)] == [0, 1, 2]\n",
+    "large_generator.close()\n",
+    "\n",
+    "\n",
+    "# dict preserves insertion order, which is why ordered dedupe is easy.\n",
+    "pairs = [(\"a\", 1), (\"b\", 2), (\"a\", 3)]\n",
+    "assert list(dict(pairs)) == [\"a\", \"b\"]     # first-seen order\n",
+    "assert dict(pairs)[\"a\"] == 3               # but last write wins the value\n",
+    "assert list(dict.fromkeys([\"x\", \"y\", \"x\"])) == [\"x\", \"y\"]\n",
+    "print(\"Interview verification A passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "148bb59b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from collections import OrderedDict, defaultdict\n",
+    "\n",
+    "# OrderedDict.move_to_end is the primitive behind LRU recency ordering.\n",
+    "od = OrderedDict()\n",
+    "for key in \"abc\":\n",
+    "    od[key] = key.upper()\n",
+    "od.move_to_end(\"a\")\n",
+    "assert list(od) == [\"b\", \"c\", \"a\"]         # \"a\" touched most recently\n",
+    "od.popitem(last=False)\n",
+    "assert list(od) == [\"c\", \"a\"]              # oldest evicted\n",
+    "\n",
+    "# A hash join with duplicate build keys multiplies rows, exactly like SQL.\n",
+    "build = defaultdict(list)\n",
+    "for key, value in [(\"k\", 1), (\"k\", 2), (\"x\", 9)]:\n",
+    "    build[key].append(value)\n",
+    "probe = [(\"k\", \"A\"), (\"x\", \"B\"), (\"missing\", \"C\")]\n",
+    "joined = [(key, payload, dim) for key, payload in probe for dim in build.get(key, [])]\n",
+    "assert joined == [(\"k\", \"A\", 1), (\"k\", \"A\", 2), (\"x\", \"B\", 9)]\n",
+    "\n",
+    "\n",
+    "# Rejecting unsorted input is what keeps a binary-search partition valid.\n",
+    "def kth_partition_is_valid(sorted_values):\n",
+    "    return all(sorted_values[i] <= sorted_values[i + 1] for i in range(len(sorted_values) - 1))\n",
+    "\n",
+    "\n",
+    "assert kth_partition_is_valid([1, 2, 2, 5])\n",
+    "assert not kth_partition_is_valid([2, 1])\n",
+    "print(\"Interview verification B passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "42f06543",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import functools\n",
+    "import json\n",
+    "\n",
+    "# functools.lru_cache memoizes by hashable args; cache_info exposes the counters.\n",
+    "calls = {\"n\": 0}\n",
+    "\n",
+    "\n",
+    "@functools.lru_cache(maxsize=2)\n",
+    "def slow_square(value):\n",
+    "    calls[\"n\"] += 1\n",
+    "    return value * value\n",
+    "\n",
+    "\n",
+    "assert [slow_square(v) for v in (1, 2, 1, 3, 1)] == [1, 4, 1, 9, 1]\n",
+    "assert calls[\"n\"] == 3                    # only 1, 2, 3 were computed\n",
+    "info = slow_square.cache_info()\n",
+    "assert (info.hits, info.misses) == (2, 3)\n",
+    "\n",
+    "# raw_decode parses one value at a time out of a buffer: the streaming JSON core.\n",
+    "decoder = json.JSONDecoder()\n",
+    "text = '{\"a\": 1} {\"b\": 2}'\n",
+    "first, index = decoder.raw_decode(text)\n",
+    "second, _ = decoder.raw_decode(text, index + 1)\n",
+    "assert (first, second) == ({\"a\": 1}, {\"b\": 2})\n",
+    "\n",
+    "# Exponential backoff is a pure function of the attempt number.\n",
+    "delays = [min(0.5 * 2**n, 4.0) for n in range(5)]\n",
+    "assert delays == [0.5, 1.0, 2.0, 4.0, 4.0]\n",
+    "print(\"Interview verification C passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "087bdc42",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import copy\n",
+    "from dataclasses import FrozenInstanceError, dataclass, field\n",
+    "from decimal import Decimal\n",
+    "\n",
+    "def append_bad(item, bucket=[]):\n",
+    "    bucket.append(item)\n",
+    "    return bucket\n",
+    "\n",
+    "assert append_bad(\"a\") == [\"a\"] and append_bad(\"b\") == [\"a\", \"b\"]   # shared default\n",
+    "\n",
+    "@dataclass(frozen=True)\n",
+    "class Key:\n",
+    "    customer_id: int\n",
+    "    ds: str\n",
+    "    tags: list[str] = field(default_factory=list, compare=False, hash=False)\n",
+    "\n",
+    "key = Key(1, \"2026-10-04\")\n",
+    "assert {key: \"row\"}[Key(1, \"2026-10-04\")] == \"row\"   # equal and hashable\n",
+    "try:\n",
+    "    key.ds = \"2026-10-05\"\n",
+    "except FrozenInstanceError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"expected FrozenInstanceError\")\n",
+    "key.tags.append(\"vip\")                               # frozen is shallow\n",
+    "assert key.tags == [\"vip\"] and Key(2, \"x\").tags == []\n",
+    "\n",
+    "class OnlyEq:\n",
+    "    def __eq__(self, other):\n",
+    "        return isinstance(other, OnlyEq)\n",
+    "\n",
+    "assert OnlyEq.__hash__ is None                       # defining __eq__ removed hashing\n",
+    "\n",
+    "config = {\"credentials\": {\"user\": \"etl\"}}\n",
+    "shallow, deep = dict(config), copy.deepcopy(config)\n",
+    "config[\"credentials\"][\"user\"] = \"changed\"\n",
+    "assert shallow[\"credentials\"][\"user\"] == \"changed\" and deep[\"credentials\"][\"user\"] == \"etl\"\n",
+    "\n",
+    "assert sum([Decimal(\"0.10\")] * 3) == Decimal(\"0.30\") and sum([0.1] * 3) != 0.3\n",
+    "print(\"Interview verification D passed\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "fee6eae1",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import functools\n",
+    "\n",
+    "def wrapped_without(fn):\n",
+    "    def wrapper(*args):\n",
+    "        return fn(*args)\n",
+    "    return wrapper\n",
+    "\n",
+    "def wrapped_with(fn):\n",
+    "    @functools.wraps(fn)\n",
+    "    def wrapper(*args):\n",
+    "        return fn(*args)\n",
+    "    return wrapper\n",
+    "\n",
+    "def load():\n",
+    "    return \"rows\"\n",
+    "\n",
+    "assert wrapped_without(load).__name__ == \"wrapper\"\n",
+    "assert wrapped_with(load).__name__ == \"load\" and wrapped_with(load).__wrapped__ is load\n",
+    "\n",
+    "class Account:\n",
+    "    def __init__(self, owner, balance=0):\n",
+    "        self.owner, self.balance = owner, balance\n",
+    "\n",
+    "    @classmethod\n",
+    "    def from_amounts(cls, owner, amounts):\n",
+    "        return cls(owner, sum(amounts))\n",
+    "\n",
+    "class SavingsAccount(Account):\n",
+    "    pass\n",
+    "\n",
+    "assert type(SavingsAccount.from_amounts(\"ana\", [1, 2])) is SavingsAccount\n",
+    "\n",
+    "assert [f() for f in [lambda: i for i in range(3)]] == [2, 2, 2]\n",
+    "assert [f() for f in [lambda i=i: i for i in range(3)]] == [0, 1, 2]\n",
+    "\n",
+    "for partition in [\"ds=01\", \"ds=02\"]:\n",
+    "    if partition == \"ds=09\":\n",
+    "        break\n",
+    "else:\n",
+    "    missing = True\n",
+    "assert missing                                       # else ran: no break happened\n",
+    "\n",
+    "count = 0\n",
+    "def increment_local():\n",
+    "    count += 1                                       # assignment makes count local\n",
+    "\n",
+    "try:\n",
+    "    increment_local()\n",
+    "except UnboundLocalError:\n",
+    "    pass\n",
+    "else:\n",
+    "    raise AssertionError(\"expected UnboundLocalError\")\n",
+    "\n",
+    "try:\n",
+    "    try:\n",
+    "        int(\"x\")\n",
+    "    except ValueError as error:\n",
+    "        raise RuntimeError(\"bad config value\") from error\n",
+    "except RuntimeError as wrapped:\n",
+    "    assert isinstance(wrapped.__cause__, ValueError)\n",
+    "\n",
+    "left, right = [1, 2], [1, 2]\n",
+    "assert left == right and left is not right\n",
+    "print(\"Interview verification E passed\")"
+   ]
+  }
+ ],
+ "solutions": {
+  "bf1e44cc": {
+   "cell_id": "3a3bfbb4",
+   "block": 0
+  },
+  "60cb2a84": {
+   "cell_id": "3a3bfbb4",
+   "block": 1
+  },
+  "51fc13de": {
+   "cell_id": "3a3bfbb4",
+   "block": 2
+  },
+  "31edac82": {
+   "cell_id": "3a3bfbb4",
+   "block": 3
+  },
+  "eea89454": {
+   "cell_id": "ee02b209",
+   "block": 0
+  },
+  "6151d4b1": {
+   "cell_id": "ee02b209",
+   "block": 1
+  },
+  "b5a538d3": {
+   "cell_id": "ee02b209",
+   "block": 2
+  },
+  "177dba7e": {
+   "cell_id": "ee02b209",
+   "block": 3
+  },
+  "a8bd9aa5": {
+   "cell_id": "064d5f32",
+   "block": 0
+  },
+  "89b53a38": {
+   "cell_id": "064d5f32",
+   "block": 1
+  },
+  "00923b57": {
+   "cell_id": "064d5f32",
+   "block": 2
+  },
+  "3dc75021": {
+   "cell_id": "2914e0a9",
+   "block": 0
+  },
+  "ed62d51e": {
+   "cell_id": "2914e0a9",
+   "block": 1
+  },
+  "1e07254d": {
+   "cell_id": "2914e0a9",
+   "block": 2
+  },
+  "75892c3f": {
+   "cell_id": "2914e0a9",
+   "block": 3
+  },
+  "fb081691": {
+   "cell_id": "2914e0a9",
+   "block": 4
+  },
+  "f3a4791f": {
+   "cell_id": "e6a55259",
+   "block": 0
+  },
+  "71db5ce0": {
+   "cell_id": "e6a55259",
+   "block": 1
+  },
+  "6da56adf": {
+   "cell_id": "e6a55259",
+   "block": 2
+  },
+  "e03d9a8d": {
+   "cell_id": "e6a55259",
+   "block": 3
+  },
+  "9531b972": {
+   "cell_id": "e6a55259",
+   "block": 4
+  },
+  "b122d31d": {
+   "cell_id": "3c558bd7",
+   "block": 0
+  },
+  "bf566059": {
+   "cell_id": "0012eedb",
+   "block": 0
+  },
+  "b2acef16": {
+   "cell_id": "0012eedb",
+   "block": 1
+  },
+  "e12ee955": {
+   "cell_id": "0012eedb",
+   "block": 2
+  },
+  "4fe25ade": {
+   "cell_id": "0012eedb",
+   "block": 3
+  },
+  "48dde307": {
+   "cell_id": "9e9e6330",
+   "block": 0
+  },
+  "8b6b943c": {
+   "cell_id": "9e9e6330",
+   "block": 1
+  },
+  "617ef36d": {
+   "cell_id": "9e9e6330",
+   "block": 2
+  },
+  "73e4f11e": {
+   "cell_id": "bb666c61",
+   "block": 0
+  },
+  "50ee7eaa": {
+   "cell_id": "bb666c61",
+   "block": 1
+  },
+  "35690083": {
+   "cell_id": "bb666c61",
+   "block": 2
+  },
+  "7e75b3c8": {
+   "cell_id": "bb666c61",
+   "block": 3
+  },
+  "143c1c0b": {
+   "cell_id": "d11e0b7a",
+   "block": 0
+  },
+  "453edf46": {
+   "cell_id": "d11e0b7a",
+   "block": 1
+  },
+  "f825af26": {
+   "cell_id": "fe26cf76",
+   "block": 0
+  },
+  "83c4754e": {
+   "cell_id": "fe26cf76",
+   "block": 1
+  },
+  "f36e7f6f": {
+   "cell_id": "03742b20",
+   "block": 0
+  },
+  "026ac5b7": {
+   "cell_id": "03742b20",
+   "block": 1
+  },
+  "9150cccd": {
+   "cell_id": "03742b20",
+   "block": 2
+  },
+  "3d8bbee0": {
+   "cell_id": "03742b20",
+   "block": 3
+  },
+  "ace2fe5a": {
+   "cell_id": "d0cc2878",
+   "block": 0
+  },
+  "c5c431b6": {
+   "cell_id": "67699577",
+   "block": 0
+  },
+  "7914a250": {
+   "cell_id": "67699577",
+   "block": 1
+  },
+  "156fb587": {
+   "cell_id": "67699577",
+   "block": 2
+  },
+  "1c3d0ed7": {
+   "cell_id": "67699577",
+   "block": 3
+  }
+ }
+}

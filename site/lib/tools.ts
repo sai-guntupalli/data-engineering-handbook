@@ -97,6 +97,8 @@ export function compareSubtopics(a: { slug: string }, b: { slug: string }): numb
 }
 
 export const TOOLS: Tool[] = [
+  { folder: "duckdb", label: "DuckDB", description: "Embedded analytics, local Parquet queries and transformation tests.", tone: "sql", category: "processing" },
+  { folder: "postgres", label: "PostgreSQL", description: "Transactions, constraints, upserts and pipeline integration.", tone: "sql", category: "databases" },
   { folder: "airflow", label: "Apache Airflow", description: "Scheduling, DAGs, retries and operators for pipelines.", tone: "core", category: "orchestration" },
   { folder: "avro", label: "Apache Avro", description: "Row-based schemas and compact binary data for streams.", tone: "lake", category: "formats" },
   { folder: "aws", label: "AWS", description: "Storage, compute and data services on Amazon Web Services.", tone: "cloud", category: "cloud" },

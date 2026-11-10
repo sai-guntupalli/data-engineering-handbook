@@ -66,9 +66,12 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   data-quality failure handling when it is part of the task. Run `make verify-challenges` to verify current answers
   against regression cases and the published output tables. Avoid scoreboards and test-only materialization code
   in the learner-facing notebook.
-- **Checks that catch mistakes.** Give each exercise 6-10 checks, labelled by the case they cover: empty input, single
+- **Checks that catch mistakes.** Keep Python practice checks in `tests/fixtures/practice-checks/`, outside the
+  learner-facing notebook. Explain the question and show concrete sample inputs and expected outputs before the
+  exercise cell. Avoid scoreboards and pass/todo output. Give each exercise 6-10 maintainer checks for empty input, single
   item, duplicates, ties, `None`, and the trap the exercise teaches. A check must be able to fail for a plausible wrong
-  answer; confirm it against the reference solution and one deliberately wrong version.
+  answer; confirm it against the reference solution and one deliberately wrong version with
+  `uv run --extra notebooks python scripts/verify_practice_answers.py`.
 - **Last reviewed.** Tool pages end their opening paragraph with `*Last reviewed: <Month YYYY>, against <tool and
   version>.*` (managed services: "against the <service> documentation as of <Month YYYY>"). Update it whenever you
   check the page against a new release, and confirm version-specific facts against official docs or release notes.

@@ -32,6 +32,7 @@ dev: ## Serve the gallery site locally (PORT=3000)
 
 test: ## Unit tests: notebook tooling (pytest) and the site's data layer (vitest)
 	uv run pytest
+	$(PY) scripts/verify_practice_answers.py
 	npm --prefix $(SITE) test
 
 lint: ## Lint Python tooling and the site
