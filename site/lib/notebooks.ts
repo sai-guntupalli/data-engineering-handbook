@@ -18,7 +18,7 @@ import {
   TOOLS_BY_FOLDER,
   categoryOf,
   compareSubtopics,
-  toolSortName,
+  compareTools,
   type GroupTone,
   type NotebookCategory,
   type Tool,
@@ -221,7 +221,7 @@ function load() {
   assertRetiredNotebooksMoved(files);
   const details = new Map<string, LoadedNotebook>();
   const tools: ToolView[] = [...TOOLS]
-    .sort((a, b) => toolSortName(a.label).localeCompare(toolSortName(b.label), "en"))
+    .sort(compareTools)
     .map((tool) => {
       const notebooks = files
         .filter((file) => file.folder === tool.folder)

@@ -16,6 +16,7 @@ export function ToolGrid({ categories }: { categories: ToolCategoryView[] }) {
                   <span className="tool-card-head">
                     <span className="dot" style={toneStyle(tool.tone, "--dot")} aria-hidden />
                     <strong>{tool.label}</strong>
+                    {tool.legacy ? <span className="legacy-pill">Legacy</span> : null}
                     <span className="count">{tool.notebooks.length}</span>
                   </span>
                   <span className="tool-card-text">{tool.description}</span>

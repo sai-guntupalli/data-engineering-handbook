@@ -40,6 +40,11 @@ export default async function ToolPage({ params }: { params: Promise<{ tool: str
       <header className="tool-head">
         <h1>{tool.label}</h1>
         <p className="lead">{tool.description}</p>
+        {tool.legacy ? (
+          <p className="legacy-note">
+            <strong>Legacy technology.</strong> {tool.legacy}
+          </p>
+        ) : null}
         <p className="tool-meta">
           {count} {count === 1 ? "notebook" : "notebooks"}. Lessons come first, then drills, coding challenges and
           interview questions.

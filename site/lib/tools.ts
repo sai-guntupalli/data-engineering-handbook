@@ -42,7 +42,18 @@ export type Tool = {
   description: string;
   tone: GroupTone;
   category: ToolCategory;
+  /**
+   * Set for technology most new pipelines no longer choose. The note says what they use instead;
+   * legacy tools sort after the others in their category and carry a "Legacy" label.
+   */
+  legacy?: string;
 };
+
+/** Active tools first, then legacy ones; by name (without a vendor prefix) within each. */
+export function compareTools(a: Tool, b: Tool): number {
+  if (Boolean(a.legacy) !== Boolean(b.legacy)) return a.legacy ? 1 : -1;
+  return toolSortName(a.label).localeCompare(toolSortName(b.label), "en");
+}
 
 /** Sort key that ignores a vendor prefix, so "Apache Kafka" sorts under K next to "Kubernetes". */
 export function toolSortName(label: string): string {
@@ -102,15 +113,15 @@ export const TOOLS: Tool[] = [
   { folder: "dynamodb", label: "DynamoDB", description: "Key-value and document storage with single-table design.", tone: "cloud", category: "databases" },
   { folder: "elasticsearch", label: "Elasticsearch", description: "Search and log analytics on inverted indexes.", tone: "other", category: "databases" },
   { folder: "flink", label: "Apache Flink", description: "Stateful stream processing with event time and checkpoints.", tone: "stream", category: "processing" },
-  { folder: "flume", label: "Apache Flume", description: "Log collection and transport into Hadoop.", tone: "stream", category: "streaming" },
+  { folder: "flume", label: "Apache Flume", description: "Log collection and transport into Hadoop.", tone: "stream", category: "streaming", legacy: "Retired in most stacks: new log and event ingestion uses Kafka Connect, Fluent Bit or Vector." },
   { folder: "gcp", label: "Google Cloud", description: "Storage, analytics and pipeline services on Google Cloud.", tone: "cloud", category: "cloud" },
-  { folder: "greenplum", label: "Greenplum", description: "Massively parallel PostgreSQL-based warehouse.", tone: "other", category: "warehouses" },
-  { folder: "hadoop", label: "Hadoop", description: "HDFS and MapReduce, the foundation of the Hadoop ecosystem.", tone: "stream", category: "processing" },
-  { folder: "hbase", label: "Apache HBase", description: "Wide-column storage on HDFS for random reads and writes.", tone: "stream", category: "databases" },
+  { folder: "greenplum", label: "Greenplum", description: "Massively parallel PostgreSQL-based warehouse.", tone: "other", category: "warehouses", legacy: "Closed-source under Broadcom since 2024; the open-source line continues as Apache Cloudberry. New warehouses usually run on Snowflake, BigQuery or Redshift." },
+  { folder: "hadoop", label: "Hadoop", description: "HDFS and MapReduce, the foundation of the Hadoop ecosystem.", tone: "stream", category: "processing", legacy: "HDFS and MapReduce have largely given way to object storage and Spark; YARN and the Hive metastore still appear in older stacks." },
+  { folder: "hbase", label: "Apache HBase", description: "Wide-column storage on HDFS for random reads and writes.", tone: "stream", category: "databases", legacy: "Still runs in Hadoop estates; new wide-column workloads usually use Bigtable, Cassandra or DynamoDB." },
   { folder: "hive", label: "Apache Hive", description: "SQL over files in Hadoop, with a metastore and partitions.", tone: "stream", category: "processing" },
   { folder: "hudi", label: "Apache Hudi", description: "Upserts and incremental pipelines on data lakes.", tone: "lake", category: "formats" },
   { folder: "iceberg", label: "Apache Iceberg", description: "Open table format with snapshots, schema evolution and hidden partitions.", tone: "lake", category: "formats" },
-  { folder: "impala", label: "Apache Impala", description: "Low-latency SQL on Hadoop data.", tone: "other", category: "processing" },
+  { folder: "impala", label: "Apache Impala", description: "Low-latency SQL on Hadoop data.", tone: "other", category: "processing", legacy: "Mostly found on Cloudera clusters; new lakehouse SQL usually runs on Trino, Spark SQL or a cloud warehouse." },
   { folder: "interview-questions", label: "Interview questions", description: "Questions across Python, SQL and Spark, with model answers and runnable checks.", tone: "practice", category: "interviews" },
   { folder: "kafka", label: "Apache Kafka", description: "Topics, partitions, consumer groups and delivery guarantees.", tone: "stream", category: "streaming" },
   { folder: "kubernetes", label: "Kubernetes", description: "Running containers and scheduled jobs on a cluster.", tone: "core", category: "infrastructure" },

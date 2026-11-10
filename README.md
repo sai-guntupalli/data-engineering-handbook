@@ -17,6 +17,8 @@ in Colab to run it.
   (Parquet, then Delta Lake, then Iceberg), then the notebook's tool, then its category, so every page links onward. Solutions to practice problems are cells tagged
   `solution`; the reader shows each one as a panel that stays closed until you open it. The deployed site shows
   each code cell's results under it, from an executed copy that CI builds; the notebooks themselves stay output-free.
+- **Legacy tools**: Flume, Greenplum, Hadoop, HBase and Impala are marked Legacy (`legacy` in `site/lib/tools.ts`),
+  with a note on what new pipelines use instead; they sort after the active tools in their category.
 - **Moved notebooks**: notebooks merged into others are listed in `site/lib/retired.ts`; their old URLs redirect to
   the new notebook, and saved progress and stars follow.
 - **Search**: press <kbd>⌘K</kbd>, <kbd>Ctrl+K</kbd> or <kbd>/</kbd> anywhere to search every notebook title and
