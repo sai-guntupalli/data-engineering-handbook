@@ -6,7 +6,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { LEARNING_PATH, validatePath } from "./learning-map";
-import { monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
+import { attachOutputs, monogram, parseNotebook, type ParsedCell, type RawNotebook, type Section } from "./notebook-parse";
 import type { SearchEntry } from "./search";
 import { branch, repository } from "./site";
 import {
@@ -50,6 +50,8 @@ export type NotebookSummary = {
   colabHref: string;
   /** The .ipynb file served by this site (base path included), for downloading. */
   downloadHref: string;
+  /** True when the build had an executed copy of this notebook, so code cells show their results. */
+  hasOutputs: boolean;
 };
 
 /** One tool and its subtopics, in the order the tool page lists them. */
@@ -83,6 +85,25 @@ const COLAB_HREF = "https://colab.research.google.com/github";
 const repoRoot = path.resolve(process.cwd(), "..");
 /** Tools are folders under this one; a tool folder may nest subfolders such as python/learning. */
 const TOPICS_DIR = path.join(repoRoot, "notebooks", "topics");
+/**
+ * Executed copies with outputs, written by `scripts/run_notebooks.py --output-dir`
+ * (make outputs). Set NOTEBOOK_OUTPUTS_DIR, relative to the repository root, to
+ * show results in the reader; without it the site renders code only.
+ */
+const OUTPUTS_DIR = process.env.NOTEBOOK_OUTPUTS_DIR ? path.resolve(repoRoot, process.env.NOTEBOOK_OUTPUTS_DIR) : null;
+
+/** The executed copy of a notebook, or null when none was built (or it ran into an error). */
+function readExecuted(repoPath: string): RawNotebook | null {
+  if (!OUTPUTS_DIR) return null;
+  const file = path.join(OUTPUTS_DIR, repoPath);
+  if (!fs.existsSync(file)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(file, "utf8")) as RawNotebook;
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : String(error);
+    throw new Error(`Could not parse executed notebook ${file}: ${reason}`);
+  }
+}
 
 type LoadedNotebook = { summary: NotebookSummary; intro: string; sections: Section[]; cells: ParsedCell[] };
 
@@ -104,6 +125,8 @@ function readNotebook(tool: Tool, { repoPath, slug }: NotebookFile): LoadedNoteb
     throw new Error(`Could not parse notebook ${repoPath}: ${reason}`);
   }
   const parsed = parseNotebook(raw, slug);
+  const executed = readExecuted(repoPath);
+  const cells = executed ? attachOutputs(parsed.cells, executed) : parsed.cells;
   const category = categoryOf(slug);
   return {
     summary: {
@@ -126,10 +149,11 @@ function readNotebook(tool: Tool, { repoPath, slug }: NotebookFile): LoadedNoteb
       githubHref: `${GITHUB_BLOB}/${repoPath}`,
       colabHref: `${COLAB_HREF}/${repository}/blob/${branch}/${repoPath}`,
       downloadHref: `${BASE_PATH}/files/${slug}.ipynb`,
+      hasOutputs: cells.some((cell) => cell.outputs.length > 0),
     },
     intro: parsed.intro,
     sections: parsed.sections,
-    cells: parsed.cells,
+    cells,
   };
 }
 

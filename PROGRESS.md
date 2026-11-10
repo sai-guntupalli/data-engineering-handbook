@@ -1,10 +1,20 @@
 # Progress
 
 **Current Status**: 106 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
-`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
+`notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics. Results on the site (cell
+outputs from a CI-executed copy) are on `feat/site-rendered-outputs`, awaiting review.
 
 ## Completed
 
+- 2026-11-09: Results on the site (`feat/site-rendered-outputs`). The reader now shows each code cell's output under
+  it. Notebooks stay output-free in git: `scripts/run_notebooks.py --output-dir build/executed` (`make outputs`) saves a
+  copy of each notebook that runs cleanly, with trimmed outputs (no setup-cell noise, no HTML, no ANSI colour, text
+  cut at 60 lines or 6,000 characters, PNG charts up to about 300 KB, errors as name and message). The site build
+  reads those copies when `NOTEBOOK_OUTPUTS_DIR` is set and matches outputs to cells by id, only while the source is
+  unchanged (`attachOutputs` in `site/lib/notebook-parse.ts`). The header note says where results come from. The
+  Pages workflow installs Java 17 and the notebook packages, runs `make outputs` (a failure there publishes that
+  notebook without results instead of blocking the deploy) and builds with the copies. `make build-with-outputs`
+  does the same locally. Tests: 7 pytest cases for trimming, 8 vitest cases for parsing and matching.
 - 2026-11-09: PySpark coding challenges expanded (`feat/pyspark-coding-challenges`): 19 new problems join the five
   first-edition ones, 24 in total in `notebooks/topics/pyspark/pyspark-coding-challenges.ipynb`. Part one covers
   DataFrame manipulation (when/otherwise, nulls, strings, dates, explode, pivot and stack, UDF vs built-ins), joins
@@ -289,8 +299,8 @@
 1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
 2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark
    mode.
-3. Notebooks are stored without outputs, so the reader shows code but no results. If results are wanted on the site,
-   decide whether CI should execute notebooks into a build-only copy with outputs for the reader to render.
+3. Review and merge `feat/site-rendered-outputs` (results on the site). After the first deploy, check a PySpark
+   page (show() tables), a Python lesson (prints) and the deploy time (it now executes every notebook).
 4. `PRODUCT.md` still describes a counts-free, stateless site; update it to describe reading progress and the reader.
 5. Run one SQL notebook in a real Colab runtime with "Run all" (requires the user's Google sign-in). Colab's bundled
    Java version is not verified; if Colab has no Java, the examples print `SKIPPED` there.
