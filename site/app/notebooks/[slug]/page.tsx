@@ -11,12 +11,14 @@ import {
   Eye,
   GithubLogo,
   Package,
+  Terminal,
+  WarningCircle,
 } from "@phosphor-icons/react/dist/ssr";
 import { AppShell } from "@/components/AppShell";
 import { CopyCodeButton, CopyLinkButton, MarkDonePanel } from "@/components/ReaderControls";
 import { EndSentinel, ReaderToc } from "@/components/ReaderToc";
 import { StarButton } from "@/components/StarButton";
-import type { ParsedCell } from "@/lib/notebook-parse";
+import type { CellOutput, ParsedCell } from "@/lib/notebook-parse";
 import { getNotebook, getNotebookSlugs, type NotebookDetail } from "@/lib/notebooks";
 import { highlightCode, renderMarkdown } from "@/lib/render";
 import { toneStyle } from "@/lib/tone";
@@ -32,6 +34,36 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const notebook = getNotebook((await params).slug);
   return notebook ? { title: notebook.title, description: notebook.description || undefined } : {};
+}
+
+function OutputBlock({ output, number }: { output: CellOutput; number: number }) {
+  if (output.type === "image") {
+    // eslint-disable-next-line @next/next/no-img-element -- inline data URI from the executed notebook
+    return <img className="cell-output-image" src={output.src} alt={`Chart produced by cell ${number}`} />;
+  }
+  if (output.type === "error") {
+    return (
+      <pre className="cell-output-text is-error">
+        <WarningCircle size={14} weight="bold" aria-hidden /> {output.name}: {output.message}
+      </pre>
+    );
+  }
+  return <pre className={`cell-output-text${output.stream === "stderr" ? " is-stderr" : ""}`}>{output.text.replace(/\n+$/, "")}</pre>;
+}
+
+function CellOutputs({ cell, number }: { cell: ParsedCell; number: number }) {
+  if (cell.outputs.length === 0) return null;
+  return (
+    <div className="cell-output" role="group" aria-label={`Output of cell ${number}`}>
+      <div className="cell-output-label">
+        <Terminal size={13} aria-hidden />
+        Output
+      </div>
+      {cell.outputs.map((output, position) => (
+        <OutputBlock key={position} output={output} number={number} />
+      ))}
+    </div>
+  );
 }
 
 function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
@@ -68,6 +100,7 @@ function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
           Solution for cell {number}: open it after you have tried the problem
         </summary>
         {body}
+        <CellOutputs cell={cell} number={number} />
       </details>
     );
   }
@@ -92,6 +125,7 @@ function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
         <CopyCodeButton />
       </div>
       {body}
+      <CellOutputs cell={cell} number={number} />
     </div>
   );
 }
@@ -215,7 +249,9 @@ export default async function NotebookPage({ params }: Params) {
               {notebook.solutions > 0 ? <span className="tag">{notebook.solutions} hidden solutions</span> : null}
             </div>
             <p className="output-note">
-              Results are not stored with the notebook. Run it in Colab, or run the cells in order, to see the output.
+              {notebook.hasOutputs
+                ? "Results under each cell come from an automated run of this notebook. Open it in Colab to change the code and run it yourself."
+                : "Results are not stored with the notebook. Run it in Colab, or run the cells in order, to see the output."}
             </p>
           </header>
 

@@ -5,7 +5,21 @@
 import { marked, type Token, type Tokens } from "marked";
 import { anchorFor } from "./tools";
 
-export type RawCell = { cell_type?: string; source?: string | string[]; metadata?: { tags?: string[] } };
+export type RawOutput = {
+  output_type?: string;
+  name?: string;
+  text?: string | string[];
+  data?: Record<string, string | string[]>;
+  ename?: string;
+  evalue?: string;
+};
+export type RawCell = {
+  id?: string;
+  cell_type?: string;
+  source?: string | string[];
+  metadata?: { tags?: string[] };
+  outputs?: RawOutput[];
+};
 export type RawNotebook = { cells?: RawCell[] };
 
 /**
@@ -20,11 +34,21 @@ export type CellKind = "markdown" | "setup" | "solution" | "check" | "code";
 /** The Jupyter cell tag that marks an answer. The reader hides these cells until they are opened. */
 export const SOLUTION_TAG = "solution";
 
+/** One result under a code cell, from the executed copy CI builds (see scripts/run_notebooks.py). */
+export type CellOutput =
+  | { type: "text"; stream: "stdout" | "stderr" | "result"; text: string }
+  | { type: "error"; name: string; message: string }
+  | { type: "image"; src: string };
+
 export type ParsedCell = {
   /** Position in the original notebook, used for #cell-N anchors. */
   index: number;
+  /** The Jupyter cell id, used to match outputs from the executed copy. */
+  id?: string;
   kind: CellKind;
   source: string;
+  /** Results from the latest automated run; empty when none were saved. */
+  outputs: CellOutput[];
 };
 
 export type Section = {
@@ -223,7 +247,7 @@ export function parseNotebook(raw: RawNotebook, fallbackTitle: string): ParsedNo
     } else if (kind !== "setup") {
       codeLines += source.split("\n").length;
     }
-    cells.push({ index, kind, source });
+    cells.push({ index, id: cell.id, kind, source, outputs: [] });
   });
 
   return {
@@ -236,6 +260,37 @@ export function parseNotebook(raw: RawNotebook, fallbackTitle: string): ParsedNo
     solutions: cells.filter((cell) => cell.kind === "solution").length,
     minutes: estimateMinutes(markdownWords, codeLines),
   };
+}
+
+export function parseOutput(raw: RawOutput): CellOutput | null {
+  if (raw.output_type === "stream") {
+    const text = sourceToString(raw.text);
+    return text.trim() ? { type: "text", stream: raw.name === "stderr" ? "stderr" : "stdout", text } : null;
+  }
+  if (raw.output_type === "execute_result" || raw.output_type === "display_data") {
+    const image = raw.data?.["image/png"];
+    if (image) return { type: "image", src: `data:image/png;base64,${sourceToString(image).replace(/\s+/g, "")}` };
+    const text = sourceToString(raw.data?.["text/plain"]);
+    return text.trim() ? { type: "text", stream: "result", text } : null;
+  }
+  if (raw.output_type === "error") return { type: "error", name: raw.ename ?? "Error", message: raw.evalue ?? "" };
+  return null;
+}
+
+/**
+ * Outputs of an executed copy, keyed by cell id. A cell gets outputs only when
+ * its source still matches, so a stale copy never puts results under changed code.
+ */
+export function attachOutputs(cells: ParsedCell[], executed: RawNotebook): ParsedCell[] {
+  const byId = new Map<string, RawCell>();
+  for (const cell of executed.cells ?? []) if (cell.id) byId.set(cell.id, cell);
+  return cells.map((cell) => {
+    if (cell.kind === "markdown" || cell.kind === "setup" || !cell.id) return cell;
+    const ran = byId.get(cell.id);
+    if (!ran || sourceToString(ran.source) !== cell.source) return cell;
+    const outputs = (ran.outputs ?? []).map(parseOutput).filter((output): output is CellOutput => output !== null);
+    return { ...cell, outputs };
+  });
 }
 
 /** Vendor prefixes that would make many monograms identical. */

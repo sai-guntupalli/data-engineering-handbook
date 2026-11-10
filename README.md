@@ -14,7 +14,8 @@ in Colab to run it.
 - **Notebook reader**: each notebook rendered as a page (`/notebooks/<slug>/`) with highlighted code, a cell map of
   explanations, code, self-checks and solutions, a table of contents that ticks off sections as you scroll past them,
   and buttons to open it in Colab or download the `.ipynb`. Solutions to practice problems are cells tagged
-  `solution`; the reader shows each one as a panel that stays closed until you open it.
+  `solution`; the reader shows each one as a panel that stays closed until you open it. The deployed site shows
+  each code cell's results under it, from an executed copy that CI builds; the notebooks themselves stay output-free.
 - **Search**: press <kbd>⌘K</kbd>, <kbd>Ctrl+K</kbd> or <kbd>/</kbd> anywhere to search every notebook title and
   section heading, with a preview of the match. `/search?q=…` lists all results.
 - **Collapsible panels**: fold the sidebar into an icon rail with the button at the left of the top bar (or press
@@ -83,12 +84,16 @@ make notebooks   # execute every notebook (PySpark ones need Java 8-21; JOBS=4 b
 make test        # unit tests: tooling (pytest) and site data layer (vitest)
 make lint        # ruff + eslint
 make dev         # serve the gallery at http://localhost:3000
-make build       # static site into site/out
+make outputs     # execute every notebook and save copies with trimmed outputs to build/executed
+make build       # static site into site/out (code only)
+make build-with-outputs  # make outputs, then build the site showing each cell's results
 make validate    # everything CI runs
 ```
 
 CI: [Checks](.github/workflows/repo-checks.yml) runs `make validate` (with Java 17) on every PR and on `master`.
-[Deploy](.github/workflows/deploy-pages.yml) publishes `site/out` to GitHub Pages on every push to `master`.
+[Deploy](.github/workflows/deploy-pages.yml) runs `make outputs`, builds with `NOTEBOOK_OUTPUTS_DIR=build/executed`
+and publishes `site/out` to GitHub Pages on every push to `master`. A notebook that fails to execute there is
+published without results (the Checks workflow is what fails on it).
 
 ## Site URLs
 
@@ -97,6 +102,7 @@ The gallery is served from a path on GitHub Pages (`/data-engineering-handbook`)
 | Variable | Set to | Used for |
 | --- | --- | --- |
 | `NEXT_PUBLIC_BASE_PATH` | `/data-engineering-handbook` (the Pages build sets it; leave unset locally) | Asset and route paths (`site/next.config.ts`) |
+| `NOTEBOOK_OUTPUTS_DIR` | `build/executed` (the Pages build sets it; unset means code only) | Executed copies whose outputs the reader shows (`site/lib/notebooks.ts`) |
 | `NEXT_PUBLIC_SITE_URL` | `https://sai-guntupalli.github.io/data-engineering-handbook` (the default) | Canonical URLs, sitemap and robots (`site/lib/site.ts`) |
 
 Deploying to another host or repository means changing both; the sitemap is built from `NEXT_PUBLIC_SITE_URL`, so a stale value there produces wrong sitemap URLs.

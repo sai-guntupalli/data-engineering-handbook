@@ -12,6 +12,7 @@ __pycache__/
 node_modules/
 .next/
 out/
+build/
 tsconfig.tsbuildinfo
 
 .pytest_cache/

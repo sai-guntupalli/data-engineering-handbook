@@ -59,7 +59,8 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
 - **Hidden solutions.** Practice problems give the statement, sample input and expected output first. The answer is a
   code cell tagged `solution` (Jupyter: *Cell → Cell Tags*, or `"tags": ["solution"]` in the cell metadata). The
   reader shows it closed; the formatter keeps the tag.
-- **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge.
+- **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge. The
+  site's results come from `make outputs`, which executes the notebooks into `build/executed` (git-ignored).
 
 ## Workflow
 

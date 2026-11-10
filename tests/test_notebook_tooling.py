@@ -16,6 +16,7 @@ sys.path.insert(0, str(SCRIPTS))
 
 import audit_notebooks  # noqa: E402
 import notebook_format  # noqa: E402
+import run_notebooks  # noqa: E402
 
 RELPATH = "notebooks/example/example.ipynb"
 
@@ -180,3 +181,101 @@ class TestPipInstallLines:
         path = write_formatted(tmp_path, monkeypatch, md("# T"), code("!pip install -q pyspark"), code("import duckdb"))
         errors, _ = audit_notebooks.audit(path)
         assert any("duckdb" in error for error in errors), errors
+
+
+class TestTrimOutputs:
+    @staticmethod
+    def trimmed(*outputs: dict, source: str = "print(1)") -> list[dict]:
+        cell = code(source, outputs=list(outputs))
+        return run_notebooks.trim_outputs(notebook(cell))["cells"][0]["outputs"]
+
+    def test_setup_cell_outputs_are_dropped(self):
+        stream = {"output_type": "stream", "name": "stdout", "text": "Installing duckdb\n"}
+        assert self.trimmed(stream, source="# Setup: installs packages\nprint(1)") == []
+
+    def test_html_is_dropped_in_favour_of_plain_text(self):
+        result = {
+            "output_type": "execute_result",
+            "execution_count": 3,
+            "data": {"text/html": "<table></table>", "text/plain": "   a\n0  1"},
+            "metadata": {"x": 1},
+        }
+        assert self.trimmed(result) == [
+            {
+                "output_type": "execute_result",
+                "execution_count": 3,
+                "data": {"text/plain": "   a\n0  1"},
+                "metadata": {},
+            }
+        ]
+
+    def test_long_text_is_cut_and_says_how_much(self):
+        text = "".join(f"row {n}\n" for n in range(run_notebooks.MAX_OUTPUT_LINES + 5))
+        [stream] = self.trimmed({"output_type": "stream", "name": "stdout", "text": text})
+        assert stream["text"].count("\n") == run_notebooks.MAX_OUTPUT_LINES + 1
+        assert stream["text"].endswith("… output trimmed (5 more lines)\n")
+
+    def test_ansi_colour_codes_are_removed_and_blank_streams_dropped(self):
+        coloured = {"output_type": "stream", "name": "stderr", "text": "\x1b[31mWARN\x1b[0m slow\n"}
+        blank = {"output_type": "stream", "name": "stdout", "text": "\n"}
+        assert self.trimmed(coloured, blank) == [{"output_type": "stream", "name": "stderr", "text": "WARN slow\n"}]
+
+    def test_errors_keep_name_and_message_without_traceback(self):
+        error = {"output_type": "error", "ename": "ValueError", "evalue": "bad", "traceback": ["\x1b[0;31m..."]}
+        assert self.trimmed(error) == [
+            {"output_type": "error", "ename": "ValueError", "evalue": "bad", "traceback": []}
+        ]
+
+    def test_oversized_image_falls_back_to_text(self):
+        big = "A" * (run_notebooks.MAX_IMAGE_BASE64_CHARS + 1)
+        display = {"output_type": "display_data", "data": {"image/png": big, "text/plain": "<Figure>"}, "metadata": {}}
+        assert self.trimmed(display)[0]["data"] == {"text/plain": "<Figure>"}
+
+    def test_short_text_is_unchanged(self):
+        assert run_notebooks.truncate_text("ok\n") == "ok\n"
+
+
+def test_run_one_saves_an_executed_copy_with_trimmed_outputs(tmp_path, monkeypatch):
+    pytest.importorskip("nbclient")
+    pytest.importorskip("ipykernel")
+    source = tmp_path / "notebooks" / "demo.ipynb"
+    source.parent.mkdir()
+    cells = [md("# Demo"), code("# Setup: installs packages\nprint('installing')"), code("print('hello')\n1 + 1")]
+    for index, cell in enumerate(cells):
+        cell["id"] = f"c{index}"
+    source.write_text(json.dumps({**notebook(*cells), "nbformat_minor": 5}))
+    monkeypatch.setattr(run_notebooks, "ROOT", tmp_path)
+
+    relpath, error, _ = run_notebooks.run_one(source, timeout=60, output_dir=tmp_path / "out")
+
+    assert error is None
+    saved = json.loads((tmp_path / "out" / relpath).read_text())
+    assert saved["cells"][1]["outputs"] == []
+    assert [o["output_type"] for o in saved["cells"][2]["outputs"]] == ["stream", "execute_result"]
+    assert json.loads(source.read_text())["cells"][2]["outputs"] == []
+
+
+def test_jvm_log_noise_is_dropped_from_stderr_only():
+    noisy = (
+        "Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties\n"
+        "26/11/10 04:08:53 WARN Utils: Your hostname, box.local, resolves to a loopback address\n"
+        '{"ts": "2026-11-10 04:09:00.000", "level": "ERROR", "logger": "SQLQueryContextLogger", "msg": "x"}\n'
+        "[Stage 3:>        (0 + 2) / 2]\r                \r"
+        "UserWarning: real warning\n"
+    )
+    stderr = {"output_type": "stream", "name": "stderr", "text": noisy}
+    stdout = {"output_type": "stream", "name": "stdout", "text": "26/11/10 04:08:53 WARN printed on purpose\n"}
+    result = TestTrimOutputs.trimmed(stderr, stdout)
+    assert result[0]["text"] == "UserWarning: real warning\n"
+    assert result[1]["text"] == stdout["text"]
+
+
+def test_empty_dataframe_results_are_dropped():
+    empty = {
+        "output_type": "execute_result",
+        "execution_count": 1,
+        "data": {"text/plain": "DataFrame[]"},
+        "metadata": {},
+    }
+    schema = {**empty, "data": {"text/plain": "DataFrame[id: bigint]"}}
+    assert [o["data"]["text/plain"] for o in TestTrimOutputs.trimmed(empty, schema)] == ["DataFrame[id: bigint]"]

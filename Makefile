@@ -14,8 +14,10 @@ PORT ?= 3000
 JOBS ?= 4
 MOCKUPS := docs/mockups
 MOCKUPS_PORT ?= 8000
+# Executed notebook copies with outputs, read by the site build (see site/lib/notebooks.ts).
+OUTPUTS ?= build/executed
 
-.PHONY: help install dev test lint format check notebooks build mockups mockups-bundle validate stats clean
+.PHONY: help install dev test lint format check notebooks outputs build build-with-outputs mockups mockups-bundle validate stats clean
 
 help: ## List available targets
 	@grep -hE '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) \
@@ -49,9 +51,16 @@ check: ## Audit every notebook for Colab-runnability rules
 notebooks: ## Execute every notebook top to bottom (JOBS=4); Spark ones need Java
 	$(PY) scripts/run_notebooks.py --jobs $(JOBS)
 
+outputs: ## Execute every notebook and save copies with trimmed outputs to build/executed
+	$(PY) scripts/run_notebooks.py --jobs $(JOBS) --output-dir $(OUTPUTS)
+
 build: ## Build the static gallery site (with the design mockups) into site/out
 	npm --prefix $(SITE) run build
 	$(MAKE) mockups-bundle
+
+build-with-outputs: ## Execute the notebooks, then build the site showing their results
+	-$(MAKE) outputs
+	NOTEBOOK_OUTPUTS_DIR=$(OUTPUTS) $(MAKE) build
 
 mockups: ## Serve the static design mockups locally (MOCKUPS_PORT=8000)
 	python3 -m http.server $(MOCKUPS_PORT) --bind 127.0.0.1 --directory $(MOCKUPS)
@@ -68,5 +77,5 @@ stats: ## Notebook counts and size
 	@printf 'size:      %s\n' "$$(du -sh notebooks | cut -f1)"
 
 clean: ## Remove site build output and Python caches
-	rm -rf $(SITE)/.next $(SITE)/out .pytest_cache .ruff_cache
+	rm -rf $(SITE)/.next $(SITE)/out build .pytest_cache .ruff_cache
 	find . -name '__pycache__' -type d -prune -not -path './.venv/*' -exec rm -rf {} +

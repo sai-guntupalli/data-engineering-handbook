@@ -37,10 +37,28 @@ jobs:
         with:
           enable-cache: true
 
-      # Cheap structural gate before shipping; notebook execution runs in the
-      # Checks workflow.
+      # Cheap structural gate before shipping; the Checks workflow is the gate
+      # for notebook execution.
       - name: Audit notebooks
         run: make check
+
+      # The reader shows each notebook's results from an executed copy. The
+      # repository stays output-free; the copies live only in this build.
+      # PySpark notebooks need a JVM; PySpark 4.0 supports Java 17 and 21.
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Install notebook packages
+        run: uv sync --extra notebooks
+
+      # A notebook that fails here is published without results rather than
+      # blocking the deploy; it already fails the Checks workflow.
+      - name: Execute notebooks for the reader's outputs
+        run: make outputs
+        continue-on-error: true
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -57,6 +75,8 @@ jobs:
         env:
           # GitHub Pages project pages serve under /data-engineering-handbook.
           NEXT_PUBLIC_BASE_PATH: /data-engineering-handbook
+          # Relative to the repository root; written by `make outputs` above.
+          NOTEBOOK_OUTPUTS_DIR: build/executed
 
       # Static design mockups, served at /data-engineering-handbook/mockups/.
       - name: Add design mockups
