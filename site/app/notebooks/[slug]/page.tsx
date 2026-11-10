@@ -20,6 +20,7 @@ import { EndSentinel, ReaderToc } from "@/components/ReaderToc";
 import { StarButton } from "@/components/StarButton";
 import type { CellOutput, ParsedCell } from "@/lib/notebook-parse";
 import { getNotebook, getNotebookSlugs, type NotebookDetail } from "@/lib/notebooks";
+import { RETIRED_BY_SLUG, RETIRED_NOTEBOOKS, type RetiredNotebook } from "@/lib/retired";
 import { highlightCode, renderMarkdown } from "@/lib/render";
 import { toneStyle } from "@/lib/tone";
 
@@ -28,11 +29,37 @@ type Params = { params: Promise<{ slug: string }> };
 export const dynamicParams = false;
 
 export function generateStaticParams() {
-  return getNotebookSlugs().map((slug) => ({ slug }));
+  return [...getNotebookSlugs(), ...RETIRED_NOTEBOOKS.map((retired) => retired.slug)].map((slug) => ({ slug }));
+}
+
+// Plain URLs (the meta refresh) are not rewritten by Next, so they carry the base path themselves.
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+/** A merged notebook's old URL: a redirect to the notebook that now holds its content. */
+function MovedPage({ retired }: { retired: RetiredNotebook }) {
+  const target = getNotebook(retired.movedTo);
+  const href = `/notebooks/${retired.movedTo}/`;
+  return (
+    <AppShell crumbs={[{ label: "Library", href: "/" }, { label: "Moved" }]}>
+      <meta httpEquiv="refresh" content={`0; url=${BASE_PATH}${href}`} />
+      <article className="article moved-page">
+        <h1>This notebook has moved</h1>
+        <p className="lead">{retired.note}</p>
+        <p>
+          <Link className="btn btn-primary" href={href}>
+            Go to {target?.title ?? retired.movedTo}
+            <ArrowRight size={15} aria-hidden />
+          </Link>
+        </p>
+      </article>
+    </AppShell>
+  );
 }
 
 export async function generateMetadata({ params }: Params): Promise<Metadata> {
-  const notebook = getNotebook((await params).slug);
+  const { slug } = await params;
+  if (RETIRED_BY_SLUG.has(slug)) return { title: "Moved", robots: { index: false } };
+  const notebook = getNotebook(slug);
   return notebook ? { title: notebook.title, description: notebook.description || undefined } : {};
 }
 
@@ -202,7 +229,10 @@ function renderCells(notebook: NotebookDetail): RenderedCell[] {
 }
 
 export default async function NotebookPage({ params }: Params) {
-  const notebook = getNotebook((await params).slug);
+  const { slug } = await params;
+  const retired = RETIRED_BY_SLUG.get(slug);
+  if (retired) return <MovedPage retired={retired} />;
+  const notebook = getNotebook(slug);
   if (!notebook) notFound();
 
   const toolHref = `/tools/${notebook.toolFolder}/`;

@@ -144,3 +144,28 @@ export function parseProgress(raw: string | null): ProgressState {
     return EMPTY_PROGRESS;
   }
 }
+
+/**
+ * Progress saved under a retired notebook's path moves to the notebook that
+ * replaced it. When both have progress, the newer entry wins and "done" sticks.
+ */
+export function migrateProgress(state: ProgressState, renames: ReadonlyMap<string, string>): ProgressState {
+  if (!Object.keys(state.notebooks).some((key) => renames.has(key))) return state;
+  const notebooks: Record<string, NotebookProgress> = {};
+  for (const [key, entry] of Object.entries(state.notebooks)) {
+    if (!renames.has(key)) notebooks[key] = entry;
+  }
+  for (const [key, entry] of Object.entries(state.notebooks)) {
+    const target = renames.get(key);
+    if (!target) continue;
+    const current = notebooks[target];
+    if (!current) {
+      notebooks[target] = entry;
+      continue;
+    }
+    const newer = entry.updatedAt > current.updatedAt ? entry : current;
+    notebooks[target] = { ...newer, done: current.done || entry.done || undefined };
+  }
+  return { ...state, notebooks };
+}
+

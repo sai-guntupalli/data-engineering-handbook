@@ -1,14 +1,37 @@
 # Progress
 
-**Current Status**: Review P1 navigation (pager on every page, hidden SQL 13 solutions) on
-`feat/review-p1-navigation`, awaiting review. Site review done (7.0/10, `docs/reviews/2026-11-09-site-review.md`) and its P0 errors fixed
-(PR #67, merged). Results on the site (cell outputs from a CI-executed copy) are merged
-(PR #68); its first deploy was still running at the time of writing. 106 notebooks, all Colab-runnable and executed by CI on PySpark 4.0 (JDK 17), stored in
+**Current Status**: Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
+`feat/review-p1-merge-notebooks` (PR #70), awaiting review. Site review done (7.0/10,
+`docs/reviews/2026-11-09-site-review.md`); P0 errors fixed (#67), results on the site (#68) and the learning-path
+pager with hidden SQL 13 solutions (#69) are merged. 103 notebooks, all Colab-runnable and executed by CI on
+PySpark 4.0 (JDK 17), stored in
 `notebooks/topics/<tool>/`. The site lists 43 tools; each tool page lists its subtopics.
 
 ## Completed
 
-- 2026-11-10: Review P1, navigation and drills (`feat/review-p1-navigation`). The reader's pager now follows the
+- 2026-11-10: Review P1, merged notebooks and one home per topic (`feat/review-p1-merge-notebooks`). 106 notebooks
+  became 103:
+  - `data-warehousing` merged into `data-modeling`, now "Data modeling and warehousing" (13.5K -> 11.6K words, 13
+    exercises, one model shared by all examples; closed `BETWEEN` SCD2 and point-in-time code dropped in favour of the
+    half-open versions).
+  - `pyspark-tuning` merged into `pyspark-07-monitoring-and-performance`, now "PySpark 7: monitoring, performance and
+    tuning" (all eight "Try it" exercises kept; module 7's weaker duplicates dropped). The PySpark overview and the
+    Databricks salting link point to it.
+  - `python-interview-basics` retired: type hints moved to Python 3, dates and time zones to Python 1, modules and
+    `__main__` to Python 7, MRO, `NamedTuple`, container dunders and class context managers to Python 5, and 18
+    interview questions to Python coding problems (Q13-Q30). The rest repeated the lessons.
+  - Old URLs keep working: `site/lib/retired.ts` lists the retired notebooks, the build writes a redirect page at each
+    old `/notebooks/<slug>/`, and saved progress and stars move to the new notebook (`migrateProgress`,
+    `migrateStarred`). The build fails if a retired notebook still exists or its target is missing.
+  - One home per repeated topic: NOT IN with NULLs in SQL 4, top-N in SQL 8, keep-latest in SQL 9, isolation, indexes,
+    TRUNCATE and ACID in SQL 14; SQL 1, 2, 13, 14 and the SQL reference keep short summaries with links, and the
+    reference reads as a cheat sheet. Data contracts live in data-governance, checks and freshness in data-quality,
+    lineage, SLOs and alerting in data-observability, idempotency, backfills and replay in system-design; near-duplicate
+    sections inside system-design, cost-optimization and change-data-capture were merged.
+  - The learning path drops the retired notebooks (Process at scale is the PySpark track).
+  Verified: all 23 changed notebooks run top to bottom on PySpark 4.0.5 with JDK 17; format check and audit pass on
+  all 103; pytest, vitest, ruff, eslint, tsc and `next build` pass; the three redirect pages point at the right notebooks.
+- 2026-11-10: Review P1, navigation and drills (`feat/review-p1-navigation`, PR #69, merged). The reader's pager now follows the
   learning path first (Parquet -> Delta Lake -> Iceberg, Airflow -> Kafka -> Flink, Python 9 -> SQL 0), then the
   notebook's tool, then its category, so single-notebook tools such as Avro link onward. Before, 39 pages had no pager;
   now all 106 do, and the 12 without a "next" link are last in their order. Rules are in `site/lib/pager.ts`
@@ -322,13 +345,12 @@
 
 0. Continue the review roadmap in `docs/reviews/2026-11-09-site-review.md`, in order (P0 errors are fixed in #67;
    results on the site are in #68):
-   - P1: one canonical page per repeated topic (NOT IN, top-N, dedup/SCD2, isolation levels, contracts, freshness,
-     skew/AQE); merge data-modeling with data-warehousing and PySpark 7 with tuning; fold python-interview-basics into
-     the lessons.
+   - P1 dedupe: done in `feat/review-p1-merge-notebooks` (merged notebooks, one home per topic). Still open:
+     trimming pyspark-concepts-end-to-end to a capstone.
    - P1: SQL chapter order (basics, joins, NULL, CASE, aggregations/CTEs, set ops, windows); a Reference/Legacy
-     shelf for notebooks off the path. (The learning-path pager is done in `feat/review-p1-navigation`.)
+     shelf for notebooks off the path. (The learning-path pager is done, #69.)
    - P1: difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise. (SQL 13 solutions are
-     hidden in `feat/review-p1-navigation`.)
+     hidden, #69.)
    - P2: real engines instead of simulations, a freshness pass with version badges, missing pages, UX polish.
 1. Review and merge the SQL path explanations PR (#47, `feat/sql-path-explanations`).
 2. Check the deployed site after PR #44: home learning map, a notebook page, ⌘K search, the download link and dark

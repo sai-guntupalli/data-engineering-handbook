@@ -87,14 +87,13 @@ export const LEARNING_PATH: PathStage[] = [
           "08-real-world-and-interviews",
         ]),
       },
-      { id: "spark-tuning", label: "Spark tuning", toolHref: "/tools/pyspark/", slugs: ["pyspark-tuning"] },
     ],
   },
   {
     title: "Model and test",
     purpose: "Shape tables people can trust, and prove it with tests.",
     steps: [
-      { id: "modeling", label: "Data modeling", toolHref: "/tools/concepts/", slugs: ["data-modeling", "data-warehousing"] },
+      { id: "modeling", label: "Data modeling", toolHref: "/tools/concepts/", slugs: ["data-modeling"] },
       { id: "dbt", label: "dbt", toolHref: "/tools/dbt/", slugs: ["dbt"] },
       { id: "quality", label: "Data quality", toolHref: "/tools/concepts/", slugs: ["data-quality", "data-observability"] },
     ],

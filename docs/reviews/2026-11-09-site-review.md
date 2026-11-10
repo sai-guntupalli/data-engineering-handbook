@@ -113,7 +113,7 @@ To improve:
 ## Roadmap
 
 Status: P0 errors fixed (#67); results on the site (#68); learning-path pager on every page and hidden SQL 13
-solutions (`feat/review-p1-navigation`).
+solutions (#69). P1 dedupe: notebooks merged and one home per repeated topic (`feat/review-p1-merge-notebooks`).
 
 | Pri | Work |
 |---|---|

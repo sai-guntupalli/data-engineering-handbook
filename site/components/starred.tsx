@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { migrateStarred } from "@/lib/retired";
 
 const STARRED_KEY = "de-handbook:starred";
 const STARRED_EVENT = "de-handbook:starredchange";
@@ -35,7 +36,7 @@ function getStarredSnapshot(): Set<string> {
     } catch {
       list = [];
     }
-    starredCache = new Set(list);
+    starredCache = migrateStarred(list);
   }
   return starredCache;
 }

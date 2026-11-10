@@ -1,7 +1,8 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { EMPTY_PROGRESS, markSectionRead, parseProgress, setDone, type ProgressState } from "@/lib/progress";
+import { EMPTY_PROGRESS, markSectionRead, migrateProgress, parseProgress, setDone, type ProgressState } from "@/lib/progress";
+import { RETIRED_PATHS } from "@/lib/retired";
 
 const PROGRESS_KEY = "de-handbook:progress";
 const PROGRESS_EVENT = "de-handbook:progresschange";
@@ -28,7 +29,7 @@ function readSnapshot(): ProgressState {
   }
   if (raw !== cachedRaw) {
     cachedRaw = raw;
-    cachedState = parseProgress(raw);
+    cachedState = migrateProgress(parseProgress(raw), RETIRED_PATHS);
   }
   return cachedState;
 }
