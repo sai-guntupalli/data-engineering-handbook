@@ -66,6 +66,16 @@ as deployed platform integrations.
 
 ## Completed
 
+- 2026-11-11: Snowflake notebook rewritten for clarity (`feat/snowflake-notebook-rewrite`). The owner found that
+  code came before explanations and that explanations were unclear. The 36 question-style sections became 38 topics
+  under plain headings, each in the same order: **Explanation** (simple words, terms defined on first use),
+  **Use cases**, **Limitations and things to remember**, then **Code example** (Snowflake SQL shown, plus a runnable
+  DuckDB cell where one helps). Topics are grouped into six parts listed in the intro: architecture and warehouses;
+  storage and query performance; protecting and loading data; transformation, governance and cost; newer features and
+  the tuning playbook; practice and real-world cases. Every runnable cell is now self-contained (its own DuckDB
+  connection), the Snowpark example is real Python, and the 8 tuning exercises and 6 real-world cases are unchanged.
+  The notebook grew from 15.1K to about 21.7K words because every topic now has use cases and limitations.
+  Verified: it runs top to bottom; format check and audit pass; `next build` passes; checked in the browser.
 - 2026-11-10: P2 freshness pass (`feat/review-p2-freshness`). 33 tool pages updated for 2025-26 releases, each with
   a `*Last reviewed: November 2026, against <tool/version>.*` line; new version facts were checked against official
   docs or release notes, and five surprising ones re-checked by hand (Spark 4.3, Kafka 4.4, dbt v2 GA, Dataplex ->
