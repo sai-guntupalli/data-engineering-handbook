@@ -135,6 +135,29 @@ describe("parseNotebook", () => {
   });
 });
 
+describe("solution cells", () => {
+  it("classifies a code cell tagged solution as a solution, even when it holds asserts", () => {
+    expect(cellKindOf("code", "assert x == 1", ["solution"])).toBe("solution");
+    expect(cellKindOf("code", "assert x == 1", ["other"])).toBe("check");
+    expect(cellKindOf("code", "x = 1", [])).toBe("code");
+  });
+
+  it("counts solutions apart from self-checks and keeps them in the cell list", () => {
+    const parsed = parseNotebook(
+      notebook([
+        { cell_type: "markdown", source: TITLE_CELL },
+        { cell_type: "code", source: "df = spark.range(3)" },
+        { cell_type: "code", source: "assert df.count() == 3", metadata: { tags: ["solution"] } },
+        { cell_type: "code", source: "assert True" },
+      ]),
+      "fallback",
+    );
+    expect(parsed.cells.map((cell) => cell.kind)).toEqual(["code", "solution", "check"]);
+    expect(parsed.solutions).toBe(1);
+    expect(parsed.checks).toBe(1);
+  });
+});
+
 describe("estimateMinutes", () => {
   it("adds reading and code time", () => {
     expect(estimateMinutes(2200, 300)).toBe(20);

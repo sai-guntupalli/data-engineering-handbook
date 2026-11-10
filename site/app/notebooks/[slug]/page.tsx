@@ -8,6 +8,7 @@ import {
   CheckCircle,
   Code,
   DownloadSimple,
+  Eye,
   GithubLogo,
   Package,
 } from "@phosphor-icons/react/dist/ssr";
@@ -59,6 +60,18 @@ function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
     );
   }
 
+  if (cell.kind === "solution") {
+    return (
+      <details className="solution-cell cell" id={`cell-${cell.index}`}>
+        <summary>
+          <Eye size={15} aria-hidden />
+          Solution for cell {number}: open it after you have tried the problem
+        </summary>
+        {body}
+      </details>
+    );
+  }
+
   return (
     <div className="cell" id={`cell-${cell.index}`}>
       <div className="cell-bar">
@@ -83,15 +96,24 @@ function CodeCell({ cell, number }: { cell: ParsedCell; number: number }) {
   );
 }
 
-function CellMap({ cells, checks }: { cells: ParsedCell[]; checks: number }) {
+function CellMap({ cells, checks, solutions }: { cells: ParsedCell[]; checks: number; solutions: number }) {
   const shown = cells.filter((cell) => cell.kind !== "setup");
   const label = (cell: ParsedCell) =>
-    cell.kind === "check" ? "self-check" : cell.kind === "code" ? "code" : "explanation";
+    cell.kind === "check"
+      ? "self-check"
+      : cell.kind === "solution"
+        ? "solution"
+        : cell.kind === "code"
+          ? "code"
+          : "explanation";
+  const tickClass = (cell: ParsedCell) =>
+    cell.kind === "check" ? "t-check" : cell.kind === "solution" ? "t-solution" : cell.kind === "code" ? "t-code" : undefined;
   return (
     <section className="panel cellmap" aria-labelledby="cellmap-title">
       <div className="cellmap-head">
         <strong id="cellmap-title">
-          {shown.length} cells, {checks} self-checks
+          {shown.length} cells{checks > 0 ? `, ${checks} self-checks` : ""}
+          {solutions > 0 ? `, ${solutions} hidden solutions` : ""}
         </strong>
         <span>Each tick jumps to its cell</span>
       </div>
@@ -100,7 +122,7 @@ function CellMap({ cells, checks }: { cells: ParsedCell[]; checks: number }) {
           <a
             key={cell.index}
             href={`#cell-${cell.index}`}
-            className={cell.kind === "check" ? "t-check" : cell.kind === "code" ? "t-code" : undefined}
+            className={tickClass(cell)}
             aria-label={`Cell ${position + 1}, ${label(cell)}`}
             title={`Cell ${position + 1}: ${label(cell)}`}
           />
@@ -114,6 +136,10 @@ function CellMap({ cells, checks }: { cells: ParsedCell[]; checks: number }) {
         <span>
           <i className="l-code" />
           Code
+        </span>
+        <span>
+          <i className="l-solution" />
+          Solution
         </span>
         <span>
           <i className="l-text" />
@@ -185,14 +211,15 @@ export default async function NotebookPage({ params }: Params) {
             <div className="meta-row">
               <span className="tag">{notebook.sectionCount} sections</span>
               <span className="tag">About {notebook.minutes} min</span>
-              <span className="tag">{notebook.checks} self-checks</span>
+              {notebook.checks > 0 ? <span className="tag">{notebook.checks} self-checks</span> : null}
+              {notebook.solutions > 0 ? <span className="tag">{notebook.solutions} hidden solutions</span> : null}
             </div>
             <p className="output-note">
               Results are not stored with the notebook. Run it in Colab, or run the cells in order, to see the output.
             </p>
           </header>
 
-          <CellMap cells={notebook.cells} checks={notebook.checks} />
+          <CellMap cells={notebook.cells} checks={notebook.checks} solutions={notebook.solutions} />
 
           <div className="notebook-body">
             {renderCells(notebook).map(({ cell, html, number }) =>
