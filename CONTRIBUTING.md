@@ -59,6 +59,11 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
 - **Hidden solutions.** Practice problems give the statement, sample input and expected output first. The answer is a
   code cell tagged `solution` (Jupyter: *Cell → Cell Tags*, or `"tags": ["solution"]` in the cell metadata). The
   reader shows it closed; the formatter keeps the tag.
+- **Difficulty.** Every practice problem and drill exercise has a line right under its heading:
+  `**Difficulty:** Easy · about 5 min` (Easy, Medium or Hard, with an honest time estimate).
+- **Checks that catch mistakes.** Give each exercise 6-10 checks, labelled by the case they cover: empty input, single
+  item, duplicates, ties, `None`, and the trap the exercise teaches. A check must be able to fail for a plausible wrong
+  answer; confirm it against the reference solution and one deliberately wrong version.
 - **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge. The
   site's results come from `make outputs`, which executes the notebooks into `build/executed` (git-ignored).
 

@@ -31,6 +31,16 @@ in Colab to run it.
 
 ## Run a notebook
 
+Practice notebooks include difficulty estimates and 6–10 labelled checks per Python exercise, including empty,
+boundary and error cases. Reference answers stay collapsed. Run
+`.venv/bin/python scripts/verify_practice_answers.py` to execute temporary copies with the hidden Python answers
+inserted and confirm that deliberately wrong answers are rejected. The source notebooks keep their exercise stubs.
+The concurrency drills explicitly verify lock use: list append alone is atomic in CPython and is not proof of a race.
+
+The PySpark concepts notebook is a batch-pipeline capstone: typed bronze reads and quarantine, deterministic silver
+deduplication, broadcast joins into gold, an incremental re-run, and data-quality gates. The eight modules teach the
+individual concepts; the capstone links back to them.
+
 | Where | How |
 |---|---|
 | **Google Colab** | Click the *Open in Colab* badge at the top of any notebook, then *Runtime → Run all*. The first code cell installs what that notebook needs. |

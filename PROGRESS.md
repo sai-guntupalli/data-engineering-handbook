@@ -1,5 +1,28 @@
 # Progress
 
+## Practice verification — 2026-11-10
+
+Completed the interrupted P1 practice work on `feat/review-p1-practice`:
+
+- Python challenges 1–9 and drills 1–9 now have difficulty estimates and 6–10 labelled checks per exercise.
+  The binary-search explanation compares the middle value with the right boundary. Pipeline-context notes connect
+  the algorithm challenges to data work.
+- File drills test replacement and partial-write failures: original content survives and temporary files are removed.
+  The reference atomic writer cleans up in `finally`. Retry drills reject non-positive attempt counts.
+- Concurrency drills test result order, bounded concurrency, cancellation and errors. Instrumented lock scopes reject
+  unlocked counter and queue implementations on five repeated trials. The queue exercise explicitly explains that
+  CPython list append is atomic; scheduler timing is not used to claim a guaranteed race.
+- Data-engineering drill 7 implements canonical JSON SHA-256 upserts, timestamp/hash tie-breaking, stale-row rejection,
+  immutable inputs and idempotent replay. Newer unchanged payloads advance version metadata.
+- SQL 13 and all 34 PySpark challenges have difficulty estimates. The 46-cell PySpark capstone replaces repeated
+  lessons with a batch pipeline and 12 interview questions; it links to modules 1–8.
+- Added `scripts/verify_practice_answers.py`: nbclient executes temporary notebook copies with reference answers,
+  checks scores and rejects wrong answers without storing outputs in source notebooks.
+
+Verification: all 21 changed notebooks execute cleanly (PySpark 4.0 with Java 17); notebook format/audit pass for all
+103 notebooks; Python tests (44), site tests (79), ruff, ESLint, TypeScript and production build pass.
+The broader P2 freshness, new-topic and site-performance roadmap remains pending; this entry covers the P1 practice work.
+
 **Current Status**: SQL chapter order and Legacy shelf on `feat/review-p1-sql-order` (stacked on #70). Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
 `feat/review-p1-merge-notebooks` (PR #70), awaiting review. Site review done (7.0/10,
 `docs/reviews/2026-11-09-site-review.md`); P0 errors fixed (#67), results on the site (#68) and the learning-path

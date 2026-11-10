@@ -112,6 +112,12 @@ To improve:
 
 ## Roadmap
 
+P1 practice update (2026-11-10, `feat/review-p1-practice`): completed difficulty tags, 6–10 checks per Python
+exercise, reference-answer and wrong-answer verification across all 18 practice notebooks, failure-path atomic-write
+checks, explicit lock-use verification, and a deterministic content-hash upsert drill. The PySpark concepts notebook
+is now a 46-cell batch-pipeline capstone with 12 interview questions. All 21 changed notebooks execute cleanly;
+the format/audit, Python/site tests, lint, type check and production build pass. P2 items below remain pending.
+
 Status: P0 errors fixed (#67); results on the site (#68); learning-path pager on every page and hidden SQL 13
 solutions (#69). P1 dedupe: notebooks merged and one home per repeated topic (`feat/review-p1-merge-notebooks`). SQL chapter order
 and the Legacy shelf (`feat/review-p1-sql-order`).
