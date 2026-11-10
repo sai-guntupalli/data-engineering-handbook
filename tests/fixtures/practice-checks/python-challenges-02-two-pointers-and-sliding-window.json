@@ -1,0 +1,198 @@
+{
+ "order": [
+  "7332e141",
+  "902812de",
+  "ae5d979b",
+  "afb51614",
+  "d5539fb5",
+  "3e309801",
+  "79f44341",
+  "99849a70",
+  "7f3ce614",
+  "20718a4e",
+  "7355d85d",
+  "13e5e07f",
+  "f9333bb7",
+  "4438c22c",
+  "ceae1b97",
+  "0efbd293",
+  "d65e3370",
+  "20b566fd",
+  "2cfdc65c",
+  "cc9bb7a8",
+  "16621e18",
+  "07b5bdd2",
+  "ceafbaf7",
+  "4abd8d9d",
+  "84f8c4d2"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ae5d979b",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "_tally = {\"passed\": 0, \"total\": 0}\n",
+    "\n",
+    "def check(label, make_actual, expected):\n",
+    "    \"\"\"Run one check. It never raises, so the notebook always runs from top to bottom.\"\"\"\n",
+    "    _tally[\"total\"] += 1\n",
+    "    try:\n",
+    "        actual = make_actual()\n",
+    "    except Exception as error:\n",
+    "        print(f\"error  {label}: {type(error).__name__}: {error}\")\n",
+    "        return\n",
+    "    if actual == expected:\n",
+    "        _tally[\"passed\"] += 1\n",
+    "        print(f\"pass   {label}\")\n",
+    "    else:\n",
+    "        print(f\"todo   {label}: got {actual!r}\")\n",
+    "\n",
+    "def raises(make_actual, error_type):\n",
+    "    \"\"\"True when the call raises error_type, False when it raises anything else or nothing.\"\"\"\n",
+    "    try:\n",
+    "        make_actual()\n",
+    "    except error_type:\n",
+    "        return True\n",
+    "    except Exception:\n",
+    "        return False\n",
+    "    return False\n",
+    "\n",
+    "def score():\n",
+    "    print(f\"\\nScore: {_tally['passed']} of {_tally['total']} checks pass\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3e309801",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"is_palindrome('A man, a plan, a canal: Panama')\", lambda: is_palindrome(\"A man, a plan, a canal: Panama\"), True)\n",
+    "check(\"is_palindrome('race a car')\", lambda: is_palindrome(\"race a car\"), False)\n",
+    "check(\"is_palindrome(' ')\", lambda: is_palindrome(\" \"), True)\n",
+    "check(\"empty string\", lambda: is_palindrome(\"\"), True)\n",
+    "check(\"single character\", lambda: is_palindrome(\"a\"), True)\n",
+    "check(\"digits count: '0P'\", lambda: is_palindrome(\"0P\"), False)\n",
+    "check(\"digits only: '12321'\", lambda: is_palindrome(\"12321\"), True)\n",
+    "check(\"case is ignored: 'Aa'\", lambda: is_palindrome(\"Aa\"), True)\n",
+    "check(\"punctuation only: '.,!'\", lambda: is_palindrome(\".,!\"), True)\n",
+    "check(\"underscore is skipped: 'ab_a'\", lambda: is_palindrome(\"ab_a\"), True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "20718a4e",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def normalise_triplets(triplets):\n",
+    "    \"\"\"Sort each triplet and the list of triplets, so any output order compares equal.\"\"\"\n",
+    "    return sorted(sorted(triplet) for triplet in triplets)\n",
+    "\n",
+    "check(\n",
+    "    \"three_sum([-1, 0, 1, 2, -1, -4])\",\n",
+    "    lambda: sorted(sorted(t) for t in three_sum([-1, 0, 1, 2, -1, -4])),\n",
+    "    [[-1, -1, 2], [-1, 0, 1]],\n",
+    ")\n",
+    "check(\"three_sum([0, 1, 1]) == []\", lambda: three_sum([0, 1, 1]), [])\n",
+    "check(\"empty input\", lambda: normalise_triplets(three_sum([])), [])\n",
+    "check(\"fewer than three values\", lambda: normalise_triplets(three_sum([0, 0])), [])\n",
+    "check(\"all zeros, reported once\", lambda: normalise_triplets(three_sum([0, 0, 0, 0])), [[0, 0, 0]])\n",
+    "check(\"duplicates removed: [-2, 0, 0, 2, 2]\", lambda: normalise_triplets(three_sum([-2, 0, 0, 2, 2])), [[-2, 0, 2]])\n",
+    "check(\n",
+    "    \"several triplets share a value\",\n",
+    "    lambda: normalise_triplets(three_sum([-2, 0, 1, 1, 2])),\n",
+    "    [[-2, 0, 2], [-2, 1, 1]],\n",
+    ")\n",
+    "check(\"all positive: no answer\", lambda: normalise_triplets(three_sum([1, 2, 3])), [])\n",
+    "check(\n",
+    "    \"unsorted input with repeats\",\n",
+    "    lambda: normalise_triplets(three_sum([3, -2, 1, 0, -1, -1, 2, -4])),\n",
+    "    [[-4, 1, 3], [-2, -1, 3], [-2, 0, 2], [-1, -1, 2], [-1, 0, 1]],\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "4438c22c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"max_area([1, 8, 6, 2, 5, 4, 8, 3, 7])\", lambda: max_area([1, 8, 6, 2, 5, 4, 8, 3, 7]), 49)\n",
+    "check(\"max_area([1, 1])\", lambda: max_area([1, 1]), 1)\n",
+    "check(\"tallest walls at both ends: [4, 3, 2, 1, 4]\", lambda: max_area([4, 3, 2, 1, 4]), 16)\n",
+    "check(\"short ends: [1, 2, 1]\", lambda: max_area([1, 2, 1]), 2)\n",
+    "check(\"best pair is inside: [1, 2, 4, 3]\", lambda: max_area([1, 2, 4, 3]), 4)\n",
+    "check(\"all equal heights\", lambda: max_area([5, 5, 5, 5]), 15)\n",
+    "check(\"zero heights hold nothing\", lambda: max_area([0, 5, 0]), 0)\n",
+    "check(\"longer input (3,000 walls)\", lambda: max_area([1] * 3_000), 2_999)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "20b566fd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"length_of_longest_substring('abcabcbb')\", lambda: length_of_longest_substring(\"abcabcbb\"), 3)\n",
+    "check(\"length_of_longest_substring('bbbbb')\", lambda: length_of_longest_substring(\"bbbbb\"), 1)\n",
+    "check(\"length_of_longest_substring('pwwkew')\", lambda: length_of_longest_substring(\"pwwkew\"), 3)\n",
+    "check(\"length_of_longest_substring('')\", lambda: length_of_longest_substring(\"\"), 0)\n",
+    "check(\"single character\", lambda: length_of_longest_substring(\"a\"), 1)\n",
+    "check(\"a space is a character\", lambda: length_of_longest_substring(\" \"), 1)\n",
+    "check(\"repeat left behind the window: 'abba'\", lambda: length_of_longest_substring(\"abba\"), 2)\n",
+    "check(\"do not restart from scratch: 'dvdf'\", lambda: length_of_longest_substring(\"dvdf\"), 3)\n",
+    "check(\"all unique\", lambda: length_of_longest_substring(\"abcdef\"), 6)\n",
+    "check(\n",
+    "    \"large input (100,000 characters)\",\n",
+    "    lambda: length_of_longest_substring(\"abcdefghijklmnopqrstuvwxyz\" * 4_000),\n",
+    "    26,\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "07b5bdd2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"min_window('ADOBECODEBANC', 'ABC')\", lambda: min_window(\"ADOBECODEBANC\", \"ABC\"), \"BANC\")\n",
+    "check(\"min_window('a', 'aa') == ''\", lambda: min_window(\"a\", \"aa\"), \"\")\n",
+    "check(\"min_window('a', 'a')\", lambda: min_window(\"a\", \"a\"), \"a\")\n",
+    "check(\"repeats in t must all be covered\", lambda: min_window(\"ADOBECODEBANC\", \"AABC\"), \"ADOBECODEBA\")\n",
+    "check(\"t equals s\", lambda: min_window(\"aa\", \"aa\"), \"aa\")\n",
+    "check(\"case matters: no match\", lambda: min_window(\"a\", \"A\"), \"\")\n",
+    "check(\"t longer than s\", lambda: min_window(\"ab\", \"abc\"), \"\")\n",
+    "check(\"answer at the start\", lambda: min_window(\"abcdef\", \"abc\"), \"abc\")\n",
+    "check(\"whole string, any letter order\", lambda: min_window(\"cba\", \"abc\"), \"cba\")\n",
+    "check(\"shrink past extra copies: 'bba'\", lambda: min_window(\"bba\", \"ab\"), \"ba\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "84f8c4d2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "4abd8d9d",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ]
+}

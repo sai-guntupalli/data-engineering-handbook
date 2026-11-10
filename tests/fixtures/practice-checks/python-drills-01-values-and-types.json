@@ -1,0 +1,210 @@
+{
+ "order": [
+  "e0e5c132",
+  "c8c98483",
+  "aca550c3",
+  "ba65bfa2",
+  "4f11d706",
+  "0b06d2de",
+  "6c02f3d8",
+  "406ebce8",
+  "0570d64f",
+  "e51af34d",
+  "af9be55b",
+  "d0bb5cac",
+  "efa1589d",
+  "72a643d8",
+  "4d660400",
+  "c1fc5381",
+  "03f740ee",
+  "1f41f0c4",
+  "e59182d5",
+  "e0514bb5",
+  "15cc8249",
+  "df466196",
+  "12f1e8e0",
+  "46e8994e",
+  "8e304da2",
+  "3adb6b45",
+  "9023cade",
+  "c44eb3d2",
+  "e3083bfd"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "aca550c3",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "_tally = {\"passed\": 0, \"total\": 0}\n",
+    "\n",
+    "def check(label, make_actual, expected):\n",
+    "    \"\"\"Run one check. It never raises, so the notebook always runs from top to bottom.\"\"\"\n",
+    "    _tally[\"total\"] += 1\n",
+    "    try:\n",
+    "        actual = make_actual()\n",
+    "    except Exception as error:\n",
+    "        print(f\"error  {label}: {type(error).__name__}: {error}\")\n",
+    "        return\n",
+    "    if actual == expected:\n",
+    "        _tally[\"passed\"] += 1\n",
+    "        print(f\"pass   {label}\")\n",
+    "    else:\n",
+    "        print(f\"todo   {label}: got {actual!r}\")\n",
+    "\n",
+    "def raises(make_actual, error_type):\n",
+    "    \"\"\"True when the call raises error_type, False when it raises anything else or nothing.\"\"\"\n",
+    "    try:\n",
+    "        make_actual()\n",
+    "    except error_type:\n",
+    "        return True\n",
+    "    except Exception:\n",
+    "        return False\n",
+    "    return False\n",
+    "\n",
+    "def score():\n",
+    "    print(f\"\\nScore: {_tally['passed']} of {_tally['total']} checks pass\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "0b06d2de",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"parse_count('  42 ')\", lambda: parse_count(\"  42 \"), 42)\n",
+    "check(\"parse_count('12.0') is None\", lambda: parse_count(\"12.0\"), None)\n",
+    "check(\"parse_count('') is None\", lambda: parse_count(\"\"), None)\n",
+    "check(\"parse_count('-3')\", lambda: parse_count(\"-3\"), -3)\n",
+    "check(\"parse_count(' 0 ') is 0, not None\", lambda: parse_count(\" 0 \"), 0)\n",
+    "check(\"parse_count('+7') accepts a plus sign\", lambda: parse_count(\"+7\"), 7)\n",
+    "check(\"parse_count('\\\\t5\\\\n') ignores tabs and newlines\", lambda: parse_count(\"\\t5\\n\"), 5)\n",
+    "check(\"parse_count('abc') is None\", lambda: parse_count(\"abc\"), None)\n",
+    "check(\"parse_count('1 2') is None (space inside)\", lambda: parse_count(\"1 2\"), None)\n",
+    "check(\"parse_count('   ') is None (only spaces)\", lambda: parse_count(\"   \"), None)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e51af34d",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"average of empty list is None\", lambda: average_or_none([]), None)\n",
+    "check(\"average_or_none([1, 2]) == 1.5\", lambda: average_or_none([1, 2]), 1.5)\n",
+    "check(\"average_or_none([1, 2, 2]) == 1.67\", lambda: average_or_none([1, 2, 2]), 1.67)\n",
+    "check(\"average_or_none([5]) == 5.0 (single value)\", lambda: average_or_none([5]), 5.0)\n",
+    "check(\"average_or_none([0, 0]) == 0.0, not None\", lambda: average_or_none([0, 0]), 0.0)\n",
+    "check(\"average_or_none([-1, -2]) == -1.5 (negatives)\", lambda: average_or_none([-1, -2]), -1.5)\n",
+    "check(\"average_or_none([1, 2]) is not integer division\", lambda: average_or_none([1, 2]) != 1, True)\n",
+    "check(\"average_or_none([2, 3, 3]) rounds up to 2.67\", lambda: average_or_none([2, 3, 3]), 2.67)\n",
+    "check(\"average_or_none(range 1..100) == 50.5\", lambda: average_or_none(list(range(1, 101))), 50.5)\n",
+    "check(\"average_or_none works on a tuple\", lambda: average_or_none((1, 2, 3)), 2.0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "72a643d8",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"split_seconds(3723)\", lambda: split_seconds(3723), (1, 2, 3))\n",
+    "check(\"split_seconds(59)\", lambda: split_seconds(59), (0, 0, 59))\n",
+    "check(\"split_seconds(86400)\", lambda: split_seconds(86400), (24, 0, 0))\n",
+    "check(\"split_seconds(0) == (0, 0, 0)\", lambda: split_seconds(0), (0, 0, 0))\n",
+    "check(\"split_seconds(60) is one minute\", lambda: split_seconds(60), (0, 1, 0))\n",
+    "check(\"split_seconds(3599) is one second short of an hour\", lambda: split_seconds(3599), (0, 59, 59))\n",
+    "check(\"split_seconds(3600) is one hour\", lambda: split_seconds(3600), (1, 0, 0))\n",
+    "check(\"split_seconds(90061) keeps hours above 24\", lambda: split_seconds(90061), (25, 1, 1))\n",
+    "check(\n",
+    "    \"split_seconds returns whole ints, not floats\",\n",
+    "    lambda: [type(part) for part in split_seconds(3723)],\n",
+    "    [int, int, int],\n",
+    ")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "1f41f0c4",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"sum_money(['1,234.50', '0.50'])\", lambda: sum_money([\"1,234.50\", \"0.50\"]), \"1235.00\")\n",
+    "check(\"sum_money([]) == '0.00'\", lambda: sum_money([]), \"0.00\")\n",
+    "check(\"sum_money(['0.10', '0.20']) == '0.30'\", lambda: sum_money([\"0.10\", \"0.20\"]), \"0.30\")\n",
+    "check(\"sum_money(['5']) pads to two decimals\", lambda: sum_money([\"5\"]), \"5.00\")\n",
+    "check(\"sum_money(['1,234,567.89']) handles several commas\", lambda: sum_money([\"1,234,567.89\"]), \"1234567.89\")\n",
+    "check(\"sum_money(['-1.50', '1.00']) handles a negative\", lambda: sum_money([\"-1.50\", \"1.00\"]), \"-0.50\")\n",
+    "check(\"sum_money(['0.01'] * 1000) == '10.00'\", lambda: sum_money([\"0.01\"] * 1000), \"10.00\")\n",
+    "check(\n",
+    "    \"sum_money keeps cents a float would lose\",\n",
+    "    lambda: sum_money([\"9,007,199,254,740,993.01\"]),\n",
+    "    \"9007199254740993.01\",\n",
+    ")\n",
+    "check(\"sum_money returns a str\", lambda: type(sum_money([\"1.00\"])), str)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "df466196",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"mask_middle('order') == 'o***r'\", lambda: mask_middle(\"order\"), \"o***r\")\n",
+    "check(\"mask_middle('abc') == 'a*c'\", lambda: mask_middle(\"abc\"), \"a*c\")\n",
+    "check(\"mask_middle('ab') is unchanged\", lambda: mask_middle(\"ab\"), \"ab\")\n",
+    "check(\"mask_middle('x') is unchanged\", lambda: mask_middle(\"x\"), \"x\")\n",
+    "check(\"mask_middle('') is unchanged (empty)\", lambda: mask_middle(\"\"), \"\")\n",
+    "check(\"mask_middle('abcd') == 'a**d' (star count follows length)\", lambda: mask_middle(\"abcd\"), \"a**d\")\n",
+    "check(\"mask_middle('aaa') == 'a*a' (repeated letters)\", lambda: mask_middle(\"aaa\"), \"a*a\")\n",
+    "check(\"mask_middle('café') == 'c**é' (unicode)\", lambda: mask_middle(\"café\"), \"c**é\")\n",
+    "check(\"mask_middle('a b') == 'a*b' (a space is masked too)\", lambda: mask_middle(\"a b\"), \"a*b\")\n",
+    "check(\"mask_middle of 100 chars keeps the ends\", lambda: mask_middle(\"x\" * 100), \"x\" + \"*\" * 98 + \"x\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "3adb6b45",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"is_missing(None)\", lambda: is_missing(None), True)\n",
+    "check(\"is_missing('   ')\", lambda: is_missing(\"   \"), True)\n",
+    "check(\"is_missing(0) is False\", lambda: is_missing(0), False)\n",
+    "check(\"is_missing('0') is False\", lambda: is_missing(\"0\"), False)\n",
+    "check(\"is_missing('') (empty string)\", lambda: is_missing(\"\"), True)\n",
+    "check(\"is_missing('\\\\t\\\\n') (only whitespace)\", lambda: is_missing(\"\\t\\n\"), True)\n",
+    "check(\"is_missing([]) is False (empty list is a value)\", lambda: is_missing([]), False)\n",
+    "check(\"is_missing(False) is False\", lambda: is_missing(False), False)\n",
+    "check(\"is_missing(0.0) is False\", lambda: is_missing(0.0), False)\n",
+    "check(\"is_missing(' x ') is False (text with spaces)\", lambda: is_missing(\" x \"), False)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e3083bfd",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "c44eb3d2",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ]
+}

@@ -1,0 +1,187 @@
+{
+ "order": [
+  "5aff8e55",
+  "495977c2",
+  "d3fcb587",
+  "1221d516",
+  "00fa4f9a",
+  "a9c1377f",
+  "e7f2a8d4",
+  "f1c3607e",
+  "a0bea803",
+  "e3f4c318",
+  "1a1763b5",
+  "8ef5f61b",
+  "a6ffdc92",
+  "5fb1f65c",
+  "a9c294e2",
+  "f288d3c5",
+  "f22c085a",
+  "31f22272",
+  "bc42e5a4",
+  "6c73e506",
+  "1b75cb4f",
+  "a64eaa48",
+  "6a927c08",
+  "ce5eb9c1",
+  "11be18e2"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d3fcb587",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "_tally = {\"passed\": 0, \"total\": 0}\n",
+    "\n",
+    "def check(label, make_actual, expected):\n",
+    "    \"\"\"Run one check. It never raises, so the notebook always runs from top to bottom.\"\"\"\n",
+    "    _tally[\"total\"] += 1\n",
+    "    try:\n",
+    "        actual = make_actual()\n",
+    "    except Exception as error:\n",
+    "        print(f\"error  {label}: {type(error).__name__}: {error}\")\n",
+    "        return\n",
+    "    if actual == expected:\n",
+    "        _tally[\"passed\"] += 1\n",
+    "        print(f\"pass   {label}\")\n",
+    "    else:\n",
+    "        print(f\"todo   {label}: got {actual!r}\")\n",
+    "\n",
+    "def raises(make_actual, error_type):\n",
+    "    \"\"\"True when the call raises error_type, False when it raises anything else or nothing.\"\"\"\n",
+    "    try:\n",
+    "        make_actual()\n",
+    "    except error_type:\n",
+    "        return True\n",
+    "    except Exception:\n",
+    "        return False\n",
+    "    return False\n",
+    "\n",
+    "def score():\n",
+    "    print(f\"\\nScore: {_tally['passed']} of {_tally['total']} checks pass\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a9c1377f",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"num_islands(3x3 grid)\",\n",
+    "    lambda: num_islands([[\"1\", \"1\", \"0\"], [\"1\", \"1\", \"0\"], [\"0\", \"0\", \"1\"]]),\n",
+    "    2,\n",
+    ")\n",
+    "check(\"num_islands(empty grid)\", lambda: num_islands([]), 0)\n",
+    "check(\"num_islands(example 1, rows as strings)\", lambda: num_islands([\"11000\", \"11000\", \"00100\", \"00011\"]), 3)\n",
+    "check(\"num_islands(example 2, one ring-shaped island)\", lambda: num_islands([\"111\", \"010\", \"111\"]), 1)\n",
+    "check(\"num_islands(all water)\", lambda: num_islands([[\"0\", \"0\"], [\"0\", \"0\"]]), 0)\n",
+    "check(\"num_islands(single land cell)\", lambda: num_islands([[\"1\"]]), 1)\n",
+    "check(\"num_islands(diagonal cells are separate islands)\", lambda: num_islands([\"101\", \"010\", \"101\"]), 5)\n",
+    "check(\"num_islands(spiral is one island)\", lambda: num_islands([\"11111\", \"00001\", \"11101\", \"10001\", \"11111\"]), 1)\n",
+    "check(\"num_islands(single row)\", lambda: num_islands([\"10101\"]), 3)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "e3f4c318",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"can_finish(2, [[1, 0]])\", lambda: can_finish(2, [[1, 0]]), True)\n",
+    "check(\"can_finish(2, [[1, 0], [0, 1]])\", lambda: can_finish(2, [[1, 0], [0, 1]]), False)\n",
+    "check(\"can_finish(no prerequisites)\", lambda: can_finish(3, []), True)\n",
+    "check(\"can_finish(self-loop is a cycle)\", lambda: can_finish(1, [[0, 0]]), False)\n",
+    "check(\"can_finish(three-course cycle)\", lambda: can_finish(3, [[0, 1], [1, 2], [2, 0]]), False)\n",
+    "check(\"can_finish(diamond: shared prerequisite is not a cycle)\", lambda: can_finish(4, [[1, 0], [2, 0], [3, 1], [3, 2]]), True)\n",
+    "check(\"can_finish(cycle in one disconnected part)\", lambda: can_finish(5, [[1, 0], [3, 2], [2, 3]]), False)\n",
+    "check(\"can_finish(duplicate prerequisite pair)\", lambda: can_finish(2, [[1, 0], [1, 0]]), True)\n",
+    "check(\"can_finish(long chain)\", lambda: can_finish(5, [[1, 0], [2, 1], [3, 2], [4, 3]]), True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5fb1f65c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"oranges_rotting([[2,1,1],[1,1,0],[0,1,1]])\", lambda: oranges_rotting([[2, 1, 1], [1, 1, 0], [0, 1, 1]]), 4)\n",
+    "check(\"oranges_rotting([[2,1,1],[0,1,1],[1,0,1]])\", lambda: oranges_rotting([[2, 1, 1], [0, 1, 1], [1, 0, 1]]), -1)\n",
+    "check(\"oranges_rotting([[0]])\", lambda: oranges_rotting([[0]]), 0)\n",
+    "check(\"oranges_rotting(fresh orange but nothing rotten)\", lambda: oranges_rotting([[1]]), -1)\n",
+    "check(\"oranges_rotting(all rotten already)\", lambda: oranges_rotting([[2, 2]]), 0)\n",
+    "check(\"oranges_rotting(no fresh oranges, some empty cells)\", lambda: oranges_rotting([[0, 2]]), 0)\n",
+    "check(\"oranges_rotting(two sources rot in parallel)\", lambda: oranges_rotting([[2, 1, 1, 1, 2]]), 2)\n",
+    "check(\"oranges_rotting(fresh orange cut off by an empty cell)\", lambda: oranges_rotting([[2, 0, 1]]), -1)\n",
+    "check(\"oranges_rotting(single column)\", lambda: oranges_rotting([[2], [1], [1]]), 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "31f22272",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\n",
+    "    \"ladder_length('hit', 'cog', ...) is 5\",\n",
+    "    lambda: ladder_length(\"hit\", \"cog\", [\"hot\", \"dot\", \"dog\", \"lot\", \"log\", \"cog\"]),\n",
+    "    5,\n",
+    ")\n",
+    "check(\n",
+    "    \"ladder_length with no path is 0\",\n",
+    "    lambda: ladder_length(\"hit\", \"cog\", [\"hot\", \"dot\", \"dog\", \"lot\", \"log\"]),\n",
+    "    0,\n",
+    ")\n",
+    "check(\"ladder_length(end word not in the list)\", lambda: ladder_length(\"hit\", \"cog\", [\"hot\"]), 0)\n",
+    "check(\"ladder_length(one change)\", lambda: ladder_length(\"hot\", \"dot\", [\"dot\"]), 2)\n",
+    "check(\"ladder_length(begin word also in the list)\", lambda: ladder_length(\"hot\", \"dog\", [\"hot\", \"dot\", \"dog\"]), 3)\n",
+    "check(\"ladder_length(single letters)\", lambda: ladder_length(\"a\", \"c\", [\"a\", \"b\", \"c\"]), 2)\n",
+    "check(\"ladder_length(empty word list)\", lambda: ladder_length(\"hit\", \"cog\", []), 0)\n",
+    "check(\"ladder_length(picks the shorter of two paths)\", lambda: ladder_length(\"hit\", \"cog\", [\"hot\", \"dot\", \"dog\", \"cog\", \"hog\"]), 4)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "a64eaa48",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "check(\"count_components(5, [[0,1],[1,2],[3,4]])\", lambda: count_components(5, [[0, 1], [1, 2], [3, 4]]), 2)\n",
+    "check(\"count_components(5, a chain)\", lambda: count_components(5, [[0, 1], [1, 2], [2, 3], [3, 4]]), 1)\n",
+    "check(\"count_components(no edges)\", lambda: count_components(3, []), 3)\n",
+    "check(\"count_components(single node)\", lambda: count_components(1, []), 1)\n",
+    "check(\"count_components(zero nodes)\", lambda: count_components(0, []), 0)\n",
+    "check(\"count_components(cycle is one component)\", lambda: count_components(3, [[0, 1], [1, 2], [2, 0]]), 1)\n",
+    "check(\"count_components(duplicate edge in both directions)\", lambda: count_components(3, [[0, 1], [1, 0]]), 2)\n",
+    "check(\"count_components(self-loop)\", lambda: count_components(2, [[0, 0]]), 2)\n",
+    "check(\"count_components(a later edge joins two groups)\", lambda: count_components(6, [[0, 1], [2, 3], [1, 2], [4, 5]]), 2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "11be18e2",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "score()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "ce5eb9c1",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  }
+ ]
+}

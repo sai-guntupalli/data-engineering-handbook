@@ -16,13 +16,26 @@ root = Path(__file__).resolve().parents[1]
 paths = sorted((root / "notebooks/topics/python/practice").glob("python-challenges-*.ipynb")) + sorted(
     (root / "notebooks/topics/python/practice").glob("python-drills-*.ipynb")
 )
+paths.append(root / "notebooks/topics/python/practice/python-coding-problems.ipynb")
 
 
 def verify(p):
     n = json.loads(p.read_text())
     cells = n["cells"]
+    # Keep maintainer edge-case checks out of the learner-facing notebooks.
+    fixture = root / "tests/fixtures/practice-checks" / (p.stem + ".json")
+    if fixture.exists():
+        checks = json.loads(fixture.read_text())
+        by_id = {c["id"]: c for c in cells + checks["cells"]}
+        for original_id, location in checks.get("solutions", {}).items():
+            answer = "".join(by_id[location["cell_id"]]["source"])
+            blocks = re.findall(r"```python\n(.*?)\n```", answer, re.S)
+            by_id[original_id]["source"] = blocks[location["block"]].splitlines(keepends=True)
+        cells = n["cells"] = [by_id[cell_id] for cell_id in checks["order"]]
     exercises = 0
     for i, c in enumerate(cells):
+        if p.stem == "python-coding-problems":
+            break  # The workbook fixture contains executable reference implementations and assertions.
         if c["cell_type"] != "markdown" or "Show solution" not in "".join(c["source"]):
             continue
         match = re.search(r"```python\n(.*?)\n```", "".join(c["source"]), re.S)
@@ -87,6 +100,8 @@ def verify(p):
         kernel_name="python3",
         resources={"metadata": {"path": str(p.parent)}},
     ).execute()
+    if p.stem == "python-coding-problems":
+        return f"PASS {p.name}: workbook solutions and regression checks"
     return f"PASS {p.name}: {exercises} reference answers and wrong-answer checks"
 
 

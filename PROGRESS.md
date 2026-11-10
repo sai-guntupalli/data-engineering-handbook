@@ -1,5 +1,29 @@
 # Progress
 
+## Python practice cleanup and local integrations — 2026-11-10
+
+- Reviewed Python challenges 1–9, drills 1–9 and the coding-problems workbook. Questions and concrete sample
+  inputs/outputs now precede exercise cells. Removed visible check blocks, scoring helpers, score headings and
+  async test probes. Replaced dense test-helper expressions with readable examples for files, classes, retries,
+  logging and coroutines. Solutions remain closed by default.
+- Consolidated the coding workbook from 303 to 104 cells, retaining problem statements, examples and collapsed
+  approach/implementation explanations. Corrected the null-aware average example and clarified materialized
+  parsing memory costs and touching-interval conventions.
+- Moved regression machinery into `tests/fixtures/practice-checks/`. The verifier uses the current notebook
+  answers, executes the workbook regression cases and rejects wrong drill/challenge answers. Updated contribution
+  guidance so future edits do not restore learner-facing scoreboards.
+- Added local Delta update/delete/merge examples to PySpark 5 and SQL 12, a real file-source Structured Streaming
+  window in PySpark 6, and a temporary dbt-duckdb seed/model/test project. Delta uses delta-rs, not Spark SQL DML.
+- Added introductory notebooks for open table formats, catalogs, DuckDB, PostgreSQL, orchestration, semantic
+  layers, security/IAM and CI/CD/IaC. DuckDB examples execute locally; PostgreSQL transaction illustration uses
+  DuckDB and says so. Catalog, IAM, orchestration and compatibility examples are explicitly local models.
+- Python lessons identify Python 3.12+ as their target; concurrency includes TaskGroup and timeout examples.
+
+The wider P2 roadmap is **not complete**: the platform-by-platform release refresh, real Iceberg DML,
+Scala/PyFlink runtimes, per-chapter SQL dialect comparisons, pytest/Polars lesson expansion and deeper new-topic
+coverage still require work. This batch does not claim production PostgreSQL, cloud IAM or deployed orchestration
+validation. Reader performance work is tracked separately in PR #73.
+
 ## Practice verification — 2026-11-10
 
 Completed the interrupted P1 practice work on `feat/review-p1-practice`:
