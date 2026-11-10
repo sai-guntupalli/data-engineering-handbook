@@ -112,6 +112,9 @@ To improve:
 
 ## Roadmap
 
+Status: P0 errors fixed (#67); results on the site (#68); learning-path pager on every page and hidden SQL 13
+solutions (`feat/review-p1-navigation`).
+
 | Pri | Work |
 |---|---|
 | P0 | Fix every verified error above; link the PySpark overview table; replace the SQL 0 changelog with a learner roadmap |
