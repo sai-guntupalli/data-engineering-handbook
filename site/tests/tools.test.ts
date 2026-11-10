@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { TOOL_CATEGORIES, TOOLS, anchorFor, categoryOf, compareSubtopics, toolSortName } from "../lib/tools";
+import { TOOL_CATEGORIES, TOOLS, anchorFor, categoryOf, compareSubtopics, compareTools, toolSortName } from "../lib/tools";
 
 const TOPICS_DIR = path.resolve(__dirname, "../../notebooks/topics");
 
@@ -59,5 +59,17 @@ describe("the tool registry", () => {
     expect(toolSortName("Apache Kafka")).toBe("kafka");
     expect(toolSortName("Amazon Redshift")).toBe("redshift");
     expect(toolSortName("dbt")).toBe("dbt");
+  });
+});
+
+describe("compareTools", () => {
+  const tool = (label: string, legacy?: string) => ({ folder: label, label, description: "", tone: "other" as const, category: "processing" as const, legacy });
+  it("puts legacy tools after active ones, by name within each group", () => {
+    const sorted = [tool("Hadoop", "old"), tool("Trino"), tool("Apache Impala", "old"), tool("Apache Flink")].sort(compareTools);
+    expect(sorted.map((t) => t.label)).toEqual(["Apache Flink", "Trino", "Hadoop", "Apache Impala"]);
+  });
+
+  it("marks exactly the five legacy tools", () => {
+    expect(TOOLS.filter((t) => t.legacy).map((t) => t.folder).sort()).toEqual(["flume", "greenplum", "hadoop", "hbase", "impala"]);
   });
 });

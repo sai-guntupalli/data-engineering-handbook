@@ -1,6 +1,6 @@
 # Progress
 
-**Current Status**: Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
+**Current Status**: SQL chapter order and Legacy shelf on `feat/review-p1-sql-order` (stacked on #70). Review P1 dedupe (106 -> 103 notebooks, one home per repeated topic, redirects for old URLs) on
 `feat/review-p1-merge-notebooks` (PR #70), awaiting review. Site review done (7.0/10,
 `docs/reviews/2026-11-09-site-review.md`); P0 errors fixed (#67), results on the site (#68) and the learning-path
 pager with hidden SQL 13 solutions (#69) are merged. 103 notebooks, all Colab-runnable and executed by CI on
@@ -9,6 +9,20 @@ PySpark 4.0 (JDK 17), stored in
 
 ## Completed
 
+- 2026-11-10: Review P1, SQL chapter order and the Legacy shelf (`feat/review-p1-sql-order`, stacked on #70).
+  - SQL chapters renumbered into dependency order: 1 basics, 2 joins, 3 NULL handling, 4 CASE, 5 aggregations and CTEs,
+    6 set operations, 7 types, functions and JSON, then 8-14 unchanged. Six files renamed (`sql-06-joins` ->
+    `sql-02-joins`, `sql-04-null-handling` -> `sql-03-…`, `sql-05-case-expressions` -> `sql-04-…`,
+    `sql-02-aggregations-and-ctes` -> `sql-05-…`, `sql-07-set-operations` -> `sql-06-…`,
+    `sql-03-types-functions-and-json` -> `sql-07-…`). Titles, links and every "[SQL N…]" label across the notebooks
+    now match the file they point to. SQL 0's table and reading advice follow the new order, and SQL 1 calls its
+    join, CASE and NULL sections previews. The six old URLs redirect (entries in `site/lib/retired.ts`), and saved
+    progress and stars move.
+  - Legacy shelf: Flume, Greenplum, Hadoop, HBase and Impala carry a `legacy` note in `site/lib/tools.ts` that names
+    what new pipelines use instead. They sort after the active tools in their category (`compareTools`), show a
+    "Legacy" label on the home page cards, and a note on their tool and notebook pages.
+  Verified: the 11 changed SQL notebooks run top to bottom on PySpark 4.0.5; format check and audit pass; vitest (79),
+  tsc, eslint and `next build` pass; the old SQL URLs redirect; checked in the browser.
 - 2026-11-10: Review P1, merged notebooks and one home per topic (`feat/review-p1-merge-notebooks`). 106 notebooks
   became 103:
   - `data-warehousing` merged into `data-modeling`, now "Data modeling and warehousing" (13.5K -> 11.6K words, 13
@@ -347,8 +361,7 @@ PySpark 4.0 (JDK 17), stored in
    results on the site are in #68):
    - P1 dedupe: done in `feat/review-p1-merge-notebooks` (merged notebooks, one home per topic). Still open:
      trimming pyspark-concepts-end-to-end to a capstone.
-   - P1: SQL chapter order (basics, joins, NULL, CASE, aggregations/CTEs, set ops, windows); a Reference/Legacy
-     shelf for notebooks off the path. (The learning-path pager is done, #69.)
+   - P1: SQL chapter order and the Legacy shelf: done in `feat/review-p1-sql-order`.
    - P1: difficulty tags in SQL 13 and the drills; 6-10 edge-case tests per Python exercise. (SQL 13 solutions are
      hidden, #69.)
    - P2: real engines instead of simulations, a freshness pass with version badges, missing pages, UX polish.

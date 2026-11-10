@@ -19,7 +19,7 @@ import { CopyCodeButton, CopyLinkButton, MarkDonePanel } from "@/components/Read
 import { EndSentinel, ReaderToc } from "@/components/ReaderToc";
 import { StarButton } from "@/components/StarButton";
 import type { CellOutput, ParsedCell } from "@/lib/notebook-parse";
-import { getNotebook, getNotebookSlugs, type NotebookDetail } from "@/lib/notebooks";
+import { getNotebook, getNotebookSlugs, getTool, type NotebookDetail } from "@/lib/notebooks";
 import { RETIRED_BY_SLUG, RETIRED_NOTEBOOKS, type RetiredNotebook } from "@/lib/retired";
 import { highlightCode, renderMarkdown } from "@/lib/render";
 import { toneStyle } from "@/lib/tone";
@@ -237,6 +237,7 @@ export default async function NotebookPage({ params }: Params) {
 
   const toolHref = `/tools/${notebook.toolFolder}/`;
   const tocSections = notebook.sections.map(({ id, title }) => ({ id, title }));
+  const legacy = getTool(notebook.toolFolder)?.legacy;
 
   return (
     <AppShell
@@ -256,6 +257,11 @@ export default async function NotebookPage({ params }: Params) {
             </Link>
             <h1>{notebook.title}</h1>
             {notebook.intro || notebook.description ? <p className="lead">{notebook.intro || notebook.description}</p> : null}
+            {legacy ? (
+              <p className="legacy-note">
+                <strong>Legacy technology.</strong> {legacy}
+              </p>
+            ) : null}
             <div className="meta-row">
               <StarButton repoPath={notebook.repoPath} title={notebook.title} labelled />
               <a className="btn" href={notebook.colabHref} target="_blank" rel="noreferrer">
