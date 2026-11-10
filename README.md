@@ -101,6 +101,7 @@ make install     # notebook packages + dev tools (uv) and site dependencies (npm
 make format      # format notebooks and Python tooling
 make check       # audit every notebook
 make notebooks   # execute every notebook (PySpark ones need Java 8-21; JOBS=4 by default)
+make verify-practice  # run each practice answer and a wrong answer against its checks
 make test        # unit tests: tooling (pytest) and site data layer (vitest)
 make lint        # ruff + eslint
 make dev         # serve the gallery at http://localhost:3000
