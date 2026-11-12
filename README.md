@@ -25,7 +25,7 @@ The [SQL interview drills](notebooks/topics/sql/sql-13-interview-drills.ipynb) a
 [PySpark coding challenges](notebooks/topics/pyspark/pyspark-coding-challenges.ipynb) put the problem rules, sample
 input tables and complete expected outputs before each exercise. Solutions stay closed on the handbook site.
 Regression checks live outside the reading view; `make verify-challenges` runs the current answers and checks their
-published sample tables as well as the regression cases (Java 17+ required).
+published sample tables as well as the regression cases (Java 17 or 21 required).
 
 ## The site
 
@@ -120,7 +120,7 @@ docs/reviews/              content and UX reviews of the site, with the fix chec
 make install     # notebook packages + dev tools (uv) and site dependencies (npm)
 make format      # format notebooks and Python tooling
 make check       # audit every notebook
-make notebooks   # execute every notebook (PySpark ones need Java 8-21; JOBS=4 by default)
+make notebooks   # execute every notebook (PySpark ones need Java 17 or 21; JOBS=4 by default)
 make verify-practice  # run each practice answer and a wrong answer against its checks
 make test        # unit tests: tooling (pytest) and site data layer (vitest)
 make lint        # ruff + eslint

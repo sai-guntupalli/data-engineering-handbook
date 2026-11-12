@@ -9,7 +9,7 @@ dependencies = []
 [project.optional-dependencies]
 # Everything the notebooks import, plus the tooling that executes them.
 # Keep in step with each notebook's setup-cell PACKAGES (Colab installs from those).
-# PySpark notebooks also need Java 8-21 on PATH or JAVA_HOME.
+# PySpark notebooks also need Java 17 or 21 on PATH or JAVA_HOME.
 notebooks = [
     # tooling
     "ipykernel>=6.29",

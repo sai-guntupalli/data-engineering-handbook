@@ -58,7 +58,7 @@ outputs: ## Execute every notebook and save copies with trimmed outputs to build
 verify-practice: ## Run each practice exercise's reference answer and a wrong answer against its checks
 	$(PY) scripts/verify_practice_answers.py
 
-verify-challenges: ## Verify SQL/PySpark answers and published sample outputs (requires Java 17+)
+verify-challenges: ## Verify SQL/PySpark answers and published sample outputs (requires Java 17 or 21)
 	$(PY) scripts/verify_challenge_answers.py
 
 build: ## Build the static gallery site (with the design mockups) into site/out
