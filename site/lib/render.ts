@@ -43,6 +43,19 @@ export function highlightCode(code: string, language = "python"): string {
 }
 
 /**
+ * Notebooks link to each other by file, as Jupyter and GitHub expect:
+ * `pyspark-02-dataframe-essentials.ipynb#joins` or `../sql/sql-01-basics.ipynb`.
+ * On the site each notebook lives at /notebooks/<file name>/, so a relative
+ * .ipynb link becomes that reader URL, keeping its anchor. Every other href is
+ * returned unchanged.
+ */
+export function notebookHref(href: string, basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? ""): string {
+  const match = /^(?![a-z][a-z0-9+.-]*:|\/|#)(?:[^#?]*\/)?([^/#?]+)\.ipynb(#.*)?$/i.exec(href);
+  if (!match) return href;
+  return `${basePath}/notebooks/${match[1]}/${match[2] ?? ""}`;
+}
+
+/**
  * Render one markdown cell. `nextSectionId` hands out the ids that
  * parseNotebook allocated, in the same order, so the table of contents and the
  * headings agree. Level-1 headings after the title render as level 2 without
@@ -62,8 +75,9 @@ export function renderMarkdown(source: string, nextSectionId: () => string): str
         const language = (lang ?? "").split(/\s+/)[0] || "python";
         return `<pre><code class="hljs">${highlightCode(text, language)}</code></pre>\n`;
       },
-      link({ href, title, tokens }: Tokens.Link) {
+      link({ href: rawHref, title, tokens }: Tokens.Link) {
         const inner = this.parser.parseInline(tokens);
+        const href = notebookHref(rawHref);
         const external = /^https?:\/\//.test(href);
         const titleAttribute = title ? ` title="${escapeHtml(title)}"` : "";
         const target = external ? ' target="_blank" rel="noreferrer"' : "";
