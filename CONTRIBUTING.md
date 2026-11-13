@@ -7,55 +7,39 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
 - **It runs in Google Colab.** "Runtime → Run all" in a fresh Colab runtime must finish without errors.
   CI executes every notebook to prove it.
 - **Setup cell.** If a notebook imports anything outside the standard library, its first code cell installs it.
-  Copy this shape and edit only `PACKAGES` (import name → pip spec). It also upgrades a preinstalled
-  package that is too old (Colab ships its own versions):
+  Keep it to two lines: a `# Setup:` comment and one `!pip install` line. `pip` skips packages that are already
+  satisfied and upgrades a preinstalled one that is too old (Colab ships its own versions):
 
   ```python
-  # Setup: installs this notebook's packages when they are missing (e.g. in Google Colab).
-  import importlib.util
-  import subprocess
-  import sys
-
-  PACKAGES = {"duckdb": "duckdb>=1.0"}
-
-
-  def _missing(module: str, spec: str) -> bool:
-      """True when the module is absent or its installed version does not satisfy spec."""
-      try:
-          if importlib.util.find_spec(module) is None:
-              return True
-      except ModuleNotFoundError:
-          return True
-      try:
-          from importlib.metadata import PackageNotFoundError, version
-
-          from packaging.requirements import Requirement
-      except ImportError:
-          return False
-      requirement = Requirement(spec)
-      try:
-          return not requirement.specifier.contains(version(requirement.name), prereleases=True)
-      except PackageNotFoundError:
-          return False
-
-
-  missing = [spec for module, spec in PACKAGES.items() if _missing(module, spec)]
-  if missing:
-      subprocess.check_call([sys.executable, "-m", "pip", "install", "--quiet", *missing])
-  print("ready:", ", ".join(PACKAGES))
+  # Setup: installs the packages this notebook needs when they are missing (e.g. in Colab).
+  !pip install -q pyspark~=4.0.0 pyarrow
   ```
 
-  Add the same packages to the `notebooks` extra in `pyproject.toml` so local runs and CI have them.
-- **Colab-style installs.** A notebook may instead install a package with a plain `!pip install <package>` line,
-  as the SQL path does for PySpark. The audit counts those packages as declared. Such a notebook still needs pip in
-  the notebooks extra, which is already there.
+  Write each spec without quotes and without `<` or `>`: the line runs in a shell, where `>` redirects output,
+  and the audit reads package names from the bare specs. Use `~=` for a version range (`pyspark~=4.0.0` means
+  `>=4.0.0,<4.1`). Keep the `# Setup:` comment on the first line; `make verify-challenges` inserts its helpers right
+  after that cell. Add the same packages to the `notebooks` extra in `pyproject.toml` so local runs and CI have
+  them.
+
+  Older notebooks use a longer setup cell that declares a `PACKAGES` mapping; the audit accepts both forms. Use the
+  two-line form for new notebooks and when you rework an old one.
+- **Short setup and sample data.** After the install line, start the session or connection and create the sample
+  data in a cell or two. Create only the tables the notebook uses, and keep configuration to what the lessons need,
+  with a comment on any setting that is not a default.
 - **No live systems.** Never connect to `localhost`, a cloud endpoint, or use credentials. Use in-process
   stand-ins: DuckDB for warehouse SQL, PySpark local mode, `deltalake`, `pyiceberg` (SQLite catalog), `fakeredis`,
   `mongomock`, `moto`, or a small pure-Python simulation.
 - **Platform-only code goes in markdown.** YAML, shell, Scala, k8s manifests, or SQL dialects DuckDB cannot run
   belong in a fenced block in a markdown cell, not in a code cell.
 - **Lean prose.** One `# Title` (first cell), then `##` sections and `###` subsections without skipping levels.
-  One idea per markdown cell, a small runnable example below it, `assert`s that prove the point.
+  One idea per markdown cell, with a small runnable example below it.
+- **Teach with output, not asserts.** An example shows its result: `print`, `.show()`, `explain()`, a table. A short
+  `**What to notice:**` note after it says what the reader should see (the row that disappeared, the `Exchange` in
+  the plan, the count that did not change) and why. Do not assert answers in learner-facing cells. Keep an `assert`
+  only when checking is the lesson itself, such as a unit test or a pipeline's quality gate, and write that gate as
+  a clear error (`raise ValueError(...)`) rather than a bare `assert` where you can. Maintainer checks belong in
+  `tests/fixtures/`, as the challenge and practice checks below do. Because nothing asserts the numbers, check each
+  note against a fresh run (`make outputs`) whenever you change an example.
 - **Hidden solutions.** Practice problems give the statement, sample input and expected output first. The answer is a
   code cell tagged `solution` (Jupyter: *Cell → Cell Tags*, or `"tags": ["solution"]` in the cell metadata). The
   reader shows it closed; the formatter keeps the tag.
