@@ -1,0 +1,59 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-05-spark-sql-and-the-catalog.ipynb",
+ "solutions": {
+  "b0ab7c4d": {
+   "fingerprint": "fa50eea76e48d473d46aff9b741e48a7be322dd83bf024765c1ab9da7850a6e3",
+   "blocks": []
+  },
+  "c290a663": {
+   "fingerprint": "c3cfc5c363a61da1f5c70eb1a37ca7deb30d2d88b6fc693a8679b83267fa0150",
+   "blocks": []
+  },
+  "ebc31874": {
+   "fingerprint": "6148027cae1557bf3fa336918063536148d2ed9f74cfb86d23c80ed1ab32e8ee",
+   "blocks": []
+  },
+  "7f627e92": {
+   "fingerprint": "506469840579d9c583471c5f3b6faace6657e5f3305c7975da11efc362ff674c",
+   "blocks": []
+  },
+  "eb28a602": {
+   "fingerprint": "70dbef8b3e58a28f68202e921001ea6477edadf8f8348e8ce9cba320a0f65262",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "b0ab7c4d": {
+   "expected_cell": "74f4aa08",
+   "frames": [
+    "result"
+   ]
+  },
+  "c290a663": {
+   "expected_cell": "5fdf98a8",
+   "frames": [
+    "result"
+   ]
+  },
+  "ebc31874": {
+   "expected_cell": "bda9bb1a",
+   "frames": [
+    "result"
+   ]
+  },
+  "7f627e92": {
+   "expected_cell": "fad052d4",
+   "frames": [
+    "result"
+   ]
+  },
+  "eb28a602": {
+   "expected_cell": "66771597",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

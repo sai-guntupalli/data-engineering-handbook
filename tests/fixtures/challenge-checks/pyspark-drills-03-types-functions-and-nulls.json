@@ -1,0 +1,59 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-03-types-functions-and-nulls.ipynb",
+ "solutions": {
+  "b0b72d16": {
+   "fingerprint": "fa914ac1287cc0e590aec5bc36be1278f3a4db94e4c0f216c7bf1ae75f2a89d0",
+   "blocks": []
+  },
+  "45a5bf8a": {
+   "fingerprint": "e96c531d2ef3a9de911df0291e37fb85424dca955249a4a34affad4111f8064d",
+   "blocks": []
+  },
+  "ab58a41f": {
+   "fingerprint": "138cb297ecce4545c427cb4582740705b34e6166740e5bf8a5ebe2a204eb1edf",
+   "blocks": []
+  },
+  "7f53fa9f": {
+   "fingerprint": "7ca87071804f0c4603dd36d793e63e98634142c9189e82ddcfff0c627ed543e6",
+   "blocks": []
+  },
+  "6dae2bee": {
+   "fingerprint": "72196647754fef217ca679a70a7c66812b1b7b8a8df181193b4f5ca6350b998a",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "b0b72d16": {
+   "expected_cell": "645feb22",
+   "frames": [
+    "result"
+   ]
+  },
+  "45a5bf8a": {
+   "expected_cell": "39853456",
+   "frames": [
+    "result"
+   ]
+  },
+  "ab58a41f": {
+   "expected_cell": "5878f7ba",
+   "frames": [
+    "result"
+   ]
+  },
+  "7f53fa9f": {
+   "expected_cell": "af040822",
+   "frames": [
+    "result"
+   ]
+  },
+  "6dae2bee": {
+   "expected_cell": "5add909f",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

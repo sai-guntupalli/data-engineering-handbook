@@ -1,0 +1,65 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-10-batch-pipelines.ipynb",
+ "solutions": {
+  "f2722ac5": {
+   "fingerprint": "cbd0d609de39a3b11a86306e7ef6f5e49a4946620b55a05ca5f38737d8b7b194",
+   "blocks": []
+  },
+  "a11a02b4": {
+   "fingerprint": "d479ae3a041c8f303f85bab04199eb9c983bb16d2c3a6db10ce05b3a37a9fba5",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert result.count() == 4"
+    }
+   ]
+  },
+  "1a55dabc": {
+   "fingerprint": "1c5eebe2ee235a9b0a6c9a8158e37abc381d14ae6dd32132f78875dde81e32fe",
+   "blocks": []
+  },
+  "11126953": {
+   "fingerprint": "2d5db2be0beed87f0c77ff69cc22ee93853e5e682a67111a50b8444627b44b77",
+   "blocks": []
+  },
+  "a9ba84ab": {
+   "fingerprint": "e3266f0ff32f4ffe2e382680b8d2997921db78e7542f2563754288251ea3eb89",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "f2722ac5": {
+   "expected_cell": "81502f1b",
+   "frames": [
+    "result"
+   ]
+  },
+  "a11a02b4": {
+   "expected_cell": "cc78642f",
+   "frames": [
+    "result"
+   ]
+  },
+  "1a55dabc": {
+   "expected_cell": "d1b862c8",
+   "frames": [
+    "result"
+   ]
+  },
+  "11126953": {
+   "expected_cell": "9fa8e274",
+   "frames": [
+    "valid",
+    "quarantine"
+   ]
+  },
+  "a9ba84ab": {
+   "expected_cell": "e6fd1bf1",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

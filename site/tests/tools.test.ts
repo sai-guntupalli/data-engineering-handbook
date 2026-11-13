@@ -16,7 +16,9 @@ describe("notebook categories", () => {
     expect(categoryOf("interview-question-bank")).toBe("interview");
     expect(categoryOf("python-interview-basics")).toBe("interview");
     expect(categoryOf("sql-00-start-here")).toBe("lesson");
-    expect(categoryOf("pyspark-08-real-world-and-interviews")).toBe("lesson");
+    expect(categoryOf("pyspark-15-interview-concepts")).toBe("interview");
+    expect(categoryOf("pyspark-drills-02-dataframe-essentials")).toBe("drill");
+    expect(categoryOf("pyspark-reference")).toBe("reference");
     expect(categoryOf("sql-reference")).toBe("reference");
     expect(categoryOf("pyspark-concepts-end-to-end")).toBe("reference");
   });

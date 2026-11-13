@@ -1,0 +1,69 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-06-joins.ipynb",
+ "solutions": {
+  "aec3ed0a": {
+   "fingerprint": "c05106226e76d06ab3322894e75c5e377472417c0cdfd58affc04509d59d6a4a",
+   "blocks": []
+  },
+  "a9d931d0": {
+   "fingerprint": "3ae14b75ea0747d8ae3c3bcda0150c366e7033734442898a3bd16e122a1f9aef",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert result.agg(F.sum('revenue')).first()[0] == order_items.agg(F.sum(F.col('qty') * F.col('unit_price'))).first()[0]"
+    }
+   ]
+  },
+  "f023e8c8": {
+   "fingerprint": "f8ec5909049a7bee199fe578147c207dfed613ed6ad3ee16b62f430e417742b0",
+   "blocks": []
+  },
+  "a6447287": {
+   "fingerprint": "68bf482692ce33aab1f3dbfbdaa7b4b5526b25f09521dae9a2df9cd2fe8ea453",
+   "blocks": []
+  },
+  "3433242d": {
+   "fingerprint": "079830375aaf3576b50d6e4380ed3b01bfa54aff253ca25a434643f8855202e9",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert result.count() == orders.where('customer_id IN (1, 2, 3)').count()"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "aec3ed0a": {
+   "expected_cell": "baa9c134",
+   "frames": [
+    "result"
+   ]
+  },
+  "a9d931d0": {
+   "expected_cell": "94d48d9e",
+   "frames": [
+    "result"
+   ]
+  },
+  "f023e8c8": {
+   "expected_cell": "78738a01",
+   "frames": [
+    "result"
+   ]
+  },
+  "a6447287": {
+   "expected_cell": "27c5e94d",
+   "frames": [
+    "result"
+   ]
+  },
+  "3433242d": {
+   "expected_cell": "76e8e97f",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

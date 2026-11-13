@@ -1,0 +1,59 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-08-nested-and-semi-structured-data.ipynb",
+ "solutions": {
+  "6eca2e81": {
+   "fingerprint": "cd589cf39252e31d819eadbbd984f9f69ec884d94da21bc514de1d1b7057e4ef",
+   "blocks": []
+  },
+  "9df70e08": {
+   "fingerprint": "c107eb2937c8b5552a86e93c4ced11cf929db59d530807fffabaee61a8974b7d",
+   "blocks": []
+  },
+  "45632ada": {
+   "fingerprint": "2e2daea71aca5ab447fcb841190e1804d34c55f8e9402bf3ebad6fb1cff6fa83",
+   "blocks": []
+  },
+  "231349d8": {
+   "fingerprint": "ff1a2d1399fdae862baace7bdc2d1f6dfb40c9f7e85186671f2faef90dbdbb7b",
+   "blocks": []
+  },
+  "c5a87ca7": {
+   "fingerprint": "6ef04fafe3dfb03031cb56b5c1735e2082c26fa022cd2dcb3eec63e04a1a3cd5",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "6eca2e81": {
+   "expected_cell": "87bcbcea",
+   "frames": [
+    "result"
+   ]
+  },
+  "9df70e08": {
+   "expected_cell": "8db930a3",
+   "frames": [
+    "result"
+   ]
+  },
+  "45632ada": {
+   "expected_cell": "78b4b42c",
+   "frames": [
+    "result"
+   ]
+  },
+  "231349d8": {
+   "expected_cell": "54ae5003",
+   "frames": [
+    "result"
+   ]
+  },
+  "c5a87ca7": {
+   "expected_cell": "c09863cb",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

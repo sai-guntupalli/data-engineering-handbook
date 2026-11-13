@@ -1,0 +1,54 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-11-structured-streaming.ipynb",
+ "solutions": {
+  "dd40ce7d": {
+   "fingerprint": "800fee05094deafceaab7b80855bdef97bf7854044ab0417804e7231ebdac292",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "assert result.count() == 3"
+    }
+   ]
+  },
+  "f35649bf": {
+   "fingerprint": "f67d1388e78c32754c2d273c6167e3ad0b16294c08c4403d4c10dea787d68968",
+   "blocks": []
+  },
+  "d065e0cf": {
+   "fingerprint": "63a81fbbe29169a76a148bd4fa81a7f18ffb347acfb611054d088e372c3d7367",
+   "blocks": []
+  },
+  "0810c001": {
+   "fingerprint": "baf096dc6df63e137804ed964ab4e8d9809a8602ebd6afbfa6092925ea8c8e97",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "dd40ce7d": {
+   "expected_cell": "5d91219d",
+   "frames": [
+    "result"
+   ]
+  },
+  "f35649bf": {
+   "expected_cell": "90ceb394",
+   "frames": [
+    "result"
+   ]
+  },
+  "d065e0cf": {
+   "expected_cell": "fbcc0f17",
+   "frames": [
+    "result"
+   ]
+  },
+  "0810c001": {
+   "expected_cell": "6a3d1440",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

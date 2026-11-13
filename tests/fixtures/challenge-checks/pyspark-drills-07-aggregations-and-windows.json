@@ -1,0 +1,59 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-07-aggregations-and-windows.ipynb",
+ "solutions": {
+  "7cc8a12e": {
+   "fingerprint": "f77143b26a877f38c006858f83e0750ece34492465fcba7cbff384a23d1a8eff",
+   "blocks": []
+  },
+  "fce598c6": {
+   "fingerprint": "af842085446fd91e1c79d0f0c45369df6eec4b8e7fd14251c5459099cc937c2f",
+   "blocks": []
+  },
+  "2664cf5f": {
+   "fingerprint": "bb6d2e145dca8785c91bc38ddaef4ce8c556c72a902bb3a5fab95933c901b2be",
+   "blocks": []
+  },
+  "66998e8d": {
+   "fingerprint": "459cd6f3867ad9424eddb5e1633920b450f428e14f37bf82f226e61edb2254b2",
+   "blocks": []
+  },
+  "5b741d4e": {
+   "fingerprint": "275e2b332e81a431703cd584772c1dee41fe97f3bcd592224cdcc07e57901fb5",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "7cc8a12e": {
+   "expected_cell": "381b0720",
+   "frames": [
+    "result"
+   ]
+  },
+  "fce598c6": {
+   "expected_cell": "2b25991f",
+   "frames": [
+    "result"
+   ]
+  },
+  "2664cf5f": {
+   "expected_cell": "bb2eec89",
+   "frames": [
+    "result"
+   ]
+  },
+  "66998e8d": {
+   "expected_cell": "c80ffffc",
+   "frames": [
+    "result"
+   ]
+  },
+  "5b741d4e": {
+   "expected_cell": "6d32d419",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

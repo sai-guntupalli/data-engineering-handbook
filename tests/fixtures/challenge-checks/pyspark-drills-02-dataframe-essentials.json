@@ -1,0 +1,60 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-02-dataframe-essentials.ipynb",
+ "solutions": {
+  "26ad436a": {
+   "fingerprint": "023622a9f08602401afb28f78b1a242c25707e3a232f9141789ab7d20b797049",
+   "blocks": []
+  },
+  "fd294f34": {
+   "fingerprint": "c495b8e6058aa739dea3d8d8b0238918f49fcdbc8e66418a7f14aa6b6846a9b4",
+   "blocks": []
+  },
+  "2d74802f": {
+   "fingerprint": "86ef47f69c3b4e304fbec4e0907551eaecc961fd6ff299303b41308fb8f0aad6",
+   "blocks": []
+  },
+  "84d019de": {
+   "fingerprint": "2ab733a2148b79dde3a8fd6c7d3a4276b632574dc5fe7566f4ccc9334107018e",
+   "blocks": []
+  },
+  "e56059f1": {
+   "fingerprint": "438c3fbf403248403bf5b9d409325b34f345c9b1f7c0815e2d0a811dac2273d2",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "26ad436a": {
+   "expected_cell": "d8489cf4",
+   "frames": [
+    "result"
+   ]
+  },
+  "fd294f34": {
+   "expected_cell": "80e77b3a",
+   "frames": [
+    "result"
+   ]
+  },
+  "2d74802f": {
+   "expected_cell": "48686657",
+   "frames": [
+    "result"
+   ]
+  },
+  "84d019de": {
+   "expected_cell": "184a4405",
+   "frames": [
+    "missing",
+    "extra"
+   ]
+  },
+  "e56059f1": {
+   "expected_cell": "4f0a6867",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

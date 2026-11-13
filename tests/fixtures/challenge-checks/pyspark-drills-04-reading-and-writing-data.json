@@ -1,0 +1,60 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-04-reading-and-writing-data.ipynb",
+ "solutions": {
+  "61cfa6d4": {
+   "fingerprint": "37f569af778eb496ab38c31bf60e9f99b2ad7f141fc48760e0caa64be2096b70",
+   "blocks": []
+  },
+  "b3451c9d": {
+   "fingerprint": "ceeade35219afd526aadb04f052c0f9c0df21514125c0a3172fa7cb7771a02cc",
+   "blocks": []
+  },
+  "67e7dee7": {
+   "fingerprint": "91faf7d98d51e6786953ba71c858bcc847ba31341c199ee8cf88aa9977174a9a",
+   "blocks": []
+  },
+  "c6e2d2af": {
+   "fingerprint": "875baafe23d88511b5ad362ccdac2dd774137f4e3b2e320ef1a426f62a1cca5e",
+   "blocks": []
+  },
+  "c63a69c4": {
+   "fingerprint": "0374c180032eb49c0f4266f0b5c23d950d840253e76c17ff2bf9832ee3a686b2",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "61cfa6d4": {
+   "expected_cell": "898377e8",
+   "frames": [
+    "result"
+   ]
+  },
+  "b3451c9d": {
+   "expected_cell": "1287795b",
+   "frames": [
+    "valid",
+    "corrupt"
+   ]
+  },
+  "67e7dee7": {
+   "expected_cell": "de8cb916",
+   "frames": [
+    "result"
+   ]
+  },
+  "c6e2d2af": {
+   "expected_cell": "9ead52ac",
+   "frames": [
+    "result"
+   ]
+  },
+  "c63a69c4": {
+   "expected_cell": "3c26ff82",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

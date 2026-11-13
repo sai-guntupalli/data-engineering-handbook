@@ -86,7 +86,7 @@ Every notebook lives in the folder of the tool it teaches, under `notebooks/topi
 | `python/learning/` | Python lessons from values and types to data-engineering patterns |
 | `python/practice/` | Python drills, coding challenges and interview basics |
 | `sql/` | SQL lessons from SELECT to window functions, interview drills and a reference |
-| `pyspark/` | PySpark overview, eight PySpark modules, Spark tuning and PySpark interview practice |
+| `pyspark/` | A 16-lesson PySpark course with drills, coding challenges, an end-to-end capstone and a reference |
 | `interview-questions/` | Questions across Python, SQL and Spark, with model answers and runnable checks |
 | `concepts/` | Data concepts that apply to any stack: modeling, quality, governance, CDC, cost and design |
 | `llm/` | Terminology and data-engineering ideas for language models |
