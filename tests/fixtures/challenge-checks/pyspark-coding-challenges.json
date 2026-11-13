@@ -11,7 +11,7 @@
    ]
   },
   "89996ee3": {
-   "fingerprint": "b4f3733b6dfdfc05ebc9310d71753ce1c46050c4a54f47854103d54d7a91c316",
+   "fingerprint": "0c92ffa09b50cf106d6a17ea44ffe57e82402e9bd3b6aa613b50ec486662462a",
    "blocks": [
     {
      "after_statement": 3,
@@ -62,7 +62,7 @@
    ]
   },
   "2295939e": {
-   "fingerprint": "f24afa373d22cac00861c18d59a4815d15ca8e41ddd9ce2933aa37d92741f474",
+   "fingerprint": "3096a6e416332461ce1c48085749c35f3246c4e676b37107a73327f62917c528",
    "blocks": [
     {
      "after_statement": 2,
@@ -75,7 +75,7 @@
    ]
   },
   "7f9ad9be": {
-   "fingerprint": "177eaeba243e4892d6d960e4d1aa41eaed0254fdaaa535c5ab73fc61e9a9e886",
+   "fingerprint": "e8a66de9c2bb4dcd103b08c8eb01a7b172decf8b1fa587cc0c126cc5672ee0e2",
    "blocks": [
     {
      "after_statement": 2,
@@ -92,7 +92,7 @@
    ]
   },
   "3b4d64b4": {
-   "fingerprint": "c84316ef18d152cb4f24f0fc76fce9fdb911ad257d8fcec4d0dd2836a8d357fd",
+   "fingerprint": "d55ae23b8338a87e2ec3fcd4c7231c21849bbe755074109374a880afd3686136",
    "blocks": [
     {
      "after_statement": 3,
@@ -105,7 +105,7 @@
    ]
   },
   "6c07a794": {
-   "fingerprint": "d237dc32f5ee1486afa5c6025fe7ab2ef57a8e16698b96ebe0e077cddc7c8466",
+   "fingerprint": "a99c9610875f31e7af0d7f495d1ee59da688836a040cb4c6a92503eaf2386e77",
    "blocks": [
     {
      "after_statement": 3,
@@ -126,7 +126,7 @@
    ]
   },
   "6a595279": {
-   "fingerprint": "6abc45a5ec9229b8296209bc4bcc4f9be4cc3dbb4b562871548c9d98ed351ba2",
+   "fingerprint": "3b291570fc8622099a571418828337f9fde2ad3b25e08f174cf669ef2ec39ee3",
    "blocks": [
     {
      "after_statement": 5,
@@ -139,7 +139,7 @@
    ]
   },
   "daf9b269": {
-   "fingerprint": "0b35cabeff8bbb715a6d2ce35d8f8dac344076fbd1d5da6d16c5e305edb0b15e",
+   "fingerprint": "93ae6b350c6cab3eaf75d6012b3dcf1414a5a4605cb4d562eeeb8c6a51d26d4d",
    "blocks": [
     {
      "after_statement": 4,
@@ -210,7 +210,7 @@
    ]
   },
   "82b5e803": {
-   "fingerprint": "a4998fbebd44f36c3ff6f2b17cb42014bcccc20a27ef32e9e8c916cc155d479c",
+   "fingerprint": "9e53c12467d68d0f8674aaca9fc1fe80f26b23e98a28c004cd12b77c39c819b7",
    "blocks": [
     {
      "after_statement": 4,
@@ -257,7 +257,7 @@
    ]
   },
   "666f2692": {
-   "fingerprint": "37d17d45a4fa59812254b952860c99d3867804a7c5522e4d61c8591b75b8da8d",
+   "fingerprint": "853ddf0733d55af49d103cc7d0bd39f359804ca361737e3ece6af660869e7061",
    "blocks": [
     {
      "after_statement": 1,
@@ -294,7 +294,7 @@
    ]
   },
   "2111ad80": {
-   "fingerprint": "2a8b208c6c5ca1d59b7e5b4ed33502cb7929bdda0d3700d05c95be1ad1c0fdcd",
+   "fingerprint": "88d340ab62bb9cb8cb9270ef4b40fba27c02e35d582deebbcec1e28c28624ff7",
    "blocks": [
     {
      "after_statement": 6,
@@ -331,7 +331,7 @@
    ]
   },
   "c8d11a1a": {
-   "fingerprint": "b3b18f7c59665e4399741ade222d3f116c4b2c9d1e1e3bcb2478faa06b4f7546",
+   "fingerprint": "25e36140d72332492bc905be10e09c7918bb5ee88d871de760bf9f53fab18ca5",
    "blocks": [
     {
      "after_statement": 11,
@@ -361,7 +361,7 @@
    ]
   },
   "2c8115e6": {
-   "fingerprint": "0c1aad3135021ea82bafcd5e4b7799be362e2bee9d983564d8fe4afdf3d87e07",
+   "fingerprint": "c72eab2ab5171f7ff88efe59e91c68ade33c88791aadce3384127be12f85e56e",
    "blocks": [
     {
      "after_statement": 9,
@@ -378,7 +378,7 @@
    ]
   },
   "ab0a889e": {
-   "fingerprint": "d0cc791ce4be5f7555491ae2aefdf0d79f0dd9b503678e5f8c366f5b793e6cc7",
+   "fingerprint": "6203d2744582b5b88b4ca8f542fbfc7a1939d24d67cdbb799aec1f428de47623",
    "blocks": [
     {
      "after_statement": 1,
@@ -386,17 +386,8 @@
     }
    ]
   },
-  "96df7f24": {
-   "fingerprint": "01bdc5fab307b5f57c05027d3e54167c60453bad1af906b672ae8add6630e8b2",
-   "blocks": [
-    {
-     "after_statement": 1,
-     "source": "assert [tuple(r) for r in result.orderBy('team').collect()] == [('A', 3, 2, 15.0), ('B', 1, 0, None)]"
-    }
-   ]
-  },
   "29f5a737": {
-   "fingerprint": "07fb79656a2b4c5fdc695b1e8561a7a60f8c4c3133a139e8c478bb6236c52071",
+   "fingerprint": "9aec51107db8f30b1d3c8b1a4abc61f0e498508495f293ece4dc4970deb86347",
    "blocks": [
     {
      "after_statement": 1,
@@ -405,7 +396,7 @@
    ]
   },
   "2ad19738": {
-   "fingerprint": "b316d22eddaf3f096c88f0e7aa9fb4180b9892b75120b5b7475fc739aa387e17",
+   "fingerprint": "bd53e0ca423dedc5382a8447ded369f1bea258b0c585d728460724837ce314d9",
    "blocks": [
     {
      "after_statement": 1,
@@ -414,7 +405,7 @@
    ]
   },
   "1205bc99": {
-   "fingerprint": "02d9462cd4b3dbc090c634c37b30834bd91f368aaa9b541c44c6115b40edde74",
+   "fingerprint": "cf4ec9ed97b0424a12370fcedb27204cfd7d2bbe47d488dca12de420f6b9e3c0",
    "blocks": [
     {
      "after_statement": 1,
@@ -423,7 +414,7 @@
    ]
   },
   "789b1da0": {
-   "fingerprint": "5626fd8a529fc612a845ca6fb0c695f8c6cc8fb244e89ae6d5452579f1a2f6f3",
+   "fingerprint": "4a447422debe39cdbb2066b9d2b9e921ad5ad37832afc8d7b1639fb52a2f4483",
    "blocks": [
     {
      "after_statement": 2,
@@ -432,7 +423,7 @@
    ]
   },
   "c2882fdc": {
-   "fingerprint": "900d561a5694f255d85e833d86c7f3c00b6a15954db25fe9946e5dddb1eed5bc",
+   "fingerprint": "252fbc26d28d2427836f0cc825b0b286bce3f4de7bf77333fc0192d23aae4be5",
    "blocks": [
     {
      "after_statement": 2,
@@ -441,7 +432,7 @@
    ]
   },
   "0fa36c62": {
-   "fingerprint": "f89ed7c0259b81632bb97377d374a5c1929025fa733bf5d96f8acad17059d644",
+   "fingerprint": "f5fe6c046497cde350a346d88f425082696bd5feda1e75991d496fdf71514e26",
    "blocks": [
     {
      "after_statement": 2,
@@ -449,21 +440,64 @@
     }
    ]
   },
-  "164e17fa": {
-   "fingerprint": "ac7d54cf83e54cafe91db25b9343a40c3c7fce3457929d8ee256cb74b402467b",
-   "blocks": [
-    {
-     "after_statement": 1,
-     "source": "assert [tuple(r) for r in result.orderBy('customer_id', 'tag').collect()] == [(1, 'spark'), (1, 'sql'), (2, None), (3, None)]"
-    }
-   ]
-  },
   "cf311f3d": {
-   "fingerprint": "010498a25243fd6e387c5110cef354e47523e12443d48122201a46e36b4a71f7",
+   "fingerprint": "5793c5b4a4ea31116ca7bceb9c6ea6fb14489c671c92887b1911a58e3db53301",
    "blocks": [
     {
      "after_statement": 1,
      "source": "assert [tuple(r) for r in result.orderBy('id').collect()] == [(1, 10, None), (2, 20, 'web')]"
+    }
+   ]
+  },
+  "d8338628": {
+   "fingerprint": "64933f77a2a86ae8152b807bf23a0928df60f716f9566157b5d314f2fea3dc1b",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert result.count() == 4"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert [str(r.sale_date) for r in result.where('is_filled').collect()] == ['2026-01-02']"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert result.agg(F.sum('revenue')).first()[0] == 220.0"
+    }
+   ]
+  },
+  "fa7a3637": {
+   "fingerprint": "056b0ae5e610ef7adb8bfbf580a98eb15dcfe5bd0e8f33e6f81a477cc6eb14a1",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "assert {r.region: (r.median_minutes, r.p90_minutes) for r in result.collect()} == {'north': (25.0, 40), 'south': (15.0, 100)}"
+    }
+   ]
+  },
+  "450f89bd": {
+   "fingerprint": "b81bdde23d98b17396363eeb04ec80e78724590b26bf9fa009a190b128620263",
+   "blocks": [
+    {
+     "after_statement": 5,
+     "source": "assert result.count() == webhooks.count()  # no event lost or multiplied"
+    },
+    {
+     "after_statement": 5,
+     "source": "assert [r.event_id for r in result.where('not is_valid').collect()] == ['w4']"
+    }
+   ]
+  },
+  "65f305c8": {
+   "fingerprint": "c700954a6fd7234b1f8d5e541caf1c2b9e88e99c98464a633abd8da1c9fd29d3",
+   "blocks": [
+    {
+     "after_statement": 7,
+     "source": "assert days.count() == 8  # the duplicate login collapsed"
+    },
+    {
+     "after_statement": 7,
+     "source": "assert [(r.user_id, r.longest_streak) for r in result.collect()] == [('u1', 3), ('u2', 1), ('u3', 1)]"
     }
    ]
   }
@@ -627,12 +661,6 @@
     "result.orderBy('id')"
    ]
   },
-  "96df7f24": {
-   "expected_cell": "dcb708a6",
-   "frames": [
-    "result.orderBy('team')"
-   ]
-  },
   "29f5a737": {
    "expected_cell": "543bb822",
    "frames": [
@@ -669,16 +697,34 @@
     "result.orderBy('account', 'tx_id')"
    ]
   },
-  "164e17fa": {
-   "expected_cell": "35f4a1d8",
-   "frames": [
-    "result.orderBy('customer_id', 'tag')"
-   ]
-  },
   "cf311f3d": {
    "expected_cell": "6fd198ac",
    "frames": [
     "result.orderBy('id')"
+   ]
+  },
+  "d8338628": {
+   "expected_cell": "f5b730e8",
+   "frames": [
+    "result"
+   ]
+  },
+  "fa7a3637": {
+   "expected_cell": "63d6c688",
+   "frames": [
+    "result"
+   ]
+  },
+  "450f89bd": {
+   "expected_cell": "40e98ea6",
+   "frames": [
+    "result"
+   ]
+  },
+  "65f305c8": {
+   "expected_cell": "15c46a2c",
+   "frames": [
+    "result"
    ]
   }
  },
