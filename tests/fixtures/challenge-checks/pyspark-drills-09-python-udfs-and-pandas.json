@@ -1,0 +1,59 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-09-python-udfs-and-pandas.ipynb",
+ "solutions": {
+  "e005c6f0": {
+   "fingerprint": "269e596f5af82f706248a039261908b23df7a661c75ad172858855928839b6a7",
+   "blocks": []
+  },
+  "86d00416": {
+   "fingerprint": "0889c88c3f3d13576cafb3e035f5cc47d731b914f4c59503293cbf2e41a941da",
+   "blocks": []
+  },
+  "148fd0e7": {
+   "fingerprint": "45d0ea7224b256dcccbf6f2f543c3da70393a991e7b280aad17bc234b426ff11",
+   "blocks": []
+  },
+  "4ce66c9b": {
+   "fingerprint": "c92579b34cbfdee7d316a677bd9ed22462514e9633599505b45d517c70aa61f1",
+   "blocks": []
+  },
+  "4e47af98": {
+   "fingerprint": "b6dff57e1898869da76c91452b60eceea83341998705120c376eea223172edec",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "e005c6f0": {
+   "expected_cell": "79955eeb",
+   "frames": [
+    "result"
+   ]
+  },
+  "86d00416": {
+   "expected_cell": "3f9e5c82",
+   "frames": [
+    "result"
+   ]
+  },
+  "148fd0e7": {
+   "expected_cell": "af0a6dd5",
+   "frames": [
+    "result"
+   ]
+  },
+  "4ce66c9b": {
+   "expected_cell": "5b4489d4",
+   "frames": [
+    "result"
+   ]
+  },
+  "4e47af98": {
+   "expected_cell": "4422fcaf",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

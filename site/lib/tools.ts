@@ -77,7 +77,6 @@ const CATEGORY_ORDER: NotebookCategory[] = ["lesson", "reference", "drill", "cha
 /** Notebooks whose file name does not say their category. */
 const CATEGORY_OVERRIDES: Record<string, NotebookCategory> = {
   "pyspark-concepts-end-to-end": "reference",
-  "pyspark-08-real-world-and-interviews": "lesson",
 };
 
 export function categoryOf(slug: string): NotebookCategory {
