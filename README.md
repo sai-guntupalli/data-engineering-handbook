@@ -88,7 +88,8 @@ Every notebook lives in the folder of the tool it teaches, under `notebooks/topi
 | `sql/` | SQL lessons from SELECT to window functions, interview drills and a reference |
 | `pyspark/` | A 16-lesson PySpark course with drills, coding challenges, an end-to-end capstone and a reference |
 | `interview-questions/` | Questions across Python, SQL and Spark, with model answers and runnable checks |
-| `concepts/` | Data concepts that apply to any stack: modeling, quality, governance, CDC, cost and design |
+| `data-modeling/` | An 11-lesson data modeling course on DuckDB: grain, star schemas, SCDs, Data Vault, loading, physical design and tests, with drills and a reference |
+| `concepts/` | Data concepts that apply to any stack: quality, governance, CDC, cost and design |
 | `llm/` | Terminology and data-engineering ideas for language models |
 | One folder per tool | Airflow, Avro, AWS, Azure, BigQuery, Bigtable, Cassandra, ClickHouse, Databricks, dbt, Delta Lake, Docker, DynamoDB, Elasticsearch, Flink, Flume, Google Cloud, Greenplum, Hadoop, HBase, Hive, Hudi, Iceberg, Impala, Kafka, Kubernetes, Looker, MongoDB, NiFi, Parquet, Redis, Redshift, Scala, Snowflake, Superset, Tableau and Trino |
 
