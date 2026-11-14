@@ -1,0 +1,89 @@
+{
+ "notebook": "notebooks/topics/data-modeling/data-modeling-drills.ipynb",
+ "solutions": {
+  "3a2d80db": {
+   "fingerprint": "05af8bcba4d09544e565050f2cd7cdc116901efbc4c068d166a5160ad36b4d79",
+   "blocks": []
+  },
+  "b5758d18": {
+   "fingerprint": "d0bcf3239ec623c1a4a7ef2eb086f98b8113892dceb5aa2fc88d34540c36170f",
+   "blocks": []
+  },
+  "dcbda192": {
+   "fingerprint": "e62b4f48c074f4a61f6d7fa14fbbad1e3b9f54750fceac963e7276931c05f01d",
+   "blocks": []
+  },
+  "370fe892": {
+   "fingerprint": "540f6ee5f76abee6ec5c6503ad218b509e896ccc2b6aeb8394ebd81538b09d9b",
+   "blocks": []
+  },
+  "33b19202": {
+   "fingerprint": "bde93a076b5df1c2d604f2633e2d8bb4b7fdfac704eee736653d2fe0c44e28b8",
+   "blocks": []
+  },
+  "bfa8df26": {
+   "fingerprint": "bbdf8ef429ae91e34c9bfdea66d4bdb51e151e8ec6acc15ce39034ee5303b5a6",
+   "blocks": []
+  },
+  "cba1af6a": {
+   "fingerprint": "27170fade35061b4b68d364bbd2cb3a3f74f913405ee14a698b8aa16137f4f72",
+   "blocks": []
+  },
+  "54cff74d": {
+   "fingerprint": "5bb9c7113684419b9028d2e071b3fa259b122ff619f5e2d7ea9e8f5e8a735031",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "3a2d80db": {
+   "expected_cell": "1713cb48",
+   "frames": [
+    "result"
+   ]
+  },
+  "b5758d18": {
+   "expected_cell": "59e3311f",
+   "frames": [
+    "result"
+   ]
+  },
+  "dcbda192": {
+   "expected_cell": "747e0974",
+   "frames": [
+    "result"
+   ]
+  },
+  "370fe892": {
+   "expected_cell": "4945abde",
+   "frames": [
+    "result"
+   ]
+  },
+  "33b19202": {
+   "expected_cell": "5c3c2f98",
+   "frames": [
+    "result"
+   ]
+  },
+  "bfa8df26": {
+   "expected_cell": "5fc64f8d",
+   "frames": [
+    "result"
+   ]
+  },
+  "cba1af6a": {
+   "expected_cell": "7d0f67ae",
+   "frames": [
+    "result"
+   ]
+  },
+  "54cff74d": {
+   "expected_cell": "5b1f5be4",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

@@ -1,4 +1,4 @@
-"""Verify current SQL/PySpark answers and their published sample-output tables.
+"""Verify current SQL, PySpark and DuckDB answers and their published sample-output tables.
 
 Regression statements are restored only in temporary notebook copies. Source notebooks
 contain questions, sample data, exercise cells and hidden reference implementations.
@@ -109,7 +109,8 @@ def verified_notebook(fixture):
         + inspect.getsource(compare_table)
         + "\n_challenge_outputs = {}\n"
         + "def _frame_data(frame):\n"
-        + "    return {'columns': frame.columns, 'rows': [list(row) for row in frame.collect()]}\n"
+        + "    rows = frame.collect() if hasattr(frame, 'collect') else frame.fetchall()  # Spark or DuckDB\n"
+        + "    return {'columns': list(frame.columns), 'rows': [list(row) for row in rows]}\n"
         + "def _capture_sql(cell_id, query):\n"
         + "    _challenge_outputs.setdefault(cell_id, []).append(_frame_data(spark.sql(query)))\n"
         + "\n".join(fixture["helpers"])
@@ -145,7 +146,7 @@ def verified_notebook(fixture):
         cells.append(cell)
         if cell.cell_type == "code" and cell.source.startswith("# Setup:"):
             cells.append(nbformat.v4.new_code_cell(helpers))
-    cells.append(nbformat.v4.new_code_cell("spark.stop()"))
+    cells.append(nbformat.v4.new_code_cell("if 'spark' in globals():\n    spark.stop()"))
     notebook.cells = cells
     return path, notebook
 

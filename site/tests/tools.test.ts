@@ -19,6 +19,8 @@ describe("notebook categories", () => {
     expect(categoryOf("pyspark-15-interview-concepts")).toBe("interview");
     expect(categoryOf("pyspark-drills-02-dataframe-essentials")).toBe("drill");
     expect(categoryOf("pyspark-reference")).toBe("reference");
+    expect(categoryOf("data-modeling-drills")).toBe("drill");
+    expect(categoryOf("data-modeling-reference")).toBe("reference");
     expect(categoryOf("sql-reference")).toBe("reference");
     expect(categoryOf("pyspark-concepts-end-to-end")).toBe("reference");
   });

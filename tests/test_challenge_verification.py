@@ -87,4 +87,18 @@ def test_all_published_answers_have_hidden_tags_and_matching_regression_recipes(
         notebook_path, notebook = verifier.verified_notebook(fixture)
         assert notebook_path.exists()
         assert len(fixture["solutions"]) == len(fixture["examples"])
-        assert notebook.cells[-1].source == "spark.stop()"
+        assert notebook.cells[-1].source == "if 'spark' in globals():\n    spark.stop()"
+
+
+def test_frame_data_reads_spark_style_and_duckdb_results():
+    import json
+
+    import duckdb
+
+    fixture = json.loads((verifier.FIXTURES / "data-modeling-drills.json").read_text())
+    _, notebook = verifier.verified_notebook(fixture)
+    helpers = next(c.source for c in notebook.cells if c.source.startswith("from decimal import"))
+    namespace = {}
+    exec(helpers, namespace)
+    relation = duckdb.connect().sql("select 1 as a, 'x' as b union all select 2, null")
+    assert namespace["_frame_data"](relation) == {"columns": ["a", "b"], "rows": [[1, "x"], [2, None]]}

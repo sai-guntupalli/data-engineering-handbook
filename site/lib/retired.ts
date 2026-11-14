@@ -20,9 +20,16 @@ export const RETIRED_NOTEBOOKS: RetiredNotebook[] = [
   {
     slug: "data-warehousing",
     repoPath: "notebooks/topics/concepts/data-warehousing.ipynb",
-    movedTo: "data-modeling",
-    movedToPath: "notebooks/topics/concepts/data-modeling.ipynb",
-    note: "Data warehousing architecture is now part of Data modeling and warehousing.",
+    movedTo: "data-modeling-06-warehouse-architectures",
+    movedToPath: "notebooks/topics/data-modeling/data-modeling-06-warehouse-architectures.ipynb",
+    note: "Data warehousing architecture is now Data modeling 6: warehouse architectures.",
+  },
+  {
+    slug: "data-modeling",
+    repoPath: "notebooks/topics/concepts/data-modeling.ipynb",
+    movedTo: "data-modeling-00-start-here",
+    movedToPath: "notebooks/topics/data-modeling/data-modeling-00-start-here.ipynb",
+    note: "Data modeling and warehousing is now its own section of eleven lessons, drills and a reference; start with Data modeling 0.",
   },
   {
     slug: "pyspark-tuning",
