@@ -66,7 +66,14 @@ def cell_source(cell: dict) -> str:
 def _kept_cell_metadata(cell: dict) -> dict:
     """Cell tags survive formatting: the `solution` tag is what hides an answer on the site."""
     tags = cell.get("metadata", {}).get("tags")
-    return {"tags": list(tags)} if tags else {}
+    metadata = {"tags": list(tags)} if tags else {}
+    if cell.get("cell_type") == "code" and tags and "solution" in tags:
+        original = cell["metadata"]
+        if original.get("jupyter", {}).get("source_hidden") is True:
+            metadata["jupyter"] = {"source_hidden": True}
+        if original.get("cellView") == "form":
+            metadata["cellView"] = "form"
+    return metadata
 
 
 def _format_opening_cell(text: str, relpath: str) -> str:

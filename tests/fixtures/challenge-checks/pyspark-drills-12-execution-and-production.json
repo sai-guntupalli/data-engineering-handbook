@@ -1,0 +1,49 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-drills-12-execution-and-production.ipynb",
+ "solutions": {
+  "drill-12-1-solution": {
+   "fingerprint": "0ac0e7eef0eec38cfe49079e9bc5c849e7e5d717306c724cdeb67090c11d195e",
+   "blocks": []
+  },
+  "drill-12-2-solution": {
+   "fingerprint": "9d33850c8ce1382e2d2d46b1b92a0ee1616b9c9f034bfaa46b2e9c686e963ad4",
+   "blocks": []
+  },
+  "drill-12-3-solution": {
+   "fingerprint": "9a4b7e3d9d6c089359e4e6a497ac8fec2f00fabf072dc24edeb3aff16dad53bb",
+   "blocks": []
+  },
+  "drill-12-4-solution": {
+   "fingerprint": "5a55b8840691f378191b13ed40234cf9eef7ab31aff07c3e3f44ebf00bea37e1",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "drill-12-1-solution": {
+   "expected_cell": "drill-12-1-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-12-2-solution": {
+   "expected_cell": "drill-12-2-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-12-3-solution": {
+   "expected_cell": "drill-12-3-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-12-4-solution": {
+   "expected_cell": "drill-12-4-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

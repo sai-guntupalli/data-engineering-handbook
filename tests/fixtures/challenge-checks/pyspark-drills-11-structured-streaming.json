@@ -21,6 +21,10 @@
   "0810c001": {
    "fingerprint": "baf096dc6df63e137804ed964ab4e8d9809a8602ebd6afbfa6092925ea8c8e97",
    "blocks": []
+  },
+  "drill-11-5-solution": {
+   "fingerprint": "eb78181ed96555de2f1f87e93d2a4b230608e839bc9c0b75a7e2e571bcfb2df8",
+   "blocks": []
   }
  },
  "removed_cells": [],
@@ -45,6 +49,12 @@
   },
   "0810c001": {
    "expected_cell": "6a3d1440",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-11-5-solution": {
+   "expected_cell": "drill-11-5-expected",
    "frames": [
     "result"
    ]
