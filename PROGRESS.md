@@ -5,17 +5,24 @@
 - Reviewed `concepts/data-modeling.ipynb` (85 cells). It covered the vocabulary broadly but as an interview FAQ in one
   notebook: an old 40-line setup cell, no teaching outputs (examples asserted their answers), and "exercises" that were
   cost and storage arithmetic rather than modeling practice. Replaced it with a `data-modeling/` section.
-- Eleven lessons on DuckDB 2.0, all built on one online shop's source extracts (customers, CRM change log, products,
-  orders, lines, payments, promotions): start here; grain, facts and dimensions; star schema design; slowly changing
-  dimensions; relationships and double counting; normalized and operational models; warehouse architectures
-  (layers, Data Vault, wide tables); loading and late data; physical design (partition pruning and row-group
-  skipping measured with `explain analyze`); testing, metrics and change; interview case studies.
+- Eleven lessons on PySpark 4.0 with Delta Lake 4.0 (`delta-spark`, added to `pyproject.toml`), all built on one
+  online shop's source extracts loaded as Delta tables (customers, CRM change log, products, orders, lines,
+  payments, promotions): start here; grain, facts and dimensions; star schema design; slowly changing dimensions;
+  relationships and double counting; normalized and operational models; warehouse architectures (layers, Data
+  Vault, wide tables); loading and late data; physical design; testing, metrics and change; interview case studies.
+- Delta does the warehouse work: the Type 2 load is one atomic `merge` (Delta has no multi-statement transactions),
+  table history and time travel show what each load changed, `check`/`not null` constraints reject bad rows while
+  missing key enforcement is shown and tested, the change data feed and `replaceWhere` drive incremental loads,
+  `restore` rolls back a bad load, and schema enforcement guards model changes. Physical design measures file
+  pruning with `inputFiles()` and per-file statistics from the Delta log. Spark 4.0 lacks `qualify`, recursive CTEs
+  and SQL sequences, so the lessons use subqueries, a level-by-level loop and `row_number()` offsets instead.
+  An earlier draft of this section used DuckDB; it was ported at review.
 - Each topic explains how it works, where it matters and what to watch out for, then runs an example whose output the
   "What to notice" note was checked against. No learner-facing asserts; quality gates raise `ValueError`.
 - `data-modeling-drills` has 8 exercises with sample input, expected output and hidden answers, checked by
   `make verify-challenges` (fixture `tests/fixtures/challenge-checks/data-modeling-drills.json`).
-  `scripts/verify_challenge_answers.py` now reads DuckDB relations as well as Spark DataFrames and only stops Spark
-  when a session exists. `data-modeling-reference` lists the vocabulary, decisions and runnable SQL patterns.
+  `scripts/verify_challenge_answers.py` now also reads DuckDB relations and only stops Spark when a session
+  exists. `data-modeling-reference` lists the vocabulary, decisions and runnable SQL patterns.
 - Retired `concepts/data-modeling` (redirects to lesson 0); the old `data-warehousing` redirect now points at lesson
   6. Added the `data-modeling` tool, put the eleven lessons in the learning map's modeling step, linked SQL 11 to the
   section, and updated README and CONTRIBUTING.
