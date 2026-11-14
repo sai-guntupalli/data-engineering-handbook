@@ -88,6 +88,10 @@ def third_party_imports(source: str) -> set[str]:
     return {name for name in modules if name not in sys.stdlib_module_names}
 
 
+# pip packages whose import name is not the package name with "-" replaced by "_"
+IMPORT_NAMES = {"delta_spark": "delta"}
+
+
 def pip_installed_imports(code_cells: list[str]) -> set[str]:
     """Import names of packages named in ``!pip install`` lines (``!pip install -q pyspark`` -> pyspark)."""
     names: set[str] = set()
@@ -95,7 +99,8 @@ def pip_installed_imports(code_cells: list[str]) -> set[str]:
         for line in PIP_INSTALL_RE.findall(source):
             for token in line.split()[2:]:
                 if not token.startswith("-"):
-                    names.add(re.split(r"[<>=!~\[]", token)[0].replace("-", "_"))
+                    name = re.split(r"[<>=!~\[]", token)[0].replace("-", "_")
+                    names.add(IMPORT_NAMES.get(name, name))
     return names
 
 

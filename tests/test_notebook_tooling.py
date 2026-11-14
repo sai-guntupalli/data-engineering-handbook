@@ -182,6 +182,17 @@ class TestPipInstallLines:
         errors, _ = audit_notebooks.audit(path)
         assert any("duckdb" in error for error in errors), errors
 
+    def test_package_with_a_different_import_name_declares_that_import(self, tmp_path, monkeypatch):
+        path = write_formatted(
+            tmp_path,
+            monkeypatch,
+            md("# T"),
+            code("!pip install -q delta-spark~=4.0.0"),
+            code("from delta import configure_spark_with_delta_pip"),
+        )
+        errors, _ = audit_notebooks.audit(path)
+        assert errors == []
+
 
 class TestTrimOutputs:
     @staticmethod

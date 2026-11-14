@@ -27,8 +27,9 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
   data in a cell or two. Create only the tables the notebook uses, and keep configuration to what the lessons need,
   with a comment on any setting that is not a default.
 - **No live systems.** Never connect to `localhost`, a cloud endpoint, or use credentials. Use in-process
-  stand-ins: DuckDB for warehouse SQL, PySpark local mode, `deltalake`, `pyiceberg` (SQLite catalog), `fakeredis`,
-  `mongomock`, `moto`, or a small pure-Python simulation.
+  stand-ins: DuckDB for warehouse SQL, PySpark local mode, `delta-spark` for Delta tables inside Spark (its jars
+  download from Maven when the session starts), `deltalake`, `pyiceberg` (SQLite catalog), `fakeredis`, `mongomock`,
+  `moto`, or a small pure-Python simulation.
 - **Platform-only code goes in markdown.** YAML, shell, Scala, k8s manifests, or SQL dialects DuckDB cannot run
   belong in a fenced block in a markdown cell, not in a code cell.
 - **Lean prose.** One `# Title` (first cell), then `##` sections and `###` subsections without skipping levels.

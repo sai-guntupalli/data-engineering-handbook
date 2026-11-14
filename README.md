@@ -72,7 +72,7 @@ individual concepts; the capstone links back to them.
 | **Locally** | `make install`, then `uv run --extra notebooks jupyter lab notebooks/` |
 
 No notebook talks to a real server or cloud account. External systems are replaced with in-process stand-ins:
-DuckDB for warehouse SQL (BigQuery, Snowflake, Redshift, Trino, Hive...), PySpark SQL and local mode (the SQL learning path), `deltalake`,
+DuckDB for warehouse SQL (BigQuery, Snowflake, Redshift, Trino, Hive...), PySpark SQL and local mode (the SQL learning path), `delta-spark` (Delta Lake inside PySpark, for data modeling), `deltalake`,
 `pyiceberg` with a SQLite catalog, `fakeredis`, `mongomock`, `moto` for AWS, and small pure-Python simulations
 for Kafka, Flink, Airflow, Cassandra, HBase and friends. Platform-only snippets (YAML, Scala, cloud SDK calls)
 are shown in markdown code blocks.
@@ -88,7 +88,7 @@ Every notebook lives in the folder of the tool it teaches, under `notebooks/topi
 | `sql/` | SQL lessons from SELECT to window functions, interview drills and a reference |
 | `pyspark/` | A 16-lesson PySpark course with drills, coding challenges, an end-to-end capstone and a reference |
 | `interview-questions/` | Questions across Python, SQL and Spark, with model answers and runnable checks |
-| `data-modeling/` | An 11-lesson data modeling course on DuckDB: grain, star schemas, SCDs, Data Vault, loading, physical design and tests, with drills and a reference |
+| `data-modeling/` | An 11-lesson data modeling course on PySpark and Delta Lake: grain, star schemas, SCDs, Data Vault, loading, physical design and tests, with drills and a reference |
 | `concepts/` | Data concepts that apply to any stack: quality, governance, CDC, cost and design |
 | `llm/` | Terminology and data-engineering ideas for language models |
 | One folder per tool | Airflow, Avro, AWS, Azure, BigQuery, Bigtable, Cassandra, ClickHouse, Databricks, dbt, Delta Lake, Docker, DynamoDB, Elasticsearch, Flink, Flume, Google Cloud, Greenplum, Hadoop, HBase, Hive, Hudi, Iceberg, Impala, Kafka, Kubernetes, Looker, MongoDB, NiFi, Parquet, Redis, Redshift, Scala, Snowflake, Superset, Tableau and Trino |
