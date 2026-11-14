@@ -73,6 +73,12 @@ class TestFormatNotebook:
         result = notebook_format.format_notebook(notebook(md("# T"), tagged), RELPATH)
         assert result["cells"][1]["metadata"] == {"tags": ["solution"]}
 
+    def test_solution_source_collapse_survives_formatting(self):
+        metadata = {"tags": ["solution"], "jupyter": {"source_hidden": True}, "cellView": "form"}
+        answer = code("result = 42", metadata=metadata)
+        result = notebook_format.format_notebook(notebook(md("# T"), answer), RELPATH)
+        assert result["cells"][1]["metadata"] == metadata
+
     def test_ids_are_stable_unique_and_existing_ones_kept(self):
         nb = notebook(md("# T"), code("a = 1", id="keepme"), code("b = 2", id="keepme"))
         first = notebook_format.format_notebook(nb, RELPATH)

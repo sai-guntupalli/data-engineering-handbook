@@ -25,6 +25,14 @@
   "a9ba84ab": {
    "fingerprint": "e3266f0ff32f4ffe2e382680b8d2997921db78e7542f2563754288251ea3eb89",
    "blocks": []
+  },
+  "drill-10-6-solution": {
+   "fingerprint": "937409a4d4d95b3e01803d2948232a99c1d1e9189b8748885aa0112dc944a4a8",
+   "blocks": []
+  },
+  "drill-10-7-solution": {
+   "fingerprint": "716a52cbd71e6edaf4a24aa0231d252f991b0873acb9bb09cd6ab09c71d5e454",
+   "blocks": []
   }
  },
  "removed_cells": [],
@@ -56,6 +64,18 @@
   },
   "a9ba84ab": {
    "expected_cell": "e6fd1bf1",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-10-6-solution": {
+   "expected_cell": "drill-10-6-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-10-7-solution": {
+   "expected_cell": "drill-10-7-expected",
    "frames": [
     "result"
    ]

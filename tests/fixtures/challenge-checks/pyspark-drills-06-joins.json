@@ -30,6 +30,10 @@
      "source": "assert result.count() == orders.where('customer_id IN (1, 2, 3)').count()"
     }
    ]
+  },
+  "drill-06-6-solution": {
+   "fingerprint": "417b648d0a73f921705f732e20e78dfa7e1c8ef8cce66f1f3095af624df863be",
+   "blocks": []
   }
  },
  "removed_cells": [],
@@ -60,6 +64,12 @@
   },
   "3433242d": {
    "expected_cell": "76e8e97f",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-06-6-solution": {
+   "expected_cell": "drill-06-6-expected",
    "frames": [
     "result"
    ]

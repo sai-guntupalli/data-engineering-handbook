@@ -20,6 +20,10 @@
   "eb28a602": {
    "fingerprint": "70dbef8b3e58a28f68202e921001ea6477edadf8f8348e8ce9cba320a0f65262",
    "blocks": []
+  },
+  "drill-05-6-solution": {
+   "fingerprint": "f9c6cf9b83b39fa16a81432db41d8b6143b704a0e772d9ca10401d280320570e",
+   "blocks": []
   }
  },
  "removed_cells": [],
@@ -50,6 +54,12 @@
   },
   "eb28a602": {
    "expected_cell": "66771597",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-05-6-solution": {
+   "expected_cell": "drill-05-6-expected",
    "frames": [
     "result"
    ]
