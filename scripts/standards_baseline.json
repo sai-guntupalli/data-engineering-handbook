@@ -1,0 +1,724 @@
+{
+  "notebooks/topics/airflow/airflow.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/avro/avro.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/aws/aws.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/azure/azure.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/bigquery/bigquery.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/bigtable/bigtable.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/cassandra/cassandra.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/clickhouse/clickhouse.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/change-data-capture.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/cicd-and-iac.ipynb": [
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/cost-optimization.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/data-governance.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/data-observability.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/data-quality.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/data-structures.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/lakehouse-catalogs.ipynb": [
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/open-table-formats.ipynb": [
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/orchestration-patterns.ipynb": [
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/security-and-iam.ipynb": [
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/semantic-layer.ipynb": [
+    "long-setup",
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/statistics.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/concepts/system-design.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/data-modeling/data-modeling-01-grain-facts-and-dimensions.ipynb": [
+    "asserts"
+  ],
+  "notebooks/topics/data-modeling/data-modeling-03-slowly-changing-dimensions.ipynb": [
+    "asserts"
+  ],
+  "notebooks/topics/data-modeling/data-modeling-07-loading-and-late-data.ipynb": [
+    "asserts"
+  ],
+  "notebooks/topics/data-modeling/data-modeling-09-testing-metrics-and-change.ipynb": [
+    "asserts"
+  ],
+  "notebooks/topics/databricks/databricks.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/dbt/dbt.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/delta/delta.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/docker/docker.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/duckdb/duckdb.ipynb": [
+    "long-setup",
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/dynamodb/dynamodb.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/elasticsearch/elasticsearch.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/flink/flink.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/flume/flume.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/gcp/gcp.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/greenplum/greenplum.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/hadoop/hadoop.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/hbase/hbase.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/hive/hive.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/hudi/hudi.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/iceberg/iceberg.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/impala/impala.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/interview-questions/interview-question-bank.ipynb": [
+    "asserts",
+    "next"
+  ],
+  "notebooks/topics/kafka/kafka.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/kubernetes/kubernetes.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/llm/llm.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/looker/looker.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/mongodb/mongodb.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/nifi/nifi.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/parquet/parquet.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/postgres/postgres.ipynb": [
+    "long-setup",
+    "asserts",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/pyspark/pyspark-coding-challenges.ipynb": [
+    "next"
+  ],
+  "notebooks/topics/pyspark/pyspark-concepts-end-to-end.ipynb": [
+    "next"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-02-dataframe-essentials.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-03-types-functions-and-nulls.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-04-reading-and-writing-data.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-05-spark-sql-and-the-catalog.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-06-joins.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-07-aggregations-and-windows.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-08-nested-and-semi-structured-data.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-09-python-udfs-and-pandas.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-10-batch-pipelines.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-11-structured-streaming.ipynb": [
+    "difficulty"
+  ],
+  "notebooks/topics/pyspark/pyspark-drills-12-execution-and-production.ipynb": [
+    "difficulty",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-01-values-and-types.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-02-collections.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-03-control-flow-and-functions.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-04-iterators-and-generators.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-05-classes-and-dataclasses.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-06-files-and-formats.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-07-errors-logging-and-testing.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-08-concurrency.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/learning/python-09-data-engineering.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-01-arrays-and-hashing.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-02-two-pointers-and-sliding-window.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-03-stacks-and-monotonic-stacks.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-04-binary-search.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-05-linked-lists.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-06-binary-trees.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-07-graphs-and-grids.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-08-dynamic-programming.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-challenges-09-backtracking-heaps-intervals-design.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-coding-problems.ipynb": [
+    "difficulty",
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-01-values-and-types.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-02-collections.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-03-control-flow-and-functions.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-04-iterators-and-generators.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-05-classes-and-dataclasses.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-06-files-and-formats.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-07-errors-logging-and-testing.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-08-concurrency.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/python/practice/python-drills-09-data-engineering.ipynb": [
+    "solutions",
+    "details-solution",
+    "next"
+  ],
+  "notebooks/topics/redis/redis.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/redshift/redshift.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/scala/scala.ipynb": [
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/snowflake/snowflake.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-00-start-here.ipynb": [
+    "next"
+  ],
+  "notebooks/topics/sql/sql-01-basics.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-02-joins.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-03-null-handling.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-04-case-expressions.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-05-aggregations-and-ctes.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-06-set-operations.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-07-types-functions-and-json.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-08-window-functions.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-09-deduplication.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-10-time-series.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-11-modeling-and-optimization.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-12-views-and-changing-data.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-13-interview-drills.ipynb": [
+    "long-setup"
+  ],
+  "notebooks/topics/sql/sql-14-interview-concepts.ipynb": [
+    "long-setup",
+    "asserts",
+    "next"
+  ],
+  "notebooks/topics/sql/sql-reference.ipynb": [
+    "long-setup",
+    "asserts"
+  ],
+  "notebooks/topics/superset/superset.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/tableau/tableau.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ],
+  "notebooks/topics/trino/trino.ipynb": [
+    "long-setup",
+    "asserts",
+    "what-to-notice",
+    "check-yourself",
+    "takeaways",
+    "next"
+  ]
+}

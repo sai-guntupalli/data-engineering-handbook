@@ -63,12 +63,20 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
 - **No committed outputs.** `make format` strips them and stamps the credit line and the Open in Colab badge. The
   site's results come from `make outputs`, which executes the notebooks into `build/executed` (git-ignored).
 
+## The standards check
+
+`scripts/notebook_standards.py` (part of `make check`) checks the teaching structure above: two-line setup,
+no learner-facing asserts, What to notice, Check yourself, Key takeaways and Next in lessons, and Difficulty plus a
+`solution`-tagged cell for every practice exercise. Notebooks written before the check have their known warnings in
+`scripts/standards_baseline.json`; a notebook may lose warnings but never gain one. After you migrate a notebook, run
+`uv run --no-project python scripts/notebook_standards.py --update-baseline` and commit the smaller baseline.
+
 ## Workflow
 
 ```bash
 make install     # uv sync --extra notebooks + site dependencies
 make format      # canonical notebook form + ruff
-make check       # audit every notebook (structure + Colab rules)
+make check       # audit every notebook (Colab rules) and the teaching structure (standards)
 make notebooks   # execute every notebook (PySpark ones need Java 17+)
 make validate    # everything CI runs
 ```
@@ -97,8 +105,10 @@ Titles use sentence case and keep product names as written (`Apache Kafka`, `dbt
 ## Commit checklist
 
 - [ ] `make validate` passes.
-- [ ] New packages are in both the notebook's `PACKAGES` and `pyproject.toml`.
-- [ ] New notebooks are listed in `site/lib/notebook-groups.ts`.
+- [ ] New packages are in both the notebook's `!pip install` line and the `notebooks` extra in `pyproject.toml`.
+- [ ] A new folder has an entry in `site/lib/tools.ts`; a notebook meant for the learning path is listed in
+      `site/lib/learning-map.ts`.
+- [ ] `make check` reports no standards warnings for the notebooks you added or reworked.
 - [ ] No secrets, tokens, personal data or machine-specific paths.
 
 Contributions are published under the repository's [CC BY 4.0](LICENSE) license; by opening a pull request you

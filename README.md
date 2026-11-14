@@ -18,8 +18,8 @@ New starting points cover [table formats](notebooks/topics/concepts/open-table-f
 [orchestration](notebooks/topics/concepts/orchestration-patterns.ipynb),
 [semantic layers](notebooks/topics/concepts/semantic-layer.ipynb),
 [IAM](notebooks/topics/concepts/security-and-iam.ipynb) and [CI/CD](notebooks/topics/concepts/cicd-and-iac.ipynb).
-Local integrations include delta-rs DML in SQL 12/PySpark 5, a real Structured Streaming file source in PySpark 6,
-and a dbt-duckdb build. Each notebook distinguishes executable integrations from platform syntax and local models.
+Local integrations include delta-rs DML in SQL 12, Delta merges in PySpark 10, a real Structured Streaming file
+source in PySpark 11, and a dbt-duckdb build. Each notebook distinguishes executable integrations from platform syntax and local models.
 
 The [SQL interview drills](notebooks/topics/sql/sql-13-interview-drills.ipynb) and
 [PySpark coding challenges](notebooks/topics/pyspark/pyspark-coding-challenges.ipynb) put the problem rules, sample
@@ -58,12 +58,12 @@ with a shared social-preview image and WebSite structured data. The phone top ba
 
 Practice notebooks include difficulty estimates and 6–10 labelled checks per Python exercise, including empty,
 boundary and error cases. Reference answers stay collapsed. Run
-`.venv/bin/python scripts/verify_practice_answers.py` to execute temporary copies with the hidden Python answers
+`uv run --extra notebooks python scripts/verify_practice_answers.py` to execute temporary copies with the hidden Python answers
 inserted and confirm that deliberately wrong answers are rejected. The source notebooks keep their exercise stubs.
 The concurrency drills explicitly verify lock use: list append alone is atomic in CPython and is not proof of a race.
 
 The PySpark concepts notebook is a batch-pipeline capstone: typed bronze reads and quarantine, deterministic silver
-deduplication, broadcast joins into gold, an incremental re-run, and data-quality gates. The eight modules teach the
+deduplication, broadcast joins into gold, an incremental re-run, and data-quality gates. PySpark 1–14 teach the
 individual concepts; the capstone links back to them.
 
 | Where | How |
@@ -79,7 +79,7 @@ are shown in markdown code blocks.
 
 ## What is inside
 
-Every notebook lives in the folder of the tool it teaches, under `notebooks/topics/`. The site calls each tool folder a topic and lists the topics under twelve categories (languages, processing engines, streaming and ingestion, orchestration, file and table formats, warehouses, NoSQL and search, cloud platforms, BI, infrastructure, concepts and interview prep); choosing a topic shows its notebooks. In the sidebar (under "Topics") each category is a collapsible group (the current topic's group opens by default and your choices are remembered), and any topic can be starred so it is pinned at the top and listed on the Starred page.
+Every notebook lives in the folder of the tool it teaches, under `notebooks/topics/`. The site calls each tool folder a topic and lists the topics under thirteen categories (languages, processing engines, streaming and ingestion, orchestration, transformation, file and table formats, warehouses, databases and search, cloud platforms, BI, infrastructure, concepts and interview prep); choosing a topic shows its notebooks. In the sidebar (under "Topics") each category is a collapsible group (the current topic's group opens by default and your choices are remembered), and any topic can be starred so it is pinned at the top and listed on the Starred page.
 
 | Folder | What it holds |
 |---|---|
@@ -96,7 +96,7 @@ Every notebook lives in the folder of the tool it teaches, under `notebooks/topi
 ## Layout
 
 ```text
-notebooks/topics/          the product: one folder per tool (103 notebooks in total)
+notebooks/topics/          the product: one folder per tool (one folder per tool or course)
 scripts/
   notebook_format.py       canonical form: credit line, Open in Colab badge, no outputs, stable cell ids
   audit_notebooks.py       Colab-runnability rules (setup cell, no live servers, one title, links...)
