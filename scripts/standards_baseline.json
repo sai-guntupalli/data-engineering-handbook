@@ -1,22 +1,4 @@
 {
-  "notebooks/topics/airflow/airflow-01-test-a-dag.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/airflow/airflow-02-assets.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/airflow/airflow-03-backfill.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
   "notebooks/topics/avro/avro.ipynb": [
     "notes-ratio",
     "exercises",
