@@ -27,7 +27,7 @@ const series = (prefix: string, names: string[]) => names.map((name) => `${prefi
 export const LEARNING_PATH: PathStage[] = [
   {
     title: "Foundations",
-    purpose: "The two languages every pipeline is written in.",
+    purpose: "The two languages every pipeline is written in, and the DataFrame tools you use them with on one machine.",
     steps: [
       {
         id: "python",
@@ -58,24 +58,18 @@ export const LEARNING_PATH: PathStage[] = [
           "12-views-and-changing-data",
         ]),
       },
-    ],
-  },
-  {
-    title: "Store",
-    purpose: "Where data lives: the databases pipelines read, and the files and tables they write.",
-    steps: [
       {
         id: "dataframes",
         label: "Local DataFrames",
         toolHref: "/tools/dataframes/",
         slugs: series("dataframes-", ["01-pandas", "02-polars", "03-arrow", "04-choosing-an-engine"]),
       },
-      {
-        id: "ingestion",
-        label: "Data ingestion",
-        toolHref: "/tools/ingestion/",
-        slugs: series("ingestion-", ["01-batch-patterns", "02-apis", "03-object-storage", "04-dlt"]),
-      },
+    ],
+  },
+  {
+    title: "Store",
+    purpose: "Where data lives, and how it gets there: the databases pipelines read, the files and tables they write, and the ingestion that loads them.",
+    steps: [
       { id: "databases", label: "Databases", toolHref: "/tools/postgres/", slugs: ["postgres", "duckdb"] },
       { id: "parquet", label: "Parquet", toolHref: "/tools/parquet/", slugs: ["parquet"] },
       {
@@ -83,6 +77,12 @@ export const LEARNING_PATH: PathStage[] = [
         label: "Table formats",
         toolHref: "/tools/delta/",
         slugs: ["open-table-formats", "delta", "iceberg", "lakehouse-catalogs"],
+      },
+      {
+        id: "ingestion",
+        label: "Data ingestion",
+        toolHref: "/tools/ingestion/",
+        slugs: series("ingestion-", ["01-batch-patterns", "02-apis", "03-object-storage", "04-dlt"]),
       },
     ],
   },
