@@ -89,6 +89,19 @@ def third_party_imports(source: str) -> set[str]:
     return {name for name in modules if name not in sys.stdlib_module_names}
 
 
+WRITTEN_MODULE_RE = re.compile(r"""["']([A-Za-z_][A-Za-z0-9_]*)\.py["']""")
+
+
+def written_modules(cells: list[dict]) -> set[str]:
+    """Modules a notebook writes itself (e.g. ``(folder / "orders_pipeline.py").write_text(...)``), so not packages."""
+    return {
+        name
+        for cell in cells
+        if cell.get("cell_type") == "code"
+        for name in WRITTEN_MODULE_RE.findall(cell_source(cell))
+    }
+
+
 # pip packages whose import name is not the package name with "-" replaced by "_"
 IMPORT_NAMES = {"delta_spark": "delta", "dbt_core": "dbt", "pyyaml": "yaml"}
 
@@ -189,6 +202,7 @@ def audit(path: Path) -> tuple[list[str], dict[str, int]]:
 
     if h1_count != 1:
         errors.append(f"expected exactly one '# Title' heading, found {h1_count}")
+    missing_imports -= written_modules(cells)
     if missing_imports:
         errors.append(
             f"third-party imports missing from the setup cell's {SETUP_NAME}: {', '.join(sorted(missing_imports))}"

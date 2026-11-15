@@ -142,6 +142,7 @@ export const LEARNING_PATH: PathStage[] = [
     purpose: "Run pipelines on a schedule, then on events as they arrive.",
     steps: [
       { id: "orchestration", label: "Orchestration", toolHref: "/tools/airflow/", slugs: ["orchestration-patterns", "airflow", "airflow-01-test-a-dag", "airflow-02-assets", "airflow-03-backfill"] },
+      { id: "batch-capstone", label: "Batch pipeline capstone", toolHref: "/tools/concepts/", slugs: ["end-to-end-pipeline-capstone"] },
       { id: "cdc", label: "Change data capture", toolHref: "/tools/concepts/", slugs: ["change-data-capture"] },
       { id: "kafka", label: "Kafka", toolHref: "/tools/kafka/", slugs: ["kafka", "kafka-01-log-and-partitions", "kafka-02-producers", "kafka-03-consumers-and-groups", "kafka-04-delivery-and-transactions", "kafka-05-connect-and-schemas", "stream-processing"] },
       { id: "flink", label: "Flink", toolHref: "/tools/flink/", slugs: ["flink"] },

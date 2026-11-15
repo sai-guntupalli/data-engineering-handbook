@@ -294,7 +294,8 @@ print("No existing run failed, so only the dates without any run are listed.")
 - Plan backfills with `airflow backfill create --dry-run`, and set `--reprocess-behavior` deliberately: the default
   skips intervals that already ran.
 %% md
-**Next:** [Change data capture](../concepts/change-data-capture.ipynb)
+**Next:** [Capstone: an end-to-end batch pipeline](../concepts/end-to-end-pipeline-capstone.ipynb), which puts
+ingestion, quality checks, dbt and Airflow together.
 """
 SPEC = SPEC.replace("@@INTRO@@", INTRO).replace("@@SETUP_PIP@@", SETUP_PIP).replace("@@HELPERS@@", HELPERS)
 
