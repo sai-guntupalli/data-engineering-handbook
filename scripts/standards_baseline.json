@@ -17,9 +17,6 @@
     "takeaway-copied",
     "prose-solution"
   ],
-  "notebooks/topics/airflow/airflow.ipynb": [
-    "takeaway-count"
-  ],
   "notebooks/topics/avro/avro.ipynb": [
     "notes-ratio",
     "exercises",
@@ -182,39 +179,6 @@
     "takeaway-count",
     "takeaway-copied",
     "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt-01-models-and-ref.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt-02-tests-and-contracts.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt-03-incremental-models.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt-04-snapshots.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt-05-microbatch.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/dbt/dbt.ipynb": [
-    "takeaway-count"
   ],
   "notebooks/topics/delta/delta.ipynb": [
     "notes-ratio",
