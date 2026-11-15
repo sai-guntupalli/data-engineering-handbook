@@ -57,6 +57,21 @@ Every changed notebook was executed after editing, and each What to notice note 
 9. **Folder redesign** (review "Proposed redesign"): not started; it changes URLs, so every move needs an entry in
    `site/lib/retired.ts`.
 
+## Follow-up review of master (2026-11-14)
+
+`docs/reviews/2026-11-14-master-followup-review.md` reviewed the merged result. Two of its recommendations are done:
+
+- **R1:** the deep `kafka`, `dbt` and `airflow` notebooks are back on the learning path, ahead of the numbered labs.
+- **R2:** `notebook_standards.py` now checks depth as well as presence: `notes-ratio`, `exercises`,
+  `takeaway-count`, `takeaway-copied`, `topic-callouts`, `prose-solution` and `boilerplate`.
+
+The baseline was regenerated honestly. 96 of 169 notebooks pass and 73 carry warnings. The 168 reported earlier
+measured presence only.
+
+What remains is R3–R7: grow the numbered lessons, try a librdkafka mock cluster for Kafka, rewrite the 36 generic
+Check yourself sections, build real capstones, and fix the small issues. Work through the baseline with
+`scripts/notebook_standards.py --all`.
+
 ## How the work was done (reusable helpers)
 
 One-off helpers are saved in `docs/reviews/2026-11-migration-tools/`. Paths inside them point at the scratch

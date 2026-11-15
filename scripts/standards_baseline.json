@@ -1,4 +1,393 @@
 {
+  "notebooks/topics/airflow/airflow-01-test-a-dag.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/airflow/airflow-02-assets.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/airflow/airflow-03-backfill.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/airflow/airflow.ipynb": [
+    "takeaway-count"
+  ],
+  "notebooks/topics/avro/avro.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/aws/aws.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/azure/azure.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/bigquery/bigquery.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/bigtable/bigtable.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/cassandra/cassandra.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/clickhouse/clickhouse.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/batch-lakehouse-capstone.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/concepts/cdc-to-scd2-capstone.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/concepts/change-data-capture.ipynb": [
+    "takeaway-count"
+  ],
+  "notebooks/topics/concepts/cost-optimization.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/data-governance.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/data-observability.ipynb": [
+    "takeaway-count"
+  ],
+  "notebooks/topics/concepts/data-quality.ipynb": [
+    "notes-ratio",
+    "takeaway-count",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/data-structures.ipynb": [
+    "notes-ratio",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/git-and-shell.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/concepts/pandera-data-quality.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/concepts/statistics.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/concepts/stream-processing.ipynb": [
+    "exercises",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/concepts/streaming-orders-capstone.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/concepts/system-design.ipynb": [
+    "notes-ratio",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/data-modeling/data-modeling-05-normalized-and-operational-models.ipynb": [
+    "notes-ratio"
+  ],
+  "notebooks/topics/databricks/databricks.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/dataframes/dataframes-02-polars.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/dataframes/dataframes-03-arrow.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/dataframes/dataframes-04-choosing-an-engine.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt-01-models-and-ref.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt-02-tests-and-contracts.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt-03-incremental-models.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt-04-snapshots.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt-05-microbatch.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/dbt/dbt.ipynb": [
+    "takeaway-count"
+  ],
+  "notebooks/topics/delta/delta.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/docker/docker.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/dynamodb/dynamodb.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/elasticsearch/elasticsearch.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/flink/flink.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/flume/flume.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/gcp/gcp.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/greenplum/greenplum.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/hadoop/hadoop.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/hbase/hbase.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/hive/hive.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/hudi/hudi.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/iceberg/iceberg.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/impala/impala.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/ingestion/ingestion-01-batch-patterns.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/ingestion/ingestion-02-apis.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/ingestion/ingestion-03-object-storage.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/ingestion/ingestion-04-dlt.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/kafka/kafka-01-log-and-partitions.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/kafka/kafka-02-producers.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/kafka/kafka-03-consumers-and-groups.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied"
+  ],
+  "notebooks/topics/kafka/kafka-04-delivery-and-transactions.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/kafka/kafka-05-connect-and-schemas.ipynb": [
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "prose-solution"
+  ],
+  "notebooks/topics/kubernetes/kubernetes.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
   "notebooks/topics/llm/llm.ipynb": [
     "long-setup",
     "asserts",
@@ -6,5 +395,94 @@
     "check-yourself",
     "takeaways",
     "next"
+  ],
+  "notebooks/topics/looker/looker.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/mongodb/mongodb.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/nifi/nifi.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/parquet/parquet.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/pyspark/pyspark-concepts-end-to-end.ipynb": [
+    "notes-ratio"
+  ],
+  "notebooks/topics/redis/redis.ipynb": [
+    "notes-ratio",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/redshift/redshift.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/scala/scala.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/snowflake/snowflake.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/superset/superset.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/tableau/tableau.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
+  ],
+  "notebooks/topics/trino/trino.ipynb": [
+    "notes-ratio",
+    "exercises",
+    "takeaway-count",
+    "takeaway-copied",
+    "topic-callouts",
+    "boilerplate"
   ]
 }
