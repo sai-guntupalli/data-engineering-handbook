@@ -274,29 +274,6 @@
     "topic-callouts",
     "boilerplate"
   ],
-  "notebooks/topics/ingestion/ingestion-01-batch-patterns.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied"
-  ],
-  "notebooks/topics/ingestion/ingestion-02-apis.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/ingestion/ingestion-03-object-storage.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/ingestion/ingestion-04-dlt.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
   "notebooks/topics/kubernetes/kubernetes.ipynb": [
     "notes-ratio",
     "exercises",
