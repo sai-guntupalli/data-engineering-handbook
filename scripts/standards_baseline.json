@@ -351,35 +351,6 @@
     "takeaway-copied",
     "prose-solution"
   ],
-  "notebooks/topics/kafka/kafka-01-log-and-partitions.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/kafka/kafka-02-producers.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/kafka/kafka-03-consumers-and-groups.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied"
-  ],
-  "notebooks/topics/kafka/kafka-04-delivery-and-transactions.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
-  "notebooks/topics/kafka/kafka-05-connect-and-schemas.ipynb": [
-    "exercises",
-    "takeaway-count",
-    "takeaway-copied",
-    "prose-solution"
-  ],
   "notebooks/topics/kubernetes/kubernetes.ipynb": [
     "notes-ratio",
     "exercises",
