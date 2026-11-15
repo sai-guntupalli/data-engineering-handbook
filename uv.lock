@@ -658,7 +658,7 @@ requires-dist = [
     { name = "dbt-duckdb", marker = "extra == 'notebooks'", specifier = ">=1.9,<2" },
     { name = "delta-spark", marker = "extra == 'notebooks'", specifier = ">=4.0,<4.1" },
     { name = "deltalake", marker = "extra == 'notebooks'", specifier = ">=1.0" },
-    { name = "duckdb", marker = "extra == 'notebooks'", specifier = ">=1.4" },
+    { name = "duckdb", marker = "extra == 'notebooks'", specifier = ">=2.0" },
     { name = "fakeredis", extras = ["lua"], marker = "extra == 'notebooks'", specifier = ">=2.20" },
     { name = "fastavro", marker = "extra == 'notebooks'", specifier = ">=1.9" },
     { name = "httpx", marker = "extra == 'notebooks'", specifier = ">=0.27" },

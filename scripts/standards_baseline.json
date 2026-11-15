@@ -66,12 +66,6 @@
     "takeaways",
     "next"
   ],
-  "notebooks/topics/concepts/cicd-and-iac.ipynb": [
-    "asserts",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
   "notebooks/topics/concepts/cost-optimization.ipynb": [
     "long-setup",
     "asserts",
@@ -105,37 +99,6 @@
   "notebooks/topics/concepts/data-structures.ipynb": [
     "asserts",
     "what-to-notice",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/lakehouse-catalogs.ipynb": [
-    "asserts",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/open-table-formats.ipynb": [
-    "asserts",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/orchestration-patterns.ipynb": [
-    "asserts",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/security-and-iam.ipynb": [
-    "asserts",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/semantic-layer.ipynb": [
-    "long-setup",
-    "asserts",
-    "check-yourself",
     "takeaways",
     "next"
   ],
@@ -192,13 +155,6 @@
     "long-setup",
     "asserts",
     "what-to-notice",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/duckdb/duckdb.ipynb": [
-    "long-setup",
-    "asserts",
     "check-yourself",
     "takeaways",
     "next"
@@ -346,13 +302,6 @@
     "long-setup",
     "asserts",
     "what-to-notice",
-    "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/postgres/postgres.ipynb": [
-    "long-setup",
-    "asserts",
     "check-yourself",
     "takeaways",
     "next"
