@@ -64,6 +64,12 @@ export const LEARNING_PATH: PathStage[] = [
     title: "Store",
     purpose: "Where data lives: the databases pipelines read, and the files and tables they write.",
     steps: [
+      {
+        id: "dataframes",
+        label: "Local DataFrames",
+        toolHref: "/tools/dataframes/",
+        slugs: series("dataframes-", ["01-pandas", "02-polars", "03-arrow", "04-choosing-an-engine"]),
+      },
       { id: "databases", label: "Databases", toolHref: "/tools/postgres/", slugs: ["postgres", "duckdb"] },
       { id: "parquet", label: "Parquet", toolHref: "/tools/parquet/", slugs: ["parquet"] },
       {

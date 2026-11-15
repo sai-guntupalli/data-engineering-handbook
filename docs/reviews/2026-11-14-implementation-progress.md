@@ -45,10 +45,7 @@ Every changed notebook was executed after editing, and each What to notice note 
 
 ## Not done yet (in priority order)
 
-1. **DataFrames track** (review §1, P2-10). Planned: `dataframes-02-polars`, `dataframes-03-arrow`,
-   `dataframes-04-choosing-an-engine` (same task in pandas, Polars, DuckDB with timing and memory). When added,
-   change the Next link at the end of `dataframes-01-pandas` (currently points to DuckDB) and add a learning-path
-   step. Polars 2.1 resolves with the current lock.
+1. **DataFrames track complete** (P2-10). Added Polars, Arrow, and the engine comparison. All four notebooks ran cleanly and passed the standards check. The learning path includes the track and pandas links to Polars. The baseline remains at 48 notebooks (98 of 146 meet the standard).
 2. **Core tool courses** (P2-9):
    - **Kafka** course `kafka-01`…`kafka-05` (log and partitions, producers, consumers and groups, delivery and
      transactions, Connect and Schema Registry). No broker runs in Colab, so cells must stay clearly labelled models;
