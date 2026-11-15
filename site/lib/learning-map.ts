@@ -70,6 +70,12 @@ export const LEARNING_PATH: PathStage[] = [
         toolHref: "/tools/dataframes/",
         slugs: series("dataframes-", ["01-pandas", "02-polars", "03-arrow", "04-choosing-an-engine"]),
       },
+      {
+        id: "ingestion",
+        label: "Data ingestion",
+        toolHref: "/tools/ingestion/",
+        slugs: series("ingestion-", ["01-batch-patterns", "02-apis", "03-object-storage", "04-dlt"]),
+      },
       { id: "databases", label: "Databases", toolHref: "/tools/postgres/", slugs: ["postgres", "duckdb"] },
       { id: "parquet", label: "Parquet", toolHref: "/tools/parquet/", slugs: ["parquet"] },
       {
@@ -101,7 +107,7 @@ export const LEARNING_PATH: PathStage[] = [
           "pyspark-drills-12-execution-and-production",
         ],
       },
-      { id: "capstone", label: "Pipeline capstone", toolHref: "/tools/pyspark/", slugs: ["pyspark-concepts-end-to-end"] },
+      { id: "capstone", label: "Pipeline capstone", toolHref: "/tools/pyspark/", slugs: ["pyspark-concepts-end-to-end", "batch-lakehouse-capstone", "streaming-orders-capstone", "cdc-to-scd2-capstone"] },
     ],
   },
   {
@@ -127,17 +133,17 @@ export const LEARNING_PATH: PathStage[] = [
           ...series("data-modeling-", ["08-physical-design-and-performance", "09-testing-metrics-and-change", "10-interview-case-studies"]),
         ],
       },
-      { id: "dbt", label: "dbt", toolHref: "/tools/dbt/", slugs: ["dbt", "semantic-layer"] },
-      { id: "quality", label: "Data quality", toolHref: "/tools/concepts/", slugs: ["data-quality", "data-observability"] },
+      { id: "dbt", label: "dbt", toolHref: "/tools/dbt/", slugs: ["dbt-01-models-and-ref", "dbt-02-tests-and-contracts", "dbt-03-incremental-models", "dbt-04-snapshots", "semantic-layer"] },
+      { id: "quality", label: "Data quality", toolHref: "/tools/concepts/", slugs: ["data-quality", "pandera-data-quality", "data-observability"] },
     ],
   },
   {
     title: "Orchestrate and stream",
     purpose: "Run pipelines on a schedule, then on events as they arrive.",
     steps: [
-      { id: "orchestration", label: "Orchestration", toolHref: "/tools/airflow/", slugs: ["orchestration-patterns", "airflow"] },
+      { id: "orchestration", label: "Orchestration", toolHref: "/tools/airflow/", slugs: ["airflow-01-test-a-dag", "orchestration-patterns"] },
       { id: "cdc", label: "Change data capture", toolHref: "/tools/concepts/", slugs: ["change-data-capture"] },
-      { id: "kafka", label: "Kafka", toolHref: "/tools/kafka/", slugs: ["kafka"] },
+      { id: "kafka", label: "Kafka", toolHref: "/tools/kafka/", slugs: ["kafka-01-log-and-partitions", "kafka-02-producers", "kafka-03-consumers-and-groups", "kafka-04-delivery-and-transactions", "kafka-05-connect-and-schemas", "stream-processing"] },
       { id: "flink", label: "Flink", toolHref: "/tools/flink/", slugs: ["flink"] },
     ],
   },

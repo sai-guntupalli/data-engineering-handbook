@@ -90,7 +90,7 @@ def third_party_imports(source: str) -> set[str]:
 
 
 # pip packages whose import name is not the package name with "-" replaced by "_"
-IMPORT_NAMES = {"delta_spark": "delta"}
+IMPORT_NAMES = {"delta_spark": "delta", "dbt_core": "dbt"}
 
 
 def pip_installed_imports(code_cells: list[str]) -> set[str]:

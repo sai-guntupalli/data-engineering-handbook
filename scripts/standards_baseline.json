@@ -1,10 +1,4 @@
 {
-  "notebooks/topics/airflow/airflow.ipynb": [
-    "asserts",
-    "what-to-notice",
-    "takeaways",
-    "next"
-  ],
   "notebooks/topics/avro/avro.ipynb": [
     "long-setup",
     "asserts",
@@ -59,13 +53,6 @@
     "takeaways",
     "next"
   ],
-  "notebooks/topics/concepts/change-data-capture.ipynb": [
-    "long-setup",
-    "asserts",
-    "what-to-notice",
-    "takeaways",
-    "next"
-  ],
   "notebooks/topics/concepts/cost-optimization.ipynb": [
     "long-setup",
     "asserts",
@@ -79,13 +66,6 @@
     "asserts",
     "what-to-notice",
     "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/concepts/data-observability.ipynb": [
-    "long-setup",
-    "asserts",
-    "what-to-notice",
     "takeaways",
     "next"
   ],
@@ -121,13 +101,6 @@
     "asserts",
     "what-to-notice",
     "check-yourself",
-    "takeaways",
-    "next"
-  ],
-  "notebooks/topics/dbt/dbt.ipynb": [
-    "long-setup",
-    "asserts",
-    "what-to-notice",
     "takeaways",
     "next"
   ],
@@ -239,12 +212,6 @@
   ],
   "notebooks/topics/interview-questions/interview-question-bank.ipynb": [
     "asserts",
-    "next"
-  ],
-  "notebooks/topics/kafka/kafka.ipynb": [
-    "asserts",
-    "what-to-notice",
-    "takeaways",
     "next"
   ],
   "notebooks/topics/kubernetes/kubernetes.ipynb": [

@@ -24,9 +24,7 @@ JAVA_HOME=$(brew --prefix openjdk@17) uv run --extra notebooks python scripts/ru
 baseline. After migrating a notebook, run `scripts/notebook_standards.py --update-baseline` and commit the smaller
 baseline.
 
-Node.js was not available on the machine this was done on, so **the site tests (`npm --prefix site test`), lint
-and build were not run** for the `site/lib/tools.ts` and `site/lib/learning-map.ts` changes. CI runs them; check
-the first CI run.
+Node became available during the follow-up. The site passed all 85 tests, ESLint, and its production build.
 
 ## Done (commits on the branch)
 
@@ -43,32 +41,13 @@ the first CI run.
 
 Every changed notebook was executed after editing, and each What to notice note was checked against that run.
 
-## Not done yet (in priority order)
+## Current status and remaining work
 
 1. **DataFrames track complete** (P2-10). Added Polars, Arrow, and the engine comparison. All four notebooks ran cleanly and passed the standards check. The learning path includes the track and pandas links to Polars. The baseline remains at 48 notebooks (98 of 146 meet the standard).
-2. **Core tool courses** (P2-9):
-   - **Kafka** course `kafka-01`…`kafka-05` (log and partitions, producers, consumers and groups, delivery and
-     transactions, Connect and Schema Registry). No broker runs in Colab, so cells must stay clearly labelled models;
-     keep `kafka.ipynb` as the overview/reference or retire it via `site/lib/retired.ts`.
-   - **dbt** course (models and `ref`, tests and contracts, incremental and microbatch, snapshots) using
-     `dbt-core` + `dbt-duckdb` (already dependencies; see how `dbt/dbt.ipynb` runs its build).
-   - **Airflow**: real DAGs with `dag.test()` were recommended. Not yet tested whether `apache-airflow` 3 resolves
-     with the lock and installs in reasonable CI time; test that before writing.
-   - **Stream processing concepts** notebook (time, windows, watermarks, state, guarantees) in `concepts/`.
-3. **Ingestion track** (P2-10): `ingestion-01-batch-patterns`, `-02-apis` (`httpx.MockTransport` for pagination,
-   429/Retry-After, retries), `-03-object-storage` (`moto` S3 landing, manifests), `-04-dlt` (dlt into DuckDB).
-   `pandera>=0.24` and `dlt[duckdb]>=1.10` resolved cleanly in a trial (`uv add --optional notebooks ...`) but were
-   **not** added, because nothing uses them yet.
-4. **Data quality tooling** notebook with pandera; **Git and shell** working-environment notebook; **capstones**
-   (batch lakehouse, streaming orders, CDC to SCD2) (P2-10, P3-16).
-5. **The 48 notebooks still in the baseline** (P2-11, P2-12): tool and concept FAQ notebooks (Kafka, Flink,
-   Airflow, BigQuery, Redshift, Snowflake, clouds, NoSQL, formats, BI, legacy tools, concepts), the interview
-   question bank, `data-structures`, `statistics`, `llm`, SQL 13 (setup only). Each needs: two-line setup, asserts
-   turned into shown output, What to notice notes, Check yourself, Key takeaways, Next — and, per the review, FAQ
-   headings rewritten into topic-ordered lessons (about 12 sections each). Also cut `data-structures` to a
-   data-engineering page and move `statistics` to an appendix.
-   - **`llm/llm.ipynb` is being changed on another branch (`improve/llm-ai-handbook`)** in the main checkout. Do not
-     edit it here; coordinate.
+2. **Core tool courses started and runnable** (P2-9). Added five explicitly labeled Kafka models, four dbt/DuckDB labs, a real Airflow 3 TaskFlow DAG, and a streaming-concepts lesson. Airflow 3.4.0 resolved and installed in about nine seconds in the isolated local test. Its DAG returned success and 2000 cents. The dbt incremental lab runs merge and explains when to use microbatch. A real microbatch lab and Airflow assets/backfills remain follow-ups.
+3. **Ingestion and data quality complete for the planned introductory lessons** (P2-10). Added a replayable batch cursor, HTTPX mock pagination and retry, Moto S3 manifests, a dlt-to-DuckDB load, and Pandera validation. The dlt and Pandera dependencies are now in the notebook extra.
+4. **Working environment and capstones** (P2-10, P3-16). Added a Git and shell lab, a real Delta batch publication lab, and small streaming replay and CDC-to-SCD2 capstones. The latter two are in-memory models.
+5. **Remaining standards migration** (P2-11, P2-12). The Kafka, dbt, and Airflow overviews and the CDC and observability lessons now have topic headings and output notes. Use the baseline for the exact remaining list. Leave the LLM notebook to its separate branch. SQL 13 already passes in this checkout.
 6. **Concepts split** (review §3): divide the "Concepts" category into architecture/design and
    quality/governance/operations in `tools.ts`.
 7. **Site UI** (P3-14/15): mobile header still wraps into two rows; average page 322 KB; Draft/Legacy badge in

@@ -44,6 +44,9 @@ notebooks = [
     "setuptools>=70",  # provides distutils, which some older PySpark releases import on Python 3.12+
     "sqlalchemy>=2.0",
     "tenacity>=8.2",
+    "dlt[duckdb]>=1.10,<2",
+    "pandera[pandas]>=0.24,<1",
+    "apache-airflow>=3.4,<4",
 ]
 
 [tool.uv]

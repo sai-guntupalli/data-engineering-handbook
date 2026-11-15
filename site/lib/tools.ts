@@ -97,6 +97,7 @@ export function compareSubtopics(a: { slug: string }, b: { slug: string }): numb
 }
 
 export const TOOLS: Tool[] = [
+  { folder: "ingestion", label: "Data ingestion", description: "Replayable extraction, APIs, object storage and dlt.", tone: "core", category: "foundations" },
   { folder: "dataframes", label: "DataFrames on one machine", description: "pandas, Polars and Apache Arrow for data that fits on one machine.", tone: "python", category: "processing" },
   { folder: "duckdb", label: "DuckDB", description: "Embedded analytics, local Parquet queries and transformation tests.", tone: "sql", category: "processing" },
   { folder: "postgres", label: "PostgreSQL", description: "Transactions, constraints, upserts and pipeline integration.", tone: "sql", category: "databases" },
