@@ -5,7 +5,6 @@ Runs temporary in-memory notebook copies; source notebooks remain output-free.
 
 import ast
 import json
-import re
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
@@ -31,19 +30,17 @@ def verify(p):
             by_id[cell_id]["source"] = fixture.with_name("harness.py").read_text().splitlines(keepends=True)
         for original_id, location in checks.get("solutions", {}).items():
             answer = "".join(by_id[location["cell_id"]]["source"])
-            blocks = re.findall(r"```python\n(.*?)\n```", answer, re.S)
-            by_id[original_id]["source"] = blocks[location["block"]].splitlines(keepends=True)
+            # The answer is a solution-tagged code cell: run all of it once, in place of the first block.
+            code = answer if location["block"] == 0 else "pass\n"
+            by_id[original_id]["source"] = code.splitlines(keepends=True)
         cells = n["cells"] = [by_id[cell_id] for cell_id in checks["order"]]
     exercises = 0
     for i, c in enumerate(cells):
         if p.stem == "python-coding-problems":
             break  # The workbook fixture contains executable reference implementations and assertions.
-        if c["cell_type"] != "markdown" or "Show solution" not in "".join(c["source"]):
+        if c["cell_type"] != "code" or "solution" not in c.get("metadata", {}).get("tags", []):
             continue
-        match = re.search(r"```python\n(.*?)\n```", "".join(c["source"]), re.S)
-        if not match:
-            continue
-        solution = match.group(1)
+        solution = "".join(c["source"])
         stub = cells[i - 2]
         check = cells[i - 1]
         tree = ast.parse("".join(stub["source"]))
