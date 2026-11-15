@@ -48,6 +48,7 @@ format: ## Format notebooks (credit, Colab badge, no outputs) and Python tooling
 check: ## Audit every notebook for Colab-runnability rules
 	$(TOOL) scripts/notebook_format.py --check
 	$(TOOL) scripts/audit_notebooks.py --quiet
+	$(TOOL) scripts/notebook_standards.py
 
 notebooks: ## Execute every notebook top to bottom (JOBS=4); Spark ones need Java
 	$(PY) scripts/run_notebooks.py --jobs $(JOBS)

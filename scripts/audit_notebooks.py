@@ -9,8 +9,9 @@ Checks per notebook:
 - code cells are valid Python with no IPython magics, shell escapes or
   ``# ILLUSTRATIVE`` placeholders (illustrative code belongs in a markdown fence)
 - code never talks to a local server (``localhost:<port>``): use a stand-in
-- every third-party import is installed by the notebook's setup cell, a code
-  cell that assigns ``PACKAGES = {"import_name": "pip-spec", ...}``
+- every third-party import is installed by the notebook's setup cell: the
+  two-line form (``# Setup:`` comment plus one ``!pip install`` line) or the
+  older cell that assigns ``PACKAGES = {"import_name": "pip-spec", ...}``
 
 Execution is handled separately by ``scripts/run_notebooks.py``.
 
@@ -89,7 +90,7 @@ def third_party_imports(source: str) -> set[str]:
 
 
 # pip packages whose import name is not the package name with "-" replaced by "_"
-IMPORT_NAMES = {"delta_spark": "delta"}
+IMPORT_NAMES = {"delta_spark": "delta", "dbt_core": "dbt", "pyyaml": "yaml"}
 
 
 def pip_installed_imports(code_cells: list[str]) -> set[str]:

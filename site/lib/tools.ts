@@ -23,9 +23,10 @@ export const TOOL_CATEGORIES = [
   { id: "processing", label: "Processing engines" },
   { id: "streaming", label: "Streaming and ingestion" },
   { id: "orchestration", label: "Orchestration" },
+  { id: "transformation", label: "Transformation" },
   { id: "formats", label: "File and table formats" },
   { id: "warehouses", label: "Data warehouses" },
-  { id: "databases", label: "NoSQL and search" },
+  { id: "databases", label: "Databases and search" },
   { id: "cloud", label: "Cloud platforms" },
   { id: "bi", label: "BI and dashboards" },
   { id: "infrastructure", label: "Containers and infrastructure" },
@@ -96,6 +97,8 @@ export function compareSubtopics(a: { slug: string }, b: { slug: string }): numb
 }
 
 export const TOOLS: Tool[] = [
+  { folder: "ingestion", label: "Data ingestion", description: "Replayable extraction, APIs, object storage and dlt.", tone: "core", category: "foundations" },
+  { folder: "dataframes", label: "DataFrames on one machine", description: "pandas, Polars and Apache Arrow for data that fits on one machine.", tone: "python", category: "processing" },
   { folder: "duckdb", label: "DuckDB", description: "Embedded analytics, local Parquet queries and transformation tests.", tone: "sql", category: "processing" },
   { folder: "postgres", label: "PostgreSQL", description: "Transactions, constraints, upserts and pipeline integration.", tone: "sql", category: "databases" },
   { folder: "airflow", label: "Apache Airflow", description: "Scheduling, DAGs, retries and operators for pipelines.", tone: "core", category: "orchestration" },
@@ -109,7 +112,7 @@ export const TOOLS: Tool[] = [
   { folder: "concepts", label: "Data concepts", description: "Quality, governance, CDC, cost and design ideas that apply to any stack.", tone: "warehouse", category: "foundations" },
   { folder: "data-modeling", label: "Data modeling", description: "Grain, star schemas, slowly changing dimensions, Data Vault, loading patterns and model tests.", tone: "warehouse", category: "foundations" },
   { folder: "databricks", label: "Databricks", description: "Lakehouse platform: Spark, Delta tables and Unity Catalog.", tone: "cloud", category: "cloud" },
-  { folder: "dbt", label: "dbt", description: "SQL transformations as tested, documented models.", tone: "core", category: "orchestration" },
+  { folder: "dbt", label: "dbt", description: "SQL transformations as tested, documented models.", tone: "core", category: "transformation" },
   { folder: "delta", label: "Delta Lake", description: "ACID tables on object storage, with time travel and merges.", tone: "lake", category: "formats" },
   { folder: "docker", label: "Docker", description: "Images, layers and containers for reproducible jobs.", tone: "other", category: "infrastructure" },
   { folder: "dynamodb", label: "DynamoDB", description: "Key-value and document storage with single-table design.", tone: "cloud", category: "databases" },
