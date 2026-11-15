@@ -67,7 +67,21 @@ Notebooks are the product. A contribution is usually one `.ipynb` file under `no
 
 `scripts/notebook_standards.py` (part of `make check`) checks the teaching structure above: two-line setup,
 no learner-facing asserts, What to notice, Check yourself, Key takeaways and Next in lessons, and Difficulty plus a
-`solution`-tagged cell for every practice exercise. Notebooks written before the check have their known warnings in
+`solution`-tagged cell for every practice exercise.
+
+It also checks depth, because one note and a one-line Check yourself would otherwise pass on any notebook:
+
+| Rule | A lesson needs |
+|---|---|
+| `notes-ratio` | at least one What to notice note per two example cells |
+| `exercises` | at least two questions under Check yourself |
+| `takeaway-count` | at least three Key takeaways |
+| `takeaway-copied` | takeaways that summarise, not a Where it matters / Watch out for paragraph repeated word for word |
+| `topic-callouts` | Where it matters / Watch out for under the topic they describe, not in Setup |
+| `prose-solution` | (any notebook) solution cells with code, not only `print("<sentence>")` |
+| `boilerplate` | (any notebook) no paragraph pasted into more than three notebooks across folders; course-wide instructions inside one folder and in Check yourself are fine |
+
+Notebooks written before the check have their known warnings in
 `scripts/standards_baseline.json`; a notebook may lose warnings but never gain one. After you migrate a notebook, run
 `uv run --no-project python scripts/notebook_standards.py --update-baseline` and commit the smaller baseline.
 

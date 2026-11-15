@@ -43,8 +43,8 @@ def test_a_lesson_that_follows_the_standard_has_no_warnings(tmp_path):
         code("print(1)"),
         code("print(2)"),
         md("**What to notice:** the 1."),
-        md("## Check yourself\n\n1. Why?"),
-        md("## Key takeaways\n\n- One."),
+        md("## Check yourself\n\n1. Why?\n2. Why not?"),
+        md("## Key takeaways\n\n- One.\n- Two.\n- Three."),
         md("**Next:** [Tool 2](tool-02.ipynb)"),
     )
     assert notebook_standards.warnings_for(path) == []
@@ -95,3 +95,100 @@ def test_kind_follows_the_file_name():
     assert notebook_standards.kind_of(Path("pyspark-drills-06-joins.ipynb")) == "practice"
     assert notebook_standards.kind_of(Path("sql-14-interview-concepts.ipynb")) == "interview"
     assert notebook_standards.kind_of(Path("kafka-02-producers.ipynb")) == "lesson"
+
+
+THREE = "- One.\n- Two.\n- Three."
+
+
+def lesson(tmp_path: Path, *body: dict, name: str = "tool-01-basics", takeaways: str = THREE) -> Path:
+    """A lesson that passes every rule apart from what ``body`` changes."""
+    return write(
+        tmp_path,
+        name,
+        md("# Tool 1: basics"),
+        SETUP,
+        *body,
+        md("## Check yourself\n\n### Exercise 1\n\nOne?"),
+        code("# Try it here."),
+        code("print(sum([1, 2]))", tags=["solution"]),
+        md("### Exercise 2\n\nTwo?"),
+        md(f"## Key takeaways\n\n{takeaways}"),
+        md("**Next:** [Tool 2](tool-02.ipynb)"),
+    )
+
+
+def test_notes_must_keep_up_with_the_examples(tmp_path):
+    examples = [code(f"print({i})") for i in range(8)]
+    sparse = lesson(tmp_path, md("## Topic"), *examples, md("**What to notice:** one note."))
+    assert "notes-ratio" in codes(notebook_standards.warnings_for(sparse))
+    dense = [cell for i, ex in enumerate(examples) for cell in ([ex, md("**What to notice:** x.")] if i % 2 else [ex])]
+    path = lesson(tmp_path, md("## Topic"), *dense, name="tool-02-dense")
+    assert "notes-ratio" not in codes(notebook_standards.warnings_for(path))
+
+
+def test_check_yourself_needs_two_questions(tmp_path):
+    path = write(
+        tmp_path,
+        "tool-01-basics",
+        md("# Tool"),
+        md("## Check yourself\n\nChoose a worked example and change its filter."),
+        md("## Key takeaways\n\n- One.\n- Two.\n- Three."),
+        md("**Next:** [x](x.ipynb)"),
+    )
+    assert "exercises" in codes(notebook_standards.warnings_for(path))
+
+
+def test_takeaways_need_three_bullets_that_are_not_copied_callouts(tmp_path):
+    callout = "Store results under deterministic keys."
+    path = lesson(
+        tmp_path,
+        md(f"## Caching\n\nText.\n\n**Where it matters**\n\n{callout}"),
+        takeaways=f"- {callout}",
+    )
+    assert {"takeaway-count", "takeaway-copied"} <= codes(notebook_standards.warnings_for(path))
+
+
+def test_callouts_belong_under_topics_not_setup(tmp_path):
+    path = lesson(tmp_path, md("## Setup and sample data\n\n**Where it matters**\n\nEverywhere."))
+    assert "topic-callouts" in codes(notebook_standards.warnings_for(path))
+    path = lesson(tmp_path, md("## Setup and sample data\n\nData."), md("## Joins\n\n**Where it matters**\n\nReports."))
+    assert "topic-callouts" not in codes(notebook_standards.warnings_for(path))
+
+
+def test_solution_cells_must_be_code_not_a_printed_sentence(tmp_path):
+    assert notebook_standards.is_prose_solution('print("No. The filter assumes ordered input.")')
+    assert not notebook_standards.is_prose_solution("print(committed[0])")
+    assert not notebook_standards.is_prose_solution('total = 1 + 2\nprint("total", total)')
+    path = write(
+        tmp_path,
+        "tool-drills",
+        md("# Drills"),
+        md("## Exercise 1\n\n**Difficulty:** Easy"),
+        code('print("It depends.")', tags=["solution"]),
+        md("**Next:** [x](x.ipynb)"),
+    )
+    assert codes(notebook_standards.warnings_for(path)) == {"prose-solution"}
+
+
+def test_boilerplate_is_a_paragraph_pasted_across_folders(tmp_path):
+    pasted = "Each runnable example declares its input alongside the operation it illustrates, in fenced text."
+    paths = []
+    for folder in ("a", "b", "c", "d"):
+        (tmp_path / folder).mkdir()
+        paths.append(write(tmp_path / folder, "tool", md(f"# {folder}\n\n{pasted}")))
+    assert notebook_standards.repeated_paragraphs(paths) == {pasted}
+    warnings = notebook_standards.warnings_for(paths[0], {pasted})
+    assert "boilerplate" in codes(warnings)
+
+    (tmp_path / "course").mkdir()
+    same_folder = [write(tmp_path / "course", f"sql-0{i}", md(f"# {i}\n\n{pasted}")) for i in range(5)]
+    assert notebook_standards.repeated_paragraphs(same_folder) == set()
+
+
+def test_shared_check_yourself_instructions_are_not_boilerplate(tmp_path):
+    line = "Answer each question in your own words before reading the answer that follows it."
+    paths = []
+    for folder in ("a", "b", "c", "d"):
+        (tmp_path / folder).mkdir()
+        paths.append(write(tmp_path / folder, "tool", md(f"## Check yourself\n\n{line}")))
+    assert notebook_standards.repeated_paragraphs(paths) == set()
