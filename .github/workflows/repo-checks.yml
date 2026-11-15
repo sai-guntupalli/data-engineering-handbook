@@ -41,5 +41,25 @@ jobs:
       - name: Install
         run: make install
 
+      # Resolve Delta before parallel notebook kernels share the Ivy cache.
+      - name: Prepare Spark dependencies
+        run: |
+          for attempt in 1 2 3; do
+            if uv run --extra notebooks python - <<'PYCODE'
+          from delta import configure_spark_with_delta_pip
+          from pyspark.sql import SparkSession
+
+          spark = configure_spark_with_delta_pip(
+              SparkSession.builder.master("local[1]").appName("ci-delta-dependencies")
+          ).getOrCreate()
+          spark.stop()
+          PYCODE
+            then
+              exit 0
+            fi
+            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 5))"; fi
+          done
+          exit 1
+
       - name: Validate
         run: make validate
