@@ -1,5 +1,11 @@
 # Progress
 
+## Review implementation — 2026-11-14 (in progress)
+
+Branch `improve/handbook-review-implementation` implements `docs/reviews/2026-11-14-handbook-review.md`. Status,
+remaining work in priority order, helper scripts and gotchas: `docs/reviews/2026-11-14-implementation-progress.md`.
+95 of 143 notebooks now meet the teaching standard checked by `scripts/notebook_standards.py`.
+
 ## Data modeling section — 2026-11-14
 
 - Reviewed `concepts/data-modeling.ipynb` (85 cells). It covered the vocabulary broadly but as an interview FAQ in one
