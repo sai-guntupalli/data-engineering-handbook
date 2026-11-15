@@ -116,18 +116,6 @@
     "takeaways",
     "next"
   ],
-  "notebooks/topics/data-modeling/data-modeling-01-grain-facts-and-dimensions.ipynb": [
-    "asserts"
-  ],
-  "notebooks/topics/data-modeling/data-modeling-03-slowly-changing-dimensions.ipynb": [
-    "asserts"
-  ],
-  "notebooks/topics/data-modeling/data-modeling-07-loading-and-late-data.ipynb": [
-    "asserts"
-  ],
-  "notebooks/topics/data-modeling/data-modeling-09-testing-metrics-and-change.ipynb": [
-    "asserts"
-  ],
   "notebooks/topics/databricks/databricks.ipynb": [
     "long-setup",
     "asserts",
@@ -304,46 +292,6 @@
     "what-to-notice",
     "check-yourself",
     "takeaways",
-    "next"
-  ],
-  "notebooks/topics/pyspark/pyspark-coding-challenges.ipynb": [
-    "next"
-  ],
-  "notebooks/topics/pyspark/pyspark-concepts-end-to-end.ipynb": [
-    "next"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-02-dataframe-essentials.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-03-types-functions-and-nulls.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-04-reading-and-writing-data.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-05-spark-sql-and-the-catalog.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-06-joins.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-07-aggregations-and-windows.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-08-nested-and-semi-structured-data.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-09-python-udfs-and-pandas.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-10-batch-pipelines.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-11-structured-streaming.ipynb": [
-    "difficulty"
-  ],
-  "notebooks/topics/pyspark/pyspark-drills-12-execution-and-production.ipynb": [
-    "difficulty",
     "next"
   ],
   "notebooks/topics/python/learning/python-01-values-and-types.ipynb": [
