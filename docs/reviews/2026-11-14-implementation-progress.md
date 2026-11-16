@@ -72,6 +72,61 @@ What remains is R3–R7: grow the numbered lessons, try a librdkafka mock cluste
 Check yourself sections, build real capstones, and fix the small issues. Work through the baseline with
 `scripts/notebook_standards.py --all`.
 
+## R3–R7 implementation (2026-11-15, branch `improve/review-r3-r7`)
+
+Each item below was checked by running every changed notebook and comparing each What to notice note with the
+output. 116 of 170 notebooks now meet the stricter standard (up from 96 of 169). 54 remain in the baseline.
+
+- **R7, learning path.** DataFrames now closes Foundations, and ingestion follows table formats in Store. The Next
+  links at each stage boundary follow that order. The "dropped setup pins" finding was not a real issue: the house
+  convention leaves minor packages unpinned.
+- **R4, Kafka.** confluent-kafka runs against librdkafka's built-in mock cluster (`test.mock.num.brokers`), so Kafka 1–5
+  use a real producer, consumer groups, commits, rebalances and the transaction API. The mock cluster has known gaps,
+  so the lessons state them rather than claim them:
+  - No transactional offsets.
+  - No `read_committed` filtering.
+  - No producer fencing.
+  - Rejoining a group waits out the session timeout. The lessons set `session.timeout.ms=6000`.
+- **R3, lessons expanded.** The following were each rebuilt as full lessons with 3–5 topics, three exercises with
+  runnable solutions, and 4–5 takeaways:
+  - Kafka 1–5;
+  - dbt 1–5, including real microbatch, unit tests, contracts and snapshots with hard deletes;
+  - Airflow 1–3, including dynamic task mapping, trigger rules, DagBag tests, assets with `inlet_events`, Airflow 3's
+    `@daily` interval change, and backfill dry runs;
+  - Ingestion 1–4.
+
+  The dbt and Airflow references got proper takeaways. The dbt minimums rose to dbt-core 1.12 and dbt-duckdb 1.11.
+- **R6, capstone.** `concepts/end-to-end-pipeline-capstone` runs the whole chain: API → dlt → Pandera gate → dbt →
+  Airflow. It sits on the path after the Airflow labs. The audit now ignores modules a notebook writes itself.
+- **Specs.** Every rebuilt notebook's spec is in `docs/reviews/2026-11-migration-tools/specs/`:
+  - `kafka_common.py` and `k1`–`k5`;
+  - `dbt_common.py` and `d1`–`d5`;
+  - `af_common.py` and `a1`–`a3`;
+  - `i1`–`i4`;
+  - `cap.py`.
+
+  Rebuild one with `python specs/<name>.py` after pointing `nbtools.REPO` at your checkout.
+
+Problems hit along the way that the next person will meet again:
+
+- `dag.test()` needs the DAG object assigned at module level.
+- Airflow puts the DAGs folder on `sys.path`; a standalone `DagBag` does not, and a test script must not live inside
+  the DAGs folder.
+- Airflow logs are coloured; strip ANSI codes before filtering them.
+- With `merge` on DuckDB, dbt's `on_schema_change='ignore'` fails the run instead of dropping the column.
+- `dbt retry` repeats the failed command exactly.
+- dlt's `schema_contract="freeze"` also freezes table creation.
+- Switching an existing dlt table that has child tables from `append` to `merge` fails.
+
+### Still open
+
+- **R5.** 36 reference notebooks still have the generic Check yourself prompt and no exercises. 40 have their Where it
+  matters / Watch out for pair in the Setup cell, and 42 have too few notes. Run
+  `scripts/notebook_standards.py --all` to list them.
+- **The three in-memory capstones** (`batch-lakehouse-capstone`, `streaming-orders-capstone`, `cdc-to-scd2-capstone`)
+  are still short drills, and they are baselined.
+- **Concepts split, site UI and folder redesign:** unchanged from the list above.
+
 ## How the work was done (reusable helpers)
 
 One-off helpers are saved in `docs/reviews/2026-11-migration-tools/`. Paths inside them point at the scratch
