@@ -28,6 +28,110 @@
   "drill-03-7-solution": {
    "fingerprint": "cdbe57ed4961fd83e2c66ecb5de584d99bcf05dedeb20493d261a2437069edfe",
    "blocks": []
+  },
+  "drill-03-8-solution": {
+   "fingerprint": "6e27fd794f6206d3238d08db340e1b60f2f7b2ca9acd487cc484977f33607a8a",
+   "blocks": []
+  },
+  "drill-03-9-solution": {
+   "fingerprint": "9da6181737286fd727c2be3a371273f0607aa2c53f51c1fbf2f5270e9aadced1",
+   "blocks": []
+  },
+  "drill-03-10-solution": {
+   "fingerprint": "a19e2851bbeea5639536088d558be5e61dec7ae4ce10ba259e2714c63608c2a2",
+   "blocks": []
+  },
+  "drill-03-11-solution": {
+   "fingerprint": "82665a3248df314171dc832e61cc4470928ebf25ba2699dae7e28a5cbeef7dbb",
+   "blocks": []
+  },
+  "drill-03-12-solution": {
+   "fingerprint": "fa828cc2c6ba6520a4934b6696eb39a99e94dbb6aae3aa39c066a874fea8d627",
+   "blocks": []
+  },
+  "drill-03-13-solution": {
+   "fingerprint": "833fbd5ea6bb320c6954e124b1f4769b15b67248228b9ed928aa7a5ce9471334",
+   "blocks": []
+  },
+  "drill-03-14-solution": {
+   "fingerprint": "82e015d4cc60743d851a3e9479b05104d939eb42205cf9d3ad263fc1dd0743b9",
+   "blocks": []
+  },
+  "drill-03-15-solution": {
+   "fingerprint": "fa0406882c9b9cf7efbb451461a1b188effcd039094c1830467134b2bd225369",
+   "blocks": []
+  },
+  "drill-03-16-solution": {
+   "fingerprint": "1731d3c98ef28ab1f405216d2e3b1e0c93c43f98f4fbdb19bf4956896b2a5dd3",
+   "blocks": []
+  },
+  "drill-03-17-solution": {
+   "fingerprint": "4d604eedeceb10e54eb6d95863b2fd1f76c0acbcd324b65d93a2416b9157299e",
+   "blocks": []
+  },
+  "drill-03-18-solution": {
+   "fingerprint": "b210cca822857279ecd92d5fe33e9f44460745f89e8ec76c4664110affdfd4eb",
+   "blocks": []
+  },
+  "drill-03-19-solution": {
+   "fingerprint": "58dc858e749ea8df251a6880f822d94bce81b494a7f5e41f756af479f8e257f5",
+   "blocks": []
+  },
+  "drill-03-20-solution": {
+   "fingerprint": "d5343d2ae08adeba303e32df3e4ccb2e7b90be22a2f401d6cd2fc100c16c272d",
+   "blocks": []
+  },
+  "drill-03-21-solution": {
+   "fingerprint": "ff2a279bd3aa12b1613383fe4f9430965007f005c13482bbc1cb12bebf613e88",
+   "blocks": []
+  },
+  "drill-03-22-solution": {
+   "fingerprint": "ee7faad7542ce2b0b64e78773b90fc5dda8a33f723551fd35d44c28918bf1266",
+   "blocks": []
+  },
+  "drill-03-23-solution": {
+   "fingerprint": "8ba321754a2dbea8c6ed5c8bdc21b2a68f2a7c4c9eda3c538d88ad3fa0cf8650",
+   "blocks": []
+  },
+  "drill-03-24-solution": {
+   "fingerprint": "0867a90e0b3fdca17e23a18d80336c4b298d90dae8da75cfd046e75ed2a9929c",
+   "blocks": []
+  },
+  "drill-03-25-solution": {
+   "fingerprint": "1487182c0b3d106719717633809ee002c9eedf474cbd5389e379afdaa48c4ba2",
+   "blocks": []
+  },
+  "drill-03-26-solution": {
+   "fingerprint": "b86e38f0752ca23ba27290c1f67617cd0558d337a661249acd44ace726504790",
+   "blocks": []
+  },
+  "drill-03-27-solution": {
+   "fingerprint": "c5c5b22d0202001bf5b105639a5ab88451ee1f6243a479cf3ef3eb4ded3b7d0f",
+   "blocks": []
+  },
+  "drill-03-28-solution": {
+   "fingerprint": "7b2165a0088320af774927996e300c5f8ccb1a3481915a33ebe8bdca5594622b",
+   "blocks": []
+  },
+  "drill-03-29-solution": {
+   "fingerprint": "33ee43ffc81701dc22aca108885b530db1b622ef8a7d6e24bc55f18b79356481",
+   "blocks": []
+  },
+  "drill-03-30-solution": {
+   "fingerprint": "27474f9241002b89d1352621afd248c198ab22a67537ce704ab1932879ef4099",
+   "blocks": []
+  },
+  "drill-03-31-solution": {
+   "fingerprint": "0930b80f4e4a7f1c2353658ccf58e14872b35824f64f8e9837382e1ee1ac8b71",
+   "blocks": []
+  },
+  "drill-03-32-solution": {
+   "fingerprint": "e0225855fa5d3117dfa2a6d2d1c469fa1f3cf2539c89103d90b552628b48156e",
+   "blocks": []
+  },
+  "drill-03-33-solution": {
+   "fingerprint": "91c5f5d018e2056052abcfa6ca65b55129343ed68a46c3630ae7f4ec34cf8e71",
+   "blocks": []
   }
  },
  "removed_cells": [],
@@ -70,6 +174,162 @@
   },
   "drill-03-7-solution": {
    "expected_cell": "drill-03-7-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-8-solution": {
+   "expected_cell": "drill-03-8-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-9-solution": {
+   "expected_cell": "drill-03-9-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-10-solution": {
+   "expected_cell": "drill-03-10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-11-solution": {
+   "expected_cell": "drill-03-11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-12-solution": {
+   "expected_cell": "drill-03-12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-13-solution": {
+   "expected_cell": "drill-03-13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-14-solution": {
+   "expected_cell": "drill-03-14-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-15-solution": {
+   "expected_cell": "drill-03-15-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-16-solution": {
+   "expected_cell": "drill-03-16-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-17-solution": {
+   "expected_cell": "drill-03-17-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-18-solution": {
+   "expected_cell": "drill-03-18-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-19-solution": {
+   "expected_cell": "drill-03-19-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-20-solution": {
+   "expected_cell": "drill-03-20-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-21-solution": {
+   "expected_cell": "drill-03-21-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-22-solution": {
+   "expected_cell": "drill-03-22-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-23-solution": {
+   "expected_cell": "drill-03-23-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-24-solution": {
+   "expected_cell": "drill-03-24-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-25-solution": {
+   "expected_cell": "drill-03-25-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-26-solution": {
+   "expected_cell": "drill-03-26-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-27-solution": {
+   "expected_cell": "drill-03-27-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-28-solution": {
+   "expected_cell": "drill-03-28-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-29-solution": {
+   "expected_cell": "drill-03-29-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-30-solution": {
+   "expected_cell": "drill-03-30-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-31-solution": {
+   "expected_cell": "drill-03-31-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-32-solution": {
+   "expected_cell": "drill-03-32-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "drill-03-33-solution": {
+   "expected_cell": "drill-03-33-expected",
    "frames": [
     "result"
    ]
