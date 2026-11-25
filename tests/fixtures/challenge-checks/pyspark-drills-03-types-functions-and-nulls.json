@@ -114,8 +114,17 @@
    "blocks": []
   },
   "drill-03-29-solution": {
-   "fingerprint": "33ee43ffc81701dc22aca108885b530db1b622ef8a7d6e24bc55f18b79356481",
-   "blocks": []
+   "fingerprint": "ac40a866098915129f21b9381b90a31499fa23a9594fef5e9f979e9744e1681c",
+   "blocks": [
+    {
+     "after_statement": 0,
+     "source": "original_customers = customers\ncustomers = customers.union(spark.createDataFrame([\n    (91, \"June signup\", \"West\", date(2024, 6, 30)),\n    (92, \"July signup\", \"West\", date(2024, 7, 1)),\n    (93, \"December signup\", \"West\", date(2024, 12, 31)),\n    (94, \"January signup\", \"West\", date(2025, 1, 1)),\n], customers.schema))"
+    },
+    {
+     "after_statement": 2,
+     "source": "boundary_ids = [row.customer_id for row in result.where(F.col(\"customer_id\") >= 91).collect()]\nassert boundary_ids == [92, 93], boundary_ids\nresult = result.where(F.col(\"customer_id\") < 91)\ncustomers = original_customers"
+    }
+   ]
   },
   "drill-03-30-solution": {
    "fingerprint": "27474f9241002b89d1352621afd248c198ab22a67537ce704ab1932879ef4099",
@@ -130,8 +139,17 @@
    "blocks": []
   },
   "drill-03-33-solution": {
-   "fingerprint": "91c5f5d018e2056052abcfa6ca65b55129343ed68a46c3630ae7f4ec34cf8e71",
-   "blocks": []
+   "fingerprint": "83f39d35df28adef5e5095e448582190df727f06a2c502065352cf488e139422",
+   "blocks": [
+    {
+     "after_statement": 0,
+     "source": "original_customers, original_orders = customers, orders\ncustomers = customers.union(spark.createDataFrame([\n    (91, \"Paid with missing amount\", \"West\", date(2024, 7, 1)),\n    (92, \"Returned with missing amount\", \"West\", date(2024, 7, 1)),\n], customers.schema))\norders = orders.union(spark.createDataFrame([\n    (91, 91, \"paid\", datetime(2026, 1, 5), None),\n    (92, 92, \"returned\", datetime(2026, 1, 5), None),\n], orders.schema))"
+    },
+    {
+     "after_statement": 4,
+     "source": "segments = [(row.customer_id, row.segment) for row in result.where(F.col(\"customer_id\") >= 91).collect()]\nassert segments == [(91, \"regular\"), (92, \"returner\")], segments\nresult = result.where(F.col(\"customer_id\") < 91)\ncustomers, orders = original_customers, original_orders"
+    }
+   ]
   }
  },
  "removed_cells": [],
