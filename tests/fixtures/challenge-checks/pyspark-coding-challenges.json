@@ -500,6 +500,51 @@
      "source": "assert [(r.user_id, r.longest_streak) for r in result.collect()] == [('u1', 3), ('u2', 1), ('u3', 1)]"
     }
    ]
+  },
+  "join-agg-37-solution": {
+   "fingerprint": "a4be82f34b15afdf477a0ac051cfead00ee53f5fd2d8b137a5f463d949ecd98c",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert reconcile_orders(lines.limit(0), payments.limit(0)).count() == 0\nassert reconcile_orders(lines.limit(0), payments).agg(F.sum(\"outstanding\")).first()[0] == -1200\nassert reconcile_orders(lines, payments.limit(0)).agg(F.sum(\"outstanding\")).first()[0] == 2300\nassert result.agg(F.sum(\"sales_cents\")).first()[0] == 2300"
+    }
+   ]
+  },
+  "join-agg-38-solution": {
+   "fingerprint": "626198c96db6e49f4dadd3b8c8492f05e16ad79067644e8e881ad0aef8500a78",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"customers\")).first()[0] == 4\nassert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"paid_orders\")).first()[0] == 0\nassert customer_conversion(customer_base.limit(0), attempts.limit(0)).count() == 0"
+    }
+   ]
+  },
+  "join-agg-39-solution": {
+   "fingerprint": "0ed0649a0b5221dbca47a10f71832f44f4ba41b0c2af0b0dc367561e2ff2d779",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert weighted_prices(product_sales.limit(0)).count() == 0\nassert weighted_prices(product_sales.unionByName(product_sales)).where(\"product = 'coffee'\").first().average_cents == 190.0\nmissing_only = spark.createDataFrame([(\"x\", 3, None)], product_sales.schema)\nassert weighted_prices(missing_only).first().average_cents is None"
+    }
+   ]
+  },
+  "join-agg-40-solution": {
+   "fingerprint": "55c266e1aa365925978aa5d4fd16be0d0c533d01391f3d535e1c3c96fb4198a4",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert missing_sales(coverage, purchases.limit(0)).count() == 4\nassert missing_sales(coverage.limit(0), purchases).count() == 0\nassert missing_sales(coverage, coverage).count() == 0\nassert missing_sales(coverage, purchases.unionByName(purchases)).count() == 2"
+    }
+   ]
+  },
+  "join-agg-41-solution": {
+   "fingerprint": "b161088cd9c84fa8714546a71f23f5adcdc6f8e0018c1b5cec04867d19d3e370",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "empty_report = complete_report(days, regions, report_sales.limit(0))\nassert empty_report.count() == 4\nassert empty_report.agg(F.sum(\"revenue\")).first()[0] == 0\nassert complete_report(days.limit(0), regions, report_sales).count() == 0\nassert result.agg(F.sum(\"revenue\")).first()[0] == 350"
+    }
+   ]
   }
  },
  "removed_cells": [],
@@ -723,6 +768,36 @@
   },
   "65f305c8": {
    "expected_cell": "15c46a2c",
+   "frames": [
+    "result"
+   ]
+  },
+  "join-agg-37-solution": {
+   "expected_cell": "join-agg-37-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "join-agg-38-solution": {
+   "expected_cell": "join-agg-38-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "join-agg-39-solution": {
+   "expected_cell": "join-agg-39-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "join-agg-40-solution": {
+   "expected_cell": "join-agg-40-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "join-agg-41-solution": {
+   "expected_cell": "join-agg-41-expected",
    "frames": [
     "result"
    ]
