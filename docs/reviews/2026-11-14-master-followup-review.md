@@ -140,6 +140,8 @@ round of work hit it exactly.
   before Airflow. Airflow 3's Next link now points to Change data capture.
 - **R2:** the check has seven new rules. The honest baseline is now 73 notebooks (96 of 169 pass, down from the
   reported 168).
+- **R3, R4, R6 and R7:** done on `improve/review-r3-r7`. See the progress handover for what changed and what the
+  mock Kafka cluster cannot show. R5 is still open.
 - **Correction to this review:** an earlier draft listed "no stored outputs" as an issue. It was wrong. The site
   renders outputs from `make outputs` at build time.
 

@@ -106,6 +106,13 @@ class TestAuditHelpers:
         source = "import json, duckdb\nfrom pyspark.sql import functions\nfrom . import local\nimport os.path"
         assert audit_notebooks.third_party_imports(source) == {"duckdb", "pyspark"}
 
+    def test_modules_a_notebook_writes_are_not_packages(self):
+        cells = [
+            {"cell_type": "code", "source": '(folder / "orders_pipeline.py").write_text("x = 1")'},
+            {"cell_type": "markdown", "source": 'See "notes.py".'},
+        ]
+        assert audit_notebooks.written_modules(cells) == {"orders_pipeline"}
+
     def test_broken_links_ignore_urls_and_anchors(self, tmp_path):
         (tmp_path / "exists.ipynb").write_text("{}")
         text = "[a](exists.ipynb) [b](missing.ipynb) [c](https://x.org) [d](#top)"
