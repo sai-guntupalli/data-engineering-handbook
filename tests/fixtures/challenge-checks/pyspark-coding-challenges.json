@@ -506,7 +506,7 @@
    "blocks": [
     {
      "after_statement": 3,
-     "source": "assert reconcile_orders(lines.limit(0), payments.limit(0)).count() == 0\nassert reconcile_orders(lines.limit(0), payments).agg(F.sum(\"outstanding\")).first()[0] == -1200\nassert reconcile_orders(lines, payments.limit(0)).agg(F.sum(\"outstanding\")).first()[0] == 2300\nassert result.agg(F.sum(\"sales_cents\")).first()[0] == 2300"
+     "source": "assert reconcile_orders(lines.limit(0), payments.limit(0)).count() == 0\nassert reconcile_orders(lines.limit(0), payments).agg(F.sum(\"outstanding\")).first()[0] == -1200\nassert reconcile_orders(lines, payments.limit(0)).agg(F.sum(\"outstanding\")).first()[0] == 2300\nassert result.agg(F.sum(\"sales_cents\")).first()[0] == 2300\nequal_lines = spark.createDataFrame([(7, \"A\", 100), (7, \"B\", 100)], lines.schema)\nequal_payments = spark.createDataFrame([(7, 50), (7, 50)], payments.schema)\nassert [tuple(r) for r in reconcile_orders(equal_lines, equal_payments).collect()] == [(7, 200, 100, 100)]"
     }
    ]
   },
@@ -515,16 +515,16 @@
    "blocks": [
     {
      "after_statement": 3,
-     "source": "assert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"customers\")).first()[0] == 4\nassert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"paid_orders\")).first()[0] == 0\nassert customer_conversion(customer_base.limit(0), attempts.limit(0)).count() == 0"
+     "source": "assert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"customers\")).first()[0] == 4\nassert customer_conversion(customer_base, attempts.limit(0)).agg(F.sum(\"paid_orders\")).first()[0] == 0\nassert customer_conversion(customer_base.limit(0), attempts.limit(0)).count() == 0\ncancelled_only = spark.createDataFrame([(99, 1, \"cancelled\")], attempts.schema)\nassert [tuple(r) for r in customer_conversion(customer_base, cancelled_only).collect()] == [(\"east\", 2, 0, 0), (\"north\", 1, 0, 0), (\"west\", 1, 0, 0)]\ntwo_payers = spark.createDataFrame([(20, 1, \"paid\"), (21, 2, \"paid\")], attempts.schema)\nassert tuple(customer_conversion(customer_base, two_payers).first()) == (\"east\", 2, 2, 2)"
     }
    ]
   },
   "join-agg-39-solution": {
-   "fingerprint": "0ed0649a0b5221dbca47a10f71832f44f4ba41b0c2af0b0dc367561e2ff2d779",
+   "fingerprint": "2f4f9ec696ad1d44d7bc59138e732d2aac77a08189d32ba64ef5d362a6e008c2",
    "blocks": [
     {
      "after_statement": 3,
-     "source": "assert weighted_prices(product_sales.limit(0)).count() == 0\nassert weighted_prices(product_sales.unionByName(product_sales)).where(\"product = 'coffee'\").first().average_cents == 190.0\nmissing_only = spark.createDataFrame([(\"x\", 3, None)], product_sales.schema)\nassert weighted_prices(missing_only).first().average_cents is None"
+     "source": "assert weighted_prices(product_sales.limit(0)).count() == 0\nassert weighted_prices(product_sales.unionByName(product_sales)).where(\"product = 'coffee'\").first().average_cents == 190.0\nmissing_only = spark.createDataFrame([(\"x\", 3, None)], product_sales.schema)\nassert weighted_prices(missing_only).first().average_cents is None\nlarge_sale = spark.createDataFrame([(\"bulk\", 50000, 50000)], product_sales.schema)\nassert weighted_prices(large_sale).first().revenue_cents == 2500000000\nrounding_sales = spark.createDataFrame([(\"x\", 1, 100), (\"x\", 2, 101)], product_sales.schema)\nassert weighted_prices(rounding_sales).first().average_cents == 100.67\nzero_price = spark.createDataFrame([(\"free\", 2, 0)], product_sales.schema)\nassert tuple(weighted_prices(zero_price).first()) == (\"free\", 2, 0, 0.0, 0)\nassert tuple(weighted_prices(missing_only).first()) == (\"x\", 0, 0, None, 1)"
     }
    ]
   },
@@ -533,7 +533,7 @@
    "blocks": [
     {
      "after_statement": 3,
-     "source": "assert missing_sales(coverage, purchases.limit(0)).count() == 4\nassert missing_sales(coverage.limit(0), purchases).count() == 0\nassert missing_sales(coverage, coverage).count() == 0\nassert missing_sales(coverage, purchases.unionByName(purchases)).count() == 2"
+     "source": "assert missing_sales(coverage, purchases.limit(0)).count() == 4\nassert missing_sales(coverage.limit(0), purchases).count() == 0\nassert missing_sales(coverage, coverage).count() == 0\nassert missing_sales(coverage, purchases.unionByName(purchases)).count() == 2\noutside = spark.createDataFrame([(\"2026-01-03\", \"coffee\"), (\"2026-01-01\", \"other\")], coverage.schema)\nassert missing_sales(coverage, outside).count() == 4"
     }
    ]
   },
@@ -542,7 +542,7 @@
    "blocks": [
     {
      "after_statement": 4,
-     "source": "empty_report = complete_report(days, regions, report_sales.limit(0))\nassert empty_report.count() == 4\nassert empty_report.agg(F.sum(\"revenue\")).first()[0] == 0\nassert complete_report(days.limit(0), regions, report_sales).count() == 0\nassert result.agg(F.sum(\"revenue\")).first()[0] == 350"
+     "source": "empty_report = complete_report(days, regions, report_sales.limit(0))\nassert empty_report.count() == 4\nassert empty_report.agg(F.sum(\"revenue\")).first()[0] == 0\nassert complete_report(days.limit(0), regions, report_sales).count() == 0\nassert result.agg(F.sum(\"revenue\")).first()[0] == 350\nassert complete_report(days, regions.limit(0), report_sales).count() == 0\nduplicated_sales = complete_report(days, regions, report_sales.unionByName(report_sales))\nassert duplicated_sales.agg(F.sum(\"sales\")).first()[0] == 6\nassert duplicated_sales.where(\"region = 'east' AND day = '2026-01-02'\").first().running_revenue == 600\nassert result.where(\"region = 'west' AND day = '2026-01-01'\").first().running_revenue == 0"
     }
    ]
   }
