@@ -1,0 +1,314 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-09-joins.ipynb",
+ "solutions": {
+  "p09-e01-solution": {
+   "fingerprint": "08e46ebbac348b9f6347b859f6c6a16b5633451df15a775ff9005cacf98a1fd3",
+   "blocks": []
+  },
+  "p09-e02-solution": {
+   "fingerprint": "c05106226e76d06ab3322894e75c5e377472417c0cdfd58affc04509d59d6a4a",
+   "blocks": []
+  },
+  "p09-e03-solution": {
+   "fingerprint": "3fd2007ad41a41d7a2465724b1a74b4ebd4e48b8251c164b52c0089fd434bef9",
+   "blocks": []
+  },
+  "p09-e04-solution": {
+   "fingerprint": "fe34e2b0654137cf4f3b54719efe5d960d9ab00a1ef34201673993e740b368f9",
+   "blocks": []
+  },
+  "p09-e05-solution": {
+   "fingerprint": "96534b2fd06286ac1d37d2f5193534d68c1a9558d1e7741e220c612dd419ecf3",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert result.count() == customers.count()"
+    }
+   ]
+  },
+  "p09-e06-solution": {
+   "fingerprint": "39f6ae0e67da1b44d7f740507637549b3c6c938affb4d2a29eba6f8b8d222570",
+   "blocks": []
+  },
+  "p09-e07-solution": {
+   "fingerprint": "3ae14b75ea0747d8ae3c3bcda0150c366e7033734442898a3bd16e122a1f9aef",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert result.agg(F.sum('revenue')).first()[0] == order_items.agg(F.sum(F.col('qty') * F.col('unit_price'))).first()[0]"
+    }
+   ]
+  },
+  "p09-e08-solution": {
+   "fingerprint": "ac2ff1f3162e393dbb3505089cadfff36cc84ea14a5c32184bf97c4946c15d9d",
+   "blocks": []
+  },
+  "p09-e09-solution": {
+   "fingerprint": "f8ec5909049a7bee199fe578147c207dfed613ed6ad3ee16b62f430e417742b0",
+   "blocks": []
+  },
+  "p09-e10-solution": {
+   "fingerprint": "21c182d87b6af0c22df3cb949a52899885fb3a8c0c296d037d6fc42b4e7a3f73",
+   "blocks": []
+  },
+  "p09-e11-solution": {
+   "fingerprint": "77d838845c1bd12173d6b1f02ab42939a66500fabe437cd8ab92e9bf1f66c3aa",
+   "blocks": []
+  },
+  "p09-e12-solution": {
+   "fingerprint": "e133f7c46991b728b091d1291bd08fd71e355a279f2980b3c0e7da161c7c56ee",
+   "blocks": []
+  },
+  "p09-e13-solution": {
+   "fingerprint": "bc7f8afafae0b83bbc2edd4955ed9caa4960e4a7d83378e104e4d630edea4955",
+   "blocks": []
+  },
+  "p09-e14-solution": {
+   "fingerprint": "bb9e6660d60c19a61418e4993652e13f1a8f7e252588b2f5b7937f1d77c6530a",
+   "blocks": [
+    {
+     "after_statement": 3,
+     "source": "assert result.count() == orders.where('customer_id IN (1, 2, 3)').count()"
+    }
+   ]
+  },
+  "p09-e15-solution": {
+   "fingerprint": "747f0e9c0eca1488c570cfa533c649ffcd7bf1e8e6963005ada4845c7c563e12",
+   "blocks": []
+  },
+  "p09-e16-solution": {
+   "fingerprint": "2b1be98ed3f287061b7bae155c15b3e882a9ffe9f4c156a5c925b187cd5c49f1",
+   "blocks": []
+  },
+  "p09-e17-solution": {
+   "fingerprint": "69d60a98321a54a4009f3537e0ef4661127f2f511cacf0cae6ea8fc2092995c8",
+   "blocks": []
+  },
+  "p09-e18-solution": {
+   "fingerprint": "2da948a74fc10c4bb36bac0489a69a4ad7c9453acd2696d675907657333b9e57",
+   "blocks": []
+  },
+  "p09-e19-solution": {
+   "fingerprint": "72a51f023d91533e2f696582363b2b82576df276571c4869283231f84a075fa3",
+   "blocks": []
+  },
+  "p09-e20-solution": {
+   "fingerprint": "cd9b6cebc080eab2f1e0df3a706c056c7f2011e8d6820913694137bf42bf761c",
+   "blocks": []
+  },
+  "p09-e21-solution": {
+   "fingerprint": "55ffcf1e9711b0d6cf24a8c62b2a9774b9917f7f29571b4ba5a2e2ca46affe3f",
+   "blocks": []
+  },
+  "p09-e22-solution": {
+   "fingerprint": "934f024e0854d016f31e28383db58765167116aab3a8e5d6f54f825f7dbc7a27",
+   "blocks": []
+  },
+  "p09-e23-solution": {
+   "fingerprint": "c29d0a6460110acd7c785433a9f2cbfc948eabf8b9185ab1a1bc4520a7007b8c",
+   "blocks": []
+  },
+  "p09-e24-solution": {
+   "fingerprint": "68bf482692ce33aab1f3dbfbdaa7b4b5526b25f09521dae9a2df9cd2fe8ea453",
+   "blocks": []
+  },
+  "p09-e25-solution": {
+   "fingerprint": "3327fb0434c10cabb87238c6f432a40a89655b2672a6ee8f025c448a70f0dde1",
+   "blocks": []
+  },
+  "p09-e26-solution": {
+   "fingerprint": "27babacbbbf47d2f7b7d432babd70cc8b251b705a0c55ee853f72b868ec210af",
+   "blocks": []
+  },
+  "p09-e27-solution": {
+   "fingerprint": "7663c2bafa9a7d91d3373ea5a92bacb7e7b76aebae82dea213c4e14f7f8cae7b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert result.agg(F.sum('revenue')).first()[0] == order_items.agg(F.sum(F.col('qty') * F.col('unit_price'))).first()[0]"
+    }
+   ]
+  },
+  "p09-e28-solution": {
+   "fingerprint": "a5f20d90ea94f0b2f67685237ac35b6ab3c5ba4c439658a7ba051afb75e22694",
+   "blocks": [
+    {
+     "after_statement": 4,
+     "source": "plain = clicks.join(customers, 'customer_id').groupBy('name').agg(F.count('*').alias('clicks'))\nassert result.exceptAll(plain).count() == 0 and plain.exceptAll(result).count() == 0"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p09-e01-solution": {
+   "expected_cell": "p09-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e02-solution": {
+   "expected_cell": "p09-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e03-solution": {
+   "expected_cell": "p09-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e04-solution": {
+   "expected_cell": "p09-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e05-solution": {
+   "expected_cell": "p09-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e06-solution": {
+   "expected_cell": "p09-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e07-solution": {
+   "expected_cell": "p09-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e08-solution": {
+   "expected_cell": "p09-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e09-solution": {
+   "expected_cell": "p09-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e10-solution": {
+   "expected_cell": "p09-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e11-solution": {
+   "expected_cell": "p09-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e12-solution": {
+   "expected_cell": "p09-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e13-solution": {
+   "expected_cell": "p09-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e14-solution": {
+   "expected_cell": "p09-e14-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e15-solution": {
+   "expected_cell": "p09-e15-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e16-solution": {
+   "expected_cell": "p09-e16-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e17-solution": {
+   "expected_cell": "p09-e17-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e18-solution": {
+   "expected_cell": "p09-e18-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e19-solution": {
+   "expected_cell": "p09-e19-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e20-solution": {
+   "expected_cell": "p09-e20-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e21-solution": {
+   "expected_cell": "p09-e21-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e22-solution": {
+   "expected_cell": "p09-e22-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e23-solution": {
+   "expected_cell": "p09-e23-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e24-solution": {
+   "expected_cell": "p09-e24-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e25-solution": {
+   "expected_cell": "p09-e25-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e26-solution": {
+   "expected_cell": "p09-e26-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e27-solution": {
+   "expected_cell": "p09-e27-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p09-e28-solution": {
+   "expected_cell": "p09-e28-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}
