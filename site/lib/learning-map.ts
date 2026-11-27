@@ -98,8 +98,10 @@ export const LEARNING_PATH: PathStage[] = [
           "pyspark-00-start-here",
           "pyspark-01-how-spark-runs",
           ...["02-dataframe-essentials", "03-types-functions-and-nulls", "04-reading-and-writing-data",
-            "05-spark-sql-and-the-catalog", "06-joins", "07-aggregations-and-windows",
-            "08-nested-and-semi-structured-data", "09-python-udfs-and-pandas", "10-batch-pipelines",
+            "05-spark-sql-and-the-catalog", "06-joins", "07-aggregations-and-windows"]
+            .flatMap((name) => [`pyspark-${name}`, `pyspark-drills-${name}`]),
+          "pyspark-window-functions",
+          ...["08-nested-and-semi-structured-data", "09-python-udfs-and-pandas", "10-batch-pipelines",
             "11-structured-streaming"].flatMap((name) => [`pyspark-${name}`, `pyspark-drills-${name}`]),
           "pyspark-12-internals-and-monitoring",
           "pyspark-13-performance-tuning",
