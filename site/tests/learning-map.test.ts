@@ -18,7 +18,7 @@ describe("the curated learning path", () => {
   });
 
   it("starts with the first Python lesson", () => {
-    expect(nextUp(LEARNING_PATH, () => "not-started")).toEqual({ stageIndex: 0, stepIndex: 0, slug: "python-01-values-and-types" });
+    expect(nextUp(LEARNING_PATH, () => "not-started")).toEqual({ stageIndex: 0, stepIndex: 0, slug: "python-00-start-here" });
   });
 });
 

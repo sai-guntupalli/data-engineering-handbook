@@ -114,7 +114,7 @@ type LoadedNotebook = { summary: NotebookSummary; intro: string; sections: Secti
 type NotebookFile = {
   /** The tool folder, e.g. "python". */
   folder: string;
-  /** Repository-relative path, e.g. notebooks/topics/python/learning/python-01-values-and-types.ipynb. */
+  /** Repository-relative path, e.g. notebooks/topics/python/learning/python-reference-01-values-and-numbers.ipynb. */
   repoPath: string;
   slug: string;
 };
