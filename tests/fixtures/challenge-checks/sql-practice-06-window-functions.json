@@ -1,0 +1,171 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-06-window-functions.ipynb",
+ "solutions": {
+  "s06-e01-solution": {
+   "fingerprint": "bc8773bbe39e6c3ada0d0769ac33559947aa74d783d8a67c6f63978cc47381a3",
+   "blocks": []
+  },
+  "s06-e02-solution": {
+   "fingerprint": "843d5e6377d04a5b1de87892c801eff31fef0ba6bf2dbdd4d7562ed37956f2d0",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (3, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 10), (1, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 10), (2, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 10) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(1, 1, '10.00'), (1, 2, '10.00')], 'ties keep two rows only'"
+    }
+   ]
+  },
+  "s06-e03-solution": {
+   "fingerprint": "5233a131a37adcf2dadb3fba9425a72583b5d9c19cbb8a9bab6d3ef73aed1191",
+   "blocks": []
+  },
+  "s06-e04-solution": {
+   "fingerprint": "cc27c423f63bf8ecc1c1e483cfefa3757dadee169613370116021075eb9028d9",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 10), (2, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 20) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(1, '2026-01-01 00:00:00', '10.00', '10.00'), (2, '2026-01-01 00:00:00', '20.00', '30.00')], 'same timestamp still row by row'"
+    }
+   ]
+  },
+  "s06-e05-solution": {
+   "fingerprint": "8d5bff002f74a0123e9b73877238273ad4c1d0f974561aa376560d49e8509001",
+   "blocks": []
+  },
+  "s06-e06-solution": {
+   "fingerprint": "2c54c8fab37d57f2d72d0023f6468e0ea7e66933883f6ca0dd89285731be98b5",
+   "blocks": []
+  },
+  "s06-e07-solution": {
+   "fingerprint": "e31b1848dd2af79f7e636bcbbf899470754cad4a81df1c03042577632f26e7f2",
+   "blocks": []
+  },
+  "s06-e08-solution": {
+   "fingerprint": "0432b35fbce5690d76eb6bf4aa461876b54fcad6c01c6761b56246e91d718099",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'events': \"SELECT CAST(user_id AS INT) AS user_id, CAST(event AS STRING) AS event, CAST(ts AS TIMESTAMP) AS ts FROM VALUES (1, 'v', TIMESTAMP'2026-01-01 00:00:00'), (1, 'v', TIMESTAMP'2026-01-01 00:00:00'), (1, 'v', TIMESTAMP'2026-01-01 00:00:00'), (1, 'v', TIMESTAMP'2026-01-01 00:00:01') AS events(user_id, event, ts)\"}) == [(1, 'v', '2026-01-01 00:00:00'), (1, 'v', '2026-01-01 00:00:01')], 'triple copy'"
+    }
+   ]
+  },
+  "s06-e09-solution": {
+   "fingerprint": "34c1241e264297c66536c7e86635f4d1e6c49dffd9c1e9be9a7a4cc0231f293f",
+   "blocks": []
+  },
+  "s06-e10-solution": {
+   "fingerprint": "6430399607fe5e470789cd397f491389f7024ed4727fcb36b92ab6960d090ebb",
+   "blocks": []
+  },
+  "s06-e11-solution": {
+   "fingerprint": "5a3c769e3733a03c2cad0d8e36aff50a894412fe18a7894d6952c46410b095e5",
+   "blocks": []
+  },
+  "s06-e12-solution": {
+   "fingerprint": "209272885fd4a6cd9169c15a2c9fe267e7338626f430c12425ada1a58367817d",
+   "blocks": []
+  },
+  "s06-e13-solution": {
+   "fingerprint": "6b1f01b21dce552753356b507d54a54ea9795c3cb91568c12d4c02b60a4dcc78",
+   "blocks": []
+  },
+  "s06-e14-solution": {
+   "fingerprint": "986b85e5c9e1c92ddb179d03f5725b6e1be9831b8ab4bf3423d4beec36f64fc4",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'logins': \"SELECT * FROM VALUES (9, TIMESTAMP'2026-01-01 00:00:00'), (9, TIMESTAMP'2026-01-02 00:00:00'), (9, TIMESTAMP'2026-01-05 00:00:00'), (9, TIMESTAMP'2026-01-06 00:00:00') AS logins(user_id, login_ts)\"}) == [(9, '2026-01-01', '2026-01-02', 2)], 'tie keeps earliest'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s06-e01-solution": {
+   "expected_cell": "s06-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e02-solution": {
+   "expected_cell": "s06-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e03-solution": {
+   "expected_cell": "s06-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e04-solution": {
+   "expected_cell": "s06-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e05-solution": {
+   "expected_cell": "s06-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e06-solution": {
+   "expected_cell": "s06-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e07-solution": {
+   "expected_cell": "s06-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e08-solution": {
+   "expected_cell": "s06-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e09-solution": {
+   "expected_cell": "s06-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e10-solution": {
+   "expected_cell": "s06-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e11-solution": {
+   "expected_cell": "s06-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e12-solution": {
+   "expected_cell": "s06-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e13-solution": {
+   "expected_cell": "s06-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s06-e14-solution": {
+   "expected_cell": "s06-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}

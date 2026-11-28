@@ -1,0 +1,151 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-07-types-casting-and-strings.ipynb",
+ "solutions": {
+  "s07-e01-solution": {
+   "fingerprint": "7f4554bb3210dc91abcf7fc750b55f765de092671c37ba5747c88d0f06ea6677",
+   "blocks": []
+  },
+  "s07-e02-solution": {
+   "fingerprint": "cf5698721813d780425e1bb144207b11d6ddfd95ef8b246f47e6a078dce3756f",
+   "blocks": []
+  },
+  "s07-e03-solution": {
+   "fingerprint": "94e675c9ff233a0af6da77a86137c2388a7e2aaaecb0fb98d669b5e8e7f65ae1",
+   "blocks": []
+  },
+  "s07-e04-solution": {
+   "fingerprint": "eeb640db5722921dabcec3057e1aa4b5476fedb3295f4a31d2f37f62b9dc5b09",
+   "blocks": []
+  },
+  "s07-e05-solution": {
+   "fingerprint": "fd54bc16519c453d0987f9b47bf55089478b8ef3a481b09bf051743af9be0030",
+   "blocks": []
+  },
+  "s07-e06-solution": {
+   "fingerprint": "ea1b3dd21cd2625f1de88dfe49e70e2992ea04e569bcd9f4031e473a2bf4abf7",
+   "blocks": []
+  },
+  "s07-e07-solution": {
+   "fingerprint": "a334861db16602526189e45d53646c28e49241ceb0472839d43cc6daa498327b",
+   "blocks": []
+  },
+  "s07-e08-solution": {
+   "fingerprint": "bf9c67a068c58aa397a20c0ac150ad2c403d2dec48e7dd8688545d56f1d50989",
+   "blocks": []
+  },
+  "s07-e09-solution": {
+   "fingerprint": "941245612063e0c12159aa372e1c853ad9d96bf92a154cccf0fd4d7cfaf9b130",
+   "blocks": []
+  },
+  "s07-e10-solution": {
+   "fingerprint": "30097fa90bea033969ab319757f6731b5299c2091cb5c78a0a1efe490fe0ba01",
+   "blocks": []
+  },
+  "s07-e11-solution": {
+   "fingerprint": "fd9a5d901f268186074ef0269ddd21a2165d57b158d51db5fab44b55e720bf84",
+   "blocks": []
+  },
+  "s07-e12-solution": {
+   "fingerprint": "e272b44a6d8a5845fb2319cc1fe2855e4cc2279cada231bbe46d2855faf5d754",
+   "blocks": []
+  },
+  "s07-e13-solution": {
+   "fingerprint": "5063dd5c0f112dec2f746fcbeec5b30b609e07dfdb232921fcb67feac926306e",
+   "blocks": []
+  },
+  "s07-e14-solution": {
+   "fingerprint": "b7473bffcaa09f445eedf71b9bc0982eac8dfb39497d09dfd9259211ff0c8047",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s07-e01-solution": {
+   "expected_cell": "s07-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e02-solution": {
+   "expected_cell": "s07-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e03-solution": {
+   "expected_cell": "s07-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e04-solution": {
+   "expected_cell": "s07-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e05-solution": {
+   "expected_cell": "s07-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e06-solution": {
+   "expected_cell": "s07-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e07-solution": {
+   "expected_cell": "s07-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e08-solution": {
+   "expected_cell": "s07-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e09-solution": {
+   "expected_cell": "s07-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e10-solution": {
+   "expected_cell": "s07-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e11-solution": {
+   "expected_cell": "s07-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e12-solution": {
+   "expected_cell": "s07-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e13-solution": {
+   "expected_cell": "s07-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s07-e14-solution": {
+   "expected_cell": "s07-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}

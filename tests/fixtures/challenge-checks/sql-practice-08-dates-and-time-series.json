@@ -1,0 +1,166 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-08-dates-and-time-series.ipynb",
+ "solutions": {
+  "s08-e01-solution": {
+   "fingerprint": "2f0561ee14043a39421c2278c968f8c0a074ea14e61c464bbab079589f8eddcc",
+   "blocks": []
+  },
+  "s08-e02-solution": {
+   "fingerprint": "28336093d6630461965d5d25288c789725b8ee579b46dafe0e63615b50d07f95",
+   "blocks": []
+  },
+  "s08-e03-solution": {
+   "fingerprint": "41c850997b5943362df7931601b3a2cb97e519b2983e951bfbee30239519fc10",
+   "blocks": []
+  },
+  "s08-e04-solution": {
+   "fingerprint": "03aac37d85f11b4281ae23fe5fe32474fb6af3a4e184ac589054e3f1350e8508",
+   "blocks": []
+  },
+  "s08-e05-solution": {
+   "fingerprint": "a66da9a459f40d14b1b61d59c8d6eb3571f89888c15dd9146a18aaacf2621849",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'p', TIMESTAMP'2026-01-04 23:00:00', 5), (2, 1, 'p', TIMESTAMP'2026-01-05 00:00:00', 7) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [('2025-12-29', '5.00'), ('2026-01-05', '7.00')], 'Sunday belongs to the previous week'"
+    }
+   ]
+  },
+  "s08-e06-solution": {
+   "fingerprint": "81574cbb557a9b284d8b1dfa77c394695dba2ea4fb9bdc5786882fb370cee9c8",
+   "blocks": []
+  },
+  "s08-e07-solution": {
+   "fingerprint": "455702062b1af6352a6241d7d23c2468bd22e8abc33b28f52335bb9d268539dc",
+   "blocks": []
+  },
+  "s08-e08-solution": {
+   "fingerprint": "24575c4d3187f2b6fc07706f756c4b5564f2930503b1d3a9d466a859881a4df5",
+   "blocks": []
+  },
+  "s08-e09-solution": {
+   "fingerprint": "7e7932a46a325b67719f4341930ac0344ccefad95eba8275e01556b53465a0dc",
+   "blocks": []
+  },
+  "s08-e10-solution": {
+   "fingerprint": "15a46e540272c04be142e252bcdc5b83b477a0f3050352b7181e550b0b353be0",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'events': \"SELECT CAST(user_id AS INT) AS user_id, CAST(event AS STRING) AS event, CAST(ts AS TIMESTAMP) AS ts FROM VALUES (1, 'a', TIMESTAMP'2026-01-01 09:00:00'), (1, 'b', TIMESTAMP'2026-01-01 09:30:00'), (1, 'c', TIMESTAMP'2026-01-01 10:00:01') AS events(user_id, event, ts)\"}) == [(1, 2, 3)], 'exactly 30 minutes stays in session'"
+    }
+   ]
+  },
+  "s08-e11-solution": {
+   "fingerprint": "d4d3d90598d3922b6f2a6313e093d8ce5df8aedcb05c49e2fb5bd77782af3986",
+   "blocks": []
+  },
+  "s08-e12-solution": {
+   "fingerprint": "ee58bdb510360501fb2eaac6cfd937ef8b426e7ac862c92fe3582d60bb6fc941",
+   "blocks": []
+  },
+  "s08-e13-solution": {
+   "fingerprint": "adc9ab905c12350c75527b1bb7b069875a03240c2bffe878733d4bb0d88ed31d",
+   "blocks": []
+  },
+  "s08-e14-solution": {
+   "fingerprint": "00f58ba0426890c9cbe252e97fcb89f618299130749b545e6dbec4af492ac36d",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'events': \"SELECT CAST(user_id AS INT) AS user_id, CAST(event AS STRING) AS event, CAST(ts AS TIMESTAMP) AS ts FROM VALUES (1, 'v', TIMESTAMP'2026-01-01 10:00:00'), (1, 'v', TIMESTAMP'2026-01-02 10:00:00'), (2, 'v', TIMESTAMP'2026-01-01 23:00:00'), (2, 'v', TIMESTAMP'2026-01-03 10:00:00') AS events(user_id, event, ts)\"}) == [('2026-01-01', 2, 1, 50.0)], 'two users, one returns'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s08-e01-solution": {
+   "expected_cell": "s08-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e02-solution": {
+   "expected_cell": "s08-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e03-solution": {
+   "expected_cell": "s08-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e04-solution": {
+   "expected_cell": "s08-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e05-solution": {
+   "expected_cell": "s08-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e06-solution": {
+   "expected_cell": "s08-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e07-solution": {
+   "expected_cell": "s08-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e08-solution": {
+   "expected_cell": "s08-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e09-solution": {
+   "expected_cell": "s08-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e10-solution": {
+   "expected_cell": "s08-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e11-solution": {
+   "expected_cell": "s08-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e12-solution": {
+   "expected_cell": "s08-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e13-solution": {
+   "expected_cell": "s08-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s08-e14-solution": {
+   "expected_cell": "s08-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
