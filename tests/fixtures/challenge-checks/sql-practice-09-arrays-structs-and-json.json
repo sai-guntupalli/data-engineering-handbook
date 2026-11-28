@@ -1,0 +1,156 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-09-arrays-structs-and-json.ipynb",
+ "solutions": {
+  "s09-e01-solution": {
+   "fingerprint": "d185b91b2b7fdeae4645139e5714e7dceaef50d9ae8a2a0a88addc3cf9cbe994",
+   "blocks": []
+  },
+  "s09-e02-solution": {
+   "fingerprint": "351879261ee982fbf56ccaba8010611e7a636886d032b9daf0579fb490b8b244",
+   "blocks": []
+  },
+  "s09-e03-solution": {
+   "fingerprint": "74248aafe0683c1cabc6557fe128a915b7c669367ff8630ddb018d2226141f7d",
+   "blocks": []
+  },
+  "s09-e04-solution": {
+   "fingerprint": "586b6b5e3f828f5745e64b7c9f1975c73dc2893a6818cc47d68656fec30868f3",
+   "blocks": []
+  },
+  "s09-e05-solution": {
+   "fingerprint": "6d116152dcf83d844ac889d5d1f50839375071ef09490c30779d4d715cd1e729",
+   "blocks": []
+  },
+  "s09-e06-solution": {
+   "fingerprint": "17420040c0c933c35b9c21bb8e007ef2fa6a8d28a32cfd153864a648aa06fe4c",
+   "blocks": []
+  },
+  "s09-e07-solution": {
+   "fingerprint": "03c5d3d48e3bd9cde66075104d7c8f03c2f2cc241dc764b9833259f0fe5c863d",
+   "blocks": []
+  },
+  "s09-e08-solution": {
+   "fingerprint": "d5350d4e1103d2780b43de55fc43a40230bb78aea0b935373a1659b9c6796d3c",
+   "blocks": []
+  },
+  "s09-e09-solution": {
+   "fingerprint": "5e4d4a53074b04d3f76d2c3443ee7e2d86b84e248fc114cd70e90d3abbe16ecf",
+   "blocks": []
+  },
+  "s09-e10-solution": {
+   "fingerprint": "95f9a1b889bde95f39f2033bfa228fe2d0b6f43c1c015300620ea9b0e6a948cf",
+   "blocks": []
+  },
+  "s09-e11-solution": {
+   "fingerprint": "2c6628eeee8adbfcc71e6092416abb2aa4906345d4abd35ee4a883648945c900",
+   "blocks": []
+  },
+  "s09-e12-solution": {
+   "fingerprint": "c64f8799bf3df845c8d772f457109183f43255f037ae453e53b6d08ca4253f10",
+   "blocks": []
+  },
+  "s09-e13-solution": {
+   "fingerprint": "903abf7f263ca2c38101613470252d26b326f1cab0cd02fa16fdbd0496684125",
+   "blocks": []
+  },
+  "s09-e14-solution": {
+   "fingerprint": "9f84b88377176f1b921fccd7f64684f9e823bc7e321c8f29f09055ea0ccab744",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'posts': \"SELECT * FROM VALUES (1, 't', array('x', 'y', 'y')), (2, 't', array('y', 'x')) AS posts(post_id, title, tags)\"}) == [('x', 'y', 2)], 'duplicate tags in one post'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s09-e01-solution": {
+   "expected_cell": "s09-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e02-solution": {
+   "expected_cell": "s09-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e03-solution": {
+   "expected_cell": "s09-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e04-solution": {
+   "expected_cell": "s09-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e05-solution": {
+   "expected_cell": "s09-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e06-solution": {
+   "expected_cell": "s09-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e07-solution": {
+   "expected_cell": "s09-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e08-solution": {
+   "expected_cell": "s09-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e09-solution": {
+   "expected_cell": "s09-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e10-solution": {
+   "expected_cell": "s09-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e11-solution": {
+   "expected_cell": "s09-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e12-solution": {
+   "expected_cell": "s09-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e13-solution": {
+   "expected_cell": "s09-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s09-e14-solution": {
+   "expected_cell": "s09-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
