@@ -1,0 +1,175 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-02-nulls-and-conditional-logic.ipynb",
+ "solutions": {
+  "s02-e01-solution": {
+   "fingerprint": "17aee9c55d45e0ddf0a0fb51ed0422eef49ac64ae5634fcae1ed1ecb9806cfe6",
+   "blocks": []
+  },
+  "s02-e02-solution": {
+   "fingerprint": "fc0e47ff1c544e2e797a1ab404302623fd3889a9cbb2602c20ee8e942a4cd51a",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'employees': \"SELECT CAST(emp_id AS INT) AS emp_id, CAST(name AS STRING) AS name, CAST(dept AS STRING) AS dept, CAST(manager_id AS INT) AS manager_id, CAST(salary AS INT) AS salary, CAST(hire_date AS DATE) AS hire_date FROM VALUES (1, 'a', NULL, NULL, 1, DATE'2020-01-01'), (2, 'b', NULL, NULL, 1, DATE'2020-01-01') AS employees(emp_id, name, dept, manager_id, salary, hire_date)\"}) == [(2, 0, 0)], 'all null depts'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'employees': 'SELECT * FROM (SELECT CAST(NULL AS INT) AS emp_id, CAST(NULL AS STRING) AS name, CAST(NULL AS STRING) AS dept, CAST(NULL AS INT) AS manager_id, CAST(NULL AS INT) AS salary, CAST(NULL AS DATE) AS hire_date) WHERE FALSE'}) == [(0, 0, 0)], 'empty table'"
+    }
+   ]
+  },
+  "s02-e03-solution": {
+   "fingerprint": "57fb37b154cc57e0ccf073b92645803533aeed7dbd93ea98ce3a7c49f4b32f5f",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 5), (2, NULL, 'paid', TIMESTAMP'2026-01-01 00:00:00', 5) AS orders(order_id, customer_id, status, order_ts, amount)\", 'customers': \"SELECT CAST(customer_id AS INT) AS customer_id, CAST(name AS STRING) AS name, CAST(region AS STRING) AS region, CAST(signup_date AS DATE) AS signup_date FROM VALUES (1, 'a', 'N', DATE'2024-01-01'), (2, 'b', 'N', DATE'2024-01-01') AS customers(customer_id, name, region, signup_date)\"}) == [(2, 'b')], 'null customer_id in orders'"
+    }
+   ]
+  },
+  "s02-e04-solution": {
+   "fingerprint": "2a7e48d533b3b083d0bbee629a8f71ec85a746e97e65a0fefa7fe503fb00370e",
+   "blocks": []
+  },
+  "s02-e05-solution": {
+   "fingerprint": "7c9fa4bd3dbad5100e9e20faf0784c4bd461b23a741f1f4a8083aedf3b67f4a7",
+   "blocks": []
+  },
+  "s02-e06-solution": {
+   "fingerprint": "5f20f4e0b0c15ddc7028dbdc554bb78a65b46c4a0c598c1e03a1fa79d199574b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 99.99), (2, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 100), (3, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 500) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(1, '99.99', 'small'), (2, '100.00', 'medium'), (3, '500.00', 'large')], 'boundaries'"
+    }
+   ]
+  },
+  "s02-e07-solution": {
+   "fingerprint": "e6f9c948090b04166f0e84b9e3519458812a7def7c87ff3fed6b3fdb4a1df798",
+   "blocks": []
+  },
+  "s02-e08-solution": {
+   "fingerprint": "cce672e09c0528ee866e70cec14298508ac8927086b183b209857b5114478ab2",
+   "blocks": []
+  },
+  "s02-e09-solution": {
+   "fingerprint": "54d01aed3a7d463dbe1f0a6a581a7b36156d122316b35e9b777c7cb82e2c9a4c",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'scores': \"SELECT * FROM VALUES ('a', CAST(NULL AS INT)) AS scores(student, score)\"}) == [(0, 1, None, 0.0)], 'all null'"
+    }
+   ]
+  },
+  "s02-e10-solution": {
+   "fingerprint": "94c6fbe0b0fecc237f96f2de6aa0e902b52d4099f546503c5edb15dc2b38e644",
+   "blocks": []
+  },
+  "s02-e11-solution": {
+   "fingerprint": "677cf66bafd000c80d758b026f318ca34d074b0441735c1d66c16087a1143e9a",
+   "blocks": []
+  },
+  "s02-e12-solution": {
+   "fingerprint": "a92114264d6c0782e46a12c4b2869b2da17a8b4a472343c21021b75fc8555e89",
+   "blocks": []
+  },
+  "s02-e13-solution": {
+   "fingerprint": "f118fead141c649dbae959bf5c92d6a58900c59e3c793be3802972bd22e1161f",
+   "blocks": []
+  },
+  "s02-e14-solution": {
+   "fingerprint": "6222b6c4cd9704c61a6998ca483bedbc2b5e29e52cdf068e4559020f8bbe1ebc",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s02-e01-solution": {
+   "expected_cell": "s02-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e02-solution": {
+   "expected_cell": "s02-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e03-solution": {
+   "expected_cell": "s02-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e04-solution": {
+   "expected_cell": "s02-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e05-solution": {
+   "expected_cell": "s02-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e06-solution": {
+   "expected_cell": "s02-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e07-solution": {
+   "expected_cell": "s02-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e08-solution": {
+   "expected_cell": "s02-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e09-solution": {
+   "expected_cell": "s02-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e10-solution": {
+   "expected_cell": "s02-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e11-solution": {
+   "expected_cell": "s02-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e12-solution": {
+   "expected_cell": "s02-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e13-solution": {
+   "expected_cell": "s02-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s02-e14-solution": {
+   "expected_cell": "s02-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}

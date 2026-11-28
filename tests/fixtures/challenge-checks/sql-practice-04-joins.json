@@ -1,0 +1,185 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-04-joins.ipynb",
+ "solutions": {
+  "s04-e01-solution": {
+   "fingerprint": "5bb664e010dca73fbc07a01f790036e0b8a30d324c456e4ecd12af8e37bc2061",
+   "blocks": []
+  },
+  "s04-e02-solution": {
+   "fingerprint": "485509b80d45f7bfd679f7d207c4bc879c1e45ad7a80dcf3c10fd45f24627c0c",
+   "blocks": []
+  },
+  "s04-e03-solution": {
+   "fingerprint": "efc949dd8265ea3f0562d0b01a606eac6fc1e993a68465ae8f9fcbded38c6cb2",
+   "blocks": []
+  },
+  "s04-e04-solution": {
+   "fingerprint": "316907ee956a8377a3fdfc014486b9500da24881ede32a9fd98e5124eba28638",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 1), (2, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 1) AS orders(order_id, customer_id, status, order_ts, amount)\", 'customers': \"SELECT CAST(customer_id AS INT) AS customer_id, CAST(name AS STRING) AS name, CAST(region AS STRING) AS region, CAST(signup_date AS DATE) AS signup_date FROM VALUES (1, 'a', 'N', DATE'2024-01-01'), (2, 'b', 'N', DATE'2024-01-01') AS customers(customer_id, name, region, signup_date)\"}) == [(1, 'a')], 'two paid orders'"
+    }
+   ]
+  },
+  "s04-e05-solution": {
+   "fingerprint": "db809718e0b437a26501d5685afc906e33ffc619721d36a79fe7d10e137e71f2",
+   "blocks": []
+  },
+  "s04-e06-solution": {
+   "fingerprint": "47f0d10354a5c4015a485f1f5fe7777837863e9279de5d3a3ffba2d26db61871",
+   "blocks": []
+  },
+  "s04-e07-solution": {
+   "fingerprint": "ce3e23184c49837563727f161b6d6c4bec471f74d9c3a9e5cfc4c0df9badd28d",
+   "blocks": []
+  },
+  "s04-e08-solution": {
+   "fingerprint": "96f232e43c93285ce7e86306efc83ad5fc913c7655a8a11084a8927ece3f0fa1",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 100) AS orders(order_id, customer_id, status, order_ts, amount)\", 'order_items': \"SELECT CAST(order_id AS INT) AS order_id, CAST(sku AS STRING) AS sku, CAST(qty AS INT) AS qty, CAST(unit_price AS DECIMAL(8,2)) AS unit_price FROM VALUES (1, 'A', 1, 10), (1, 'B', 2, 10), (1, 'C', 3, 10) AS order_items(order_id, sku, qty, unit_price)\"}) == [(1, '100.00', 6)], 'order with three lines'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 100) AS orders(order_id, customer_id, status, order_ts, amount)\", 'order_items': 'SELECT * FROM (SELECT CAST(NULL AS INT) AS order_id, CAST(NULL AS STRING) AS sku, CAST(NULL AS INT) AS qty, CAST(NULL AS DECIMAL(8,2)) AS unit_price) WHERE FALSE'}) == [(1, '100.00', 0)], 'order without lines'"
+    }
+   ]
+  },
+  "s04-e09-solution": {
+   "fingerprint": "da563f2ff3a5ed236c1e39e8be0df088e87822eb553e41c9360bbd3779a8582b",
+   "blocks": []
+  },
+  "s04-e10-solution": {
+   "fingerprint": "c76ef414bdf231a5f13bba8241251a136367c821d793add63c28d57a14e40e0b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'employees': \"SELECT CAST(emp_id AS INT) AS emp_id, CAST(name AS STRING) AS name, CAST(dept AS STRING) AS dept, CAST(manager_id AS INT) AS manager_id, CAST(salary AS INT) AS salary, CAST(hire_date AS DATE) AS hire_date FROM VALUES (1, 'boss', 'X', NULL, 100, DATE'2020-01-01'), (2, 'peer', 'X', 1, 100, DATE'2020-01-01'), (3, 'low', 'X', 1, 50, DATE'2020-01-01') AS employees(emp_id, name, dept, manager_id, salary, hire_date)\"}) == [('peer', 100, 'boss', 100)], 'equal pay counts'"
+    }
+   ]
+  },
+  "s04-e11-solution": {
+   "fingerprint": "bf33d9b60ed16569a3d615adc5e0d02bd01c715651cb7d2353a81bb867f7bd45",
+   "blocks": []
+  },
+  "s04-e12-solution": {
+   "fingerprint": "bdfead6ca7ab04c958b824db253453a6f59d5afd0605f1b27c4bd6740d415e3f",
+   "blocks": []
+  },
+  "s04-e13-solution": {
+   "fingerprint": "8d6f85a5f7ee1ed6ae64a9581f22c4bb9ce69edaa1c3091eea16542b9b832c7a",
+   "blocks": []
+  },
+  "s04-e14-solution": {
+   "fingerprint": "7b18fb37d374d7fc13f38b0b09fa7cdbcf3ab118174d9c13bda3ee80725555d8",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'order_items': \"SELECT CAST(order_id AS INT) AS order_id, CAST(sku AS STRING) AS sku, CAST(qty AS INT) AS qty, CAST(unit_price AS DECIMAL(8,2)) AS unit_price FROM VALUES (1, 'A', 1, 1), (1, 'B', 1, 1), (1, 'B', 1, 1), (2, 'A', 1, 1), (2, 'B', 1, 1), (3, 'A', 1, 1) AS order_items(order_id, sku, qty, unit_price)\"}) == [('A', 'B', 2)], 'pair in two orders, duplicate line'"
+    }
+   ]
+  },
+  "s04-e15-solution": {
+   "fingerprint": "bf7f4ef334cac1e2d0304021f0dab3d5b34f99dcd21bdf427c4d15f62c669150",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s04-e01-solution": {
+   "expected_cell": "s04-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e02-solution": {
+   "expected_cell": "s04-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e03-solution": {
+   "expected_cell": "s04-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e04-solution": {
+   "expected_cell": "s04-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e05-solution": {
+   "expected_cell": "s04-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e06-solution": {
+   "expected_cell": "s04-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e07-solution": {
+   "expected_cell": "s04-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e08-solution": {
+   "expected_cell": "s04-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e09-solution": {
+   "expected_cell": "s04-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e10-solution": {
+   "expected_cell": "s04-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e11-solution": {
+   "expected_cell": "s04-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e12-solution": {
+   "expected_cell": "s04-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e13-solution": {
+   "expected_cell": "s04-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e14-solution": {
+   "expected_cell": "s04-e14-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s04-e15-solution": {
+   "expected_cell": "s04-e15-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}

@@ -1,0 +1,190 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-01-query-fundamentals.ipynb",
+ "solutions": {
+  "s01-e01-solution": {
+   "fingerprint": "a797dcd7b71014862f57074853e02eb0c5ec928408abbe78e6cf8bef8337c2b1",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 100), (2, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 99.99) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(1, 1, '100.00')], 'boundary 100 included'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'placed', TIMESTAMP'2026-01-01 00:00:00', 500) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [], 'no paid orders'"
+    }
+   ]
+  },
+  "s01-e02-solution": {
+   "fingerprint": "bd3e4dc6e94a3417bb00b4e5e12682b38dc65dc95a2d418cdda90c0d4e784034",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-07 23:59:59', 1), (2, 1, 'paid', TIMESTAMP'2026-01-08 00:00:00', 1), (3, 1, 'paid', TIMESTAMP'2026-01-05 00:00:00', 1), (4, 1, 'paid', TIMESTAMP'2026-01-04 23:59:59', 1) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(3, '2026-01-05 00:00:00'), (1, '2026-01-07 23:59:59')], 'late on the last day'"
+    }
+   ]
+  },
+  "s01-e03-solution": {
+   "fingerprint": "479ab2363800962d4973cd2ca3d458244c42b50c222e0d86bc705c6cfdafc925",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'customers': \"SELECT CAST(customer_id AS INT) AS customer_id, CAST(name AS STRING) AS name, CAST(region AS STRING) AS region, CAST(signup_date AS DATE) AS signup_date FROM VALUES (1, 'RETAIL hub', 'N', DATE'2024-01-01'), (2, 'seafoods ltd', 'N', DATE'2024-01-01'), (3, 'Other', 'N', DATE'2024-01-01') AS customers(customer_id, name, region, signup_date)\"}) == [('RETAIL hub',), ('seafoods ltd',)], 'mixed case'"
+    }
+   ]
+  },
+  "s01-e04-solution": {
+   "fingerprint": "1570c73ba9372f9a1bce46a4664f05edf05bb19465bd6fd6a927e72243d593b3",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'products': \"SELECT CAST(sku AS STRING) AS sku, CAST(category AS STRING) AS category, CAST(list_price AS DECIMAL(8,2)) AS list_price FROM VALUES ('SKU-40050', 'X', 1), ('XSKU-4005', 'X', 1), ('SKU-4005', 'X', 1), ('SKU-4010', 'X', 1) AS products(sku, category, list_price)\"}) == [('SKU-4005', 'X')], 'anchored'"
+    }
+   ]
+  },
+  "s01-e05-solution": {
+   "fingerprint": "380de99afb3b4fc09b0e0013aee8893dd0def6bd45772de15a84f18576b8757c",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (5, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 10), (3, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 10), (9, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 10), (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 10) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(1, '10.00'), (3, '10.00'), (5, '10.00')], 'ties broken by id'"
+    }
+   ]
+  },
+  "s01-e06-solution": {
+   "fingerprint": "69d3cc6656e68dab227c10186e594650d01593f39b3a1c1dd815bb6459760be1",
+   "blocks": []
+  },
+  "s01-e07-solution": {
+   "fingerprint": "01f898a93e2b41a83203eb269d321c7cc1074cba3e704ffa439cf7e15323802d",
+   "blocks": []
+  },
+  "s01-e08-solution": {
+   "fingerprint": "589a867e16bead352c9ac9856ae7efa03308de546b7da9ddd948e065dcd61ea3",
+   "blocks": []
+  },
+  "s01-e09-solution": {
+   "fingerprint": "df21c21ab625f1aa2341c50aa5dc4688ac2bc0ce929e8fd0905be626c507cdc3",
+   "blocks": []
+  },
+  "s01-e10-solution": {
+   "fingerprint": "7727b1c9535987530caffc1f8136749e3e03e7eb7a84b9a70126424ec73e8d0b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 50), (2, 1, 'shipped', TIMESTAMP'2026-01-01 00:00:00', 150), (3, 1, 'placed', TIMESTAMP'2026-01-01 00:00:00', 900) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(2, 'shipped', '150.00')], 'small paid excluded'"
+    }
+   ]
+  },
+  "s01-e11-solution": {
+   "fingerprint": "83ec849dea53afae61473e4331de38dcb60cedf05d34e0a3d572e594cc721916",
+   "blocks": []
+  },
+  "s01-e12-solution": {
+   "fingerprint": "05a912f1fc958e089a125b207b3176e100b4caf07d04bb1327c79421393ff129",
+   "blocks": []
+  },
+  "s01-e13-solution": {
+   "fingerprint": "7e9e16a988b46cf06cf020e14e050c774d75d2bd8bc8be71f47dc6ed883b2e38",
+   "blocks": []
+  },
+  "s01-e14-solution": {
+   "fingerprint": "8f30a28d44ba48ca6fae0500da6039a8a526e038dfbf36400608f54bb99bb21f",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'returned', TIMESTAMP'2026-01-01 00:00:00', 500), (2, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 150), (3, 2, 'paid', TIMESTAMP'2026-01-01 00:00:00', 201) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(2, 1, '201.00')], 'returned excluded'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s01-e01-solution": {
+   "expected_cell": "s01-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e02-solution": {
+   "expected_cell": "s01-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e03-solution": {
+   "expected_cell": "s01-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e04-solution": {
+   "expected_cell": "s01-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e05-solution": {
+   "expected_cell": "s01-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e06-solution": {
+   "expected_cell": "s01-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e07-solution": {
+   "expected_cell": "s01-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e08-solution": {
+   "expected_cell": "s01-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e09-solution": {
+   "expected_cell": "s01-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e10-solution": {
+   "expected_cell": "s01-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e11-solution": {
+   "expected_cell": "s01-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e12-solution": {
+   "expected_cell": "s01-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e13-solution": {
+   "expected_cell": "s01-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s01-e14-solution": {
+   "expected_cell": "s01-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
