@@ -1,0 +1,169 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-08-window-functions.ipynb",
+ "solutions": {
+  "p08-e01-solution": {
+   "fingerprint": "539ef7459721da9db3852269780e5020ecd330570af54d5c5a87c58203724b8f",
+   "blocks": []
+  },
+  "p08-e02-solution": {
+   "fingerprint": "deb18c044d6c1d1bb33845c715b050a7100887e13b4d6b3fc4eddf30c9859150",
+   "blocks": []
+  },
+  "p08-e03-solution": {
+   "fingerprint": "393efad1948a7bccf0cc83fbf0f30e2f405c35d1670272a16dd3a4d9949f19b6",
+   "blocks": []
+  },
+  "p08-e04-solution": {
+   "fingerprint": "76b55275e9674fa5048c9dce59a7cf29c5860d6e05bb780ca60b15c4b325c178",
+   "blocks": []
+  },
+  "p08-e05-solution": {
+   "fingerprint": "71e50532e224f09a107e6fe22a187a0fac69e8e155087b50c2d668ad6dfa43b8",
+   "blocks": []
+  },
+  "p08-e06-solution": {
+   "fingerprint": "7c6ef84e98805f3197dc6207a02af933995dd8fc01ffc57fb126c42fbb51acb6",
+   "blocks": []
+  },
+  "p08-e07-solution": {
+   "fingerprint": "3c88cbd7d2490ad86b7c43dae6355eb87e27bdb85cbf01ea112f710f92ea64b0",
+   "blocks": []
+  },
+  "p08-e08-solution": {
+   "fingerprint": "8f7119878bd03c3ef73d81282266eb192c4421d681ed4ba86ac0ddc97e07a2d0",
+   "blocks": []
+  },
+  "p08-e09-solution": {
+   "fingerprint": "cba9e8f7dd26efaa9884d8de0aeec413ae04976b4f124ba1e308a76fdd0b45cb",
+   "blocks": []
+  },
+  "p08-e10-solution": {
+   "fingerprint": "7f23726efe3bdb4783a8080c0f69a47c11c7dc5da1ef29eb2ae3f4b439d83a01",
+   "blocks": []
+  },
+  "p08-e11-solution": {
+   "fingerprint": "d8649d39a8193781de95a1e91274e5a11fb499e0d013f1cbdf01596fd009974f",
+   "blocks": []
+  },
+  "p08-e12-solution": {
+   "fingerprint": "2a555db3d1910f42278197b72fccffd1da279f80309afe28e49d02bd69f2531f",
+   "blocks": []
+  },
+  "p08-e13-solution": {
+   "fingerprint": "8fa5c396ade843a1f84da8899cc8a6e1605beb9d73764f5959482d026976b86d",
+   "blocks": []
+  },
+  "p08-e14-solution": {
+   "fingerprint": "08846a41034b0bec79dea6ff54926cc73c3bf54d7337690d2c1699ad5dd394bd",
+   "blocks": []
+  },
+  "p08-e15-solution": {
+   "fingerprint": "eb8e826949f1a21505750632a087f329d2f884cd4805553de0bcf3b31729a46e",
+   "blocks": []
+  },
+  "p08-e16-solution": {
+   "fingerprint": "f67d873c8fbe06c931a2c12f2419e6251ee213a4417db2d83797ea0bc6cff5ac",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p08-e01-solution": {
+   "expected_cell": "p08-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e02-solution": {
+   "expected_cell": "p08-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e03-solution": {
+   "expected_cell": "p08-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e04-solution": {
+   "expected_cell": "p08-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e05-solution": {
+   "expected_cell": "p08-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e06-solution": {
+   "expected_cell": "p08-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e07-solution": {
+   "expected_cell": "p08-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e08-solution": {
+   "expected_cell": "p08-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e09-solution": {
+   "expected_cell": "p08-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e10-solution": {
+   "expected_cell": "p08-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e11-solution": {
+   "expected_cell": "p08-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e12-solution": {
+   "expected_cell": "p08-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e13-solution": {
+   "expected_cell": "p08-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e14-solution": {
+   "expected_cell": "p08-e14-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e15-solution": {
+   "expected_cell": "p08-e15-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p08-e16-solution": {
+   "expected_cell": "p08-e16-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}
