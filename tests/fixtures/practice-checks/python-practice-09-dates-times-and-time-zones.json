@@ -1,0 +1,291 @@
+{
+ "order": [
+  "py09-title",
+  "py09-intro",
+  "py09-imports",
+  "py09-harness",
+  "py09-e01-question",
+  "py09-e01-stub",
+  "py09-e01-checks",
+  "py09-e01-solution",
+  "py09-e02-question",
+  "py09-e02-stub",
+  "py09-e02-checks",
+  "py09-e02-solution",
+  "py09-e03-question",
+  "py09-e03-stub",
+  "py09-e03-checks",
+  "py09-e03-solution",
+  "py09-e04-question",
+  "py09-e04-stub",
+  "py09-e04-checks",
+  "py09-e04-solution",
+  "py09-e05-question",
+  "py09-e05-stub",
+  "py09-e05-checks",
+  "py09-e05-solution",
+  "py09-e06-question",
+  "py09-e06-stub",
+  "py09-e06-checks",
+  "py09-e06-solution",
+  "py09-e07-question",
+  "py09-e07-stub",
+  "py09-e07-checks",
+  "py09-e07-solution",
+  "py09-e08-question",
+  "py09-e08-stub",
+  "py09-e08-checks",
+  "py09-e08-solution",
+  "py09-e09-question",
+  "py09-e09-stub",
+  "py09-e09-checks",
+  "py09-e09-solution",
+  "py09-e10-question",
+  "py09-e10-stub",
+  "py09-e10-checks",
+  "py09-e10-solution",
+  "py09-e11-question",
+  "py09-e11-stub",
+  "py09-e11-checks",
+  "py09-e11-solution",
+  "py09-e12-question",
+  "py09-e12-stub",
+  "py09-e12-checks",
+  "py09-e12-solution",
+  "py09-e13-question",
+  "py09-e13-stub",
+  "py09-e13-checks",
+  "py09-e13-solution",
+  "py09-score-title",
+  "py09-score",
+  "py09-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py09-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('iso z', lambda: normalise(\"2026-11-27T09:30:00Z\"), '2026-11-27T09:30:00+00:00')\n",
+    "check('offset', lambda: normalise(\"2026-11-27T15:00:00+05:30\"), '2026-11-27T09:30:00+00:00')\n",
+    "check('day first', lambda: normalise(\"27/11/2026 09:30\"), '2026-11-27T09:30:00+00:00')\n",
+    "check('epoch', lambda: normalise(\"1795771800\"), '2026-11-27T09:30:00+00:00')\n",
+    "check('naive iso is utc', lambda: normalise(\" 2026-11-27 09:30 \"), '2026-11-27T09:30:00+00:00')\n",
+    "check('garbage raises', lambda: raises(lambda: normalise(\"yesterday\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('new york winter', lambda: to_utc(\"2026-01-15T09:00:00\", \"America/New_York\"), '2026-01-15T14:00:00+00:00')\n",
+    "check('new york summer', lambda: to_utc(\"2026-07-15T09:00:00\", \"America/New_York\"), '2026-07-15T13:00:00+00:00')\n",
+    "check('kolkata', lambda: to_utc(\"2026-11-27T09:00:00\", \"Asia/Kolkata\"), '2026-11-27T03:30:00+00:00')\n",
+    "check('utc', lambda: to_utc(\"2026-11-27T09:00:00\", \"UTC\"), '2026-11-27T09:00:00+00:00')\n",
+    "check('crosses date', lambda: to_utc(\"2026-11-27T02:00:00\", \"Asia/Tokyo\"), '2026-11-26T17:00:00+00:00')\n",
+    "check('unknown zone raises KeyError', lambda: raises(lambda: to_utc(\"2026-01-01T00:00:00\", \"Mars/Olympus\"), KeyError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('normal', lambda: local_hours(date(2026, 11, 27), \"America/New_York\"), 24.0)\n",
+    "check('spring forward', lambda: local_hours(date(2026, 3, 8), \"America/New_York\"), 23.0)\n",
+    "check('fall back', lambda: local_hours(date(2026, 11, 1), \"America/New_York\"), 25.0)\n",
+    "check('london spring', lambda: local_hours(date(2026, 3, 29), \"Europe/London\"), 23.0)\n",
+    "check('no dst zone', lambda: local_hours(date(2026, 3, 8), \"Asia/Kolkata\"), 24.0)\n",
+    "check('utc', lambda: local_hours(date(2026, 3, 8), \"UTC\"), 24.0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('wall across dst', lambda: add_hours(\"2026-03-07T12:00:00\", \"America/New_York\", 24, \"wall\"), '2026-03-08T12:00:00-04:00')\n",
+    "check('elapsed across dst', lambda: add_hours(\"2026-03-07T12:00:00\", \"America/New_York\", 24, \"elapsed\"), '2026-03-08T13:00:00-04:00')\n",
+    "check('same without dst', lambda: add_hours(\"2026-06-01T12:00:00\", \"America/New_York\", 24, \"elapsed\"), '2026-06-02T12:00:00-04:00')\n",
+    "check('fall back elapsed', lambda: add_hours(\"2026-10-31T12:00:00\", \"America/New_York\", 24, \"elapsed\"), '2026-11-01T11:00:00-05:00')\n",
+    "check('negative', lambda: add_hours(\"2026-03-09T12:00:00\", \"America/New_York\", -24, \"elapsed\"), '2026-03-08T12:00:00-04:00')\n",
+    "check('bad mode raises', lambda: raises(lambda: add_hours(\"2026-01-01T00:00:00\", \"UTC\", 1, \"x\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('november', lambda: month_bounds(date(2026, 11, 27)), ('2026-11-01', '2026-11-30'))\n",
+    "check('leap feb', lambda: month_bounds(date(2028, 2, 10)), ('2028-02-01', '2028-02-29'))\n",
+    "check('non-leap feb', lambda: month_bounds(date(2026, 2, 28)), ('2026-02-01', '2026-02-28'))\n",
+    "check('december', lambda: month_bounds(date(2026, 12, 1)), ('2026-12-01', '2026-12-31'))\n",
+    "check('datetime keeps time', lambda: month_bounds(datetime(2026, 4, 5, 9, 30)), ('2026-04-01T09:30:00', '2026-04-30T09:30:00'))\n",
+    "check('century non-leap', lambda: month_bounds(date(2100, 2, 1)), ('2100-02-01', '2100-02-28'))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('clamp feb', lambda: add_months(date(2026, 1, 31), 1), '2026-02-28')\n",
+    "check('leap', lambda: add_months(date(2028, 1, 31), 1), '2028-02-29')\n",
+    "check('year rollover', lambda: add_months(date(2026, 11, 30), 3), '2027-02-28')\n",
+    "check('negative', lambda: add_months(date(2026, 3, 15), -14), '2025-01-15')\n",
+    "check('zero', lambda: add_months(date(2026, 5, 5), 0), '2026-05-05')\n",
+    "check('twelve', lambda: add_months(date(2028, 2, 29), 12), '2029-02-28')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('one week', lambda: business_days(date(2026, 11, 23), date(2026, 11, 30)), 5)\n",
+    "check('with holiday', lambda: business_days(date(2026, 11, 23), date(2026, 11, 30), [date(2026, 11, 26)]), 4)\n",
+    "check('weekend only', lambda: business_days(date(2026, 11, 28), date(2026, 11, 30)), 0)\n",
+    "check('empty range', lambda: business_days(date(2026, 1, 1), date(2026, 1, 1)), 0)\n",
+    "check('reversed', lambda: business_days(date(2026, 1, 9), date(2026, 1, 1)), 0)\n",
+    "check('holiday on weekend', lambda: business_days(date(2026, 11, 27), date(2026, 12, 1), [date(2026, 11, 28)]), 2)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('gap', lambda: fill_daily({\"2026-11-01\": 5, \"2026-11-04\": 2}), [('2026-11-01', 5), ('2026-11-02', 0), ('2026-11-03', 0), ('2026-11-04', 2)])\n",
+    "check('unordered', lambda: fill_daily({\"2026-11-02\": 1, \"2026-11-01\": 3}), [('2026-11-01', 3), ('2026-11-02', 1)])\n",
+    "check('empty', lambda: fill_daily({}), [])\n",
+    "check('one day', lambda: fill_daily({\"2026-11-01\": 7}), [('2026-11-01', 7)])\n",
+    "check('month boundary', lambda: fill_daily({\"2026-11-30\": 1, \"2026-12-02\": 1}), [('2026-11-30', 1), ('2026-12-01', 0), ('2026-12-02', 1)])\n",
+    "check('count', lambda: len(fill_daily({\"2028-02-01\": 0, \"2028-03-01\": 0})), 30)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('two windows', lambda: window_counts([\"2026-11-27T09:01:00Z\", \"2026-11-27T09:14:59Z\", \"2026-11-27T09:15:00Z\"]), [('2026-11-27T09:00:00+00:00', 2), ('2026-11-27T09:15:00+00:00', 1)])\n",
+    "check('empty', lambda: window_counts([]), [])\n",
+    "check('hourly', lambda: window_counts([\"2026-11-27T09:59:00Z\", \"2026-11-27T10:00:00Z\"], minutes=60), [('2026-11-27T09:00:00+00:00', 1), ('2026-11-27T10:00:00+00:00', 1)])\n",
+    "check('offset input', lambda: window_counts([\"2026-11-27T15:07:00+05:30\"]), [('2026-11-27T09:30:00+00:00', 1)])\n",
+    "check('sorted', lambda: window_counts([\"2026-11-27T10:00:00Z\", \"2026-11-27T09:00:00Z\"]), [('2026-11-27T09:00:00+00:00', 1), ('2026-11-27T10:00:00+00:00', 1)])\n",
+    "check('across midnight', lambda: window_counts([\"2026-11-27T23:59:00Z\", \"2026-11-28T00:01:00Z\"], minutes=30), [('2026-11-27T23:30:00+00:00', 1), ('2026-11-28T00:00:00+00:00', 1)])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('from', lambda: from_epoch_ms(1795771800123), '2026-11-27T09:30:00.123+00:00')\n",
+    "check('to', lambda: to_epoch_ms(\"2026-11-27T09:30:00.123+00:00\"), 1795771800123)\n",
+    "check('round trip', lambda: to_epoch_ms(from_epoch_ms(1700000000999)), 1700000000999)\n",
+    "check('naive is utc', lambda: to_epoch_ms(\"1970-01-01T00:00:01\"), 1000)\n",
+    "check('offset', lambda: to_epoch_ms(\"1970-01-01T05:30:00+05:30\"), 0)\n",
+    "check('before epoch', lambda: from_epoch_ms(-1), '1969-12-31T23:59:59.999+00:00')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('seconds', lambda: humanize(7), '7s')\n",
+    "check('minutes', lambda: humanize(185), '3m 05s')\n",
+    "check('hours', lambda: humanize(3723), '1h 02m 03s')\n",
+    "check('days', lambda: humanize(93784), '1d 02h 03m 04s')\n",
+    "check('zero', lambda: humanize(0), '0s')\n",
+    "check('fraction', lambda: humanize(59.9), '59s')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('november', lambda: iso_week(date(2026, 11, 27)), '2026-W48')\n",
+    "check('early january', lambda: iso_week(date(2027, 1, 1)), '2026-W53')\n",
+    "check('late december', lambda: iso_week(date(2026, 12, 31)), '2026-W53')\n",
+    "check('week 1', lambda: iso_week(date(2026, 1, 1)), '2026-W01')\n",
+    "check('53-week year', lambda: iso_week(date(2026, 12, 28)), '2026-W53')\n",
+    "check('datetime', lambda: iso_week(datetime(2026, 6, 1, 12)), '2026-W23')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('before cutoff', lambda: ship_date(\"2026-11-25T20:00:00Z\", \"America/New_York\"), '2026-11-25')\n",
+    "check('after cutoff', lambda: ship_date(\"2026-11-25T23:00:00Z\", \"America/New_York\"), '2026-11-26')\n",
+    "check('friday late', lambda: ship_date(\"2026-11-27T22:30:00Z\", \"America/New_York\"), '2026-11-30')\n",
+    "check('saturday', lambda: ship_date(\"2026-11-28T12:00:00Z\", \"Europe/London\"), '2026-11-30')\n",
+    "check('utc date differs from local', lambda: ship_date(\"2026-11-26T02:00:00Z\", \"America/Los_Angeles\"), '2026-11-26')\n",
+    "check('custom cutoff', lambda: ship_date(\"2026-11-24T10:30:00Z\", \"Asia/Kolkata\", cutoff_hour=15), '2026-11-25')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py09-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py09-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py09-harness"
+ ]
+}

@@ -1,0 +1,291 @@
+{
+ "order": [
+  "py11-title",
+  "py11-intro",
+  "py11-imports",
+  "py11-harness",
+  "py11-e01-question",
+  "py11-e01-stub",
+  "py11-e01-checks",
+  "py11-e01-solution",
+  "py11-e02-question",
+  "py11-e02-stub",
+  "py11-e02-checks",
+  "py11-e02-solution",
+  "py11-e03-question",
+  "py11-e03-stub",
+  "py11-e03-checks",
+  "py11-e03-solution",
+  "py11-e04-question",
+  "py11-e04-stub",
+  "py11-e04-checks",
+  "py11-e04-solution",
+  "py11-e05-question",
+  "py11-e05-stub",
+  "py11-e05-checks",
+  "py11-e05-solution",
+  "py11-e06-question",
+  "py11-e06-stub",
+  "py11-e06-checks",
+  "py11-e06-solution",
+  "py11-e07-question",
+  "py11-e07-stub",
+  "py11-e07-checks",
+  "py11-e07-solution",
+  "py11-e08-question",
+  "py11-e08-stub",
+  "py11-e08-checks",
+  "py11-e08-solution",
+  "py11-e09-question",
+  "py11-e09-stub",
+  "py11-e09-checks",
+  "py11-e09-solution",
+  "py11-e10-question",
+  "py11-e10-stub",
+  "py11-e10-checks",
+  "py11-e10-solution",
+  "py11-e11-question",
+  "py11-e11-stub",
+  "py11-e11-checks",
+  "py11-e11-solution",
+  "py11-e12-question",
+  "py11-e12-stub",
+  "py11-e12-checks",
+  "py11-e12-solution",
+  "py11-e13-question",
+  "py11-e13-stub",
+  "py11-e13-checks",
+  "py11-e13-solution",
+  "py11-score-title",
+  "py11-score",
+  "py11-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py11-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('order kept', lambda: parallel_map(lambda x: x * x, range(6)), [0, 1, 4, 9, 16, 25])\n",
+    "check('empty', lambda: parallel_map(str, []), [])\n",
+    "check('strings', lambda: parallel_map(str.upper, [\"a\", \"b\"]), ['A', 'B'])\n",
+    "check('is concurrent', lambda: (lambda s: (parallel_map(lambda _: time.sleep(0.2), range(4), workers=4), time.perf_counter() - s < 0.6)[1])(time.perf_counter()), True)\n",
+    "check('error propagates', lambda: raises(lambda: parallel_map(lambda x: 1 / x, [1, 0]), ZeroDivisionError), True)\n",
+    "check('one worker', lambda: parallel_map(abs, [-1, -2], workers=1), [1, 2])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('mixed', lambda: run_jobs({\"b\": lambda: 2, \"a\": lambda: 1 / 0, \"c\": lambda: \"ok\"}), ({'b': 2, 'c': 'ok'}, {'a': 'ZeroDivisionError: division by zero'}))\n",
+    "check('all ok', lambda: run_jobs({\"x\": lambda: 1}), ({'x': 1}, {}))\n",
+    "check('empty', lambda: run_jobs({}), ({}, {}))\n",
+    "check('all fail', lambda: run_jobs({\"k\": lambda: {}[\"missing\"], \"v\": lambda: int(\"x\")}), ({}, {'k': \"KeyError: 'missing'\", 'v': \"ValueError: invalid literal for int() with base 10: 'x'\"}))\n",
+    "check('none result', lambda: run_jobs({\"n\": lambda: None}), ({'n': None}, {}))\n",
+    "check('slow and fast', lambda: run_jobs({\"slow\": lambda: time.sleep(0.1) or \"s\", \"fast\": lambda: \"f\"}), ({'fast': 'f', 'slow': 's'}, {}))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('exact', lambda: locked_total(4, 2500), 10000)\n",
+    "check('one thread', lambda: locked_total(1, 10), 10)\n",
+    "check('no threads', lambda: locked_total(0, 100), 0)\n",
+    "check('no increments', lambda: locked_total(3, 0), 0)\n",
+    "check('many threads', lambda: locked_total(16, 100), 1600)\n",
+    "check('repeatable', lambda: len({locked_total(4, 500) for _ in range(3)}), 1)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('small', lambda: sum_squares_queue([1, 2, 3]), 14)\n",
+    "check('range', lambda: sum_squares_queue(range(100)), 328350)\n",
+    "check('empty', lambda: sum_squares_queue([]), 0)\n",
+    "check('one consumer', lambda: sum_squares_queue([4, 5], consumers=1), 41)\n",
+    "check('more consumers than items', lambda: sum_squares_queue([7], consumers=8), 49)\n",
+    "check('generator', lambda: sum_squares_queue(x for x in range(1000)), 332833500)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('even', lambda: chunk_ranges(10, 2), [(0, 5), (5, 10)])\n",
+    "check('uneven', lambda: chunk_ranges(10, 3), [(0, 4), (4, 7), (7, 10)])\n",
+    "check('more workers than items', lambda: chunk_ranges(2, 4), [(0, 1), (1, 2)])\n",
+    "check('zero', lambda: chunk_ranges(0, 3), [])\n",
+    "check('one worker', lambda: chunk_ranges(5, 1), [(0, 5)])\n",
+    "check('covers all', lambda: sum(b - a for a, b in chunk_ranges(1001, 7)), 1001)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('order', lambda: run(fetch_all([3, 1, 2], lambda i: sleepy(0.01 * i, i * 10))), [30, 10, 20])\n",
+    "check('empty', lambda: run(fetch_all([], lambda i: sleepy(0, i))), [])\n",
+    "check('strings', lambda: run(fetch_all([\"a\"], lambda s: sleepy(0, s.upper()))), ['A'])\n",
+    "check('concurrent', lambda: (lambda s: (run(fetch_all(range(10), lambda i: sleepy(0.2, i))), time.perf_counter() - s < 0.8)[1])(time.perf_counter()), True)\n",
+    "check('error propagates', lambda: raises(lambda: run(fetch_all([1], lambda i: sleepy(0, 1 / 0))), ZeroDivisionError), True)\n",
+    "check('probe', lambda: run(fetch_all([1, 2], Probe().call)), [2, 4])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('results', lambda: run(map_limited(Probe().call, range(5), 2)), [0, 2, 4, 6, 8])\n",
+    "check('peak respected', lambda: (lambda p: (run(map_limited(p.call, range(20), 3)), p.peak)[1])(Probe()), 3)\n",
+    "check('limit one is sequential', lambda: (lambda p: (run(map_limited(p.call, range(5), 1)), p.peak)[1])(Probe()), 1)\n",
+    "check('empty', lambda: run(map_limited(Probe().call, [], 4)), [])\n",
+    "check('limit above items', lambda: (lambda p: (run(map_limited(p.call, range(3), 10)), p.peak)[1])(Probe()), 3)\n",
+    "check('all called', lambda: (lambda p: (run(map_limited(p.call, range(7), 2)), p.calls)[1])(Probe()), 7)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('fast', lambda: run(with_timeout(sleepy(0.01, \"ok\"), 1)), 'ok')\n",
+    "check('slow', lambda: run(with_timeout(sleepy(1, \"late\"), 0.05, \"fallback\")), 'fallback')\n",
+    "check('default none', lambda: run(with_timeout(sleepy(1, 1), 0.05)), None)\n",
+    "check('returns quickly', lambda: (lambda s: (run(with_timeout(sleepy(5, 1), 0.1)), time.perf_counter() - s < 1)[1])(time.perf_counter()), True)\n",
+    "check('errors propagate', lambda: raises(lambda: run(with_timeout(sleepy(0, 1 / 0), 1)), ZeroDivisionError), True)\n",
+    "check('zero result kept', lambda: run(with_timeout(sleepy(0, 0), 1, -1)), 0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('ok', lambda: run(fetch_strict([1, 2, 3], lambda i: sleepy(0.01, i * i))), [1, 4, 9])\n",
+    "check('empty', lambda: run(fetch_strict([], lambda i: sleepy(0, i))), [])\n",
+    "check('group raised', lambda: type(caught(lambda: run(fetch_strict([1, 0], lambda i: sleepy(0, 1 / i))))).__name__, 'ExceptionGroup')\n",
+    "check('member type', lambda: [type(e).__name__ for e in caught(lambda: run(fetch_strict([0], lambda i: sleepy(0, 1 / i)))).exceptions], ['ZeroDivisionError'])\n",
+    "check('order', lambda: run(fetch_strict([3, 1, 2], lambda i: sleepy(0.01 * i, i))), [3, 1, 2])\n",
+    "check('cancels slow siblings', lambda: (lambda s: (caught(lambda: run(fetch_strict([0, 1], lambda i: sleepy(5 * i, 1 / i)))), time.perf_counter() - s < 2)[1])(time.perf_counter()), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('doubles', lambda: run(process_all([3, 1, 2], 2, Probe().call)), [2, 4, 6])\n",
+    "check('empty', lambda: run(process_all([], 3, Probe().call)), [])\n",
+    "check('peak is workers', lambda: (lambda p: (run(process_all(range(12), 3, p.call)), p.peak)[1])(Probe()), 3)\n",
+    "check('one worker', lambda: (lambda p: (run(process_all(range(4), 1, p.call)), p.peak)[1])(Probe()), 1)\n",
+    "check('strings', lambda: run(process_all([\"b\", \"a\"], 2, lambda s: sleepy(0, s * 2))), ['aa', 'bb'])\n",
+    "check('count', lambda: len(run(process_all(range(50), 5, Probe(0).call))), 50)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('results', lambda: run(run_blocking([lambda: 1, lambda: \"two\"])), [1, 'two'])\n",
+    "check('empty', lambda: run(run_blocking([])), [])\n",
+    "check('concurrent', lambda: (lambda s: (run(run_blocking([lambda: time.sleep(0.2)] * 3)), time.perf_counter() - s < 0.5)[1])(time.perf_counter()), True)\n",
+    "check('runs in threads', lambda: len(set(run(run_blocking([lambda: (time.sleep(0.05), threading.get_ident())[1]] * 3)))) > 1, True)\n",
+    "check('error propagates', lambda: raises(lambda: run(run_blocking([lambda: {}['x']])), KeyError), True)\n",
+    "check('order', lambda: run(run_blocking([lambda: (time.sleep(0.1), 'slow')[1], lambda: 'fast'])), ['slow', 'fast'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('burst then deny', lambda: (lambda t: (lambda b: [b.allow() for _ in range(4)])(TokenBucket(1, 3, lambda: t[0])))([0.0]), [True, True, True, False])\n",
+    "check('refill', lambda: (lambda t: (lambda b: [b.allow(), b.allow(), t.__setitem__(0, 1.0), b.allow(), b.allow()])(TokenBucket(1, 1, lambda: t[0])))([0.0]), [True, False, None, True, False])\n",
+    "check('capped at capacity', lambda: (lambda t: (lambda b: [b.allow(), t.__setitem__(0, 100.0), sum(b.allow() for _ in range(5))][2])(TokenBucket(1, 2, lambda: t[0])))([0.0]), 2)\n",
+    "check('fractional rate', lambda: (lambda t: (lambda b: [b.allow(), t.__setitem__(0, 1.0), b.allow(), t.__setitem__(0, 2.0), b.allow()])(TokenBucket(0.5, 1, lambda: t[0])))([0.0]), [True, None, False, None, True])\n",
+    "check('high rate', lambda: (lambda t: (lambda b: [sum(b.allow() for _ in range(10)), t.__setitem__(0, 0.5), sum(b.allow() for _ in range(10))][::2])(TokenBucket(10, 5, lambda: t[0])))([0.0]), [5, 5])\n",
+    "check('thread safe', lambda: (lambda b: sum(ThreadPoolExecutor(8).map(lambda _: b.allow(), range(200))))(TokenBucket(0, 50, lambda: 0.0)), 50)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('fastest wins', lambda: (first_result([lambda: (time.sleep(0.3), \"slow\")[1], lambda: (time.sleep(0.01), \"fast\")[1]])), 'fast')\n",
+    "check('skips failures', lambda: first_result([lambda: 1 / 0, lambda: (time.sleep(0.05), \"ok\")[1]]), 'ok')\n",
+    "check('single', lambda: first_result([lambda: 42]), 42)\n",
+    "check('all fail', lambda: raises(lambda: first_result([lambda: 1 / 0, lambda: {}['k']]), Exception), True)\n",
+    "check('returns early', lambda: (lambda s: (first_result([lambda: time.sleep(1.5), lambda: 'quick']), time.perf_counter() - s < 1)[1])(time.perf_counter()), True)\n",
+    "check('empty raises', lambda: raises(lambda: first_result([]), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py11-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py11-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py11-harness"
+ ]
+}
