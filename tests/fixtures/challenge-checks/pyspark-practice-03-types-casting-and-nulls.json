@@ -1,0 +1,149 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-03-types-casting-and-nulls.ipynb",
+ "solutions": {
+  "p03-e01-solution": {
+   "fingerprint": "bcb3a215599816c57c6cc37de2d45ea727574ab85da5489fe059bd4e06d0f484",
+   "blocks": []
+  },
+  "p03-e02-solution": {
+   "fingerprint": "424881f9270e73c412c9e88f69f9e304ac38caf4f41915ae893760c00202be15",
+   "blocks": []
+  },
+  "p03-e03-solution": {
+   "fingerprint": "c67e1f652a061c693a6fbda9e98a960da5c990c434305800a488d6e31199a224",
+   "blocks": []
+  },
+  "p03-e04-solution": {
+   "fingerprint": "a4f21642efebaa313f90d6f500bf5a2c7c88351a3b82b513db3f3abb004835e4",
+   "blocks": []
+  },
+  "p03-e05-solution": {
+   "fingerprint": "a9d7e60c5d8b97dc7fc3c1916c5ad67943ab501124e91f6fdf34e17f235cca59",
+   "blocks": []
+  },
+  "p03-e06-solution": {
+   "fingerprint": "d84e4888a2dcfbdd098989d9f8715fec0b94331a3773283d7c5bf85930f9742d",
+   "blocks": []
+  },
+  "p03-e07-solution": {
+   "fingerprint": "4c5e1a0cb754b63faa190813da4e88f8597640fedb484bfbb4b058238c72de57",
+   "blocks": []
+  },
+  "p03-e08-solution": {
+   "fingerprint": "efb277ae0c1d2f7da344f57f1cb2424502a33d21930cc9e3f88ae07510665c8d",
+   "blocks": []
+  },
+  "p03-e09-solution": {
+   "fingerprint": "934ef6ec88a7b4300cdc8ca4d96056c80e7d2b8af1a53b601583f6268ead34ff",
+   "blocks": []
+  },
+  "p03-e10-solution": {
+   "fingerprint": "e9814bcd63359ef38693c444906ccc758938df758f8ed6ee3dc5bf2942784afb",
+   "blocks": []
+  },
+  "p03-e11-solution": {
+   "fingerprint": "f4bfb92f349d0b5d6ec2053ec58514018ad99ab9335544fd831c16fc3fbaa18f",
+   "blocks": []
+  },
+  "p03-e12-solution": {
+   "fingerprint": "9130dd23ae5c85ef3168f3bf0c9f4735b5afdce3662f483bd292739df5ce5282",
+   "blocks": []
+  },
+  "p03-e13-solution": {
+   "fingerprint": "b51336a975da9fc9b365b279fd600762cbdabe607e56871643898b1ae81e9e22",
+   "blocks": []
+  },
+  "p03-e14-solution": {
+   "fingerprint": "2b39397b25d3156d78fb7f9ed0212855db4a4b0403a875aa844529722a733049",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p03-e01-solution": {
+   "expected_cell": "p03-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e02-solution": {
+   "expected_cell": "p03-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e03-solution": {
+   "expected_cell": "p03-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e04-solution": {
+   "expected_cell": "p03-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e05-solution": {
+   "expected_cell": "p03-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e06-solution": {
+   "expected_cell": "p03-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e07-solution": {
+   "expected_cell": "p03-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e08-solution": {
+   "expected_cell": "p03-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e09-solution": {
+   "expected_cell": "p03-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e10-solution": {
+   "expected_cell": "p03-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e11-solution": {
+   "expected_cell": "p03-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e12-solution": {
+   "expected_cell": "p03-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e13-solution": {
+   "expected_cell": "p03-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p03-e14-solution": {
+   "expected_cell": "p03-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}
