@@ -1,0 +1,292 @@
+{
+ "order": [
+  "py07-title",
+  "py07-intro",
+  "py07-imports",
+  "py07-harness",
+  "py07-e01-question",
+  "py07-e01-stub",
+  "py07-e01-checks",
+  "py07-e01-solution",
+  "py07-e02-question",
+  "py07-e02-stub",
+  "py07-e02-checks",
+  "py07-e02-solution",
+  "py07-e03-question",
+  "py07-e03-stub",
+  "py07-e03-checks",
+  "py07-e03-solution",
+  "py07-e04-question",
+  "py07-e04-stub",
+  "py07-e04-checks",
+  "py07-e04-solution",
+  "py07-e05-question",
+  "py07-e05-stub",
+  "py07-e05-checks",
+  "py07-e05-solution",
+  "py07-e06-question",
+  "py07-e06-stub",
+  "py07-e06-checks",
+  "py07-e06-solution",
+  "py07-e07-question",
+  "py07-e07-stub",
+  "py07-e07-checks",
+  "py07-e07-solution",
+  "py07-e08-question",
+  "py07-e08-stub",
+  "py07-e08-checks",
+  "py07-e08-solution",
+  "py07-e09-question",
+  "py07-e09-stub",
+  "py07-e09-checks",
+  "py07-e09-solution",
+  "py07-e10-question",
+  "py07-e10-stub",
+  "py07-e10-checks",
+  "py07-e10-solution",
+  "py07-e11-question",
+  "py07-e11-stub",
+  "py07-e11-checks",
+  "py07-e11-solution",
+  "py07-e12-question",
+  "py07-e12-stub",
+  "py07-e12-checks",
+  "py07-e12-solution",
+  "py07-e13-question",
+  "py07-e13-stub",
+  "py07-e13-checks",
+  "py07-e13-solution",
+  "py07-score-title",
+  "py07-score",
+  "py07-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py07-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('direct', lambda: Connection(\"db\", 6543).address(), 'db:6543')\n",
+    "check('from url', lambda: Connection.from_url(\"db.internal:5433\").address(), 'db.internal:5433')\n",
+    "check('default port', lambda: Connection.from_url(\"db\").address(), 'db:5432')\n",
+    "check('subclass type', lambda: type((type(\"Replica\", (Connection,), {})).from_url(\"r:1\")).__name__, 'Replica')\n",
+    "check('port is int', lambda: type(Connection.from_url(\"h:1\").port).__name__, 'int')\n",
+    "check('bad port raises', lambda: raises(lambda: Connection.from_url(\"h:abc\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('percent', lambda: Threshold(0.125).percent, 12.5)\n",
+    "check('update', lambda: (lambda t: (setattr(t, 'value', 1), t.percent)[1])(Threshold(0)), 100)\n",
+    "check('bounds', lambda: (Threshold(0).value, Threshold(1).value), (0, 1))\n",
+    "check('too big raises', lambda: raises(lambda: Threshold(1.5), ValueError), True)\n",
+    "check('bad update raises', lambda: raises(lambda: setattr(Threshold(0.5), 'value', -0.1), ValueError), True)\n",
+    "check('percent read-only', lambda: raises(lambda: setattr(Threshold(0.5), 'percent', 3), AttributeError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('repr', lambda: repr(Money(\"12.50\", \"USD\")), \"Money('12.50', 'USD')\")\n",
+    "check('add', lambda: repr(Money(\"0.1\", \"USD\") + Money(\"0.2\", \"USD\")), \"Money('0.3', 'USD')\")\n",
+    "check('sum', lambda: repr(sum([Money(1, \"EUR\"), Money(\"2.5\", \"EUR\")])), \"Money('3.5', 'EUR')\")\n",
+    "check('equality and hash', lambda: len({Money(\"1.0\", \"USD\"), Money(\"1.00\", \"USD\"), Money(1, \"EUR\")}), 2)\n",
+    "check('mixed currency raises', lambda: raises(lambda: Money(1, \"USD\") + Money(1, \"EUR\"), ValueError), True)\n",
+    "check('not equal to number', lambda: Money(1, \"USD\") == 1, False)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('len and list', lambda: (lambda p: (len(p), list(p)))(Partition([{\"a\": 1}, {\"a\": 2}])), (2, [{'a': 1}, {'a': 2}]))\n",
+    "check('in', lambda: {\"a\": 2} in Partition([{\"a\": 2}]), True)\n",
+    "check('index', lambda: Partition([{\"a\": 1}, {\"a\": 2}])[-1], {'a': 2})\n",
+    "check('slice type', lambda: type(Partition([1, 2, 3])[1:]).__name__, 'Partition')\n",
+    "check('slice content', lambda: list(Partition([1, 2, 3])[::2]), [1, 3])\n",
+    "check('empty is falsy', lambda: (bool(Partition([])), bool(Partition([{}]))), (False, True))\n",
+    "check('column', lambda: Partition([{\"a\": 1}, {\"a\": 5}]).column(\"a\"), [1, 5])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('sort', lambda: [str(v) for v in sorted(map(SemVer, [\"1.10.0\", \"1.9.3\", \"1.9\", \"0.1.2\"]))], ['0.1.2', '1.9.0', '1.9.3', '1.10.0'])\n",
+    "check('max', lambda: str(max(SemVer(\"2\"), SemVer(\"1.99.99\"))), '2.0.0')\n",
+    "check('ge from total_ordering', lambda: SemVer(\"1.2\") >= SemVer(\"1.2.0\"), True)\n",
+    "check('dedupe', lambda: len({SemVer(\"1\"), SemVer(\"1.0\"), SemVer(\"1.0.0\")}), 1)\n",
+    "check('not equal to str', lambda: SemVer(\"1.0.0\") == \"1.0.0\", False)\n",
+    "check('bad part raises', lambda: raises(lambda: SemVer(\"1.x\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('dupes', lambda: dedupe([Event(1, \"click\", 5), Event(1, \"click\", 5), Event(2, \"view\", 5)]), [(1, 'click', 5), (2, 'view', 5)])\n",
+    "check('empty', lambda: dedupe([]), [])\n",
+    "check('order kept', lambda: dedupe([Event(2, \"a\", 1), Event(1, \"a\", 1)]), [(2, 'a', 1), (1, 'a', 1)])\n",
+    "check('ts matters', lambda: dedupe([Event(1, \"a\", 1), Event(1, \"a\", 2)]), [(1, 'a', 1), (1, 'a', 2)])\n",
+    "check('frozen raises', lambda: raises(lambda: setattr(Event(1, \"a\", 1), \"ts\", 2), FrozenInstanceError), True)\n",
+    "check('hash equal', lambda: hash(Event(1, \"a\", 1)) == hash(Event(1, \"a\", 1)), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('normalised', lambda: vars(Job(\"  Daily_Load \", \"@daily\", tags=[\"a\", \"b\", \"a\"])), {'name': 'daily_load', 'schedule': '@daily', 'retries': 3, 'tags': ['a', 'b']})\n",
+    "check('defaults', lambda: vars(Job(\"x\", \"@hourly\")), {'name': 'x', 'schedule': '@hourly', 'retries': 3, 'tags': []})\n",
+    "check('fresh default list', lambda: Job(\"a\", \"s\").tags is not Job(\"b\", \"s\").tags, True)\n",
+    "check('empty name raises', lambda: raises(lambda: Job(\"   \", \"s\"), ValueError), True)\n",
+    "check('retries raises', lambda: raises(lambda: Job(\"a\", \"s\", retries=11), ValueError), True)\n",
+    "check('equality', lambda: Job(\"A\", \"s\") == Job(\"a \", \"s\"), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('priority first', lambda: queue_order([Task(2, 1, \"b\"), Task(1, 5, \"a\")]), ['a', 'b'])\n",
+    "check('then created', lambda: queue_order([Task(1, 9, \"late\"), Task(1, 2, \"early\")]), ['early', 'late'])\n",
+    "check('name ignored, stable', lambda: queue_order([Task(1, 1, \"z\"), Task(1, 1, \"a\")]), ['z', 'a'])\n",
+    "check('empty', lambda: queue_order([]), [])\n",
+    "check('equal ignores name', lambda: Task(1, 1, \"x\") == Task(1, 1, \"y\"), True)\n",
+    "check('less than', lambda: Task(0, 9, \"a\") < Task(1, 0, \"b\"), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('lower', lambda: parse_status(\"paid\"), 'paid')\n",
+    "check('case and spaces', lambda: parse_status(\"  Shipped \"), 'shipped')\n",
+    "check('all', lambda: [parse_status(s) for s in [\"PLACED\", \"cancelled\"]], ['placed', 'cancelled'])\n",
+    "check('unknown raises', lambda: raises(lambda: parse_status(\"refunded\"), ValueError), True)\n",
+    "check('empty raises', lambda: raises(lambda: parse_status(\"\"), ValueError), True)\n",
+    "check('is str', lambda: type(parse_status(\"paid\")).__name__, 'str')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('total', lambda: ListSink().write(range(5), 2), 5)\n",
+    "check('batches', lambda: (lambda s: (s.write([1, 2, 3], 2), s.batches)[1])(ListSink()), [[1, 2], [3]])\n",
+    "check('empty', lambda: ListSink().write([], 3), 0)\n",
+    "check('abstract raises', lambda: raises(lambda: Sink(), TypeError), True)\n",
+    "check('incomplete subclass raises', lambda: raises(lambda: type(\"Half\", (Sink,), {})(), TypeError), True)\n",
+    "check('is a Sink', lambda: isinstance(ListSink(), Sink), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('buffers', lambda: read_all([io.StringIO(\"ab\"), io.StringIO(\"c\")]), 'abc')\n",
+    "check('skips others', lambda: read_all([42, \"text\", io.StringIO(\"x\")]), 'x')\n",
+    "check('empty', lambda: read_all([]), '')\n",
+    "check('custom class', lambda: read_all([type(\"R\", (), {\"read\": lambda self, size=-1: \"custom\"})()]), 'custom')\n",
+    "check('none readable', lambda: read_all([None, 1.5]), '')\n",
+    "check('order kept', lambda: read_all([io.StringIO(c) for c in \"xyz\"]), 'xyz')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('moved', lambda: (lambda p: (p.x, p.y))(Point(1, 2).moved(3, -1)), (4, 1))\n",
+    "check('original unchanged', lambda: (lambda p: (p.moved(1, 1), (p.x, p.y))[1])(Point(0, 0)), (0, 0))\n",
+    "check('typo raises', lambda: raises(lambda: setattr(Point(0, 0), 'z', 1), AttributeError), True)\n",
+    "check('no dict', lambda: hasattr(Point(0, 0), \"__dict__\"), False)\n",
+    "check('slots', lambda: Point.__slots__, ('x', 'y'))\n",
+    "check('floats', lambda: (lambda p: (p.x, p.y))(Point(0.5, 0.5).moved(0.25, 0)), (0.75, 0.5))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('clean', lambda: CleanReader([{\"a\": \" x \", \"b\": 1}, {\"a\": \"  \", \"b\": None}]).read(), [{'a': 'x', 'b': 1}])\n",
+    "check('mro', lambda: [c.__name__ for c in CleanReader.__mro__[:4]], ['CleanReader', 'DropEmptyMixin', 'StripMixin', 'BaseReader'])\n",
+    "check('source untouched', lambda: (lambda rows: (CleanReader(rows).read(), rows)[1])([{\"a\": \" y \"}]), [{'a': ' y '}])\n",
+    "check('empty', lambda: CleanReader([]).read(), [])\n",
+    "check('zero is not empty', lambda: CleanReader([{\"a\": 0}]).read(), [{'a': 0}])\n",
+    "check('strip before drop', lambda: CleanReader([{\"a\": \"   \"}]).read(), [])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py07-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py07-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py07-harness"
+ ]
+}

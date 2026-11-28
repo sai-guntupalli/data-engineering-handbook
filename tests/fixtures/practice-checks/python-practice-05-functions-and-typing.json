@@ -1,0 +1,310 @@
+{
+ "order": [
+  "py05-title",
+  "py05-intro",
+  "py05-imports",
+  "py05-harness",
+  "py05-e01-question",
+  "py05-e01-stub",
+  "py05-e01-checks",
+  "py05-e01-solution",
+  "py05-e02-question",
+  "py05-e02-stub",
+  "py05-e02-checks",
+  "py05-e02-solution",
+  "py05-e03-question",
+  "py05-e03-stub",
+  "py05-e03-checks",
+  "py05-e03-solution",
+  "py05-e04-question",
+  "py05-e04-stub",
+  "py05-e04-checks",
+  "py05-e04-solution",
+  "py05-e05-question",
+  "py05-e05-stub",
+  "py05-e05-checks",
+  "py05-e05-solution",
+  "py05-e06-question",
+  "py05-e06-stub",
+  "py05-e06-checks",
+  "py05-e06-solution",
+  "py05-e07-question",
+  "py05-e07-stub",
+  "py05-e07-checks",
+  "py05-e07-solution",
+  "py05-e08-question",
+  "py05-e08-stub",
+  "py05-e08-checks",
+  "py05-e08-solution",
+  "py05-e09-question",
+  "py05-e09-stub",
+  "py05-e09-checks",
+  "py05-e09-solution",
+  "py05-e10-question",
+  "py05-e10-stub",
+  "py05-e10-checks",
+  "py05-e10-solution",
+  "py05-e11-question",
+  "py05-e11-stub",
+  "py05-e11-checks",
+  "py05-e11-solution",
+  "py05-e12-question",
+  "py05-e12-stub",
+  "py05-e12-checks",
+  "py05-e12-solution",
+  "py05-e13-question",
+  "py05-e13-stub",
+  "py05-e13-checks",
+  "py05-e13-solution",
+  "py05-e14-question",
+  "py05-e14-stub",
+  "py05-e14-checks",
+  "py05-e14-solution",
+  "py05-score-title",
+  "py05-score",
+  "py05-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py05-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('no date', lambda: make_path(\"s3://raw\", \"orders\"), 's3://raw/orders/data.parquet')\n",
+    "check('with date', lambda: make_path(\"s3://raw\", \"orders\", date=\"2026-11-27\"), 's3://raw/orders/date=2026-11-27/data.parquet')\n",
+    "check('format', lambda: make_path(\"b\", \"t\", fmt=\"csv\"), 'b/t/data.csv')\n",
+    "check('both', lambda: make_path(\"b\", \"t\", date=\"d\", fmt=\"json\"), 'b/t/date=d/data.json')\n",
+    "check('date positional raises', lambda: raises(lambda: make_path(\"b\", \"t\", \"2026-11-27\"), TypeError), True)\n",
+    "check('unknown keyword raises', lambda: raises(lambda: make_path(\"b\", \"t\", day=\"x\"), TypeError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('fresh', lambda: add_tag({}, \"pii\"), ['pii'])\n",
+    "check('no shared state', lambda: (add_tag({}, \"a\"), add_tag({}, \"b\")), (['a'], ['b']))\n",
+    "check('adds to given', lambda: add_tag({}, \"b\", [\"a\"]), ['a', 'b'])\n",
+    "check('no duplicate', lambda: add_tag({}, \"a\", [\"a\"]), ['a'])\n",
+    "check('input not mutated', lambda: (lambda t: (add_tag({}, \"z\", t), t)[1])([\"a\"]), ['a'])\n",
+    "check('empty given', lambda: add_tag({}, \"x\", []), ['x'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('sequence', lambda: (lambda acc: [acc(1), acc(2), acc(3)])(make_accumulator()), [1, 3, 6])\n",
+    "check('start', lambda: make_accumulator(10)(5), 15)\n",
+    "check('independent', lambda: (lambda a, b: (a(1), b(100), a(1)))(make_accumulator(), make_accumulator()), (1, 100, 2))\n",
+    "check('negatives', lambda: (lambda acc: [acc(-1), acc(-1)])(make_accumulator()), [-1, -2])\n",
+    "check('floats', lambda: (lambda acc: [acc(0.5), acc(0.25)])(make_accumulator()), [0.5, 0.75])\n",
+    "check('zero', lambda: make_accumulator()(0), 0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('each factor kept', lambda: [m(10) for m in make_multipliers([1, 2, 3])], [10, 20, 30])\n",
+    "check('empty', lambda: make_multipliers([]), [])\n",
+    "check('count', lambda: len(make_multipliers(range(4))), 4)\n",
+    "check('strings repeat', lambda: [m(\"ab\") for m in make_multipliers([0, 2])], ['', 'abab'])\n",
+    "check('negative', lambda: make_multipliers([-1])[0](4), -4)\n",
+    "check('one', lambda: make_multipliers([5])[0](2), 10)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('mixed', lambda: rank([{\"id\": 1, \"region\": \"s\", \"amount\": 5}, {\"id\": 2, \"region\": \"n\", \"amount\": 5}, {\"id\": 3, \"region\": \"n\", \"amount\": 9}]), [3, 2, 1])\n",
+    "check('ties by id', lambda: rank([{\"id\": 9, \"region\": \"n\", \"amount\": 1}, {\"id\": 4, \"region\": \"n\", \"amount\": 1}]), [4, 9])\n",
+    "check('empty', lambda: rank([]), [])\n",
+    "check('one', lambda: rank([{\"id\": 1, \"region\": \"x\", \"amount\": 0}]), [1])\n",
+    "check('floats', lambda: rank([{\"id\": 1, \"region\": \"a\", \"amount\": 0.5}, {\"id\": 2, \"region\": \"a\", \"amount\": 1.5}]), [2, 1])\n",
+    "check('negatives', lambda: rank([{\"id\": 1, \"region\": \"a\", \"amount\": -5}, {\"id\": 2, \"region\": \"a\", \"amount\": -1}]), [2, 1])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('strip then lower', lambda: compose(str.strip, str.lower)(\"  HeLLo \"), 'hello')\n",
+    "check('identity', lambda: compose()(\"same\"), 'same')\n",
+    "check('order matters', lambda: compose(lambda x: x + 1, lambda x: x * 10)(1), 20)\n",
+    "check('one', lambda: compose(abs)(-3), 3)\n",
+    "check('three', lambda: compose(str.split, len, str)(\"a b c\"), '3')\n",
+    "check('reusable', lambda: (lambda f: [f(1), f(2)])(compose(lambda x: x * x)), [1, 4])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('3x3', lambda: grid_paths(3, 3), 6)\n",
+    "check('3x7', lambda: grid_paths(3, 7), 28)\n",
+    "check('1x1', lambda: grid_paths(1, 1), 1)\n",
+    "check('zero', lambda: grid_paths(0, 5), 0)\n",
+    "check('big needs caching', lambda: grid_paths(18, 18), 2333606220)\n",
+    "check('one row', lambda: grid_paths(1, 50), 1)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('decimal', lambda: to_plain(Decimal(\"1.10\")), '1.10')\n",
+    "check('datetime', lambda: to_plain(datetime(2026, 11, 27, 9, 30)), '2026-11-27T09:30:00')\n",
+    "check('date', lambda: to_plain(date(2026, 1, 2)), '2026-01-02')\n",
+    "check('nested', lambda: to_plain({\"a\": [Decimal(\"1\"), (2, {\"b\"})], \"d\": date(2026, 1, 1)}), {'a': ['1', [2, ['b']]], 'd': '2026-01-01'})\n",
+    "check('set sorted', lambda: to_plain({\"b\", \"a\"}), ['a', 'b'])\n",
+    "check('passthrough', lambda: to_plain([\"x\", 1, None, 2.5]), ['x', 1, None, 2.5])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('result passes through', lambda: counted(lambda x, y=1: x + y)(2, y=3), 5)\n",
+    "check('counts', lambda: (lambda f: (f(1), f(2), f.calls)[2])(counted(abs)), 2)\n",
+    "check('starts at zero', lambda: counted(abs).calls, 0)\n",
+    "check('keeps name', lambda: counted(len).__name__, 'len')\n",
+    "check('keeps doc', lambda: counted(str.upper).__doc__ == str.upper.__doc__, True)\n",
+    "check('separate counters', lambda: (lambda a, b: (a(1), a(1), b(1), a.calls, b.calls)[3:])(counted(abs), counted(abs)), (2, 1))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('succeeds third try', lambda: (lambda s: (lambda f: (f(), f.attempts))(retry(3)(lambda: s.pop(0)() if s else 'ok')))([lambda: 1 / 0, lambda: 1 / 0]), ('ok', 3))\n",
+    "check('first try', lambda: (lambda f: (f(2), f.attempts))(retry(3)(lambda x: x * 2)), (4, 1))\n",
+    "check('gives up', lambda: raises(lambda: retry(2)(lambda: 1 / 0)(), ZeroDivisionError), True)\n",
+    "check('other errors not retried', lambda: (lambda f: (raises(f, KeyError), f.attempts))(retry(5, (ValueError,))(lambda: {}['x'])), (True, 1))\n",
+    "check('retries listed error', lambda: (lambda f: (raises(f, ValueError), f.attempts))(retry(4, (ValueError,))(lambda: int('x'))), (True, 4))\n",
+    "check('keeps name', lambda: retry(2)(len).__name__, 'len')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('insert', lambda: route({\"op\": \"insert\", \"row\": {\"a\": 1, \"b\": 2}}), 'insert 2 cols')\n",
+    "check('delete', lambda: route({\"op\": \"delete\", \"id\": 7}), 'delete 7')\n",
+    "check('delete needs int', lambda: route({\"op\": \"delete\", \"id\": \"7\"}), 'ignore')\n",
+    "check('upsert', lambda: route({\"op\": \"upsert\", \"x\": 1}), 'write upsert')\n",
+    "check('batch', lambda: route([{\"op\": \"update\"}, {\"op\": \"?\"}]), ['write update', 'ignore'])\n",
+    "check('not a dict', lambda: route(\"insert\"), 'ignore')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('mixed', lambda: durations([\"job a took 120ms\", \"start\", \"job b took 7ms ok\"]), [120, 7])\n",
+    "check('none', lambda: durations([\"no timing\"]), [])\n",
+    "check('empty', lambda: durations([]), [])\n",
+    "check('first match per line', lambda: durations([\"took 1ms then took 2ms\"]), [1])\n",
+    "check('needs ms', lambda: durations([\"took 5s\"]), [])\n",
+    "check('zero', lambda: durations([\"took 0ms\"]), [0])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('found', lambda: first_match([1, 4, 6], lambda x: x % 2 == 0, -1), 4)\n",
+    "check('default', lambda: first_match([1, 3], lambda x: x > 5, None), None)\n",
+    "check('empty', lambda: first_match([], bool, \"none\"), 'none')\n",
+    "check('generator input', lambda: first_match((x * x for x in range(10)), lambda x: x > 20, 0), 25)\n",
+    "check('stops early', lambda: first_match((1 / x for x in [4, 0]), bool, 9), 0.25)\n",
+    "check('annotated', lambda: first_match.__annotations__['return'].__name__, 'T')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-e14-checks",
+   "metadata": {},
+   "source": [
+    "check('valid', lambda: validate({\"order_id\": 1, \"status\": \"paid\", \"amount\": 9.5}), [])\n",
+    "check('int amount ok', lambda: validate({\"order_id\": 1, \"status\": \"paid\", \"amount\": 9}), [])\n",
+    "check('missing', lambda: validate({\"order_id\": 1}), ['missing amount', 'missing status'])\n",
+    "check('extra and bad', lambda: validate({\"order_id\": \"1\", \"status\": \"paid\", \"amount\": 1.0, \"x\": 0}), ['bad order_id', 'extra x'])\n",
+    "check('bool rejected', lambda: validate({\"order_id\": True, \"status\": \"s\", \"amount\": False}), ['bad amount', 'bad order_id'])\n",
+    "check('empty', lambda: validate({}), ['missing amount', 'missing order_id', 'missing status'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py05-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py05-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py05-harness"
+ ]
+}

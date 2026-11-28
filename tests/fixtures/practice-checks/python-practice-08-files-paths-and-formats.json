@@ -1,0 +1,310 @@
+{
+ "order": [
+  "py08-title",
+  "py08-intro",
+  "py08-imports",
+  "py08-harness",
+  "py08-e01-question",
+  "py08-e01-stub",
+  "py08-e01-checks",
+  "py08-e01-solution",
+  "py08-e02-question",
+  "py08-e02-stub",
+  "py08-e02-checks",
+  "py08-e02-solution",
+  "py08-e03-question",
+  "py08-e03-stub",
+  "py08-e03-checks",
+  "py08-e03-solution",
+  "py08-e04-question",
+  "py08-e04-stub",
+  "py08-e04-checks",
+  "py08-e04-solution",
+  "py08-e05-question",
+  "py08-e05-stub",
+  "py08-e05-checks",
+  "py08-e05-solution",
+  "py08-e06-question",
+  "py08-e06-stub",
+  "py08-e06-checks",
+  "py08-e06-solution",
+  "py08-e07-question",
+  "py08-e07-stub",
+  "py08-e07-checks",
+  "py08-e07-solution",
+  "py08-e08-question",
+  "py08-e08-stub",
+  "py08-e08-checks",
+  "py08-e08-solution",
+  "py08-e09-question",
+  "py08-e09-stub",
+  "py08-e09-checks",
+  "py08-e09-solution",
+  "py08-e10-question",
+  "py08-e10-stub",
+  "py08-e10-checks",
+  "py08-e10-solution",
+  "py08-e11-question",
+  "py08-e11-stub",
+  "py08-e11-checks",
+  "py08-e11-solution",
+  "py08-e12-question",
+  "py08-e12-stub",
+  "py08-e12-checks",
+  "py08-e12-solution",
+  "py08-e13-question",
+  "py08-e13-stub",
+  "py08-e13-checks",
+  "py08-e13-solution",
+  "py08-e14-question",
+  "py08-e14-stub",
+  "py08-e14-checks",
+  "py08-e14-solution",
+  "py08-score-title",
+  "py08-score",
+  "py08-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py08-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('basic', lambda: partition_key(\"warehouse\", \"orders\", date(2026, 1, 5)), 'warehouse/orders/year=2026/month=01/day=05/part-0000.parquet')\n",
+    "check('nested base', lambda: partition_key(\"lake/raw\", \"events\", date(2026, 11, 27)), 'lake/raw/events/year=2026/month=11/day=27/part-0000.parquet')\n",
+    "check('trailing slash', lambda: partition_key(\"lake/\", \"t\", date(2026, 12, 31)), 'lake/t/year=2026/month=12/day=31/part-0000.parquet')\n",
+    "check('leap day', lambda: partition_key(\"b\", \"t\", date(2028, 2, 29)), 'b/t/year=2028/month=02/day=29/part-0000.parquet')\n",
+    "check('parts', lambda: partition_key(\"b\", \"t\", date(2026, 3, 4)).split(\"/\")[2:5], ['year=2026', 'month=03', 'day=04'])\n",
+    "check('datetime works', lambda: partition_key(\"b\", \"t\", datetime(2026, 3, 4, 23)), 'b/t/year=2026/month=03/day=04/part-0000.parquet')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('two suffixes', lambda: base_name(\"raw/orders.csv.gz\"), 'orders')\n",
+    "check('output', lambda: output_path(\"raw/orders.csv.gz\", \".parquet\"), 'raw/orders.parquet')\n",
+    "check('no suffix', lambda: base_name(\"data/README\"), 'README')\n",
+    "check('dotfile', lambda: base_name(\".env\"), '.env')\n",
+    "check('no directory', lambda: output_path(\"users.json\", \".csv\"), 'users.csv')\n",
+    "check('one suffix', lambda: output_path(\"/a/b/c.txt\", \".md\"), '/a/b/c.md')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('csv anywhere', lambda: find_files(make_tree({\"a/1.csv\": \"\", \"a/b/2.csv\": \"\", \"c.txt\": \"\"}), \"*.csv\"), ['a/1.csv', 'a/b/2.csv'])\n",
+    "check('none', lambda: find_files(make_tree({\"x.txt\": \"\"}), \"*.csv\"), [])\n",
+    "check('top level', lambda: find_files(make_tree({\"z.csv\": \"\", \"a.csv\": \"\"}), \"*.csv\"), ['a.csv', 'z.csv'])\n",
+    "check('dirs excluded', lambda: find_files(make_tree({\"data.csv/inner.txt\": \"\"}), \"*.csv\"), [])\n",
+    "check('pattern prefix', lambda: find_files(make_tree({\"part-1.parquet\": \"\", \"x/part-2.parquet\": \"\", \"x/_SUCCESS\": \"\"}), \"part-*\"), ['part-1.parquet', 'x/part-2.parquet'])\n",
+    "check('string root', lambda: find_files(str(make_tree({\"k/v.json\": \"\"})), \"*.json\"), ['k/v.json'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('lines', lambda: count_records(make_tree({\"f\": \"a\\nb\\nc\\n\"}) / \"f\"), 3)\n",
+    "check('blank lines skipped', lambda: count_records(make_tree({\"f\": \"a\\n\\n  \\nb\"}) / \"f\"), 2)\n",
+    "check('empty', lambda: count_records(make_tree({\"f\": \"\"}) / \"f\"), 0)\n",
+    "check('no final newline', lambda: count_records(make_tree({\"f\": \"x\"}) / \"f\"), 1)\n",
+    "check('unicode', lambda: count_records(make_tree({\"f\": \"café\\nnaïve\\n\"}) / \"f\"), 2)\n",
+    "check('missing raises', lambda: raises(lambda: count_records(make_tree({}) / \"nope\"), FileNotFoundError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('content', lambda: (lambda d: (save_state(d / \"s.json\", {\"b\": 2, \"a\": 1}), (d / \"s.json\").read_text())[1])(make_tree({})), '{\"a\": 1, \"b\": 2}')\n",
+    "check('overwrite', lambda: (lambda d: (save_state(d / \"s.json\", {\"v\": 1}), save_state(d / \"s.json\", {\"v\": 2}), json.loads((d / \"s.json\").read_text()))[2])(make_tree({})), {'v': 2})\n",
+    "check('no temp files left', lambda: (lambda d: (save_state(d / \"s.json\", {}), sorted(p.name for p in d.iterdir()))[1])(make_tree({})), ['s.json'])\n",
+    "check('returns path', lambda: (lambda d: save_state(d / \"x.json\", []) == str(d / \"x.json\"))(make_tree({})), True)\n",
+    "check('missing dir raises', lambda: raises(lambda: save_state(make_tree({}) / \"no\" / \"s.json\", {}), FileNotFoundError), True)\n",
+    "check('unicode', lambda: (lambda d: (save_state(d / \"s.json\", {\"city\": \"Zürich\"}), json.loads((d / \"s.json\").read_text(encoding=\"utf-8\")))[1])(make_tree({})), {'city': 'Zürich'})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('types', lambda: read_typed(\"id,amount,name\\n1,9.5,a\\n\", {\"id\": int, \"amount\": float}), [{'id': 1, 'amount': 9.5, 'name': 'a'}])\n",
+    "check('nulls', lambda: read_typed(\"id,amount\\n2,\\n\", {\"id\": int, \"amount\": float}), [{'id': 2, 'amount': None}])\n",
+    "check('quoted comma', lambda: read_typed('id,name\\n1,\"Smith, J\"\\n', {\"id\": int}), [{'id': 1, 'name': 'Smith, J'}])\n",
+    "check('header only', lambda: read_typed(\"a,b\\n\", {}), [])\n",
+    "check('embedded newline', lambda: read_typed('id,note\\n1,\"two\\nlines\"\\n', {\"id\": int}), [{'id': 1, 'note': 'two\\nlines'}])\n",
+    "check('bad value raises', lambda: raises(lambda: read_typed(\"id\\nx\\n\", {\"id\": int}), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('basic', lambda: to_csv([{\"id\": 1, \"name\": \"a\"}], [\"id\", \"name\"]), 'id,name\\n1,a\\n')\n",
+    "check('quoting', lambda: to_csv([{\"name\": 'Smith, \"J\"'}], [\"name\"]), 'name\\n\"Smith, \"\"J\"\"\"\\n')\n",
+    "check('missing and None', lambda: to_csv([{\"id\": None}], [\"id\", \"x\"]), 'id,x\\n,\\n')\n",
+    "check('order', lambda: to_csv([{\"a\": 1, \"b\": 2}], [\"b\", \"a\"]), 'b,a\\n2,1\\n')\n",
+    "check('no rows', lambda: to_csv([], [\"id\"]), 'id\\n')\n",
+    "check('extra keys ignored', lambda: to_csv([{\"a\": 1, \"z\": 9}], [\"a\"]), 'a\\n1\\n')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('mixed', lambda: parse_jsonl('{\"id\": 1}\\nnot json\\n{\"id\": 2}\\n'), ([{'id': 1}, {'id': 2}], [2]))\n",
+    "check('blank lines', lambda: parse_jsonl('\\n{\"a\": 1}\\n\\n'), ([{'a': 1}], []))\n",
+    "check('empty', lambda: parse_jsonl(\"\"), ([], []))\n",
+    "check('non-object', lambda: parse_jsonl('[1, 2]\\n\"x\"\\n{\"ok\": true}'), ([{'ok': True}], [1, 2]))\n",
+    "check('truncated', lambda: parse_jsonl('{\"id\": 1'), ([], [1]))\n",
+    "check('unicode', lambda: parse_jsonl('{\"city\": \"Zürich\"}'), ([{'city': 'Zürich'}], []))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('decimal', lambda: to_json({\"amount\": Decimal(\"1.10\"), \"id\": 1}), '{\"amount\":\"1.10\",\"id\":1}')\n",
+    "check('dates', lambda: to_json({\"d\": date(2026, 1, 2), \"t\": datetime(2026, 1, 2, 3, 4)}), '{\"d\":\"2026-01-02\",\"t\":\"2026-01-02T03:04:00\"}')\n",
+    "check('set and unicode', lambda: to_json({\"tags\": {\"b\", \"a\"}, \"city\": \"Zürich\"}), '{\"city\":\"Zürich\",\"tags\":[\"a\",\"b\"]}')\n",
+    "check('tuple becomes list', lambda: to_json({\"p\": (1, 2)}), '{\"p\":[1,2]}')\n",
+    "check('unsupported raises', lambda: raises(lambda: to_json({'x': object()}), TypeError), True)\n",
+    "check('nested', lambda: to_json({\"a\": [{\"v\": Decimal(\"0.5\")}]}), '{\"a\":[{\"v\":\"0.5\"}]}')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('round trip', lambda: (lambda p: (write_gz(p, [{\"id\": 1}, {\"id\": 2}]), read_gz(p)))(make_tree({}) / \"e.jsonl.gz\"), (2, [{'id': 1}, {'id': 2}]))\n",
+    "check('is gzip', lambda: (lambda p: (write_gz(p, [{}]), p.read_bytes()[:2])[1])(make_tree({}) / \"e.gz\"), b'\\x1f\\x8b')\n",
+    "check('empty', lambda: (lambda p: (write_gz(p, []), read_gz(p)))(make_tree({}) / \"e.gz\"), (0, []))\n",
+    "check('generator input', lambda: (lambda p: write_gz(p, ({\"i\": i} for i in range(5))))(make_tree({}) / \"e.gz\"), 5)\n",
+    "check('unicode', lambda: (lambda p: (write_gz(p, [{\"c\": \"Zürich\"}]), read_gz(p))[1])(make_tree({}) / \"e.gz\"), [{'c': 'Zürich'}])\n",
+    "check('not gzip raises OSError', lambda: raises(lambda: read_gz(make_tree({\"plain.gz\": \"{}\"}) / \"plain.gz\"), OSError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('classic', lambda: region_totals([(1, \"n\", 120.0), (2, \"s\", 70.0), (3, \"n\", 50.0)]), [('n', 2, 170.0), ('s', 1, 70.0)])\n",
+    "check('empty', lambda: region_totals([]), [])\n",
+    "check('tie by region', lambda: region_totals([(1, \"b\", 5.0), (2, \"a\", 5.0)]), [('a', 1, 5.0), ('b', 1, 5.0)])\n",
+    "check('quotes are data', lambda: region_totals([(1, \"o'hare\", 1.0)]), [(\"o'hare\", 1, 1.0)])\n",
+    "check('one region', lambda: region_totals([(1, \"x\", 1.5), (2, \"x\", 2.5)]), [('x', 2, 4.0)])\n",
+    "check('negatives', lambda: region_totals([(1, \"r\", -5.0), (2, \"q\", 1.0)]), [('q', 1, 1.0), ('r', 1, -5.0)])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('insert then update', lambda: apply_batches([[(1, \"a@x\", 1)], [(1, \"b@x\", 2)]]), [(1, 'b@x', 2)])\n",
+    "check('older ignored', lambda: apply_batches([[(1, \"new@x\", 5)], [(1, \"old@x\", 3)]]), [(1, 'new@x', 5)])\n",
+    "check('rerun is idempotent', lambda: (lambda b: apply_batches(b) == apply_batches(b + b))([[(1, \"a\", 1), (2, \"b\", 1)]]), True)\n",
+    "check('empty', lambda: apply_batches([]), [])\n",
+    "check('same batch dup keys', lambda: apply_batches([[(1, \"a\", 1), (1, \"b\", 2)]]), [(1, 'b', 2)])\n",
+    "check('equal timestamp keeps first', lambda: apply_batches([[(1, \"a\", 1)], [(1, \"b\", 1)]]), [(1, 'a', 1)])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('merge', lambda: load_config(\"[job]\\nretries = 5\\n\", {\"job\": {\"retries\": 3, \"name\": \"x\"}}, {}), {'job': {'retries': 5, 'name': 'x'}})\n",
+    "check('env typed', lambda: load_config(\"\", {\"job\": {\"retries\": 3, \"debug\": False, \"rate\": 0.5}}, {\"JOB__RETRIES\": \"7\", \"JOB__DEBUG\": \"true\", \"JOB__RATE\": \"1.5\"}), {'job': {'retries': 7, 'debug': True, 'rate': 1.5}})\n",
+    "check('new table', lambda: load_config(\"[source]\\npath = \\\"s3://raw\\\"\\n\", {\"job\": {}}, {}), {'job': {}, 'source': {'path': 's3://raw'}})\n",
+    "check('defaults untouched', lambda: (lambda d: (load_config(\"[a]\\nx = 2\", d, {}), d)[1])({\"a\": {\"x\": 1}}), {'a': {'x': 1}})\n",
+    "check('unknown env ignored', lambda: load_config(\"\", {\"a\": {\"x\": 1}}, {\"OTHER\": \"1\", \"B__Y\": \"2\"}), {'a': {'x': 1}})\n",
+    "check('bad toml raises ValueError', lambda: raises(lambda: load_config(\"[job\", {}, {}), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-e14-checks",
+   "metadata": {},
+   "source": [
+    "check('union', lambda: union_csvs(make_tree({\"d1.csv\": \"id,a\\n1,x\\n\", \"d2.csv\": \"id,b\\n2,y\\n\"})), (['id', 'a', 'b', '_source'], [['1', 'x', None, 'd1.csv'], ['2', None, 'y', 'd2.csv']]))\n",
+    "check('nested sorted', lambda: union_csvs(make_tree({\"b/1.csv\": \"id\\n2\\n\", \"a/1.csv\": \"id\\n1\\n\"})), (['id', '_source'], [['1', 'a/1.csv'], ['2', 'b/1.csv']]))\n",
+    "check('no files', lambda: union_csvs(make_tree({})), (['_source'], []))\n",
+    "check('header only', lambda: union_csvs(make_tree({\"e.csv\": \"id,a\\n\"})), (['id', 'a', '_source'], []))\n",
+    "check('empty file', lambda: union_csvs(make_tree({\"e.csv\": \"\", \"f.csv\": \"id\\n1\\n\"})), (['id', '_source'], [['1', 'f.csv']]))\n",
+    "check('non-csv ignored', lambda: union_csvs(make_tree({\"x.txt\": \"id\\n1\\n\"})), (['_source'], []))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py08-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py08-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py08-harness"
+ ]
+}
