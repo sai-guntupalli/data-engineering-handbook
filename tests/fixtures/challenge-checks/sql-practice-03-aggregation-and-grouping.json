@@ -1,0 +1,166 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-03-aggregation-and-grouping.ipynb",
+ "solutions": {
+  "s03-e01-solution": {
+   "fingerprint": "d476bbb381ebeaa7d11b2a63d5e1661a690b9d5645352d17e67c2695e29430a1",
+   "blocks": []
+  },
+  "s03-e02-solution": {
+   "fingerprint": "17946c0231443bc34981dca9333cecee310d3e8d9a643943d032097270a53281",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'returned', TIMESTAMP'2026-01-01 00:00:00', 500), (2, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 300), (3, 2, 'paid', TIMESTAMP'2026-01-01 00:00:00', 150), (4, 2, 'paid', TIMESTAMP'2026-01-01 00:00:00', 60) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(2, 2, '210.00')], 'returned rows filtered before counting'"
+    }
+   ]
+  },
+  "s03-e03-solution": {
+   "fingerprint": "d56ae9a228082bbb83810af2ad51303afdfe5ba89ba05929f26a15c01dff752d",
+   "blocks": []
+  },
+  "s03-e04-solution": {
+   "fingerprint": "d651153ad41b195606dd1573fdf17852b7a2968df9df8375034442d4e4c879a1",
+   "blocks": []
+  },
+  "s03-e05-solution": {
+   "fingerprint": "588ca4bae60b20d763722c331ad594b5da48b2de21db70cb06794b9071b5dee8",
+   "blocks": []
+  },
+  "s03-e06-solution": {
+   "fingerprint": "8961af3cee6e07c52e53b5f24e30ee02b2c69addc2e3c21ae72b679eff97c060",
+   "blocks": []
+  },
+  "s03-e07-solution": {
+   "fingerprint": "9572d6db68dfbcfc10103d42f017074557d0e1b82c1efc857cbbc9c8a6c3d34b",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'employees': \"SELECT CAST(emp_id AS INT) AS emp_id, CAST(name AS STRING) AS name, CAST(dept AS STRING) AS dept, CAST(manager_id AS INT) AS manager_id, CAST(salary AS INT) AS salary, CAST(hire_date AS DATE) AS hire_date FROM VALUES (1, 'a', 'X', NULL, 100, DATE'2020-01-01'), (2, 'b', 'X', NULL, 200, DATE'2020-01-01') AS employees(emp_id, name, dept, manager_id, salary, hire_date)\"}) == [('X', 150.0, 150.0)], 'even count interpolates'"
+    }
+   ]
+  },
+  "s03-e08-solution": {
+   "fingerprint": "c86cfc569dc1dcf3b9e5e4cd24dabce115b723f52e921e704db4326f8f68bcce",
+   "blocks": []
+  },
+  "s03-e09-solution": {
+   "fingerprint": "2f4703d6cf50d84b0dfa616146bf6af82c4e065462c2e2900a292ce01433c3ce",
+   "blocks": []
+  },
+  "s03-e10-solution": {
+   "fingerprint": "49f474ff627e7d23bd5d89c040f44b763886975d749aa03e5ef442d7860e9206",
+   "blocks": []
+  },
+  "s03-e11-solution": {
+   "fingerprint": "20c4a2708b45e15e9bf22c5b8cde42409002eee9c9061a7173dee656f97443a2",
+   "blocks": []
+  },
+  "s03-e12-solution": {
+   "fingerprint": "18ef74ab6d6bef024ebb02ff82e37f7d9596e60e3657e2f76b987a778c3f9aa2",
+   "blocks": []
+  },
+  "s03-e13-solution": {
+   "fingerprint": "24abbfb70994807b23e0b8533ebf36901cefcb95f236b7897c8c8799576b59ca",
+   "blocks": []
+  },
+  "s03-e14-solution": {
+   "fingerprint": "8de2ffb55e38ac3cf0efa3988228d88ca57f352d8aea09582725513e2df331a0",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'events': \"SELECT CAST(user_id AS INT) AS user_id, CAST(event AS STRING) AS event, CAST(ts AS TIMESTAMP) AS ts FROM VALUES (1, 'view', TIMESTAMP'2026-01-01 09:00:00'), (1, 'view', TIMESTAMP'2026-01-01 10:00:00'), (2, 'view', TIMESTAMP'2026-01-01 09:00:00'), (2, 'purchase', TIMESTAMP'2026-01-02 09:00:00') AS events(user_id, event, ts)\"}) == [], 'repeat views do not count'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s03-e01-solution": {
+   "expected_cell": "s03-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e02-solution": {
+   "expected_cell": "s03-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e03-solution": {
+   "expected_cell": "s03-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e04-solution": {
+   "expected_cell": "s03-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e05-solution": {
+   "expected_cell": "s03-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e06-solution": {
+   "expected_cell": "s03-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e07-solution": {
+   "expected_cell": "s03-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e08-solution": {
+   "expected_cell": "s03-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e09-solution": {
+   "expected_cell": "s03-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e10-solution": {
+   "expected_cell": "s03-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e11-solution": {
+   "expected_cell": "s03-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e12-solution": {
+   "expected_cell": "s03-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e13-solution": {
+   "expected_cell": "s03-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s03-e14-solution": {
+   "expected_cell": "s03-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
