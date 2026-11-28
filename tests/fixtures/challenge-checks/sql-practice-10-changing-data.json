@@ -1,0 +1,141 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-10-changing-data.ipynb",
+ "solutions": {
+  "s10-e01-solution": {
+   "fingerprint": "a6d1fd1704c80dcd8db4c89b7ceed6ebbce6ee98d6300b9fa1b31b9af49d31fe",
+   "blocks": []
+  },
+  "s10-e02-solution": {
+   "fingerprint": "7a33a0bd48922df8df5028b1644258eef4091b1609da1eb59beec8c85df1a400",
+   "blocks": []
+  },
+  "s10-e03-solution": {
+   "fingerprint": "7796af4428203a748094847ca2f7e2da9c160e71aa0e367dac887e70626aca9a",
+   "blocks": []
+  },
+  "s10-e04-solution": {
+   "fingerprint": "c9538b92c1838af1f01a1adeb1b513590d162727fa71ddf7da1e8a6dcd97f83e",
+   "blocks": []
+  },
+  "s10-e05-solution": {
+   "fingerprint": "da2bba1e30dd44e45f10c37be48f00d1a592774d2ebbe282ad336b6f425079e0",
+   "blocks": []
+  },
+  "s10-e06-solution": {
+   "fingerprint": "5da181ac6058ee2a7f74156a5b1c713947fc55efbcf9dac5295a085b1e7d2bf0",
+   "blocks": []
+  },
+  "s10-e07-solution": {
+   "fingerprint": "b59151d097b608a7125d9beb789ada5cb38b1b2b41635ba2dca5dd8b94ef998a",
+   "blocks": []
+  },
+  "s10-e08-solution": {
+   "fingerprint": "9151f9f2f8e3fb97ca1891f1f942045b695fd0b38bfd91a781ec7519bcb533df",
+   "blocks": []
+  },
+  "s10-e09-solution": {
+   "fingerprint": "5ffa87a2f773a93e37a546ce9617a7d153c1a773e6cc26dc85a694c63251d623",
+   "blocks": []
+  },
+  "s10-e10-solution": {
+   "fingerprint": "f3ac9dbad6dacf33ae8ea69731ca80a97e85c53b6b62388b9e9c35b20ea60518",
+   "blocks": []
+  },
+  "s10-e11-solution": {
+   "fingerprint": "a5cd3d73d69eb9d7164014f1a836aa1c9b819015c807874ec0c877f36a404d9d",
+   "blocks": []
+  },
+  "s10-e12-solution": {
+   "fingerprint": "8cd4678cc55523cf4eeef2661eed3c3e0c22f417af69540744a0186a069b7540",
+   "blocks": []
+  },
+  "s10-e13-solution": {
+   "fingerprint": "a6d964f7ed941fc85740fe6e99427933071bef47c8b8b84d5b1eb05623b34bdd",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s10-e01-solution": {
+   "expected_cell": "s10-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e02-solution": {
+   "expected_cell": "s10-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e03-solution": {
+   "expected_cell": "s10-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e04-solution": {
+   "expected_cell": "s10-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e05-solution": {
+   "expected_cell": "s10-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e06-solution": {
+   "expected_cell": "s10-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e07-solution": {
+   "expected_cell": "s10-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e08-solution": {
+   "expected_cell": "s10-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e09-solution": {
+   "expected_cell": "s10-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e10-solution": {
+   "expected_cell": "s10-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e11-solution": {
+   "expected_cell": "s10-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e12-solution": {
+   "expected_cell": "s10-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s10-e13-solution": {
+   "expected_cell": "s10-e13-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}

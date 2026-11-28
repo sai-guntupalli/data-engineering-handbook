@@ -1,0 +1,197 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-12-query-plans-and-performance.ipynb",
+ "solutions": {
+  "s12-e01-solution": {
+   "fingerprint": "182c0c4b82699cfd213a3cf95100e5d2c9503286c24fda135afef77980296c86",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"ReadSchema: struct<order_id:int,amount:decimal(12,2)>\" in plan(q), 'reads two columns'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert \"GreaterThan(amount,200.00)\" in plan(q), 'filter pushed'"
+    }
+   ]
+  },
+  "s12-e02-solution": {
+   "fingerprint": "a0fe222e995796b6c12fdc8e69f3a2b8629b417112a5290223e4905daf20f232",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"(order_date#\" in \"\".join(plan_lines(q, \"PartitionFilters\")) and \">= 2026-01-12\" in plan(q), 'partition filter'"
+    }
+   ]
+  },
+  "s12-e03-solution": {
+   "fingerprint": "09f94722cfd46c5bd7118d09903e82d03b60cfba81e0b6f94ec24341531b229c",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"GreaterThanOrEqual(ts,\" in plan(q) and \"LessThan(ts,\" in plan(q), 'range pushed'"
+    }
+   ]
+  },
+  "s12-e04-solution": {
+   "fingerprint": "734958b68cbca4ce428eae47bf90b620465afc72f29925b335c3aff6bb222502",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"LeftSemi\" in plan(q), 'semi join'"
+    }
+   ]
+  },
+  "s12-e05-solution": {
+   "fingerprint": "202dfa52f4ceefac29c7336ea2ea5b7c324e7c95d699172ef285f3f4bc176c29",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"BroadcastHashJoin\" in plan(q), 'broadcast join'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert \"SortMergeJoin\" not in plan(q), 'no sort-merge join'"
+    }
+   ]
+  },
+  "s12-e06-solution": {
+   "fingerprint": "ded043a70b1d6d0a24fd293cee0d47fda9c606bfe908e923ae199345be22f512",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"TakeOrderedAndProject\" in plan(q), 'top-n operator'"
+    }
+   ]
+  },
+  "s12-e07-solution": {
+   "fingerprint": "d61b33232ed1ed99eadf72bf1653702eddac763cfceeab43a5fc74f0117d71ee",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert not plan_lines(q, \"HashAggregate\"), 'no de-duplicating aggregate'"
+    }
+   ]
+  },
+  "s12-e08-solution": {
+   "fingerprint": "f85d741546133b5ae3660b78b5157407f93ec7ec7180a35b5ba478b5731ba914",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"approx_count_distinct\" in plan(q), 'approximate aggregate'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert \"Expand\" not in plan(q), 'no Expand'"
+    }
+   ]
+  },
+  "s12-e09-solution": {
+   "fingerprint": "ab605f1458f7c4ef186c5fa02483103ff2203974cd72e41534f6948ad28ee996",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"Window\" in plan(q), 'window operator'"
+    },
+    {
+     "after_statement": 1,
+     "source": "assert not plan_lines(q, \"Join \"), 'no join'"
+    }
+   ]
+  },
+  "s12-e10-solution": {
+   "fingerprint": "fd2604e3f073f19e5647d6c5d744b96a6567e166ab906cc803a975e00a9ca650",
+   "blocks": []
+  },
+  "s12-e11-solution": {
+   "fingerprint": "fd5d00947320ed4ab3a9fe7ac55f28daf0dcdd3d927681d2356db232fc121341",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert \"SinglePartition\" not in \"\".join(plan_lines(q, \"Exchange\")), 'no single-partition exchange'"
+    }
+   ]
+  },
+  "s12-e12-solution": {
+   "fingerprint": "1e238e5fb9730dccac15080c7ed56b87faf1f1e1c4cb1c1902149f0edac4fd50",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s12-e01-solution": {
+   "expected_cell": "s12-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e02-solution": {
+   "expected_cell": "s12-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e03-solution": {
+   "expected_cell": "s12-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e04-solution": {
+   "expected_cell": "s12-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e05-solution": {
+   "expected_cell": "s12-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e06-solution": {
+   "expected_cell": "s12-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e07-solution": {
+   "expected_cell": "s12-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e08-solution": {
+   "expected_cell": "s12-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e09-solution": {
+   "expected_cell": "s12-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e10-solution": {
+   "expected_cell": "s12-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e11-solution": {
+   "expected_cell": "s12-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s12-e12-solution": {
+   "expected_cell": "s12-e12-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
