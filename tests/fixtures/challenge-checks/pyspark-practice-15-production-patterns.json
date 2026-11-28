@@ -1,0 +1,99 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-15-production-patterns.ipynb",
+ "solutions": {
+  "p15-e01-solution": {
+   "fingerprint": "d23b1b4f7e4bf56e5eff17f34b13dffac9cc9dc66942ce1c593f08ad0de5a06a",
+   "blocks": []
+  },
+  "p15-e02-solution": {
+   "fingerprint": "a66b33a86e8ab8856dc75f2220a92678d8e11a9871b2ecf8415ee9f3cea3f1ca",
+   "blocks": []
+  },
+  "p15-e03-solution": {
+   "fingerprint": "1f56b1a9d070581a23d95f9a3860c64d7fb8f6e17d3fd0ada4163f73565f7398",
+   "blocks": []
+  },
+  "p15-e04-solution": {
+   "fingerprint": "107c56cf31d2f9846de28dd3c465187bfead0512f598fa58599492124c6499af",
+   "blocks": []
+  },
+  "p15-e05-solution": {
+   "fingerprint": "1c5f48b7b2bdd2e08fd66b8989946f0c6121a14fc9ccb5f939666ad0a15488cb",
+   "blocks": []
+  },
+  "p15-e06-solution": {
+   "fingerprint": "5ae3cd9bc4be5c607b4dceba8765eaf47656e76da4172a4bc64077110062a7c2",
+   "blocks": []
+  },
+  "p15-e07-solution": {
+   "fingerprint": "fa58fa2867e5ba67a1ac3307c8d1c3f84273ae455a7c65b568d373173a052805",
+   "blocks": []
+  },
+  "p15-e08-solution": {
+   "fingerprint": "a0f2c75b25cce96d09f48df9d9bf1adc277367a74b50cf6683b30fc954f7c5bf",
+   "blocks": []
+  },
+  "p15-e09-solution": {
+   "fingerprint": "51229fbc85613be5d17277b3ab3747c3db4c6c088181d0b5bb8511fa5a8ee496",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p15-e01-solution": {
+   "expected_cell": "p15-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e02-solution": {
+   "expected_cell": "p15-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e03-solution": {
+   "expected_cell": "p15-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e04-solution": {
+   "expected_cell": "p15-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e05-solution": {
+   "expected_cell": "p15-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e06-solution": {
+   "expected_cell": "p15-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e07-solution": {
+   "expected_cell": "p15-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e08-solution": {
+   "expected_cell": "p15-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p15-e09-solution": {
+   "expected_cell": "p15-e09-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

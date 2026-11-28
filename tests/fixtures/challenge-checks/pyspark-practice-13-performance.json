@@ -1,0 +1,124 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-13-performance.ipynb",
+ "solutions": {
+  "p13-e01-solution": {
+   "fingerprint": "5b8b0d3e81628179ced37c13d4f8dc07ab32fe6766fe9a0a8e27cbf3c93ab311",
+   "blocks": []
+  },
+  "p13-e02-solution": {
+   "fingerprint": "a36703640b7f5d5097663119bd6646dd6df1e1247a1a27350511b8a34d0b1199",
+   "blocks": [
+    {
+     "after_statement": 2,
+     "source": "plain = skewed.groupBy('key').agg(F.sum('v').alias('total'))\nassert salted.exceptAll(plain).count() == 0 and plain.exceptAll(salted).count() == 0"
+    }
+   ]
+  },
+  "p13-e03-solution": {
+   "fingerprint": "6387d6bc0af3ebfccb40ff609b63643a481703f3980d0bed85dca78099926163",
+   "blocks": []
+  },
+  "p13-e04-solution": {
+   "fingerprint": "15c780110457db1ed58c981b10287d9a70a70463e7830438f7e5cf4eaae17dcc",
+   "blocks": []
+  },
+  "p13-e05-solution": {
+   "fingerprint": "3437a6e2b395b5dc0c61ca58ff10bc81d7e79bac6201762a24d319f14c862c00",
+   "blocks": []
+  },
+  "p13-e06-solution": {
+   "fingerprint": "80badddfa54eb7b13d8c29ba49883fe30bf6f4b7049ee1486ca59b9af6314b62",
+   "blocks": []
+  },
+  "p13-e07-solution": {
+   "fingerprint": "3c8589b6b34e079f84bc65caa65b2ba8723378bd39f9f41a2f2855effb9ab03e",
+   "blocks": []
+  },
+  "p13-e08-solution": {
+   "fingerprint": "3c0ed5994b51479f9e3d15009f29f3dba4c6e0275c10c36f2ed375540055749e",
+   "blocks": []
+  },
+  "p13-e09-solution": {
+   "fingerprint": "2f715e852de8ae24633cafbb187da7308c18e48de99365085a69b0a6bb775d06",
+   "blocks": []
+  },
+  "p13-e10-solution": {
+   "fingerprint": "3bf92aa57e62b083740bb64e7236b17f5a24fe1ca5bb17555fdba27506d329cd",
+   "blocks": []
+  },
+  "p13-e11-solution": {
+   "fingerprint": "9190141db4ba25430dd98acb168709ba4bca6c1b278f8f9116a8228dcbbd74a3",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p13-e01-solution": {
+   "expected_cell": "p13-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e02-solution": {
+   "expected_cell": "p13-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e03-solution": {
+   "expected_cell": "p13-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e04-solution": {
+   "expected_cell": "p13-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e05-solution": {
+   "expected_cell": "p13-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e06-solution": {
+   "expected_cell": "p13-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e07-solution": {
+   "expected_cell": "p13-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e08-solution": {
+   "expected_cell": "p13-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e09-solution": {
+   "expected_cell": "p13-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e10-solution": {
+   "expected_cell": "p13-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p13-e11-solution": {
+   "expected_cell": "p13-e11-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}

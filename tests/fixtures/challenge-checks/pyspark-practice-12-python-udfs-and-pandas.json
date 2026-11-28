@@ -1,0 +1,129 @@
+{
+ "notebook": "notebooks/topics/pyspark/pyspark-practice-12-python-udfs-and-pandas.ipynb",
+ "solutions": {
+  "p12-e01-solution": {
+   "fingerprint": "e4c2a63a0b76f3709e69a15e7129441f1af65898f7f7b0d4035df3fb9b917ad1",
+   "blocks": []
+  },
+  "p12-e02-solution": {
+   "fingerprint": "e3031e93fd50402499794aec2601b1c8c892a066e41257089b03bb1c382964fa",
+   "blocks": []
+  },
+  "p12-e03-solution": {
+   "fingerprint": "3ec009962afc0b325f70b2c624e85211503eee8ffaa4e6bec947d382a5ab35c1",
+   "blocks": []
+  },
+  "p12-e04-solution": {
+   "fingerprint": "204e942d7588cbb534a03bb30e2c968c653c82acd1e6be67c49d78102748801a",
+   "blocks": []
+  },
+  "p12-e05-solution": {
+   "fingerprint": "9425cd3f755707ecf6831d6cabe4340d1850afa4ad15b2cf3944eaa044c81c1c",
+   "blocks": []
+  },
+  "p12-e06-solution": {
+   "fingerprint": "f1497caed301009b21c69fcd8ccf1c5f997e8fe44285d394f276b63324bd0595",
+   "blocks": []
+  },
+  "p12-e07-solution": {
+   "fingerprint": "8209bb03bc825eb1dbf06b20a5ecf59c1bec6c2b8f666cb471de490c10bcf413",
+   "blocks": []
+  },
+  "p12-e08-solution": {
+   "fingerprint": "192f0b507ce4573556a2ff7a262ef55387ab4f0a45ac09304234fd80eb4e457c",
+   "blocks": []
+  },
+  "p12-e09-solution": {
+   "fingerprint": "6ac46861f36c811001375cf101cab951ca188d690e232d5ece760aec8467f686",
+   "blocks": []
+  },
+  "p12-e10-solution": {
+   "fingerprint": "36f351972f5ab56ad343a01a84bcac813914fc188c421f92fe0b73f1e0a28324",
+   "blocks": []
+  },
+  "p12-e11-solution": {
+   "fingerprint": "5b711036c5ccb254e2992b269855443cea0bf335278951789c1878c48e8b10a7",
+   "blocks": []
+  },
+  "p12-e12-solution": {
+   "fingerprint": "71e78d28628eb1558d9fb3e6698ebedb377965acca9efae682010b7bf3b474ee",
+   "blocks": []
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "p12-e01-solution": {
+   "expected_cell": "p12-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e02-solution": {
+   "expected_cell": "p12-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e03-solution": {
+   "expected_cell": "p12-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e04-solution": {
+   "expected_cell": "p12-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e05-solution": {
+   "expected_cell": "p12-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e06-solution": {
+   "expected_cell": "p12-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e07-solution": {
+   "expected_cell": "p12-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e08-solution": {
+   "expected_cell": "p12-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e09-solution": {
+   "expected_cell": "p12-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e10-solution": {
+   "expected_cell": "p12-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e11-solution": {
+   "expected_cell": "p12-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "p12-e12-solution": {
+   "expected_cell": "p12-e12-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": []
+}
