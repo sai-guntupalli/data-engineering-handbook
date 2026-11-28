@@ -25,7 +25,7 @@ type PaletteState = { open: () => void };
 const PaletteContext = createContext<PaletteState>({ open: () => {} });
 
 const LIMITS = { notebooks: 6, sections: 12 };
-const STARTING_POINTS = ["notebooks/topics/python/learning/python-01-values-and-types.ipynb", "notebooks/topics/sql/sql-01-basics.ipynb"];
+const STARTING_POINTS = ["notebooks/topics/python/learning/python-00-start-here.ipynb", "notebooks/topics/sql/sql-01-basics.ipynb"];
 
 type Scope = "all" | "notebook" | "section";
 

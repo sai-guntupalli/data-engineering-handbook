@@ -108,7 +108,7 @@ File names are lowercase kebab-case, with no underscores or leading numbers. A f
 | --- | --- | --- |
 | `<tool>.ipynb` | a tool with one notebook | `kafka/kafka.ipynb` |
 | `<tool>-<NN>-<subject>.ipynb` | an ordered series; `00` is an overview or start-here page | `sql/sql-01-basics.ipynb` |
-| `<tool>-<series>-<NN>-<subject>.ipynb` | a numbered practice series | `python/practice/python-drills-01-values-and-types.ipynb` |
+| `<tool>-<series>-<NN>-<subject>.ipynb` | a numbered practice series | `python/practice/python-practice-01-values-and-numbers.ipynb` |
 | `<tool>-<subject>.ipynb` | a standalone notebook | `sql/sql-reference.ipynb` |
 | `<subject>.ipynb` | `concepts/` only, for subjects that are not a tool | `concepts/data-quality.ipynb` |
 
