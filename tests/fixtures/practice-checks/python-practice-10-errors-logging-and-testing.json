@@ -1,0 +1,291 @@
+{
+ "order": [
+  "py10-title",
+  "py10-intro",
+  "py10-imports",
+  "py10-harness",
+  "py10-e01-question",
+  "py10-e01-stub",
+  "py10-e01-checks",
+  "py10-e01-solution",
+  "py10-e02-question",
+  "py10-e02-stub",
+  "py10-e02-checks",
+  "py10-e02-solution",
+  "py10-e03-question",
+  "py10-e03-stub",
+  "py10-e03-checks",
+  "py10-e03-solution",
+  "py10-e04-question",
+  "py10-e04-stub",
+  "py10-e04-checks",
+  "py10-e04-solution",
+  "py10-e05-question",
+  "py10-e05-stub",
+  "py10-e05-checks",
+  "py10-e05-solution",
+  "py10-e06-question",
+  "py10-e06-stub",
+  "py10-e06-checks",
+  "py10-e06-solution",
+  "py10-e07-question",
+  "py10-e07-stub",
+  "py10-e07-checks",
+  "py10-e07-solution",
+  "py10-e08-question",
+  "py10-e08-stub",
+  "py10-e08-checks",
+  "py10-e08-solution",
+  "py10-e09-question",
+  "py10-e09-stub",
+  "py10-e09-checks",
+  "py10-e09-solution",
+  "py10-e10-question",
+  "py10-e10-stub",
+  "py10-e10-checks",
+  "py10-e10-solution",
+  "py10-e11-question",
+  "py10-e11-stub",
+  "py10-e11-checks",
+  "py10-e11-solution",
+  "py10-e12-question",
+  "py10-e12-stub",
+  "py10-e12-checks",
+  "py10-e12-solution",
+  "py10-e13-question",
+  "py10-e13-stub",
+  "py10-e13-checks",
+  "py10-e13-solution",
+  "py10-score-title",
+  "py10-score",
+  "py10-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py10-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('int', lambda: to_number(\" 42 \"), 42)\n",
+    "check('float', lambda: to_number(\"3.5\"), 3.5)\n",
+    "check('bad uses default', lambda: to_number(\"abc\", 0), 0)\n",
+    "check('none', lambda: to_number(None, -1), -1)\n",
+    "check('number passthrough', lambda: to_number(7.25), 7.25)\n",
+    "check('list raises', lambda: raises(lambda: to_number([1]), TypeError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('valid', lambda: check_order({\"id\": 7, \"amount\": 10}), 7)\n",
+    "check('missing id', lambda: str(caught(lambda: check_order({\"amount\": 1}))), 'id: required')\n",
+    "check('field attribute', lambda: caught(lambda: check_order({\"id\": 1, \"amount\": 0})).field, 'amount')\n",
+    "check('caught as base', lambda: raises(lambda: check_order({}), PipelineError), True)\n",
+    "check('subclass', lambda: issubclass(ValidationError, PipelineError), True)\n",
+    "check('negative', lambda: str(caught(lambda: check_order({\"id\": 1, \"amount\": -5}))), 'amount: must be positive')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('valid', lambda: load_config('{\"retries\": 3}'), {'retries': 3})\n",
+    "check('message', lambda: str(caught(lambda: load_config(\"{\"))), 'invalid config')\n",
+    "check('cause', lambda: type(caught(lambda: load_config(\"{\")).__cause__).__name__, 'JSONDecodeError')\n",
+    "check('not an object', lambda: str(caught(lambda: load_config(\"[1]\"))), 'config must be an object')\n",
+    "check('no cause for shape', lambda: caught(lambda: load_config(\"[1]\")).__cause__ is None, True)\n",
+    "check('raises ConfigError', lambda: type(caught(lambda: load_config(\"\"))).__name__, 'ConfigError')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('passes through', lambda: with_context(lambda: 5, row=1), 5)\n",
+    "check('note', lambda: caught(lambda: with_context(lambda: 1 / 0, row=7, file=\"a.csv\")).__notes__, ['context: file=a.csv, row=7'])\n",
+    "check('same type', lambda: type(caught(lambda: with_context(lambda: {}[\"x\"], k=1))).__name__, 'KeyError')\n",
+    "check('no context', lambda: caught(lambda: with_context(lambda: int(\"x\"))).__notes__, ['context: '])\n",
+    "check('message kept', lambda: str(caught(lambda: with_context(lambda: int(\"x\"), n=1))), \"invalid literal for int() with base 10: 'x'\")\n",
+    "check('result none', lambda: with_context(lambda: None) is None, True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('all ok', lambda: run_all([(\"a\", lambda: 1), (\"b\", lambda: 2)]), {'a': 1, 'b': 2})\n",
+    "check('message', lambda: str(caught(lambda: run_all([(\"a\", lambda: 1 / 0), (\"b\", lambda: 2), (\"c\", lambda: int(\"x\"))]))), '2 of 3 tasks failed (2 sub-exceptions)')\n",
+    "check('member types', lambda: [type(e).__name__ for e in caught(lambda: run_all([(\"a\", lambda: 1 / 0), (\"c\", lambda: int(\"x\"))])).exceptions], ['ZeroDivisionError', 'ValueError'])\n",
+    "check('notes', lambda: [e.__notes__ for e in caught(lambda: run_all([(\"x\", lambda: [][0])])).exceptions], [['task x']])\n",
+    "check('empty', lambda: run_all([]), {})\n",
+    "check('is a group', lambda: isinstance(caught(lambda: run_all([(\"a\", lambda: 1 / 0)])), ExceptionGroup), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('succeeds third time', lambda: (lambda s: (call_with_retry(Mock(side_effect=[ConnectionError(), ConnectionError(), \"ok\"]), sleep=s), [c.args[0] for c in s.call_args_list]))(Mock()), ('ok', [1.0, 2.0]))\n",
+    "check('first try', lambda: (lambda s: (call_with_retry(lambda: 1, sleep=s), s.call_count))(Mock()), (1, 0))\n",
+    "check('gives up', lambda: (lambda s: (raises(lambda: call_with_retry(Mock(side_effect=ConnectionError()), attempts=2, sleep=s), ConnectionError), s.call_count))(Mock()), (True, 1))\n",
+    "check('not retryable', lambda: (lambda f, s: (raises(lambda: call_with_retry(f, sleep=s), KeyError), f.call_count))(Mock(side_effect=KeyError('x')), Mock()), (True, 1))\n",
+    "check('custom base', lambda: (lambda s: (call_with_retry(Mock(side_effect=[TimeoutError(), 5]), base=0.5, retry_on=(TimeoutError,), sleep=s), s.call_args.args))(Mock()), (5, (0.5,)))\n",
+    "check('calls count', lambda: (lambda f: (call_with_retry(f, attempts=5, sleep=Mock()), f.call_count))(Mock(side_effect=[ConnectionError()] * 4 + [1])), (1, 5))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('success keeps changes', lambda: (lambda d: (run_with(Atomic(d), lambda s: s.update(a=5)), d)[1])({\"a\": 1}), {'a': 5})\n",
+    "check('rollback', lambda: (lambda d: (type(run_with(Atomic(d), lambda s: (s.update(a=9, new=1), 1 / 0))).__name__, d))({\"a\": 1}), ('ZeroDivisionError', {'a': 1}))\n",
+    "check('nested values restored', lambda: (lambda d: (run_with(Atomic(d), lambda s: (s[\"x\"].append(2), 1 / 0)), d)[1])({\"x\": [1]}), {'x': [1]})\n",
+    "check('error propagates', lambda: type(run_with(Atomic({}), lambda s: {}[\"missing\"])).__name__, 'KeyError')\n",
+    "check('yields the same dict', lambda: (lambda d, seen: (run_with(Atomic(d), seen.append), seen[0] is d)[1])({}, []), True)\n",
+    "check('empty block', lambda: (lambda d: (run_with(Atomic(d), lambda s: None), d)[1])({\"k\": [1]}), {'k': [1]})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('inside', lambda: (lambda seen: (run_with(temp_env(PX_STAGE=\"test\"), lambda _: seen.append(os.environ.get(\"PX_STAGE\"))), seen)[1])([]), ['test'])\n",
+    "check('restored after', lambda: (run_with(temp_env(PX_A=\"1\"), lambda _: None), os.environ.get(\"PX_A\")), (None, None))\n",
+    "check('removal', lambda: (lambda seen: (os.environ.__setitem__(\"PX_B\", \"x\"), run_with(temp_env(PX_B=None), lambda _: seen.append(os.environ.get(\"PX_B\"))), seen, os.environ.pop(\"PX_B\", None))[2:])([]), ([None], 'x'))\n",
+    "check('restored on error', lambda: (type(run_with(temp_env(PX_C=\"1\"), lambda _: 1 / 0)).__name__, os.environ.get(\"PX_C\")), ('ZeroDivisionError', None))\n",
+    "check('previous value back', lambda: (os.environ.__setitem__(\"PX_D\", \"old\"), run_with(temp_env(PX_D=\"new\"), lambda _: None), os.environ.pop(\"PX_D\"))[2], 'old')\n",
+    "check('several', lambda: (lambda seen: (run_with(temp_env(PX_E=\"1\", PX_F=\"2\"), lambda _: seen.extend([os.environ.get(\"PX_E\"), os.environ.get(\"PX_F\")])), seen)[1])([]), ['1', '2'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('logs', lambda: capture_logs(lambda log: load([{\"id\": 1, \"amount\": 5}, {\"id\": 2}, {\"id\": 3, \"amount\": -1}], log)), ['WARNING:rejected row 2: missing amount', 'WARNING:rejected row 3: negative amount', 'INFO:loaded 1 of 3 rows'])\n",
+    "check('result', lambda: [r[\"id\"] for r in load([{\"id\": 1, \"amount\": 0}, {\"id\": 2, \"amount\": -2}], Mock())], [1])\n",
+    "check('empty', lambda: capture_logs(lambda log: load([], log)), ['INFO:loaded 0 of 0 rows'])\n",
+    "check('all good', lambda: capture_logs(lambda log: load([{\"id\": 1, \"amount\": 1}], log)), ['INFO:loaded 1 of 1 rows'])\n",
+    "check('levels', lambda: [line.split(\":\")[0] for line in capture_logs(lambda log: load([{\"id\": 9}], log))], ['WARNING', 'INFO'])\n",
+    "check('no print', lambda: capture_logs(lambda log: load([{\"id\": 1, \"amount\": 2.5}], log))[-1], 'INFO:loaded 1 of 1 rows')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('basic', lambda: JsonFormatter().format(logging.makeLogRecord({\"name\": \"etl\", \"levelname\": \"INFO\", \"msg\": \"loaded %d rows\", \"args\": (5,)})), '{\"level\":\"INFO\",\"logger\":\"etl\",\"message\":\"loaded 5 rows\"}')\n",
+    "check('extras', lambda: JsonFormatter().format(logging.makeLogRecord({\"name\": \"etl\", \"levelname\": \"WARNING\", \"msg\": \"slow\", \"run_id\": \"r1\", \"seconds\": 3.5})), '{\"level\":\"WARNING\",\"logger\":\"etl\",\"message\":\"slow\",\"run_id\":\"r1\",\"seconds\":3.5}')\n",
+    "check('no args', lambda: JsonFormatter().format(logging.makeLogRecord({\"name\": \"x\", \"levelname\": \"ERROR\", \"msg\": \"boom\"})), '{\"level\":\"ERROR\",\"logger\":\"x\",\"message\":\"boom\"}')\n",
+    "check('is a Formatter', lambda: issubclass(JsonFormatter, logging.Formatter), True)\n",
+    "check('non-json extra', lambda: JsonFormatter().format(logging.makeLogRecord({\"name\": \"x\", \"levelname\": \"INFO\", \"msg\": \"m\", \"day\": date(2026, 1, 1)})), '{\"day\":\"2026-01-01\",\"level\":\"INFO\",\"logger\":\"x\",\"message\":\"m\"}')\n",
+    "check('valid json', lambda: sorted(json.loads(JsonFormatter().format(logging.makeLogRecord({\"msg\": \"m\", \"k\": 1})))), ['k', 'level', 'logger', 'message'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('calls', lambda: (lambda m: (alert_failures([{\"job\": \"a\", \"status\": \"ok\"}, {\"job\": \"b\", \"status\": \"failed\", \"error\": \"timeout\"}], m), [c.args for c in m.call_args_list]))(Mock()), (1, [('#data-alerts', 'b failed: timeout')]))\n",
+    "check('none failed', lambda: (lambda m: (alert_failures([{\"job\": \"a\", \"status\": \"ok\"}], m), m.called))(Mock()), (0, False))\n",
+    "check('empty', lambda: alert_failures([], Mock()), 0)\n",
+    "check('count', lambda: (lambda m: (alert_failures([{\"job\": j, \"status\": \"x\"} for j in \"abc\"], m), m.call_count))(Mock()), (3, 3))\n",
+    "check('missing error', lambda: (lambda m: (alert_failures([{\"job\": \"z\", \"status\": \"failed\"}], m), m.call_args.args[1])[1])(Mock()), 'z failed: None')\n",
+    "check('send errors propagate', lambda: raises(lambda: alert_failures([{\"job\": \"a\", \"status\": \"f\"}], Mock(side_effect=ConnectionError())), ConnectionError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('all pass', lambda: run_cases(int, [(\"one\", (\"1\",), 1), (\"bad\", (\"x\",), ValueError)]), [])\n",
+    "check('wrong value', lambda: run_cases(abs, [(\"a\", (-2,), 3), (\"b\", (2,), 2)]), ['a'])\n",
+    "check('missing exception', lambda: run_cases(int, [(\"noerr\", (\"5\",), ValueError)]), ['noerr'])\n",
+    "check('unexpected exception', lambda: run_cases(int, [(\"boom\", (\"x\",), 0)]), ['boom'])\n",
+    "check('wrong exception type', lambda: run_cases(int, [(\"t\", (None,), ValueError)]), ['t'])\n",
+    "check('sorted ids', lambda: run_cases(len, [(\"z\", ([1],), 0), (\"a\", ([],), 1)]), ['a', 'z'])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('defaults', lambda: parse_cli([\"--date\", \"2026-11-27\"]), {'date': '2026-11-27', 'limit': 1000, 'dry_run': False, 'tables': ['orders', 'refunds']})\n",
+    "check('all options', lambda: parse_cli([\"--date\", \"2026-01-02\", \"--limit\", \"5\", \"--dry-run\", \"--tables\", \"refunds\"]), {'date': '2026-01-02', 'limit': 5, 'dry_run': True, 'tables': ['refunds']})\n",
+    "check('two tables', lambda: parse_cli([\"--tables\", \"refunds\", \"orders\", \"--date\", \"2026-01-01\"])[\"tables\"], ['refunds', 'orders'])\n",
+    "check('missing date exits', lambda: caught(lambda: parse_cli([])).code, 2)\n",
+    "check('bad date exits', lambda: type(caught(lambda: parse_cli([\"--date\", \"27/11/2026\"]))).__name__, 'SystemExit')\n",
+    "check('bad table exits', lambda: caught(lambda: parse_cli([\"--date\", \"2026-01-01\", \"--tables\", \"users\"])).code, 2)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py10-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py10-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py10-harness"
+ ]
+}

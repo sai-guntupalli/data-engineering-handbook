@@ -1,0 +1,291 @@
+{
+ "order": [
+  "py12-title",
+  "py12-intro",
+  "py12-imports",
+  "py12-harness",
+  "py12-e01-question",
+  "py12-e01-stub",
+  "py12-e01-checks",
+  "py12-e01-solution",
+  "py12-e02-question",
+  "py12-e02-stub",
+  "py12-e02-checks",
+  "py12-e02-solution",
+  "py12-e03-question",
+  "py12-e03-stub",
+  "py12-e03-checks",
+  "py12-e03-solution",
+  "py12-e04-question",
+  "py12-e04-stub",
+  "py12-e04-checks",
+  "py12-e04-solution",
+  "py12-e05-question",
+  "py12-e05-stub",
+  "py12-e05-checks",
+  "py12-e05-solution",
+  "py12-e06-question",
+  "py12-e06-stub",
+  "py12-e06-checks",
+  "py12-e06-solution",
+  "py12-e07-question",
+  "py12-e07-stub",
+  "py12-e07-checks",
+  "py12-e07-solution",
+  "py12-e08-question",
+  "py12-e08-stub",
+  "py12-e08-checks",
+  "py12-e08-solution",
+  "py12-e09-question",
+  "py12-e09-stub",
+  "py12-e09-checks",
+  "py12-e09-solution",
+  "py12-e10-question",
+  "py12-e10-stub",
+  "py12-e10-checks",
+  "py12-e10-solution",
+  "py12-e11-question",
+  "py12-e11-stub",
+  "py12-e11-checks",
+  "py12-e11-solution",
+  "py12-e12-question",
+  "py12-e12-stub",
+  "py12-e12-checks",
+  "py12-e12-solution",
+  "py12-e13-question",
+  "py12-e13-stub",
+  "py12-e13-checks",
+  "py12-e13-solution",
+  "py12-score-title",
+  "py12-score",
+  "py12-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py12-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('defaults', lambda: load_settings({\"JOB_BUCKET\": \"s3://raw\"}), {'bucket': 's3://raw', 'batch_size': 1000, 'dry_run': False})\n",
+    "check('all set', lambda: load_settings({\"JOB_BUCKET\": \"b\", \"JOB_BATCH_SIZE\": \"50\", \"JOB_DRY_RUN\": \"YES\"}), {'bucket': 'b', 'batch_size': 50, 'dry_run': True})\n",
+    "check('missing bucket', lambda: raises(lambda: load_settings({}), ValueError), True)\n",
+    "check('bad int', lambda: raises(lambda: load_settings({\"JOB_BUCKET\": \"b\", \"JOB_BATCH_SIZE\": \"lots\"}), ValueError), True)\n",
+    "check('all problems listed', lambda: str(caught(lambda: load_settings({\"JOB_BATCH_SIZE\": \"x\", \"JOB_DRY_RUN\": \"maybe\"}))), 'JOB_BUCKET is required; JOB_BATCH_SIZE must be an integer; JOB_DRY_RUN must be a boolean')\n",
+    "check('zero is false', lambda: load_settings({\"JOB_BUCKET\": \"b\", \"JOB_DRY_RUN\": \"0\"})[\"dry_run\"], False)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('mixed', lambda: split_rows([{\"id\": 1, \"amount\": 5, \"currency\": \"USD\"}, {\"amount\": -1, \"currency\": \"JPY\"}]), ([{'id': 1, 'amount': 5, 'currency': 'USD'}], [{'id': None, 'reasons': ['missing id', 'bad amount', 'bad currency']}]))\n",
+    "check('empty', lambda: split_rows([]), ([], []))\n",
+    "check('bool amount', lambda: split_rows([{\"id\": 2, \"amount\": True, \"currency\": \"EUR\"}])[1], [{'id': 2, 'reasons': ['bad amount']}])\n",
+    "check('zero ok', lambda: len(split_rows([{\"id\": 3, \"amount\": 0, \"currency\": \"GBP\"}])[0]), 1)\n",
+    "check('string amount', lambda: split_rows([{\"id\": 4, \"amount\": \"5\", \"currency\": \"USD\"}])[1], [{'id': 4, 'reasons': ['bad amount']}])\n",
+    "check('id zero is present', lambda: split_rows([{\"id\": 0, \"amount\": 1.5, \"currency\": \"USD\"}])[1], [])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('classic', lambda: latest([{\"id\": 1, \"status\": \"a\", \"updated_at\": 1, \"seq\": 1}, {\"id\": 1, \"status\": \"b\", \"updated_at\": 2, \"seq\": 2}]), [(1, 'b')])\n",
+    "check('tie broken by seq', lambda: latest([{\"id\": 1, \"status\": \"late-seq\", \"updated_at\": 5, \"seq\": 9}, {\"id\": 1, \"status\": \"early-seq\", \"updated_at\": 5, \"seq\": 3}]), [(1, 'late-seq')])\n",
+    "check('empty', lambda: latest([]), [])\n",
+    "check('out of order', lambda: latest([{\"id\": 2, \"status\": \"new\", \"updated_at\": 9, \"seq\": 2}, {\"id\": 2, \"status\": \"old\", \"updated_at\": 1, \"seq\": 1}]), [(2, 'new')])\n",
+    "check('several keys', lambda: latest([{\"id\": k, \"status\": str(k), \"updated_at\": 0, \"seq\": 0} for k in [3, 1, 2]]), [(1, '1'), (2, '2'), (3, '3')])\n",
+    "check('exact duplicate keeps first', lambda: latest([{\"id\": 1, \"status\": \"x\", \"updated_at\": 1, \"seq\": 1}, {\"id\": 1, \"status\": \"y\", \"updated_at\": 1, \"seq\": 1}]), [(1, 'x')])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('late row included', lambda: next_batch([{\"id\": 1, \"ts\": 100}, {\"id\": 2, \"ts\": 990}, {\"id\": 3, \"ts\": 1010}], 1000), ([2, 3], 1010))\n",
+    "check('nothing new', lambda: next_batch([{\"id\": 1, \"ts\": 5}], 1000), ([], 1000))\n",
+    "check('watermark never goes back', lambda: next_batch([{\"id\": 1, \"ts\": 950}], 1000)[1], 1000)\n",
+    "check('no lookback', lambda: next_batch([{\"id\": 1, \"ts\": 1000}, {\"id\": 2, \"ts\": 1001}], 1000, 0), ([2], 1001))\n",
+    "check('empty', lambda: next_batch([], 7), ([], 7))\n",
+    "check('boundary excluded', lambda: next_batch([{\"id\": 1, \"ts\": 940}, {\"id\": 2, \"ts\": 941}], 1000), ([2], 1000))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('no jitter shows caps', lambda: delays(6, rng=lambda: 1.0), [1.0, 2.0, 4.0, 8.0, 16.0, 20.0])\n",
+    "check('half', lambda: delays(4, base=0.5, rng=lambda: 0.5), [0.25, 0.5, 1.0, 2.0])\n",
+    "check('zero attempts', lambda: delays(0), [])\n",
+    "check('custom cap', lambda: delays(5, cap=3, rng=lambda: 1.0), [1.0, 2.0, 3.0, 3.0, 3.0])\n",
+    "check('seeded', lambda: delays(3, rng=random.Random(1).random), [0.134, 1.695, 3.055])\n",
+    "check('within bounds', lambda: all(0 <= d <= 20 for d in delays(10)), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('all kinds', lambda: snapshot_diff([{\"id\": 1, \"v\": 1}, {\"id\": 2, \"v\": 1}], [{\"id\": 2, \"v\": 2}, {\"id\": 3, \"v\": 1}]), {'inserted': [3], 'updated': [2], 'deleted': [1]})\n",
+    "check('ignored field', lambda: snapshot_diff([{\"id\": 1, \"v\": 1, \"loaded_at\": \"mon\"}], [{\"id\": 1, \"v\": 1, \"loaded_at\": \"tue\"}]), {'inserted': [], 'updated': [], 'deleted': []})\n",
+    "check('key order irrelevant', lambda: snapshot_diff([{\"id\": 1, \"a\": 1, \"b\": 2}], [{\"b\": 2, \"id\": 1, \"a\": 1}]), {'inserted': [], 'updated': [], 'deleted': []})\n",
+    "check('empty', lambda: snapshot_diff([], []), {'inserted': [], 'updated': [], 'deleted': []})\n",
+    "check('custom ignore', lambda: snapshot_diff([{\"id\": 1, \"x\": 1}], [{\"id\": 1, \"x\": 2}], ignore=(\"x\",)), {'inserted': [], 'updated': [], 'deleted': []})\n",
+    "check('type change counts', lambda: snapshot_diff([{\"id\": 1, \"v\": 1}], [{\"id\": 1, \"v\": \"1\"}]), {'inserted': [], 'updated': [1], 'deleted': []})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('three pages', lambda: list(iter_items({None: {\"items\": [1, 2], \"next\": \"b\"}, \"b\": {\"items\": [3], \"next\": \"c\"}, \"c\": {\"items\": [], \"next\": None}}.__getitem__)), [1, 2, 3])\n",
+    "check('single page', lambda: list(iter_items(lambda c: {\"items\": [\"x\"], \"next\": None})), ['x'])\n",
+    "check('empty page', lambda: list(iter_items(lambda c: {\"items\": [], \"next\": None})), [])\n",
+    "check('loop detected', lambda: raises(lambda: list(iter_items(lambda c: {\"items\": [1], \"next\": \"same\"})), RuntimeError), True)\n",
+    "check('max pages', lambda: raises(lambda: list(iter_items(lambda c: {\"items\": [], \"next\": (c or 0) + 1}, max_pages=5)), RuntimeError), True)\n",
+    "check('lazy', lambda: next(iter_items(lambda c: {\"items\": [7, 8], \"next\": \"more\"})), 7)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('change and insert', lambda: scd2_merge([{\"id\": 1, \"email\": \"a\", \"valid_from\": \"d1\", \"valid_to\": None, \"is_current\": True}], [{\"id\": 1, \"email\": \"b\"}, {\"id\": 2, \"email\": \"c\"}], \"d2\"), [{'id': 1, 'email': 'a', 'valid_from': 'd1', 'valid_to': 'd2', 'is_current': False}, {'id': 1, 'email': 'b', 'valid_from': 'd2', 'valid_to': None, 'is_current': True}, {'id': 2, 'email': 'c', 'valid_from': 'd2', 'valid_to': None, 'is_current': True}])\n",
+    "check('unchanged untouched', lambda: scd2_merge([{\"id\": 1, \"email\": \"a\", \"valid_from\": \"d1\", \"valid_to\": None, \"is_current\": True}], [{\"id\": 1, \"email\": \"a\"}], \"d2\"), [{'id': 1, 'email': 'a', 'valid_from': 'd1', 'valid_to': None, 'is_current': True}])\n",
+    "check('history kept', lambda: len(scd2_merge([{\"id\": 1, \"email\": \"a\", \"valid_from\": \"d0\", \"valid_to\": \"d1\", \"is_current\": False}, {\"id\": 1, \"email\": \"b\", \"valid_from\": \"d1\", \"valid_to\": None, \"is_current\": True}], [{\"id\": 1, \"email\": \"c\"}], \"d2\")), 3)\n",
+    "check('input not mutated', lambda: (lambda dim: (scd2_merge(dim, [{\"id\": 1, \"email\": \"z\"}], \"d2\"), dim[0][\"is_current\"])[1])([{\"id\": 1, \"email\": \"a\", \"valid_from\": \"d1\", \"valid_to\": None, \"is_current\": True}]), True)\n",
+    "check('two updates same id', lambda: [r[\"email\"] for r in scd2_merge([], [{\"id\": 5, \"email\": \"x\"}, {\"id\": 5, \"email\": \"y\"}], \"d1\") if r[\"is_current\"]], ['y'])\n",
+    "check('rerun is idempotent', lambda: (lambda d1: d1 == scd2_merge(d1, [{\"id\": 1, \"email\": \"b\"}], \"d3\"))(scd2_merge([], [{\"id\": 1, \"email\": \"b\"}], \"d2\")), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('all kinds', lambda: schema_drift({\"id\": \"int\", \"amount\": \"float\", \"note\": \"str\"}, [{\"id\": \"1\", \"amount\": 2, \"coupon\": \"x\"}]), {'added': ['coupon'], 'missing': ['note'], 'retyped': ['id']})\n",
+    "check('clean', lambda: schema_drift({\"id\": \"int\"}, [{\"id\": 1}, {\"id\": 2}]), {'added': [], 'missing': [], 'retyped': []})\n",
+    "check('nulls ignored', lambda: schema_drift({\"id\": \"int\", \"x\": \"str\"}, [{\"id\": 1, \"x\": None}]), {'added': [], 'missing': ['x'], 'retyped': []})\n",
+    "check('no records', lambda: schema_drift({\"id\": \"int\"}, []), {'added': [], 'missing': ['id'], 'retyped': []})\n",
+    "check('bool is not int', lambda: schema_drift({\"flag\": \"int\"}, [{\"flag\": True}]), {'added': [], 'missing': [], 'retyped': ['flag']})\n",
+    "check('mixed types', lambda: schema_drift({\"v\": \"float\"}, [{\"v\": 1}, {\"v\": 1.5}, {\"v\": \"2\"}]), {'added': [], 'missing': [], 'retyped': ['v']})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('mismatch', lambda: reconcile({\"d1\": 10, \"d2\": 5}, {\"d1\": 10, \"d2\": 4}), [('d2', 5, 4, -1)])\n",
+    "check('missing partitions', lambda: reconcile({\"d1\": 3}, {\"d2\": 2}), [('d1', 3, 0, -3), ('d2', 0, 2, 2)])\n",
+    "check('all match', lambda: reconcile({\"d\": 1}, {\"d\": 1}), [])\n",
+    "check('tolerance', lambda: reconcile({\"d\": 100}, {\"d\": 98}, tolerance=2), [])\n",
+    "check('over tolerance', lambda: reconcile({\"d\": 100}, {\"d\": 97}, tolerance=2), [('d', 100, 97, -3)])\n",
+    "check('empty', lambda: reconcile({}, {}), [])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('chunks', lambda: plan_backfill(date(2026, 11, 1), date(2026, 11, 10), set(), 4), [('2026-11-01', '2026-11-04'), ('2026-11-05', '2026-11-08'), ('2026-11-09', '2026-11-10')])\n",
+    "check('skips done', lambda: plan_backfill(date(2026, 11, 1), date(2026, 11, 7), {date(2026, 11, 3)}, 7), [('2026-11-01', '2026-11-02'), ('2026-11-04', '2026-11-07')])\n",
+    "check('all done', lambda: plan_backfill(date(2026, 11, 1), date(2026, 11, 2), {date(2026, 11, 1), date(2026, 11, 2)}, 3), [])\n",
+    "check('single day', lambda: plan_backfill(date(2026, 1, 1), date(2026, 1, 1), set(), 5), [('2026-01-01', '2026-01-01')])\n",
+    "check('empty range', lambda: plan_backfill(date(2026, 1, 2), date(2026, 1, 1), set(), 5), [])\n",
+    "check('month boundary', lambda: plan_backfill(date(2026, 1, 30), date(2026, 2, 2), set(), 2), [('2026-01-30', '2026-01-31'), ('2026-02-01', '2026-02-02')])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('email', lambda: pseudonymise([{\"id\": 1, \"email\": \"a@x.com\"}], [\"email\"], b\"k\"), [{'id': 1, 'email': 'b23684d39cfdcf2a'}])\n",
+    "check('normalised', lambda: (lambda r: r[0][\"email\"] == r[1][\"email\"])(pseudonymise([{\"email\": \" A@X.com \"}, {\"email\": \"a@x.com\"}], [\"email\"], b\"k\")), True)\n",
+    "check('key matters', lambda: (lambda a, b: a != b)(pseudonymise([{\"e\": \"x\"}], [\"e\"], b\"k1\"), pseudonymise([{\"e\": \"x\"}], [\"e\"], b\"k2\")), True)\n",
+    "check('none and missing', lambda: pseudonymise([{\"email\": None}, {\"id\": 2}], [\"email\"], b\"k\"), [{'email': None}, {'id': 2}])\n",
+    "check('input untouched', lambda: (lambda rows: (pseudonymise(rows, [\"e\"], b\"k\"), rows)[1])([{\"e\": \"x\"}]), [{'e': 'x'}])\n",
+    "check('several fields', lambda: sorted(pseudonymise([{\"e\": \"x\", \"p\": \"123\", \"n\": \"keep\"}], [\"e\", \"p\"], b\"k\")[0].values())[-1], 'keep')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('all ok', lambda: run_batches(range(25), 10, len), {'batches': 3, 'rows_in': 25, 'rows_out': 25, 'failed': []})\n",
+    "check('one fails', lambda: run_batches(range(25), 10, lambda b: len(b) if 13 not in b else 1 / 0), {'batches': 3, 'rows_in': 25, 'rows_out': 15, 'failed': [(2, 'ZeroDivisionError')]})\n",
+    "check('empty', lambda: run_batches([], 5, len), {'batches': 0, 'rows_in': 0, 'rows_out': 0, 'failed': []})\n",
+    "check('partial writes', lambda: run_batches(range(6), 3, lambda b: len(b) - 1), {'batches': 2, 'rows_in': 6, 'rows_out': 4, 'failed': []})\n",
+    "check('all fail', lambda: run_batches(range(4), 2, lambda b: {}['x']), {'batches': 2, 'rows_in': 4, 'rows_out': 0, 'failed': [(1, 'KeyError'), (2, 'KeyError')]})\n",
+    "check('handle gets lists', lambda: run_batches(range(3), 2, lambda b: (type(b) is list) * len(b)), {'batches': 2, 'rows_in': 3, 'rows_out': 3, 'failed': []})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py12-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py12-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py12-harness"
+ ]
+}
