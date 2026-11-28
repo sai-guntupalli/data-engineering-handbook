@@ -76,9 +76,60 @@ jobs:
             python3 scripts/ci_plan.py --all --shards 4 --github-output "$GITHUB_OUTPUT"
           fi
 
+  # Resolve the Delta Lake jars once per run and cache them, so the parallel shards never each depend on Maven
+  # Central being reachable at the same moment.
+  spark-deps:
+    name: Spark dependencies
+    needs: plan
+    if: needs.plan.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - id: ivy
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.ivy2
+            ~/.ivy2.5.2
+          key: ivy-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: ivy-${{ runner.os }}-
+
+      - if: steps.ivy.outputs.cache-hit != 'true'
+        uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - if: steps.ivy.outputs.cache-hit != 'true'
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Resolve Delta jars (retries with back-off)
+        if: steps.ivy.outputs.cache-hit != 'true'
+        run: |
+          uv sync --extra notebooks
+          for attempt in 1 2 3 4 5; do
+            if uv run --extra notebooks python - <<'PYCODE'
+          from delta import configure_spark_with_delta_pip
+          from pyspark.sql import SparkSession
+
+          spark = configure_spark_with_delta_pip(
+              SparkSession.builder.master("local[1]").appName("ci-delta-dependencies")
+          ).getOrCreate()
+          spark.stop()
+          PYCODE
+            then
+              exit 0
+            fi
+            if [ "$attempt" -lt 5 ]; then sleep "$((attempt * attempt * 10))"; fi
+          done
+          exit 1
+
   notebooks:
     name: Notebooks ${{ matrix.name }}
-    needs: plan
+    needs: [plan, spark-deps]
     if: needs.plan.outputs.has_work == 'true'
     runs-on: ubuntu-latest
     strategy:
@@ -97,19 +148,19 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      # Delta Lake jars resolved by Ivy: cached so runs do not depend on Maven Central being reachable.
-      - uses: actions/cache@v4
+      # The jars the spark-deps job resolved; restore only, so shards never overwrite that cache.
+      - uses: actions/cache/restore@v4
         with:
           path: |
             ~/.ivy2
             ~/.ivy2.5.2
           key: ivy-${{ runner.os }}-${{ hashFiles('uv.lock') }}
-          restore-keys: ivy-${{ runner.os }}-
+          fail-on-cache-miss: true
 
       - name: Install notebook packages
         run: uv sync --extra notebooks
 
-      # Resolve Delta before parallel notebook kernels share the Ivy cache.
+      # Resolves from the restored cache; retries cover the rare check against the remote repository.
       - name: Prepare Spark dependencies
         run: |
           for attempt in 1 2 3; do
@@ -125,7 +176,7 @@ jobs:
             then
               exit 0
             fi
-            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 10))"; fi
+            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 15))"; fi
           done
           exit 1
 
@@ -142,12 +193,13 @@ jobs:
   validate:
     name: validate
     if: always()
-    needs: [quick, plan, notebooks]
+    needs: [quick, plan, spark-deps, notebooks]
     runs-on: ubuntu-latest
     steps:
       - name: All checks passed
         run: |
-          echo "quick=${{ needs.quick.result }} plan=${{ needs.plan.result }} notebooks=${{ needs.notebooks.result }}"
+          echo "quick=${{ needs.quick.result }} plan=${{ needs.plan.result }} spark-deps=${{ needs.spark-deps.result }} notebooks=${{ needs.notebooks.result }}"
           test "${{ needs.quick.result }}" = "success"
           test "${{ needs.plan.result }}" = "success"
+          case "${{ needs.spark-deps.result }}" in success|skipped) ;; *) exit 1 ;; esac
           case "${{ needs.notebooks.result }}" in success|skipped) ;; *) exit 1 ;; esac
