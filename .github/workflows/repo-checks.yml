@@ -1,6 +1,7 @@
-# Runs `make validate`, the same target you run locally: lint, unit tests, the
-# notebook audit, execution of every notebook (as Colab's "Run all" would), and
-# the site build.
+# Pull requests: fast checks (lint, unit tests, notebook audit, practice answers, site build) in one job, and only
+# the notebooks and challenge fixtures the pull request touches, split across parallel shards.
+# Pushes to master (and manual runs) execute every notebook, in four shards.
+# `make validate` still runs everything locally, in one process.
 
 name: Checks
 
@@ -8,6 +9,7 @@ on:
   push:
     branches: [master]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -17,8 +19,71 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate:
+  quick:
+    name: Lint, tests, audit and site build
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+
+      - name: Install
+        run: make install
+
+      - name: Lint
+        run: make lint
+
+      - name: Unit tests
+        run: make test
+
+      - name: Notebook audit
+        run: make check
+
+      # Python practice answers run in plain kernels (no Spark), in well under a minute.
+      - name: Practice answers
+        run: make verify-practice
+
+      - name: Site build
+        run: make build
+
+  plan:
+    name: Plan notebook runs
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      has_work: ${{ steps.plan.outputs.has_work }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # the diff against the base branch needs history
+
+      - id: plan
+        name: Choose notebooks and fixtures
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python3 scripts/ci_plan.py --base "$BASE" --shards 4 --github-output "$GITHUB_OUTPUT"
+          else
+            python3 scripts/ci_plan.py --all --shards 4 --github-output "$GITHUB_OUTPUT"
+          fi
+
+  notebooks:
+    name: Notebooks ${{ matrix.name }}
+    needs: plan
+    if: needs.plan.outputs.has_work == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJSON(needs.plan.outputs.matrix) }}
     steps:
       - uses: actions/checkout@v4
 
@@ -32,14 +97,17 @@ jobs:
           distribution: temurin
           java-version: "17"
 
-      - uses: actions/setup-node@v4
+      # Delta Lake jars resolved by Ivy: cached so runs do not depend on Maven Central being reachable.
+      - uses: actions/cache@v4
         with:
-          node-version: "22"
-          cache: npm
-          cache-dependency-path: site/package-lock.json
+          path: |
+            ~/.ivy2
+            ~/.ivy2.5.2
+          key: ivy-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+          restore-keys: ivy-${{ runner.os }}-
 
-      - name: Install
-        run: make install
+      - name: Install notebook packages
+        run: uv sync --extra notebooks
 
       # Resolve Delta before parallel notebook kernels share the Ivy cache.
       - name: Prepare Spark dependencies
@@ -57,9 +125,29 @@ jobs:
             then
               exit 0
             fi
-            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 5))"; fi
+            if [ "$attempt" -lt 3 ]; then sleep "$((attempt * 10))"; fi
           done
           exit 1
 
-      - name: Validate
-        run: make validate
+      - name: Execute notebooks (estimate ${{ matrix.estimate_seconds }}s of work)
+        if: matrix.notebooks != ''
+        run: uv run --extra notebooks python scripts/run_notebooks.py --jobs 4 ${{ matrix.notebooks }}
+
+      - name: Verify challenge answers
+        if: matrix.fixtures != ''
+        run: uv run --extra notebooks python scripts/verify_challenge_answers.py ${{ matrix.fixtures }}
+
+  # One stable status to look at (and to require in branch rules): green only when every job above passed or was
+  # rightly skipped.
+  validate:
+    name: validate
+    if: always()
+    needs: [quick, plan, notebooks]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All checks passed
+        run: |
+          echo "quick=${{ needs.quick.result }} plan=${{ needs.plan.result }} notebooks=${{ needs.notebooks.result }}"
+          test "${{ needs.quick.result }}" = "success"
+          test "${{ needs.plan.result }}" = "success"
+          case "${{ needs.notebooks.result }}" in success|skipped) ;; *) exit 1 ;; esac
