@@ -1,0 +1,171 @@
+{
+ "notebook": "notebooks/topics/sql/sql-practice-05-subqueries-ctes-and-set-operations.ipynb",
+ "solutions": {
+  "s05-e01-solution": {
+   "fingerprint": "29417f9709955ef91c33d4de5b81275c91ec28fbd511ec3d2deb75e1290e3912",
+   "blocks": []
+  },
+  "s05-e02-solution": {
+   "fingerprint": "833f1895f6149b5337777dd094bca9971c386d2860715c62ad497c753c3cfb2f",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'p', TIMESTAMP'2026-01-01 00:00:00', 10), (2, 2, 'p', TIMESTAMP'2026-01-01 00:00:00', 5), (3, 2, 'p', TIMESTAMP'2026-01-01 00:00:00', 15) AS orders(order_id, customer_id, status, order_ts, amount)\"}) == [(3, 2, '15.00')], 'single order is never above itself'"
+    }
+   ]
+  },
+  "s05-e03-solution": {
+   "fingerprint": "1ef632fee12ad4d2ad10c91734b89ce34fbd7c1b64066fd256c11c22b55a57a9",
+   "blocks": []
+  },
+  "s05-e04-solution": {
+   "fingerprint": "7522774b3e6da70b20d8ae5317a4498d48ac4fb3bd9ec4671f6d6ef1070f7c40",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'order_items': \"SELECT CAST(order_id AS INT) AS order_id, CAST(sku AS STRING) AS sku, CAST(qty AS INT) AS qty, CAST(unit_price AS DECIMAL(8,2)) AS unit_price FROM VALUES (1, NULL, 1, 1), (1, 'SKU-4001', 1, 1) AS order_items(order_id, sku, qty, unit_price)\", 'orders': \"SELECT CAST(order_id AS INT) AS order_id, CAST(customer_id AS INT) AS customer_id, CAST(status AS STRING) AS status, CAST(order_ts AS TIMESTAMP) AS order_ts, CAST(amount AS DECIMAL(12,2)) AS amount FROM VALUES (1, 1, 'paid', TIMESTAMP'2026-01-01 00:00:00', 1) AS orders(order_id, customer_id, status, order_ts, amount)\", 'products': \"SELECT CAST(sku AS STRING) AS sku, CAST(category AS STRING) AS category, CAST(list_price AS DECIMAL(8,2)) AS list_price FROM VALUES ('SKU-4001', 'K', 1), ('SKU-4002', 'K', 1) AS products(sku, category, list_price)\"}) == [('SKU-4002', 'K')], 'null sku in items'"
+    }
+   ]
+  },
+  "s05-e05-solution": {
+   "fingerprint": "90e521e4ef3525886ba5c5d4cc1c9190fa709e6199feb0b0c8358d3125308fc9",
+   "blocks": []
+  },
+  "s05-e06-solution": {
+   "fingerprint": "fe9d381785f6dcaf026f271ff02d09feb39eaa71f5a7405e761734267baf96cd",
+   "blocks": []
+  },
+  "s05-e07-solution": {
+   "fingerprint": "020dfc3af63952a7e7f655ea1cf3358913a8257a038c95373a59610fb898fb12",
+   "blocks": []
+  },
+  "s05-e08-solution": {
+   "fingerprint": "df367d9b996496863ec9a8d8796756f5695fa114341ac575c9193efeab989e56",
+   "blocks": []
+  },
+  "s05-e09-solution": {
+   "fingerprint": "5d1acbcefbafb53780e201e57fb0ecce10fdb7d8e36897ebf09210eeb7b444d0",
+   "blocks": []
+  },
+  "s05-e10-solution": {
+   "fingerprint": "0d7f45ddaea242e82b40d66e75f3937bd1a2d1ee70229c353f8aa25c0c9932d7",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'order_items': \"SELECT CAST(order_id AS INT) AS order_id, CAST(sku AS STRING) AS sku, CAST(qty AS INT) AS qty, CAST(unit_price AS DECIMAL(8,2)) AS unit_price FROM VALUES (1, 'X', 1, 1), (2, 'X', 1, 1), (3, 'SKU-4001', 1, 1) AS order_items(order_id, sku, qty, unit_price)\", 'products': \"SELECT CAST(sku AS STRING) AS sku, CAST(category AS STRING) AS category, CAST(list_price AS DECIMAL(8,2)) AS list_price FROM VALUES ('SKU-4001', 'K', 1) AS products(sku, category, list_price)\"}) == [('X',)], 'duplicates collapse'"
+    }
+   ]
+  },
+  "s05-e11-solution": {
+   "fingerprint": "587a144df4035151938fc11f93f62190aa84494c3411c1460adcf25425d0ce59",
+   "blocks": []
+  },
+  "s05-e12-solution": {
+   "fingerprint": "99c1fe6ae2b7f653bfd6a3ce9070addd023554da879daa0eb856717b3f7f9be1",
+   "blocks": []
+  },
+  "s05-e13-solution": {
+   "fingerprint": "6d70a208742155d3c6e4e9d6a521244224ce5e713f0703fbc6aa9a10f61e7bf9",
+   "blocks": []
+  },
+  "s05-e14-solution": {
+   "fingerprint": "b747482206a07c75ec4e74d37daf7e2d2f00194db8e2091125b0dececcd52beb",
+   "blocks": [
+    {
+     "after_statement": 1,
+     "source": "assert rows_on(q, **{'employees': \"SELECT CAST(emp_id AS INT) AS emp_id, CAST(name AS STRING) AS name, CAST(dept AS STRING) AS dept, CAST(manager_id AS INT) AS manager_id, CAST(salary AS INT) AS salary, CAST(hire_date AS DATE) AS hire_date FROM VALUES (1, 'a', 'X', NULL, 200, DATE'2020-01-01'), (2, 'b', 'X', 1, 200, DATE'2020-01-01'), (3, 'c', 'X', 1, 150, DATE'2020-01-01'), (4, 'd', 'Y', NULL, 90, DATE'2020-01-01'), (5, 'e', 'Y', 4, 90, DATE'2020-01-01') AS employees(emp_id, name, dept, manager_id, salary, hire_date)\"}) == [('X', 150), ('Y', None)], 'ties at the top, single-salary dept'"
+    }
+   ]
+  }
+ },
+ "removed_cells": [],
+ "examples": {
+  "s05-e01-solution": {
+   "expected_cell": "s05-e01-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e02-solution": {
+   "expected_cell": "s05-e02-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e03-solution": {
+   "expected_cell": "s05-e03-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e04-solution": {
+   "expected_cell": "s05-e04-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e05-solution": {
+   "expected_cell": "s05-e05-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e06-solution": {
+   "expected_cell": "s05-e06-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e07-solution": {
+   "expected_cell": "s05-e07-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e08-solution": {
+   "expected_cell": "s05-e08-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e09-solution": {
+   "expected_cell": "s05-e09-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e10-solution": {
+   "expected_cell": "s05-e10-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e11-solution": {
+   "expected_cell": "s05-e11-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e12-solution": {
+   "expected_cell": "s05-e12-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e13-solution": {
+   "expected_cell": "s05-e13-expected",
+   "frames": [
+    "result"
+   ]
+  },
+  "s05-e14-solution": {
+   "expected_cell": "s05-e14-expected",
+   "frames": [
+    "result"
+   ]
+  }
+ },
+ "helpers": [
+  "def _plain(value):\n    \"\"\"Dates, timestamps and decimals as strings, so locked results are plain literals; lists and rows recurse.\"\"\"\n    if hasattr(value, \"isoformat\"):\n        return value.isoformat(sep=\" \") if hasattr(value, \"hour\") else value.isoformat()\n    if type(value).__name__ == \"Decimal\":\n        return str(value)\n    if isinstance(value, (list, tuple)):\n        return [_plain(v) for v in value]\n    if isinstance(value, dict):\n        return {k: _plain(v) for k, v in value.items()}\n    return value\n\n\ndef rows_on(query, **views):\n    \"\"\"Run query with the named temp views temporarily replaced by `SELECT ...` definitions; return rows as tuples.\"\"\"\n    saved = {name: spark.table(name) for name in views}\n    try:\n        for name, select in views.items():\n            spark.sql(f\"CREATE OR REPLACE TEMP VIEW {name} AS {select}\")\n        return [tuple(_plain(v) for v in row) for row in spark.sql(query).collect()]\n    finally:\n        for name, frame in saved.items():\n            frame.createOrReplaceTempView(name)"
+ ]
+}
