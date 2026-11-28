@@ -1,0 +1,293 @@
+{
+ "order": [
+  "py01-title",
+  "py01-intro",
+  "py01-imports",
+  "py01-harness",
+  "py01-e01-question",
+  "py01-e01-stub",
+  "py01-e01-checks",
+  "py01-e01-solution",
+  "py01-e02-question",
+  "py01-e02-stub",
+  "py01-e02-checks",
+  "py01-e02-solution",
+  "py01-e03-question",
+  "py01-e03-stub",
+  "py01-e03-checks",
+  "py01-e03-solution",
+  "py01-e04-question",
+  "py01-e04-stub",
+  "py01-e04-checks",
+  "py01-e04-solution",
+  "py01-e05-question",
+  "py01-e05-stub",
+  "py01-e05-checks",
+  "py01-e05-solution",
+  "py01-e06-question",
+  "py01-e06-stub",
+  "py01-e06-checks",
+  "py01-e06-solution",
+  "py01-e07-question",
+  "py01-e07-stub",
+  "py01-e07-checks",
+  "py01-e07-solution",
+  "py01-e08-question",
+  "py01-e08-stub",
+  "py01-e08-checks",
+  "py01-e08-solution",
+  "py01-e09-question",
+  "py01-e09-stub",
+  "py01-e09-checks",
+  "py01-e09-solution",
+  "py01-e10-question",
+  "py01-e10-stub",
+  "py01-e10-checks",
+  "py01-e10-solution",
+  "py01-e11-question",
+  "py01-e11-stub",
+  "py01-e11-checks",
+  "py01-e11-solution",
+  "py01-e12-question",
+  "py01-e12-stub",
+  "py01-e12-checks",
+  "py01-e12-solution",
+  "py01-e13-question",
+  "py01-e13-stub",
+  "py01-e13-checks",
+  "py01-e13-solution",
+  "py01-score-title",
+  "py01-score",
+  "py01-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py01-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('plain digits', lambda: parse_int(\"42\"), 42)\n",
+    "check('whitespace is allowed', lambda: parse_int(\" 7\\n\"), 7)\n",
+    "check('negative', lambda: parse_int(\"-5\"), -5)\n",
+    "check('a float string is not an int', lambda: parse_int(\"4.2\"), None)\n",
+    "check('empty string', lambda: parse_int(\"\"), None)\n",
+    "check('None', lambda: parse_int(None), None)\n",
+    "check('thousands separator is rejected', lambda: parse_int(\"1,000\"), None)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('normal division', lambda: safe_divide(7, 2), 3.5)\n",
+    "check('zero denominator', lambda: safe_divide(1, 0), None)\n",
+    "check('custom default', lambda: safe_divide(1, 0, 0.0), 0.0)\n",
+    "check('None numerator', lambda: safe_divide(None, 3), None)\n",
+    "check('negative', lambda: safe_divide(-9, 3), -3.0)\n",
+    "check('zero numerator', lambda: safe_divide(0, 5), 0.0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('two lines with tax', lambda: invoice_total([(2, \"19.99\"), (1, \"5.01\")], \"0.2\"), Decimal('53.99'))\n",
+    "check('no lines', lambda: invoice_total([], \"0.2\"), Decimal('0.00'))\n",
+    "check('no tax', lambda: invoice_total([(3, \"0.10\")], \"0\"), Decimal('0.30'))\n",
+    "check('half-up rounding', lambda: invoice_total([(1, \"0.125\")], \"0\"), Decimal('0.13'))\n",
+    "check('float trap avoided', lambda: invoice_total([(1, \"0.1\"), (1, \"0.2\")], \"0\"), Decimal('0.30'))\n",
+    "check('large quantity', lambda: invoice_total([(1000, \"9.99\")], \"0.075\"), Decimal('10739.25'))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('2.675 to cents', lambda: round_half_up(2.675, 2), Decimal('2.68'))\n",
+    "check('0.5 to an integer', lambda: round_half_up(0.5, 0), Decimal('1'))\n",
+    "check('2.5 to an integer', lambda: round_half_up(2.5, 0), Decimal('3'))\n",
+    "check('negative half', lambda: round_half_up(-1.5, 0), Decimal('-2'))\n",
+    "check('string input', lambda: round_half_up(\"1.005\", 2), Decimal('1.01'))\n",
+    "check('int input', lambda: round_half_up(3, 2), Decimal('3.00'))"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('one hour, one minute, one second', lambda: hms(3661), '1:01:01')\n",
+    "check('zero', lambda: hms(0), '0:00:00')\n",
+    "check('under a minute', lambda: hms(59), '0:00:59')\n",
+    "check('exact hour', lambda: hms(3600), '1:00:00')\n",
+    "check('more than a day', lambda: hms(90061), '25:01:01')\n",
+    "check('59:59', lambda: hms(3599), '0:59:59')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('0.1 + 0.2 vs 0.3', lambda: same_amount(0.1 + 0.2, 0.3), True)\n",
+    "check('clearly different', lambda: same_amount(1.0, 1.1), False)\n",
+    "check('near zero', lambda: same_amount(1e-12, 0.0), True)\n",
+    "check('large values', lambda: same_amount(1e12 + 0.0001, 1e12), True)\n",
+    "check('nan is never equal', lambda: same_amount(float(\"nan\"), float(\"nan\")), False)\n",
+    "check('negatives', lambda: same_amount(-0.3, -(0.1 + 0.2)), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('skips None', lambda: coalesce(None, 3), 3)\n",
+    "check('keeps zero', lambda: coalesce(0, 5), 0)\n",
+    "check('keeps empty string', lambda: coalesce(\"\", \"x\"), '')\n",
+    "check('all None', lambda: coalesce(None, None), None)\n",
+    "check('no arguments', lambda: coalesce(), None)\n",
+    "check('keeps False', lambda: coalesce(None, False, True), False)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('true', lambda: parse_bool(\"true\"), True)\n",
+    "check('mixed case and spaces', lambda: parse_bool(\"  YES \"), True)\n",
+    "check('zero', lambda: parse_bool(\"0\"), False)\n",
+    "check('n', lambda: parse_bool(\"N\"), False)\n",
+    "check('False string', lambda: parse_bool(\"False\"), False)\n",
+    "check('junk raises', lambda: raises(lambda: parse_bool(\"maybe\"), ValueError), True)\n",
+    "check('empty raises', lambda: raises(lambda: parse_bool(\"\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('growth', lambda: pct_change(200, 250), 25.0)\n",
+    "check('decline', lambda: pct_change(80, 60), -25.0)\n",
+    "check('zero baseline', lambda: pct_change(0, 5), None)\n",
+    "check('missing new', lambda: pct_change(10, None), None)\n",
+    "check('no change', lambda: pct_change(7, 7), 0.0)\n",
+    "check('negative baseline', lambda: pct_change(-50, -25), -50.0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('positive', lambda: div_trunc(7, 2), 3)\n",
+    "check('negative dividend', lambda: div_trunc(-7, 2), -3)\n",
+    "check('negative divisor', lambda: div_trunc(7, -2), -3)\n",
+    "check('both negative', lambda: div_trunc(-7, -2), 3)\n",
+    "check('exact', lambda: div_trunc(-8, 2), -4)\n",
+    "check('huge ints stay exact', lambda: div_trunc(-(10**30) - 1, 10**15), -1000000000000000)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('currency and separator', lambda: parse_amount(\"$1,204.50\"), Decimal('1204.50'))\n",
+    "check('brackets mean negative', lambda: parse_amount(\"(30.00)\"), Decimal('-30.00'))\n",
+    "check('minus sign', lambda: parse_amount(\"-7\"), Decimal('-7'))\n",
+    "check('plain', lambda: parse_amount(\"0.10\"), Decimal('0.10'))\n",
+    "check('spaces', lambda: parse_amount(\"  12 \"), Decimal('12'))\n",
+    "check('junk raises', lambda: raises(lambda: parse_amount(\"N/A\"), ValueError), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('skips None', lambda: mean_present([1, None, 3]), 2.0)\n",
+    "check('all missing', lambda: mean_present([None, None]), None)\n",
+    "check('empty', lambda: mean_present([]), None)\n",
+    "check('zeros count', lambda: mean_present([0, 0, 3]), 1.0)\n",
+    "check('single', lambda: mean_present([5]), 5.0)\n",
+    "check('floats', lambda: mean_present([0.5, 1.5]), 1.0)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('zero', lambda: to_base36(0), '0')\n",
+    "check('35 is z', lambda: to_base36(35), 'z')\n",
+    "check('36 is 10', lambda: to_base36(36), '10')\n",
+    "check('a known value', lambda: to_base36(1295), 'zz')\n",
+    "check('round trip', lambda: int(to_base36(123456789), 36), 123456789)\n",
+    "check('large', lambda: to_base36(2**64), '3w5e11264sgsg')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py01-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py01-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py01-harness"
+ ]
+}

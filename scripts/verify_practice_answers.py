@@ -12,8 +12,11 @@ import nbformat
 from nbclient import NotebookClient
 
 root = Path(__file__).resolve().parents[1]
-paths = sorted((root / "notebooks/topics/python/practice").glob("python-challenges-*.ipynb")) + sorted(
-    (root / "notebooks/topics/python/practice").glob("python-drills-*.ipynb")
+practice_dir = root / "notebooks/topics/python/practice"
+paths = (
+    sorted(practice_dir.glob("python-challenges-*.ipynb"))
+    + sorted(practice_dir.glob("python-drills-*.ipynb"))
+    + sorted(practice_dir.glob("python-practice-*.ipynb"))
 )
 paths.append(root / "notebooks/topics/python/practice/python-coding-problems.ipynb")
 

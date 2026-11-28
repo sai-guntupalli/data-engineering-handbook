@@ -1,0 +1,310 @@
+{
+ "order": [
+  "py02-title",
+  "py02-intro",
+  "py02-imports",
+  "py02-harness",
+  "py02-e01-question",
+  "py02-e01-stub",
+  "py02-e01-checks",
+  "py02-e01-solution",
+  "py02-e02-question",
+  "py02-e02-stub",
+  "py02-e02-checks",
+  "py02-e02-solution",
+  "py02-e03-question",
+  "py02-e03-stub",
+  "py02-e03-checks",
+  "py02-e03-solution",
+  "py02-e04-question",
+  "py02-e04-stub",
+  "py02-e04-checks",
+  "py02-e04-solution",
+  "py02-e05-question",
+  "py02-e05-stub",
+  "py02-e05-checks",
+  "py02-e05-solution",
+  "py02-e06-question",
+  "py02-e06-stub",
+  "py02-e06-checks",
+  "py02-e06-solution",
+  "py02-e07-question",
+  "py02-e07-stub",
+  "py02-e07-checks",
+  "py02-e07-solution",
+  "py02-e08-question",
+  "py02-e08-stub",
+  "py02-e08-checks",
+  "py02-e08-solution",
+  "py02-e09-question",
+  "py02-e09-stub",
+  "py02-e09-checks",
+  "py02-e09-solution",
+  "py02-e10-question",
+  "py02-e10-stub",
+  "py02-e10-checks",
+  "py02-e10-solution",
+  "py02-e11-question",
+  "py02-e11-stub",
+  "py02-e11-checks",
+  "py02-e11-solution",
+  "py02-e12-question",
+  "py02-e12-stub",
+  "py02-e12-checks",
+  "py02-e12-solution",
+  "py02-e13-question",
+  "py02-e13-stub",
+  "py02-e13-checks",
+  "py02-e13-solution",
+  "py02-e14-question",
+  "py02-e14-stub",
+  "py02-e14-checks",
+  "py02-e14-solution",
+  "py02-score-title",
+  "py02-score",
+  "py02-next"
+ ],
+ "cells": [
+  {
+   "cell_type": "code",
+   "id": "py02-harness",
+   "metadata": {},
+   "source": [
+    ""
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e01-checks",
+   "metadata": {},
+   "source": [
+    "check('runs of spaces', lambda: squash(\"a   b\"), 'a b')\n",
+    "check('tabs and newlines', lambda: squash(\" a\\tb\\n c \"), 'a b c')\n",
+    "check('empty', lambda: squash(\"\"), '')\n",
+    "check('only spaces', lambda: squash(\"   \"), '')\n",
+    "check('single word', lambda: squash(\"x\"), 'x')\n",
+    "check('unicode spaces', lambda: squash(\"a\\u00a0\\u2003b\"), 'a b')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e02-checks",
+   "metadata": {},
+   "source": [
+    "check('title', lambda: slugify(\"Orders & Returns 2026\"), 'orders-returns-2026')\n",
+    "check('accents', lambda: slugify(\"Crème Brûlée\"), 'creme-brulee')\n",
+    "check('punctuation only', lambda: slugify(\"!!!\"), '')\n",
+    "check('already a slug', lambda: slugify(\"daily-orders\"), 'daily-orders')\n",
+    "check('leading and trailing junk', lambda: slugify(\"  --Hello, World!--  \"), 'hello-world')\n",
+    "check('empty', lambda: slugify(\"\"), '')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e03-checks",
+   "metadata": {},
+   "source": [
+    "check('classic sentence', lambda: is_palindrome(\"A man, a plan, a canal: Panama\"), True)\n",
+    "check('not a palindrome', lambda: is_palindrome(\"race a car\"), False)\n",
+    "check('empty', lambda: is_palindrome(\"\"), True)\n",
+    "check('single character', lambda: is_palindrome(\"x\"), True)\n",
+    "check('digits', lambda: is_palindrome(\"12 21\"), True)\n",
+    "check('case only', lambda: is_palindrome(\"Aa\"), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e04-checks",
+   "metadata": {},
+   "source": [
+    "check('normal', lambda: mask_email(\"ada@example.com\"), 'a***@example.com')\n",
+    "check('one-letter user', lambda: mask_email(\"a@x.io\"), 'a***@x.io')\n",
+    "check('no at sign', lambda: mask_email(\"not-an-email\"), 'not-an-email')\n",
+    "check('at sign in user part', lambda: mask_email(\"a@b@corp.io\"), 'a***@corp.io')\n",
+    "check('empty user', lambda: mask_email(\"@x.io\"), '@x.io')\n",
+    "check('subdomain', lambda: mask_email(\"grace.h@mail.corp.io\"), 'g***@mail.corp.io')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e05-checks",
+   "metadata": {},
+   "source": [
+    "check('two pairs', lambda: parse_pairs(\"host=db;port=5432\"), {'host': 'db', 'port': '5432'})\n",
+    "check('spaces', lambda: parse_pairs(\" a = 1 ; b=2 \"), {'a': '1', 'b': '2'})\n",
+    "check('value with equals', lambda: parse_pairs(\"q=a=b\"), {'q': 'a=b'})\n",
+    "check('empty items', lambda: parse_pairs(\";a=1;;\"), {'a': '1'})\n",
+    "check('empty', lambda: parse_pairs(\"\"), {})\n",
+    "check('key without value', lambda: parse_pairs(\"flag\"), {'flag': ''})"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e06-checks",
+   "metadata": {},
+   "source": [
+    "check('full line', lambda: parse_log(\"2026-01-05 09:15:00 ERROR order=42 latency=120ms\"), {'date': '2026-01-05', 'level': 'ERROR', 'order': '42', 'latency': '120ms'})\n",
+    "check('no pairs', lambda: parse_log(\"2026-01-05 09:15:00 INFO started\"), {'date': '2026-01-05', 'level': 'INFO'})\n",
+    "check('not a log line', lambda: parse_log(\"hello\"), None)\n",
+    "check('lowercase level is rejected', lambda: parse_log(\"2026-01-05 09:15:00 info x=1\"), None)\n",
+    "check('pairs keep order', lambda: list(parse_log(\"2026-01-05 09:15:00 WARN b=2 a=1\")), ['date', 'level', 'b', 'a'])\n",
+    "check('empty', lambda: parse_log(\"\"), None)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e07-checks",
+   "metadata": {},
+   "source": [
+    "check('valid', lambda: valid_sku(\"SKU-4001\"), True)\n",
+    "check('too short', lambda: valid_sku(\"SKU-40\"), False)\n",
+    "check('extra suffix', lambda: valid_sku(\"SKU-4001x\"), False)\n",
+    "check('lowercase', lambda: valid_sku(\"sku-4001\"), False)\n",
+    "check('embedded', lambda: valid_sku(\"x SKU-4001\"), False)\n",
+    "check('unicode digits', lambda: valid_sku(\"SKU-١٢٣٤\"), True)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e08-checks",
+   "metadata": {},
+   "source": [
+    "check('two tags', lambda: hashtags(\"New #Release of #spark\"), ['release', 'spark'])\n",
+    "check('duplicates in different case', lambda: hashtags(\"#Data #data #DATA\"), ['data'])\n",
+    "check('none', lambda: hashtags(\"no tags\"), [])\n",
+    "check('underscores', lambda: hashtags(\"#big_data!\"), ['big_data'])\n",
+    "check('adjacent', lambda: hashtags(\"#a#b\"), ['a', 'b'])\n",
+    "check('empty', lambda: hashtags(\"\"), [])"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e09-checks",
+   "metadata": {},
+   "source": [
+    "check('runs', lambda: rle(\"aaabcc\"), 'a3b1c2')\n",
+    "check('empty', lambda: rle(\"\"), '')\n",
+    "check('single', lambda: rle(\"x\"), 'x1')\n",
+    "check('no repeats', lambda: rle(\"abc\"), 'a1b1c1')\n",
+    "check('long run', lambda: rle(\"z\" * 12), 'z12')\n",
+    "check('same char separated', lambda: rle(\"aabaa\"), 'a2b1a2')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e10-checks",
+   "metadata": {},
+   "source": [
+    "check('sentence', lambda: reverse_words(\"the sky is blue\"), 'blue is sky the')\n",
+    "check('extra spaces', lambda: reverse_words(\"  hello   world \"), 'world hello')\n",
+    "check('empty', lambda: reverse_words(\"\"), '')\n",
+    "check('one word', lambda: reverse_words(\"x\"), 'x')\n",
+    "check('punctuation stays', lambda: reverse_words(\"a, b.\"), 'b. a,')\n",
+    "check('tabs', lambda: reverse_words(\"a\\tb\"), 'b a')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e11-checks",
+   "metadata": {},
+   "source": [
+    "check('typical', lambda: report_row(\"orders\", 1234567, 0.256), 'orders      | 1,234,567|  25.6%')\n",
+    "check('long name truncated', lambda: report_row(\"order_items_daily\", 5, 1.0), 'order_items_|         5| 100.0%')\n",
+    "check('zero', lambda: report_row(\"x\", 0, 0.0), 'x           |         0|   0.0%')\n",
+    "check('small share', lambda: report_row(\"y\", 12, 0.0004), 'y           |        12|   0.0%')\n",
+    "check('exact width', lambda: report_row(\"abcdefghijkl\", 1000, 0.5), 'abcdefghijkl|     1,000|  50.0%')\n",
+    "check('length is fixed', lambda: len(report_row(\"a\", 1, 0.1)), 31)"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e12-checks",
+   "metadata": {},
+   "source": [
+    "check('utf-8', lambda: decode_text(\"café\".encode(\"utf-8\")), 'café')\n",
+    "check('bom removed', lambda: decode_text(\"\\ufeffid\".encode(\"utf-8\")), 'id')\n",
+    "check('cp1252 fallback', lambda: decode_text(\"café\".encode(\"cp1252\")), 'café')\n",
+    "check('euro sign in cp1252', lambda: decode_text(b\"\\x80 5\"), '€ 5')\n",
+    "check('empty', lambda: decode_text(b\"\"), '')\n",
+    "check('ascii', lambda: decode_text(b\"plain\"), 'plain')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e13-checks",
+   "metadata": {},
+   "source": [
+    "check('one date', lambda: iso_dates(\"due 05/01/2026\"), 'due 2026-01-05')\n",
+    "check('two dates', lambda: iso_dates(\"03/01/2026 to 31/12/2026\"), '2026-01-03 to 2026-12-31')\n",
+    "check('no dates', lambda: iso_dates(\"none\"), 'none')\n",
+    "check('part of a longer number', lambda: iso_dates(\"105/01/20260\"), '105/01/20260')\n",
+    "check('adjacent text', lambda: iso_dates(\"on05/01/2026.\"), 'on2026-01-05.')\n",
+    "check('empty', lambda: iso_dates(\"\"), '')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-e14-checks",
+   "metadata": {},
+   "source": [
+    "check('accents and case', lambda: name_key(\"José  Müller\") == name_key(\"jose muller\"), True)\n",
+    "check('composed vs decomposed', lambda: name_key(\"caf\\u00e9\") == name_key(\"cafe\\u0301\"), True)\n",
+    "check('sharp s', lambda: name_key(\"Straße\"), 'strasse')\n",
+    "check('ligature', lambda: name_key(\"ﬁnance\"), 'finance')\n",
+    "check('different names differ', lambda: name_key(\"Ana\") == name_key(\"Anna\"), False)\n",
+    "check('value', lambda: name_key(\"  Zoë  \"), 'zoe')"
+   ],
+   "execution_count": null,
+   "outputs": []
+  },
+  {
+   "cell_type": "markdown",
+   "id": "py02-score-title",
+   "metadata": {},
+   "source": [
+    "## Score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "id": "py02-score",
+   "metadata": {},
+   "source": [
+    "score()"
+   ],
+   "execution_count": null,
+   "outputs": []
+  }
+ ],
+ "harness_ids": [
+  "py02-harness"
+ ]
+}
